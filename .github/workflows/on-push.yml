@@ -19,6 +19,8 @@ jobs:
         name: Build website HTML
       - run: |
           cd ../_html
+          git config --global user.email "symfem@mscroggs.co.uk"
+          git config --global user.name "Finite Element Bot"
           git init
           git add .
           git commit -m "Build HTML website"
