@@ -13,6 +13,7 @@ jobs:
       - run: |
             git clone https://github.com/mscroggs/feast.git feast-src
             cd feast-src
+            git checkout install
             sudo pip3 install -r requirements.txt
             sudo python3 setup.py install
         name: Install feast
