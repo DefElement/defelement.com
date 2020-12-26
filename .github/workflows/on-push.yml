@@ -11,7 +11,6 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
-      - run: ls /usr/local/lib/python*
       - run: sudo pip3 install symfem>=2020.12.3
         name: Install symfem
 
@@ -22,6 +21,7 @@ jobs:
           git config --global user.email "symfem@mscroggs.co.uk"
           git config --global user.name "Finite Element Bot"
           git init
+          git checkout -b gh-pages
           git add .
           git commit -m "Build HTML website"
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
