@@ -19,3 +19,5 @@ jobs:
         name: Install feast
       - run: ls
         name: ls
+      - run: pwd
+        name: pwd
