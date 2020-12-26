@@ -24,6 +24,6 @@ jobs:
           git init
           git add .
           git commit -m "Build HTML website"
-          git remote set-url https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
+          git remote set-url --add https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
           git push -f origin gh-pages
         name: Push website to gh-pages branch
