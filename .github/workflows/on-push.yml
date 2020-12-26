@@ -6,13 +6,14 @@ jobs:
     name: Build defelement.com
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get install -y python3-setuptools python3-numpy python3-flake8 python3-sympy python3-pip
+      - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
       - run: ls /usr/local/lib/python*
       - run: |
             git clone https://github.com/mscroggs/feast.git feast-src
             cd feast-src
+            sudo pip3 install -r requirements.txt
             sudo python3 setup.py install
         name: Install feast
       - run: ls
