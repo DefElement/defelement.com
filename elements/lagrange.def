@@ -1,5 +1,5 @@
 name: Lagrange
-feast:
+symfem:
   interval: Lagrange
   triangle: Lagrange
   quadrilateral: Q 

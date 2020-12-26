@@ -1,6 +1,6 @@
 import os
 import argparse
-from feast import feast_element
+from symfem import create_element
 
 
 def set(data, keys, value):
@@ -64,6 +64,6 @@ for file in os.listdir(element_path):
             f.write(f"title: {data['name']}\n")
             f.write("---\n")
 
-            for cell, element_type in data["feast"].items():
-                element = feast_element(cell, element_type, 1)
+            for cell, element_type in data["symfem"].items():
+                element = create_element(cell, element_type, 1)
                 print(element)
