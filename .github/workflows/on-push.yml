@@ -12,7 +12,7 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - run: ls /usr/local/lib/python*
-      - run: sudo pip3 install symfem
+      - run: sudo pip3 install symfem>=2020.12.3
         name: Install symfem
 
       - run: python3 .github/scripts/build-pages.py ../_html
