@@ -22,4 +22,4 @@ jobs:
           git commit -m "Build HTML website"
           pip3 install PyGitHub
           git push https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git --branch=gh-pages
-      - name: Push website to gh-pages branch
+        name: Push website to gh-pages branch
