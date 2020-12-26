@@ -1,0 +1,7 @@
+name: Lagrange
+feast:
+  interval: Lagrange
+  triangle: Lagrange
+  quadrilateral: Q 
+  tetrahedron: Lagrange
+  hexahedron: Q 

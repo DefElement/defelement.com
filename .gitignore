@@ -1,0 +1,6 @@
+*.pyc
+
+_html
+_html/*
+
+.*.swp
