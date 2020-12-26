@@ -10,14 +10,16 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - run: ls /usr/local/lib/python*
+      - run: sudo pip3 install symfem
+        name: Install symfem
+
+      - run: python3 .github/scripts/build-pages.py ../_html
+        name: Build website HTML
       - run: |
-            git clone https://github.com/mscroggs/feast.git feast-src
-            cd feast-src
-            git checkout install
-            sudo pip3 install -r requirements.txt
-            sudo python3 setup.py install
-        name: Install feast
-      - run: ls
-        name: ls
-      - run: pwd
-        name: pwd
+          cd ../_html
+          git init
+          git add .
+          git commit -m "Build HTML website"
+          pip3 install PyGitHub
+          git push https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git --branch=gh-pages
+      - name: Push website to gh-pages branch
