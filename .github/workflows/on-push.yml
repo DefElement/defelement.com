@@ -25,5 +25,5 @@ jobs:
           git add .
           git commit -m "Build HTML website"
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
-          git push origin gh-pages --force
+          git push -u origin gh-pages --force
         name: Push website to gh-pages branch
