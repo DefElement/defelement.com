@@ -96,6 +96,9 @@ os.mkdir(htmlelement_path)
 
 os.system(f"cp -r {files_path}/* {html_path}")
 
+with open(os.path.join(html_path, "CNAME"), "w") as f:
+    f.write("defelement.com")
+
 for file in os.listdir(pages_path):
     if file.endswith(".md"):
         fname = file[:-3]
@@ -111,6 +114,7 @@ def to_2d(c):
     if len(c) == 2:
         return (10 + c[0] * 100, 110 - 100 * c[1])
     return (10 + c[0] * 100, 110 - 100 * c[1])
+
 
 elementlist = []
 for file in os.listdir(element_path):
