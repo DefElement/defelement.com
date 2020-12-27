@@ -1,7 +1,5 @@
 # Hello there
 
-Testing...
-
-New paragraph
+This site is currently under construction.
 
 [Index of elements](/elements)

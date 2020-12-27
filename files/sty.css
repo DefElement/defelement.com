@@ -33,3 +33,13 @@ h1, h2, h3, h4, h5, h6 {font-family: 'Varela Round', sans-serif;font-weight:norm
 body, p {font-family:sans}
 
 .head a {text-decoration:none}
+
+.egdetail {display:none}
+.egdetail.current {display:block; border:2px solid black}
+
+a.eglink {margin-right:10px;display:inline-block;padding:5px;border:2px solid #AAAAAA;color:#AAAAAA; border-bottom:none;border-radius:10px 10px 0px 0px;text-decoration:none;text-align:center}
+a.eglink.current {border:2px solid black;color:black; border-bottom:none}
+a.eglink.current:hover,
+a.eglink.current {color:black}
+a.eglink:hover {color:#FF8800}
+
