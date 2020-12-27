@@ -1,0 +1,35 @@
+/*****************************
+colour scheme:
+  orange:   #FF8800
+  blue:     #44AAFF
+  green:    #55FF00
+  purple:   #DD2299
+*****************************/
+
+body {padding:0px;margin:0px; margin-bottom:200px}
+
+.head {background-image:url("/mesh-blue.png")}
+.footer {background-image:url("/mesh-blue.png")}
+.head, .body, .footer {width:100%;}
+
+.footer {position:fixed;bottom:0;font-size:11px;font-family:monospace;
+         text-align:center}
+.footer,
+a, a:link, a:active, a:visited
+        {color:#44AAFF}
+.footer a:hover,
+a:hover {color:#FF8800}
+
+.content {max-width:800px;margin:auto;padding:10px;background-color:rgba(255,255,255,0.9)}
+
+.title {text-align:center;font-size:35px}
+.tagline {text-align:center;font-size:25px;color:#44AAFF}
+.title .first {color:#FF8800}
+.title .second {color:#DD2299}
+
+.head, .footer {font-family: 'Varela Round', sans-serif;}
+
+h1, h2, h3, h4, h5, h6 {font-family: 'Varela Round', sans-serif;font-weight:normal;color:#44AAFF}
+body, p {font-family:sans}
+
+.head a {text-decoration:none}

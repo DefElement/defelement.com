@@ -1,0 +1,4 @@
+name: N&eacute;d&eacute;lec (first kind)
+symfem:
+  triangle: N1curl
+  tetrahedron: N1curl

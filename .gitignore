@@ -4,3 +4,5 @@ _html
 _html/*
 
 .*.swp
+
+*.xcf
