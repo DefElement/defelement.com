@@ -44,3 +44,11 @@ a.eglink.current {color:black}
 a.eglink:hover {color:#FF8800}
 
 .citations li {font-size:90%}
+
+.dofnum {font-family: 'Varela Round', sans-serif}
+.dofnum.largen {font-size:9px}
+
+li {margin-bottom:10px}
+
+.basisf {border-bottom:2px dashed #AAAAAA}
+.basisf:last-of-type {border-bottom:none}

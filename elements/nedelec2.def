@@ -1,0 +1,16 @@
+name: N&eacute;d&eacute;lec (second kind)
+categories:
+  - Hcurl
+symfem:
+  triangle: N2curl
+  tetrahedron: N2curl
+references:
+  - title: A new family of mixed finite elements in \(\mathbb{R}^3\)
+    author: N&eacute;d&eacute;lec, J. C.
+    year: 1986
+    journal: Numerische Mathematik
+    volume: 50
+    issue: 1
+    pagestart: 57
+    pageend: 81
+    doi: 10.1007/BF01389668

@@ -2,7 +2,9 @@ import os
 import argparse
 import yaml
 from symfem import create_element
-from markup import markup, markup_element, markup_citation
+from markup import markup, insert_dates
+from elements import markup_element
+from citations import markup_citation, make_bibtex
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
@@ -24,10 +26,10 @@ htmlelement_path = os.path.join(html_path, "elements")
 def make_html_page(content):
     out = ""
     with open(os.path.join(template_path, "intro.html")) as f:
-        out += f.read()
+        out += insert_dates(f.read())
     out += content
     with open(os.path.join(template_path, "outro.html")) as f:
-        out += f.read()
+        out += insert_dates(f.read())
     return out
 
 
@@ -35,6 +37,7 @@ if os.path.isdir(html_path):
     os.system(f"rm -rf {html_path}")
 os.mkdir(html_path)
 os.mkdir(htmlelement_path)
+os.mkdir(os.path.join(htmlelement_path, "bibtex"))
 
 os.system(f"cp -r {files_path}/* {html_path}")
 
@@ -55,6 +58,8 @@ for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
+
+        print(data["name"])
 
         fname = file[:-4]
 
@@ -106,8 +111,10 @@ for file in os.listdir(element_path):
         if "references" in data:
             content += "<h2>References</h2>\n"
             content += "<ul class='citations'>\n"
-            for r in data["references"]:
-                content += f"<li>{markup_citation(r)}</li>\n"
+            for i, r in enumerate(data["references"]):
+                content += f"<li>{markup_citation(r)} [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
+                with open(os.path.join(htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
+                    f.write(make_bibtex(f"{fname}-{i}", r))
             content += "</ul>"
 
         # Write file
