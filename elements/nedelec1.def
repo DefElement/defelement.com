@@ -3,7 +3,7 @@ symfem:
   triangle: N1curl
   tetrahedron: N1curl
 references:
-  - title: Mixed finite elements in \mathbb{R}^3
+  - title: Mixed finite elements in \(\mathbb{R}^3\)
     author: N&eacute;d&eacute;lec, J. C.
     year: 1980
     journal: Numerische Mathematik
