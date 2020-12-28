@@ -14,7 +14,7 @@ jobs:
       - run: sudo pip3 install symfem>=2020.12.3
         name: Install symfem
 
-      - run: python3 .github/scripts/build-pages.py ../_html
+      - run: python3 builder/build-pages.py ../_html
         name: Build website HTML
       - run: |
           cd ../_html
