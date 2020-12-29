@@ -37,4 +37,4 @@ jobs:
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
           git push -u origin gh-pages --force
         name: Push website to gh-pages branch
-        if: ${{ github.ref == "refs/heads/main" }}
+        if: github.ref == 'refs/heads/main'
