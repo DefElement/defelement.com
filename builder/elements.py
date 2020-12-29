@@ -229,7 +229,7 @@ def markup_element(element):
     eg += "</li>\n"
     # Dual basis
     eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
-    eg += "...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
+    eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
 
     # Basis functions
     eg += "<li>Functionals and basis functions:</li>"
