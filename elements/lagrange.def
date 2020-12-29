@@ -1,4 +1,23 @@
 name: Lagrange
+categories:
+  - scalar
+reference elements:
+  - interval
+  - triangle
+  - quadrilateral
+  - tetrahedron
+  - hexahedron
+dofs:
+  - vertices: point evaluations
+  - edges: point evaluations
+  - faces: point evaluations
+  - volumes: point evaluations
+polynomial set:
+  interval: P_k
+  triangle: P_k
+  tetrahedron: P_k
+  quadrilateral: Q_k
+  hexahedron: Q_k
 symfem:
   interval: Lagrange
   triangle: Lagrange

@@ -11,6 +11,7 @@ element_path = os.path.join(dir_path, "../elements")
 template_path = os.path.join(dir_path, "../templates")
 files_path = os.path.join(dir_path, "../files")
 pages_path = os.path.join(dir_path, "../pages")
+data_path = os.path.join(dir_path, "../data")
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument(
@@ -44,6 +45,14 @@ os.system(f"cp -r {files_path}/* {html_path}")
 with open(os.path.join(html_path, "CNAME"), "w") as f:
     f.write("defelement.com")
 
+categories = {}
+with open(os.path.join(data_path, "categories")) as f:
+    for line in f:
+        a, b = line.split(":", 1)
+        categories[a.strip()] = b.strip()
+
+category_pages = {i: [] for i in categories.keys()}
+
 for file in os.listdir(pages_path):
     if file.endswith(".md"):
         fname = file[:-3]
@@ -60,10 +69,24 @@ for file in os.listdir(element_path):
             data = yaml.load(f, Loader=yaml.FullLoader)
 
         print(data["name"])
-
         fname = file[:-4]
-
         content = f"<h1>{data['name']}</h1>"
+        element_data = []
+
+        # Categories
+        if "categories" in data:
+            for c in data["categories"]:
+                category_pages[c].append((data["name"], f"{ fname}.html"))
+            element_data.append(
+                ("Categories",
+                 ", ".join([f"<a href='/elements/categories.html#{c}'>{categories[c]}</a>"
+                            for c in data["categories"]])))
+
+        # Write element data
+        content += "<table>"
+        for i, j in element_data:
+            content += f"<tr><td>{i}</td><td>{j}</td></tr>"
+        content += "</table>"
 
         # Write examples using symfem
         element_names = []
@@ -127,6 +150,7 @@ for file in os.listdir(element_path):
         with open(os.path.join(htmlelement_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
 
+# Index page
 elementlist.sort(key=lambda x: x[0])
 
 content = "<h1>Index of elements</h1>\n<ul>"
@@ -134,4 +158,16 @@ content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in elem
 content += "</ul>"
 
 with open(os.path.join(htmlelement_path, "index.html"), "w") as f:
+    f.write(make_html_page(content))
+
+# Category index
+content = f"<h1>Categories</h1>\n"
+for c in categories:
+    category_pages[c].sort(key=lambda x: x[0])
+
+    content += f"<h2><a name='{c}'></a>{categories[c]}</h1>\n<ul>"
+    content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
+    content += "</ul>"
+
+with open(os.path.join(htmlelement_path, f"categories.html"), "w") as f:
     f.write(make_html_page(content))
