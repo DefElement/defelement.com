@@ -31,6 +31,7 @@ a:hover {color:#FF8800}
 
 h1, h2, h3, h4, h5, h6 {font-family: 'Varela Round', sans-serif;font-weight:normal;color:#44AAFF}
 body, p {font-family:sans}
+p {text-align:justify}
 
 .head a {text-decoration:none}
 
@@ -55,3 +56,8 @@ li {margin-bottom:10px}
 
 a.refid, a.refid:visited, a.refid:link, a.refid:active, a.refid:hover {color:black}
 a.refid:target {font-weight:bold; color:#FF8800}
+
+table.bordered, table.bordered tr, table.bordered td {border:1px solid #AAAAAA;border-collapse:collapse}
+table.bordered td {padding:2px 6px;text-align:center}
+table.bordered thead {font-weight:bold;font-size:80%}
+

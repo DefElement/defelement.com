@@ -116,7 +116,7 @@ for file in os.listdir(element_path):
             content += "<ul class='citations'>\n"
             for i, r in enumerate(data["references"]):
                 content += f"<li>{markup_citation(r)}"
-                content += " [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
+                content += f" [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
                 with open(os.path.join(htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
                     f.write(make_bibtex(f"{fname}-{i}", r))
             content += "</ul>"

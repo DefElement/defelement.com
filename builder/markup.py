@@ -75,10 +75,11 @@ def add_citation(matches):
     page_references.append(markup_citation(ref))
     return f"<sup><a href='#ref{len(page_references)}'>[{len(page_references)}]</a></sup>"
 
+
 def insert_dates(txt):
     now = datetime.now()
     txt = txt.replace("{{date:Y}}", now.strftime("%Y"))
     txt = txt.replace("{{date:D-M-Y}}", now.strftime("%d-%B-%Y"))
-    txt = re.sub("{{symbols\.([^}]+)}}", lambda m: getattr(symbols, m[1]), txt)
+    txt = re.sub("{{symbols\\.([^}]+)}}", lambda m: getattr(symbols, m[1]), txt)
 
     return txt
