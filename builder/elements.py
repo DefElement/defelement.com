@@ -3,6 +3,7 @@ import sympy
 from symfem import functionals
 from symfem.symbolic import x
 
+
 def to_2d(c, width=200, height=200):
     if height > 100:
         hst = 50 + height / 2
@@ -23,14 +24,17 @@ def make_lattice(element, n, offset=False):
             return [(i / (n - 1), ) for i in range(n)]
     elif element.reference.name == "triangle":
         if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1)) for i in range(n) for j in range(n - i)]
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
+                    for i in range(n) for j in range(n - i)]
         else:
             return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n - i)]
     elif element.reference.name == "tetrahedron":
         if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1)) for i in range(n) for j in range(n - i) for k in range(n - i - j)]
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                    for i in range(n) for j in range(n - i) for k in range(n - i - j)]
         else:
-            return [(i / (n - 1), j / (n - 1), k / (n - 1)) for i in range(n) for j in range(n - i) for k in range(n - i - j)]
+            return [(i / (n - 1), j / (n - 1), k / (n - 1))
+                    for i in range(n) for j in range(n - i) for k in range(n - i - j)]
     elif element.reference.name == "quadrilateral":
         if offset:
             return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1)) for i in range(n) for j in range(n)]
@@ -38,21 +42,23 @@ def make_lattice(element, n, offset=False):
             return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n)]
     elif element.reference.name == "hexahedron":
         if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1)) for i in range(n) for j in range(n) for k in range(n)]
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                    for i in range(n) for j in range(n) for k in range(n)]
         else:
-            return [(i / (n - 1), j / (n - 1), k / (n - 1)) for i in range(n) for j in range(n) for k in range(n)]
+            return [(i / (n - 1), j / (n - 1), k / (n - 1))
+                    for i in range(n) for j in range(n) for k in range(n)]
     raise ValueError("Unknown cell type.")
 
 
 def subs(f, p):
     try:
         return [subs(i, p) for i in f]
-    except:
+    except:  # noqa: E722
         pass
     for i, j in zip(x, p):
         try:
             f = f.subs(i, j)
-        except:
+        except:  # noqa: E722
             pass
     return float(f)
 
@@ -77,9 +83,11 @@ def svg_reference(ref):
             p0 = to_2d(v0, w, h)
             p1 = to_2d(v1, w, h)
             if v0[1] < 0.1 and v1[1] < 0.1:
-                fg += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}' stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
+                fg += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+                fg += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
             else:
-                out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}' stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
+                out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+                out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
 
         for i, v in enumerate(ref.vertices):
             if v[1] < 0.1:
@@ -112,7 +120,8 @@ def svg_reference(ref):
         for edge in ref.edges:
             p0 = to_2d(ref.vertices[edge[0]], w, h)
             p1 = to_2d(ref.vertices[edge[1]], w, h)
-            out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}' stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
+            out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+            out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
 
         for i, v in enumerate(ref.vertices):
             out += dof_arrow(v, None, i, "#FF8800", width=w, height=h)
@@ -135,8 +144,9 @@ def svg_reference(ref):
 
 def to_tex(f):
     try:
-        return "\\left(\\begin{array}{c}" + "\\\\".join([to_tex(i) for i in f]) + "\\end{array}\\right)"
-    except:
+        return "\\left(\\begin{array}{c}" + "\\\\".join(
+            [to_tex(i) for i in f]) + "\\end{array}\\right)"
+    except:  # noqa: E722
         return sympy.latex(f)
 
 
@@ -158,12 +168,14 @@ def describe_dof(element, d):
     elif isinstance(d, functionals.DotPointEvaluation):
         desc = "\\mathbf{v}\\mapsto"
         desc += "\\mathbf{v}(" + ",".join([to_tex(i) for i in d.dof_point()]) + ")"
-        desc += "\\cdot\\left(\\begin{array}{c}" + "\\\\".join([to_tex(i) for i in d.dof_direction()]) + "\\end{array}\\right)"
+        desc += "\\cdot\\left(\\begin{array}{c}"
+        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\end{array}\\right)"
         return desc
     elif isinstance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
-        desc =  "\\mathbf{v}\\mapsto"
+        desc = "\\mathbf{v}\\mapsto"
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
         desc += "\\mathbf{v}\\cdot"
         if d.f != 1:
@@ -173,7 +185,7 @@ def describe_dof(element, d):
     elif isinstance(d, functionals.NormalIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
-        desc =  "\\mathbf{v}\\mapsto"
+        desc = "\\mathbf{v}\\mapsto"
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
         desc += "\\mathbf{v}\\cdot"
         if d.f != 1:
@@ -187,19 +199,20 @@ def describe_dof(element, d):
             entity = f"{symbols.entity(d.entity_dim())}_{{{get_entity_number(element, d)}}}"
         try:
             d.f[0]
-            desc =  "\\mathbf{v}\\mapsto"
+            desc = "\\mathbf{v}\\mapsto"
             desc += f"\\displaystyle\\int_{{{entity}}}"
             desc += "\\mathbf{v}\\cdot"
-            desc += "\\left(\\begin{array}{c}" + "\\\\".join([to_tex(i) for i in d.f]) + "\\end{array}\\right)"
-        except:
-            desc =  "v\\mapsto"
+            desc += "\\left(\\begin{array}{c}"
+            desc += "\\\\".join([to_tex(i) for i in d.f])
+            desc += "\\end{array}\\right)"
+        except:  # noqa: E722
+            desc = "v\\mapsto"
             desc += f"\\displaystyle\\int_{{{entity}}}"
             if d.f != 1:
                 desc += "(" + to_tex(d.f) + ")"
             desc += "v"
         return desc
     else:
-        from IPython import embed; embed()
         raise ValueError(f"Unknown functional: {d.__class__}")
 
 
@@ -211,13 +224,12 @@ def markup_element(element):
     eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}</li>\n"
     eg += "<center>" + svg_reference(element.reference) + "</center>\n"
     # Polynomial set
-    n_poly = 6
     eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
     eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.basis])
     eg += "</li>\n"
     # Dual basis
-    n_dual = 3
-    eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
+    eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
+    eg += "...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
 
     # Basis functions
     eg += "<li>Functionals and basis functions:</li>"
@@ -231,7 +243,8 @@ def markup_element(element):
         for edge in element.reference.edges:
             p0 = to_2d(element.reference.vertices[edge[0]] + (0, ))
             p1 = to_2d(element.reference.vertices[edge[1]] + (0, ))
-            reference += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}' stroke-width='4px' stroke-linecap='round' stroke='#AAAAAA' />"
+            reference += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+            reference += " stroke-width='4px' stroke-linecap='round' stroke='#AAAAAA' />"
 
         pairs = []
         if element.reference.tdim == 1:
@@ -282,7 +295,8 @@ def markup_element(element):
                 r2 = subs(func, eval_points[q])
                 start = to_2d(eval_points[p] + (r1 / max_l, ))
                 end = to_2d(eval_points[q] + (r2 / max_l, ))
-                eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}' stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
+                eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+                eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
             eg += "</svg>\n"
             eg += "</div><div style='display:inline-block'>"
             eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
@@ -296,7 +310,8 @@ def markup_element(element):
         for edge in element.reference.edges:
             p0 = to_2d(element.reference.vertices[edge[0]])
             p1 = to_2d(element.reference.vertices[edge[1]])
-            reference += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}' stroke-width='4px' stroke-linecap='round' stroke='#AAAAAA' />"
+            reference += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+            reference += " stroke-width='4px' stroke-linecap='round' stroke='#AAAAAA' />"
 
         max_l = 0
         for f in element.get_basis_functions():
@@ -318,9 +333,12 @@ def markup_element(element):
                 a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
                       end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
                 wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
-                eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}' stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-                eg += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}' stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-                eg += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]} stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+                eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                eg += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
+                eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                eg += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
+                eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
 
             eg += dof_arrow(dof.dof_point(), dof.dof_direction(), dof_i, "#DD2299")
 
@@ -343,14 +361,19 @@ def dof_arrow(point, dir, n, color="#000000", width=200, height=200):
               end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
         a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
               end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
-        out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}' stroke='{color}' stroke-width='2px' stroke-linecap='round' />"
-        out += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}' stroke='{color}' stroke-width='2px' stroke-linecap='round' />"
-        out += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]} stroke='{color}' stroke-width='2px' stroke-linecap='round' />"
+        out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+        out += f" stroke='{color}' stroke-width='2px' stroke-linecap='round' />"
+        out += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
+        out += f" stroke='{color}' stroke-width='2px' stroke-linecap='round' />"
+        out += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
+        out += f" stroke='{color}' stroke-width='2px' stroke-linecap='round' />"
 
-    out += f"<circle cx='{start[0]}' cy='{start[1]}' r='10px' fill='white' stroke='{color}' stroke-width='2px' />"
+    out += f"<circle cx='{start[0]}' cy='{start[1]}' r='10px' fill='white'"
+    out += f" stroke='{color}' stroke-width='2px' />"
     cl = "dofnum"
     if n >= 10:
         cl += " largen"
-    out += f"<text x='{start[0]}' y='{start[1]}' text-anchor='middle' dominant-baseline='middle' fill='{color}' class='{cl}'>{n}</text>"
+    out += f"<text x='{start[0]}' y='{start[1]}' text-anchor='middle' dominant-baseline='middle'"
+    out += f" fill='{color}' class='{cl}'>{n}</text>"
 
     return out

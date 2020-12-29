@@ -67,7 +67,7 @@ for file in os.listdir(element_path):
 
         # Write examples using symfem
         element_names = []
-        element_examples= []
+        element_examples = []
 
         if "symfem" in data:
             for cell, element_type in data["symfem"].items():
@@ -112,7 +112,8 @@ for file in os.listdir(element_path):
             content += "<h2>References</h2>\n"
             content += "<ul class='citations'>\n"
             for i, r in enumerate(data["references"]):
-                content += f"<li>{markup_citation(r)} [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
+                content += f"<li>{markup_citation(r)}"
+                content += " [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
                 with open(os.path.join(htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
                     f.write(make_bibtex(f"{fname}-{i}", r))
             content += "</ul>"

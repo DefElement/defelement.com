@@ -30,6 +30,7 @@ def wrap_caps(txt):
     txt = re.sub(r"([A-Z])", r"{\1}", txt)
     return txt
 
+
 def make_bibtex(id, r):
     out = f"{{{id},\n"
     for i, j in [
