@@ -1,7 +1,13 @@
 # Citing this website
 
-On each of the element definition pages, you can find citations for that element.
-If you wish to cite this website, you can use the following BibTeX:
+The text, images, and other content on this website may be reused under the terms of a
+[Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/).
+The code used to generate this website is available on [GitHub](https://github.com/mscroggs/defelement.com)
+under an [MIT license](https://github.com/mscroggs/defelement.com/blob/main/LICENSE.txt).
+
+On each of the element definition pages, you can find citations for the paper(s) that introduced
+that element. These papers should be cited when using a given element. If you wish to cite this
+website, you can use the following BibTeX:
 
 ```
 @misc{defelement,
@@ -15,4 +21,6 @@ If you wish to cite this website, you can use the following BibTeX:
 
 This will create a reference along the lines of:
 
-Scroggs, M. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].
+<ul class='citations'>
+<li>Scroggs, M. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
+</ul>

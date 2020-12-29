@@ -4,6 +4,11 @@ categories:
 symfem:
   triangle: N1curl
   tetrahedron: N1curl
+examples:
+  - triangle,1
+  - triangle,2
+  - tetrahedron,1
+  - tetrahedron,2
 references:
   - title: Mixed finite elements in \(\mathbb{R}^3\)
     author: N&eacute;d&eacute;lec, J. C.

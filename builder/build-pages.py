@@ -69,16 +69,19 @@ for file in os.listdir(element_path):
         element_names = []
         element_examples = []
 
-        if "symfem" in data:
-            for cell, element_type in data["symfem"].items():
-                for order in [1, 2]:
-                    element = create_element(cell, element_type, order)
+        if "examples" in data:
+            for e in data["examples"]:
+                cell = e.split(",")[0]
+                order = int(e.split(",")[1])
+                element_type = data["symfem"][cell]
 
-                    eg = markup_element(element)
+                element = create_element(cell, element_type, order)
 
-                    if eg != "":
-                        element_names.append(f"{cell}<br />order {order}")
-                        element_examples.append(eg)
+                eg = markup_element(element)
+
+                if eg != "":
+                    element_names.append(f"{cell}<br />order {order}")
+                    element_examples.append(eg)
 
         if len(element_names) > 0:
             content += f"<h2>Examples</h2>\n"

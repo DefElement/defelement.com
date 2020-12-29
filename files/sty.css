@@ -52,3 +52,6 @@ li {margin-bottom:10px}
 
 .basisf {border-bottom:2px dashed #AAAAAA}
 .basisf:last-of-type {border-bottom:none}
+
+a.refid, a.refid:visited, a.refid:link, a.refid:active, a.refid:hover {color:black}
+a.refid:target {font-weight:bold; color:#FF8800}

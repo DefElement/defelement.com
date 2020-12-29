@@ -216,24 +216,24 @@ def describe_dof(element, d):
         raise ValueError(f"Unknown functional: {d.__class__}")
 
 
-def markup_element(element):
+def markup_element(element, images_only=False):
     eg = ""
+    if not images_only:
+        eg += "<ul>\n"
+        # Reference
+        eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}</li>\n"
+        eg += "<center>" + svg_reference(element.reference) + "</center>\n"
+        # Polynomial set
+        eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
+        eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.basis])
+        eg += "</li>\n"
+        # Dual basis
+        eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
+        eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
 
-    eg += "<ul>\n"
-    # Reference
-    eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}</li>\n"
-    eg += "<center>" + svg_reference(element.reference) + "</center>\n"
-    # Polynomial set
-    eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
-    eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.basis])
-    eg += "</li>\n"
-    # Dual basis
-    eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
-    eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
-
-    # Basis functions
-    eg += "<li>Functionals and basis functions:</li>"
-    eg += "</ul>"
+        # Basis functions
+        eg += "<li>Functionals and basis functions:</li>"
+        eg += "</ul>"
 
     if element.range_dim == 1:
         if element.reference.tdim not in [1, 2]:
@@ -284,8 +284,9 @@ def markup_element(element):
                 max_l = max(max_l, r1)
 
         for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            eg += "<div class='basisf'>"
-            eg += "<div style='display:inline-block'>"
+            if not images_only:
+                eg += "<div class='basisf'>"
+                eg += "<div style='display:inline-block'>"
             eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
             eg += reference
             assert dof.dof_direction() is None
@@ -298,10 +299,11 @@ def markup_element(element):
                 eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
                 eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
             eg += "</svg>\n"
-            eg += "</div><div style='display:inline-block'>"
-            eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
-            eg += f"\\[{symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\]"
-            eg += "</div></div>\n"
+            if not images_only:
+                eg += "</div><div style='display:inline-block'>"
+                eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
+                eg += f"\\[{symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\]"
+                eg += "</div></div>\n"
 
     elif element.range_dim == element.reference.tdim:
         eval_points = make_lattice(element, 6, True)
@@ -320,8 +322,9 @@ def markup_element(element):
                 max_l = max(max_l, sum(i**2 for i in res) ** 0.5)
 
         for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            eg += "<div class='basisf'>"
-            eg += "<div style='display:inline-block'>"
+            if not images_only:
+                eg += "<div class='basisf'>"
+                eg += "<div style='display:inline-block'>"
             eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
             eg += reference
             for p in eval_points:
@@ -343,10 +346,11 @@ def markup_element(element):
             eg += dof_arrow(dof.dof_point(), dof.dof_direction(), dof_i, "#DD2299")
 
             eg += "</svg>\n"
-            eg += "</div><div style='display:inline-block'>"
-            eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
-            eg += f"\\[{symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\]"
-            eg += "</div></div>"
+            if not images_only:
+                eg += "</div><div style='display:inline-block'>"
+                eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
+                eg += f"\\[{symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\]"
+                eg += "</div></div>"
     return eg
 
 

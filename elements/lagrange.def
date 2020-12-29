@@ -5,3 +5,10 @@ symfem:
   quadrilateral: Q 
   tetrahedron: Lagrange
   hexahedron: Q 
+examples:
+  - interval,1
+  - interval,2
+  - triangle,1
+  - triangle,2
+  - quadrilateral,1
+  - quadrilateral,2

@@ -1,5 +1,10 @@
-# Hello there
+# Hello there!
 
-This site is currently under construction.
+Welcome to DefElement: an encyclopedia of finite element definitions.
 
-[Index of elements](/elements)
+On each element's page, you will find...
+
+You can [view the full list of elements](/elements).
+
+The definitions on this website are based on the
+[Ciarlet definition of finite elements](ciarlet.md).

@@ -4,6 +4,11 @@ categories:
 symfem:
   triangle: N2curl
   tetrahedron: N2curl
+examples:
+  - triangle,1
+  - triangle,2
+  - tetrahedron,1
+  - tetrahedron,2
 references:
   - title: A new family of mixed finite elements in \(\mathbb{R}^3\)
     author: N&eacute;d&eacute;lec, J. C.

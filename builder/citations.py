@@ -32,7 +32,9 @@ def wrap_caps(txt):
 
 
 def make_bibtex(id, r):
-    out = f"{{{id},\n"
+    if 'type' not in r:
+        r["type"] = "article"
+    out = f"@{{r['type']}}{{{id},\n"
     for i, j in [
         ("AUTHOR", "author"), ("TITLE", "title"),
     ]:
