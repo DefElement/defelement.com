@@ -23,11 +23,15 @@ examples:
   - tetrahedron,1
   - tetrahedron,2
 references:
-  - title: A mixed finite element method for 2nd order elliptic problems
+  - type: incollection
+    title: A mixed finite element method for 2nd order elliptic problems
     author:
       - Raviart, P.-A.
       - Thomas, J.-M.
     booktitle: Mathematical aspects of finite element methods
+    editor:
+      - Galligani, I.
+      - Magenes, E.
     pagestart: 292
     pageend: 315
     series: Lecture Notes in Mathematics
@@ -53,3 +57,4 @@ references:
     pagestart: 409
     pageend: 418
     doi: 10.1109/TAP.1982.1142818
+test: 1

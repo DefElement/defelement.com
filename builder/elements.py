@@ -309,7 +309,7 @@ def markup_element(element, images_only=False):
                 eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
             eg += "</svg>\n"
             if not images_only:
-                eg += "</div><div style='display:inline-block'>"
+                eg += "</div><div style='display:inline-block;padding-left:10px'>"
                 eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
                 eg += describe_dof(element, dof) + "\\)<br /><br />"
                 eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
@@ -361,7 +361,7 @@ def markup_element(element, images_only=False):
 
             eg += "</svg>\n"
             if not images_only:
-                eg += "</div><div style='display:inline-block'>"
+                eg += "</div><div style='display:inline-block;padding-left:10px'>"
                 eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
                 eg += describe_dof(element, dof) + "\\)<br /><br />"
                 eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "

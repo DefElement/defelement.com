@@ -118,9 +118,10 @@ for file in os.listdir(element_path):
         else:
             min_o = 0
         if 'max-order' in data:
-            element_data.append(("Orders", f"\\({min_o}\leqslant k\leqslant {data['max-order']}\\)"))
+            element_data.append(("Orders",
+                                 f"\\({min_o}\\leqslant k\\leqslant {data['max-order']}\\)"))
         else:
-            element_data.append(("Orders", f"\\({min_o}\leqslant k\\)"))
+            element_data.append(("Orders", f"\\({min_o}\\leqslant k\\)"))
 
         # Reference elements
         for e in data["reference elements"]:

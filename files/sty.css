@@ -20,7 +20,7 @@ a, a:link, a:active, a:visited
 .footer a:hover,
 a:hover {color:#FF8800}
 
-.content {max-width:820px;margin:auto;padding:10px;background-color:rgba(255,255,255,0.9)}
+.content {max-width:740px;margin:auto;padding:10px;background-color:rgba(255,255,255,0.9)}
 
 .title {text-align:center;font-size:35px}
 .tagline {text-align:center;font-size:25px;color:#44AAFF}
