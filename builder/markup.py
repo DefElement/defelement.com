@@ -44,6 +44,9 @@ def markup(content):
     page_references = []
     out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
     out = re.sub(r"\(element::([^\)]+)\)", r"(/elements/\1.html)", out)
+    out = out.replace("(index::all)", "(/elements/index.html)")
+    out = re.sub(r"\(index::([^\)]+)::([^\)]+)\)", r"(/lists/\1/\2.html)", out)
+    out = re.sub(r"\(index::([^\)]+)\)", r"(/lists/\1)", out)
     out = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", out)
     out = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", out)
 

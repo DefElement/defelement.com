@@ -5,6 +5,7 @@ from symfem import create_element
 from markup import markup, insert_dates
 from elements import markup_element
 from citations import markup_citation, make_bibtex
+from polyset import make_poly_set, make_extra_info
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
@@ -22,6 +23,7 @@ parser.add_argument(
 args = parser.parse_args()
 html_path = args.destination
 htmlelement_path = os.path.join(html_path, "elements")
+htmlindices_path = os.path.join(html_path, "lists")
 
 
 def make_html_page(content):
@@ -38,6 +40,7 @@ if os.path.isdir(html_path):
     os.system(f"rm -rf {html_path}")
 os.mkdir(html_path)
 os.mkdir(htmlelement_path)
+os.mkdir(htmlindices_path)
 os.mkdir(os.path.join(htmlelement_path, "bibtex"))
 
 os.system(f"cp -r {files_path}/* {html_path}")
@@ -63,6 +66,8 @@ for file in os.listdir(pages_path):
             f.write(make_html_page(content))
 
 elementlist = []
+refels = {}
+
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
@@ -73,17 +78,62 @@ for file in os.listdir(element_path):
         content = f"<h1>{data['name']}</h1>"
         element_data = []
 
+        # Reference elements
+        for e in data["reference elements"]:
+            if e not in refels:
+                refels[e] = []
+            refels[e].append((data["name"], f"{fname}.html"))
+        element_data.append(
+            ("Reference elements",
+             ", ".join([f"<a href='/lists/references/{e}.html'>{e}</a>"
+                        for e in data["reference elements"]])))
+
+        # Polynomial set
+        if "polynomial set" in data:
+            psets = {}
+            for i, j in data["polynomial set"].items():
+                if j not in psets:
+                    psets[j] = []
+                psets[j].append(i)
+            set_data = "<ul>\n"
+            for i, j in psets.items():
+                set_data += f"<li>\\({make_poly_set(i)}\\) ({', '.join(j)})</li>\n"
+            set_data += "</ul>\n"
+            extra = make_extra_info(" & ".join(psets.keys()))
+            if len(extra) > 0:
+                set_data += "<a id='show_pset_link' href='javascript:show_psets()'>"
+                set_data += "Show polynomial set definitions</a>"
+                set_data += "<a id='hide_pset_link' href='javascript:hide_psets()'"
+                set_data += " style='display:none'>"
+                set_data += "Hide polynomial set definitions</a>"
+                set_data += "<div id='psets' style='display:none'>"
+                set_data += extra
+                set_data += "</div>"
+                set_data += "<script type='text/javascript'>\n"
+                set_data += "function show_psets(){\n"
+                set_data += "   document.getElementById('show_pset_link').style.display = 'none'\n"
+                set_data += "   document.getElementById('hide_pset_link').style.display = 'block'\n"
+                set_data += "   document.getElementById('psets').style.display = 'block'\n"
+                set_data += "}\n"
+                set_data += "function hide_psets(){\n"
+                set_data += "   document.getElementById('show_pset_link').style.display = 'block'\n"
+                set_data += "   document.getElementById('hide_pset_link').style.display = 'none'\n"
+                set_data += "   document.getElementById('psets').style.display = 'none'\n"
+                set_data += "}\n"
+                set_data += "</script>"
+            element_data.append(("Polynomial set", set_data))
+
         # Categories
         if "categories" in data:
             for c in data["categories"]:
-                category_pages[c].append((data["name"], f"{ fname}.html"))
+                category_pages[c].append((data["name"], f"{fname}.html"))
             element_data.append(
                 ("Categories",
-                 ", ".join([f"<a href='/elements/categories.html#{c}'>{categories[c]}</a>"
+                 ", ".join([f"<a href='/lists/categories/{c}.html'>{categories[c]}</a>"
                             for c in data["categories"]])))
 
         # Write element data
-        content += "<table>"
+        content += "<table class='element-info'>"
         for i, j in element_data:
             content += f"<tr><td>{i}</td><td>{j}</td></tr>"
         content += "</table>"
@@ -159,15 +209,55 @@ content += "</ul>"
 
 with open(os.path.join(htmlelement_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
+with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
+    f.write(make_html_page(content))
+
 
 # Category index
+os.mkdir(os.path.join(htmlindices_path, "categories"))
 content = f"<h1>Categories</h1>\n"
 for c in categories:
     category_pages[c].sort(key=lambda x: x[0])
 
-    content += f"<h2><a name='{c}'></a>{categories[c]}</h1>\n<ul>"
+    content += f"<h2><a name='{c}'></a>{categories[c]}</h2>\n<ul>"
     content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
     content += "</ul>"
 
-with open(os.path.join(htmlelement_path, f"categories.html"), "w") as f:
+    sub_content = f"<h1>{categories[c]}</h1>\n<ul>"
+    sub_content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
+    sub_content += "</ul>"
+
+    with open(os.path.join(htmlindices_path, f"categories/{c}.html"), "w") as f:
+        f.write(make_html_page(sub_content))
+
+# Reference elements index
+os.mkdir(os.path.join(htmlindices_path, "references"))
+content = f"<h1>Reference elements</h1>\n"
+for c in refels:
+    refels[c].sort(key=lambda x: x[0])
+
+    content += f"<h2><a name='{c}'></a>{c[0].upper()}{c[1:]}</h2>\n<ul>"
+    content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in refels[c]])
+    content += "</ul>"
+
+    sub_content = "<h1>Finite elements on a"
+    if c[0] in "aeiou":
+        sub_content += "n"
+    sub_content += f" {c}</h1>\n<ul>"
+    sub_content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in refels[c]])
+    sub_content += "</ul>"
+
+    with open(os.path.join(htmlindices_path, f"references/{c}.html"), "w") as f:
+        f.write(make_html_page(sub_content))
+
+with open(os.path.join(htmlindices_path, "references/index.html"), "w") as f:
     f.write(make_html_page(content))
+
+# List of lists
+content = "<h1>Lists of elements</h1>\n<ul>\n"
+content += "<li><a href='/lists/categories'>Finite elements by category</a></li>\n"
+content += "<li><a href='/lists/references'>Finite elements by reference element</a></li>\n"
+content += "</ul>"
+with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
+    f.write(make_html_page(content))
+

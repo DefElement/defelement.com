@@ -1,6 +1,12 @@
 name: N&eacute;d&eacute;lec (first kind)
 categories:
   - Hcurl
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k-1]^d & [k][\left\{\mathbf{p}\in{{poly[k]}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
+  tetrahedron: poly[k-1]^d & [k][\left\{\mathbf{p}\in{{poly[k]}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
 symfem:
   triangle: N1curl
   tetrahedron: N1curl

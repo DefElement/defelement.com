@@ -1,0 +1,7 @@
+poly:
+  - \mathcal{P}
+  - \left\{\sum_{i=1}^dx_i^{p_i}\middle|\sum_{i=1}^dp_i\leqslant k\right\}
+qoly:
+  - \mathcal{Q}
+  - \left\{\sum_{i=1}^dx_i^{p_i}\middle|\max_i(p_i)\leqslant k\right\}
+

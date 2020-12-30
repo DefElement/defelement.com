@@ -1,6 +1,12 @@
 name: N&eacute;d&eacute;lec (second kind)
 categories:
   - Hcurl
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k]^d
+  tetrahedron: poly[k]^d
 symfem:
   triangle: N2curl
   tetrahedron: N2curl
