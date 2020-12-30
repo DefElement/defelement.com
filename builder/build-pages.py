@@ -84,7 +84,6 @@ def dofs_on_entity(entity, dofs):
         for i, j, k in elementlist:
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"
-        print(entity_type, entity)
         assert space_link != "*ERROR*"
         return f"{mom_type} with an order \\({order}\\) {space_link} space"
     return dofs
