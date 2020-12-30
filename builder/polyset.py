@@ -39,7 +39,6 @@ def make_extra_info(p):
     for a in p.split("&"):
         a = a.strip()
         if re.match(r"^\[([^\]]+)\]\[(.+)\]$", a):
-            order = re.match(r"^\[([^\]]+)\]\[(.+)\]$", a)[1]
             the_set = re.match(r"^\[([^\]]+)\]\[(.+)\]$", a)[2]
             out += f"\\[{named[the_set]}_k={insert_terms(the_set)}\\]"
             continue

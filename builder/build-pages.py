@@ -224,7 +224,8 @@ for c in categories:
     content += "</ul>"
 
     sub_content = f"<h1>{categories[c]}</h1>\n<ul>"
-    sub_content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
+    sub_content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>"
+                            for i, j in category_pages[c]])
     sub_content += "</ul>"
 
     with open(os.path.join(htmlindices_path, f"categories/{c}.html"), "w") as f:
@@ -263,4 +264,3 @@ content += "<li><a href='/lists/references'>Finite elements by reference element
 content += "</ul>"
 with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
-
