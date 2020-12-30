@@ -73,7 +73,7 @@ elementlist = []
 refels = {}
 
 
-def dofs_on_entity(dofs):
+def dofs_on_entity(entity, dofs):
     global elementlist
     if "integral moment" in dofs:
         mom_type, space_info = dofs.split(" with ")
@@ -84,6 +84,7 @@ def dofs_on_entity(dofs):
         for i, j, k in elementlist:
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"
+        print(entity_type, entity)
         assert space_link != "*ERROR*"
         return f"{mom_type} with an order \\({order}\\) {space_link} space"
     return dofs
@@ -182,7 +183,7 @@ for file in os.listdir(element_path):
                 ("On the interior of the reference element", "cell"),
             ]:
                 if j in data["dofs"]:
-                    dof_data.append(f"<li>{i}: {dofs_on_entity(data['dofs'][j])}</li>")
+                    dof_data.append(f"<li>{i}: {dofs_on_entity(j, data['dofs'][j])}</li>")
             if len(dof_data) > 0:
                 element_data.append(("DOFs", "<ul>\n" + "\n".join(dof_data) + "</ul>"))
 

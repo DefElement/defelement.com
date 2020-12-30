@@ -1,33 +1,31 @@
-name: Lagrange
-html-name: Lagrange
+name: Q
+html-name: Q
 alt-names:
-  - P
-  - CG
-  - DG
+  - Lagrange
 categories:
   - scalar
 reference elements:
   - interval
-  - triangle
-  - tetrahedron
+  - quadrilateral
+  - hexahedron
 dofs:
   vertices: point evaluations
   edges: point evaluations
   faces: point evaluations
   volumes: point evaluations
 polynomial set:
-  interval: poly[k]
-  triangle: poly[k]
-  tetrahedron: poly[k]
+  interval: qoly[k]
+  quadrilateral: qoly[k]
+  hexahedron: qoly[k]
 symfem:
-  interval: Lagrange
-  triangle: Lagrange
-  tetrahedron: Lagrange
+  interval: Q
+  quadrilateral: Q
+  hexahedron: Q
 examples:
   - interval,1
   - interval,2
   - interval,3
-  - triangle,1
-  - triangle,2
-  - triangle,3
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
 test: 1
