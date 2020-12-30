@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 import yaml
 from symfem import create_element
@@ -19,12 +20,16 @@ parser.add_argument(
     'destination', metavar='destination', nargs="?",
     default=os.path.join(dir_path, "../_html"),
     help="Destination of HTML files.")
+parser.add_argument('test', action="store_true",
+                    help="Builds a version of the website with fewer elements.")
 
 args = parser.parse_args()
 html_path = args.destination
 htmlelement_path = os.path.join(html_path, "elements")
 htmlindices_path = os.path.join(html_path, "lists")
 
+test_mode = args.test
+print(test_mode)
 
 def make_html_page(content):
     out = ""
@@ -96,6 +101,8 @@ for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
+        if test_mode and "test" not in data:
+            continue
 
         print(data["name"])
         fname = file[:-4]

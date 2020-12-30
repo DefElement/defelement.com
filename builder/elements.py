@@ -67,6 +67,9 @@ def svg_reference(ref):
     if ref.name == "interval":
         w = 130
         h = 30
+    elif ref.name == "hexahedron":
+        w = 210
+        h = 165
     elif ref.tdim == 3:
         w = 146
         h = 146
@@ -290,7 +293,10 @@ def markup_element(element, images_only=False):
             if not images_only:
                 eg += "<div class='basisf'>"
                 eg += "<div style='display:inline-block'>"
-            eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
+            if element.reference.name == "quadrilateral":
+                eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
+            else:
+                eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
             eg += reference
             assert dof.dof_direction() is None
             eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
@@ -330,7 +336,10 @@ def markup_element(element, images_only=False):
             if not images_only:
                 eg += "<div class='basisf'>"
                 eg += "<div style='display:inline-block'>"
-            eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
+            if element.reference.name == "hexahedron":
+                eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
+            else:
+                eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
             eg += reference
             for p in eval_points:
                 res = subs(func, p)
