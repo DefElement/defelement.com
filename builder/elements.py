@@ -362,8 +362,10 @@ def markup_element(element, images_only=False):
             eg += "</svg>\n"
             if not images_only:
                 eg += "</div><div style='display:inline-block'>"
-                eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
-                eg += f"\\[{symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\]"
+                eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
+                eg += describe_dof(element, dof) + "\\)<br /><br />"
+                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+                eg += to_tex(func) + "\\)"
                 eg += "</div></div>"
     return eg
 
