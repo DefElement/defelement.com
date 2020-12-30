@@ -105,12 +105,22 @@ for file in os.listdir(element_path):
 
         print(data["name"])
         fname = file[:-4]
-        content = f"<h1>{data['html-name']}</h1>"
+        content = f"<h1>{data['html-name'][0].upper()}{data['html-name'][1:]}</h1>"
         element_data = []
 
         # Alternative names
         if "alt-names" in data:
             element_data.append(("Alternative names", ", ".join(data["alt-names"])))
+
+        # Orders
+        if "min-order" in data:
+            min_o = data["min-order"]
+        else:
+            min_o = 0
+        if 'max-order' in data:
+            element_data.append(("Orders", f"\\({min_o}\leqslant k\leqslant {data['max-order']}\\)"))
+        else:
+            element_data.append(("Orders", f"\\({min_o}\leqslant k\\)"))
 
         # Reference elements
         for e in data["reference elements"]:

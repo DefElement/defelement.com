@@ -1,5 +1,6 @@
 name: Nedelec (first kind)
 html-name: N&eacute;d&eacute;lec (first kind)
+min-order: 1
 categories:
   - Hcurl
 reference elements:
