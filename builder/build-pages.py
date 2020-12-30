@@ -1,5 +1,4 @@
 import os
-import sys
 import argparse
 import yaml
 from symfem import create_element
@@ -20,7 +19,7 @@ parser.add_argument(
     'destination', metavar='destination', nargs="?",
     default=os.path.join(dir_path, "../_html"),
     help="Destination of HTML files.")
-parser.add_argument('test', action="store_true",
+parser.add_argument('--test', action="store_true",
                     help="Builds a version of the website with fewer elements.")
 
 args = parser.parse_args()
@@ -29,7 +28,7 @@ htmlelement_path = os.path.join(html_path, "elements")
 htmlindices_path = os.path.join(html_path, "lists")
 
 test_mode = args.test
-print(test_mode)
+
 
 def make_html_page(content):
     out = ""
