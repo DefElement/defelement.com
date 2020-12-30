@@ -42,14 +42,9 @@ def markup(content):
                 out += line
                 out += " "
     page_references = []
-    out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
-    out = re.sub(r"\(element::([^\)]+)\)", r"(/elements/\1.html)", out)
-    out = out.replace("(index::all)", "(/elements/index.html)")
-    out = re.sub(r"\(index::([^\)]+)::([^\)]+)\)", r"(/lists/\1/\2.html)", out)
-    out = re.sub(r"\(index::([^\)]+)\)", r"(/lists/\1)", out)
-    out = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", out)
-    out = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", out)
 
+    out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
+    out = insert_links(out)
     out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)}}", plot_element, out)
     out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)::([1-9][0-9]*)}}",
                  plot_single_element, out)
@@ -63,6 +58,16 @@ def markup(content):
         out += "</ul>"
 
     return insert_dates(out)
+
+
+def insert_links(txt):
+    txt = re.sub(r"\(element::([^\)]+)\)", r"(/elements/\1.html)", txt)
+    txt = txt.replace("(index::all)", "(/elements/index.html)")
+    txt = re.sub(r"\(index::([^\)]+)::([^\)]+)\)", r"(/lists/\1/\2.html)", txt)
+    txt = re.sub(r"\(index::([^\)]+)\)", r"(/lists/\1)", txt)
+    txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)
+    txt = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", txt)
+    return txt
 
 
 def plot_element(matches):

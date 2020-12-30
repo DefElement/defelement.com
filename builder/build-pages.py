@@ -2,7 +2,7 @@ import os
 import argparse
 import yaml
 from symfem import create_element
-from markup import markup, insert_dates
+from markup import markup, insert_dates, insert_links
 from elements import markup_element
 from citations import markup_citation, make_bibtex
 from polyset import make_poly_set, make_extra_info
@@ -140,10 +140,16 @@ for file in os.listdir(element_path):
                 if j not in psets:
                     psets[j] = []
                 psets[j].append(i)
-            set_data = "<ul>\n"
-            for i, j in psets.items():
-                set_data += f"<li>\\({make_poly_set(i)}\\) ({', '.join(j)})</li>\n"
-            set_data += "</ul>\n"
+            if (
+                "reference elements" in data and len(psets) == 1
+                and len(list(psets.values())[0]) == len(data["reference elements"])
+            ):
+                set_data = f"\\({make_poly_set(list(psets.keys())[0])}\\)<br />"
+            else:
+                set_data = "<ul>\n"
+                for i, j in psets.items():
+                    set_data += f"<li>\\({make_poly_set(i)}\\) ({', '.join(j)})</li>\n"
+                set_data += "</ul>\n"
             extra = make_extra_info(" & ".join(psets.keys()))
             if len(extra) > 0:
                 set_data += "<a id='show_pset_link' href='javascript:show_psets()'>"
@@ -185,6 +191,13 @@ for file in os.listdir(element_path):
                     dof_data.append(f"<li>{i}: {dofs_on_entity(j, data['dofs'][j])}</li>")
             if len(dof_data) > 0:
                 element_data.append(("DOFs", "<ul>\n" + "\n".join(dof_data) + "</ul>"))
+
+        # Notes
+        if "notes" in data:
+            element_data.append(
+                ("Notes",
+                 "<ul>\n" + "\n".join([f"<li>{insert_links(i)}</li>"
+                                       for i in data["notes"]]) + "</ul>"))
 
         # Categories
         if "categories" in data:
