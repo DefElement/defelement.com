@@ -51,7 +51,8 @@ def markup(content):
     out = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", out)
 
     out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)}}", plot_element, out)
-    out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)::([1-9][0-9]*)}}", plot_single_element, out)
+    out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)::([1-9][0-9]*)}}",
+                 plot_single_element, out)
     out = re.sub(r"{{reference::([^}]+)}}", plot_reference, out)
 
     if len(page_references) > 0:
