@@ -230,6 +230,9 @@ for c in categories:
     with open(os.path.join(htmlindices_path, f"categories/{c}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
+with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
+    f.write(make_html_page(content))
+
 # Reference elements index
 os.mkdir(os.path.join(htmlindices_path, "references"))
 content = f"<h1>Reference elements</h1>\n"
@@ -258,6 +261,6 @@ content = "<h1>Lists of elements</h1>\n<ul>\n"
 content += "<li><a href='/lists/categories'>Finite elements by category</a></li>\n"
 content += "<li><a href='/lists/references'>Finite elements by reference element</a></li>\n"
 content += "</ul>"
-with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
+with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
