@@ -1,2 +1,2 @@
-symfem
+symfem>=2020.12.4
 sympy
