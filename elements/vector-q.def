@@ -1,21 +1,23 @@
-name: vector Lagrange
-html-name: vector Lagrange
+name: vector Q
+html-name: vector Q
+alt-names:
+  - vector Lagrange
 reference elements:
-  - triangle
-  - tetrahedron
+  - quadrilateral
+  - hexahedron
 dofs:
   vertices: point evaluations in coordinate directions
   edges: point evaluations in coordinate directions
   faces: point evaluations in coordinate directions
   volumes: point evaluations in coordinate directions
 polynomial set:
-  triangle: poly[k]^d
-  tetrahedron: poly[k]^d
+  quadrilateral: qoly[k]^d
+  hexahedron: qoly[k]^d
 symfem:
-  triangle: vector Lagrange
-  tetrahedron: vector Lagrange
+  quadrilateral: vector Q
+  hexahedron: vector Q
 examples:
-  - triangle,1
-  - triangle,2
-  - tetrahedron,1
-  - tetrahedron,2
+  - quadrilateral,1
+  - quadrilateral,2
+  - hexahedron,1
+  - hexahedron,2
