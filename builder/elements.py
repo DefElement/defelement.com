@@ -142,12 +142,15 @@ def svg_reference(ref):
     return out
 
 
-def to_tex(f):
+def to_tex(f, tfrac=False):
     try:
         return "\\left(\\begin{array}{c}" + "\\\\".join(
-            [to_tex(i) for i in f]) + "\\end{array}\\right)"
+            [to_tex(i, tfrac) for i in f]) + "\\end{array}\\right)"
     except:  # noqa: E722
-        return sympy.latex(f)
+        if tfrac:
+            return sympy.latex(f).replace("\\frac", "\\tfrac")
+        else:
+            return sympy.latex(f)
 
 
 def get_entity_number(element, dof):
@@ -164,10 +167,10 @@ def get_entity_number(element, dof):
 
 def describe_dof(element, d):
     if isinstance(d, functionals.PointEvaluation):
-        return "v\\mapsto v(" + ",".join([to_tex(i) for i in d.dof_point()]) + ")"
+        return "v\\mapsto v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
     elif isinstance(d, functionals.DotPointEvaluation):
         desc = "\\mathbf{v}\\mapsto"
-        desc += "\\mathbf{v}(" + ",".join([to_tex(i) for i in d.dof_point()]) + ")"
+        desc += "\\mathbf{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
@@ -189,7 +192,7 @@ def describe_dof(element, d):
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
         desc += "\\mathbf{v}\\cdot"
         if d.f != 1:
-            desc += "(" + to_tex(d.f) + ")"
+            desc += "(" + to_tex(d.f, True) + ")"
         desc += "\\hat{\\mathbf{n}}" + f"_{{{entity_n}}}"
         return desc
     elif isinstance(d, functionals.IntegralMoment):
@@ -301,8 +304,8 @@ def markup_element(element, images_only=False):
             eg += "</svg>\n"
             if not images_only:
                 eg += "</div><div style='display:inline-block'>"
-                eg += f"\\[{symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\]"
-                eg += f"\\[{symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\]"
+                eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:" + describe_dof(element, dof) + "\\)<br /><br />"
+                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = " + to_tex(func) + "\\)"
                 eg += "</div></div>\n"
 
     elif element.range_dim == element.reference.tdim:
