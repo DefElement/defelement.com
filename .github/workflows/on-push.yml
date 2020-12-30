@@ -10,7 +10,7 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - run: sudo pip3 install -r requirements.txt
-        name: Install symfem
+        name: Install requirements
       - run: python3 -m flake8 builder
         name: Flake8 checks
     
@@ -22,7 +22,7 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - run: sudo pip3 install -r requirements.txt
-        name: Install symfem
+        name: Install requirements
 
       - run: python3 builder/build-pages.py ../_html
         name: Build website HTML
