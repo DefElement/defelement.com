@@ -1,5 +1,7 @@
 name: vector Lagrange
 html-name: vector Lagrange
+categories:
+  - vector
 reference elements:
   - triangle
   - tetrahedron

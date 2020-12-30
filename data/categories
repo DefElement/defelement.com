@@ -1,3 +1,4 @@
 scalar: Scalar-valued elements
+vector: Vector-valued elements
 Hcurl: H(curl) conforming elements
 Hdiv: H(div) conforming elements

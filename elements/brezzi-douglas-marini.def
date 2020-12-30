@@ -2,6 +2,7 @@ name: Brezzi-Douglas-Marini
 html-name: Brezzi&ndash;Douglas&ndash;Marini
 min-order: 1
 categories:
+  - vector
   - Hdiv
 reference elements:
   - triangle

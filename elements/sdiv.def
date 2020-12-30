@@ -2,6 +2,7 @@ name: serendipity H(div)
 html-name: serendipity H(div)
 min-order: 1
 categories:
+  - vector
   - Hdiv
 reference elements:
   - quadrilateral

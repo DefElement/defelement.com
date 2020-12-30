@@ -1,5 +1,7 @@
 name: vector Q
 html-name: vector Q
+categories:
+  - vector
 alt-names:
   - vector Lagrange
 reference elements:
