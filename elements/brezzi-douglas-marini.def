@@ -1,0 +1,34 @@
+name: Brezzi-Douglas-Marini
+html-name: Brezzi&ndash;Douglas&ndash;Marini
+categories:
+  - Hdiv
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k]^d
+  tetrahedron: poly[k]^d
+dofs:
+  facets: normal integral moments with (lagrange,k)
+  cell: integral moments with (nedelec1,k-1)
+symfem:
+  triangle: N2div
+  tetrahedron: N2div
+examples:
+  - triangle,1
+  - triangle,2
+  - tetrahedron,1
+  - tetrahedron,2
+references:
+  - title: Two families of mixed finite elements for second order elliptic problems
+    author:
+      - Brezzi, F.
+      - Douglas, J.
+      - Marini, L. D.
+    journal: Numerische Mathematik
+    volume: 47
+    number: 2
+    year: 1985
+    pagestart: 217
+    pageend: 235
+    doi: 10.1007/BF01389710
