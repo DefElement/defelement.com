@@ -211,7 +211,7 @@ for file in os.listdir(element_path):
         # Write element data
         content += "<table class='element-info'>"
         for i, j in element_data:
-            content += f"<tr><td>{i}</td><td>{j}</td></tr>"
+            content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
         content += "</table>"
 
         # Write examples using symfem

@@ -11,7 +11,9 @@ Welcome to DefElement: an encyclopedia of finite element definitions.
 
 This website contains a collection of definitions of finite elements, 
 including commonly used elements such as
-[Lagrange](element:lagrange) and [Raviart&ndash;Thomas](raviart-thomas) elements.
+[Lagrange](element::lagrange) and [Raviart&ndash;Thomas](element::raviart-thomas) elements,
+and more exotic elements such as
+[serendipity H(div)](element::sdiv) elements.
 You can:
 <ul>
 <li>[view the full alphabetical list of elements](index::all)</li>

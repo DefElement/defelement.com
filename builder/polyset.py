@@ -30,6 +30,10 @@ def make_poly_set(p):
         if re.match(rf"^{i}\[([^\]]+)\]\^d$", p):
             order = re.match(rf"^{i}\[([^\]]+)\]\^d$", p)[1]
             return f"{j}_{{{order}}}^d"
+        if re.match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p):
+            order = re.match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p)[1]
+            dim = re.match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p)[2]
+            return f"{j}_{{{order}}}^d(\\mathbb{{R}}^{{{dim}}})"
     raise ValueError(f"Unknown polynomial set: {p}")
 
 
@@ -47,6 +51,11 @@ def make_extra_info(p):
                     done.append(i)
             continue
         for i, (j, k) in poly_sets.items():
+            if re.match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p):
+                if i + "(d)" not in done:
+                    out += f"\\[{j}_k(\\mathbb{{R}}^d)={k}\\]"
+                    done.append(i)
+                break
             if re.match(rf"^{i}\[([^\]]+)\](?:\^d)?$", a):
                 if i not in done:
                     out += f"\\[{j}_k={k}\\]"
@@ -62,6 +71,8 @@ def insert_terms(the_set):
     for i, (j, k) in poly_sets.items():
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\^d}}}}", rf"{escape(j)}_{{\1}}^d", the_set)
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]}}}}", rf"{escape(j)}_{{\1}}", the_set)
+        the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\(([^\)]+)\)}}}}",
+                         rf"{escape(j)}_{{\1}}(\\mathbb{{R}}^{{\2}})", the_set)
 
     return the_set
 
