@@ -222,7 +222,7 @@ def describe_dof(element, d):
         raise ValueError(f"Unknown functional: {d.__class__}")
 
 
-def markup_element(element, images_only=False):
+def markup_element(element, images_only=False, which="ALL"):
     eg = ""
     if not images_only:
         eg += "<ul>\n"
@@ -290,31 +290,32 @@ def markup_element(element, images_only=False):
                 max_l = max(max_l, r1)
 
         for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            if not images_only:
-                eg += "<div class='basisf'>"
-                eg += "<div style='display:inline-block'>"
-            if element.reference.name == "quadrilateral":
-                eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
-            else:
-                eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
-            eg += reference
-            assert dof.dof_direction() is None
-            eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
-            for p, q in pairs:
-                r1 = subs(func, eval_points[p])
-                r2 = subs(func, eval_points[q])
-                start = to_2d(eval_points[p] + (r1 / max_l, ))
-                end = to_2d(eval_points[q] + (r2 / max_l, ))
-                eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
-                eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
-            eg += "</svg>\n"
-            if not images_only:
-                eg += "</div><div style='display:inline-block;padding-left:10px'>"
-                eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-                eg += describe_dof(element, dof) + "\\)<br /><br />"
-                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                eg += to_tex(func) + "\\)"
-                eg += "</div></div>\n"
+            if which == "ALL" or which == dof_i:
+                if not images_only:
+                    eg += "<div class='basisf'>"
+                    eg += "<div style='display:inline-block'>"
+                if element.reference.name == "quadrilateral":
+                    eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
+                else:
+                    eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
+                eg += reference
+                assert dof.dof_direction() is None
+                eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
+                for p, q in pairs:
+                    r1 = subs(func, eval_points[p])
+                    r2 = subs(func, eval_points[q])
+                    start = to_2d(eval_points[p] + (r1 / max_l, ))
+                    end = to_2d(eval_points[q] + (r2 / max_l, ))
+                    eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+                    eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
+                eg += "</svg>\n"
+                if not images_only:
+                    eg += "</div><div style='display:inline-block;padding-left:10px'>"
+                    eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
+                    eg += describe_dof(element, dof) + "\\)<br /><br />"
+                    eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+                    eg += to_tex(func) + "\\)"
+                    eg += "</div></div>\n"
 
     elif element.range_dim == element.reference.tdim:
         eval_points = make_lattice(element, 6, True)
@@ -333,40 +334,41 @@ def markup_element(element, images_only=False):
                 max_l = max(max_l, sum(i**2 for i in res) ** 0.5)
 
         for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            if not images_only:
-                eg += "<div class='basisf'>"
-                eg += "<div style='display:inline-block'>"
-            if element.reference.name == "hexahedron":
-                eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
-            else:
-                eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
-            eg += reference
-            for p in eval_points:
-                res = subs(func, p)
-                start = to_2d(p)
-                end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
-                a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
-                      end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
-                a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
-                      end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
-                wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
-                eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
-                eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-                eg += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
-                eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-                eg += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
-                eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+            if which == "ALL" or which == dof_i:
+                if not images_only:
+                    eg += "<div class='basisf'>"
+                    eg += "<div style='display:inline-block'>"
+                if element.reference.name == "hexahedron":
+                    eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
+                else:
+                    eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
+                eg += reference
+                for p in eval_points:
+                    res = subs(func, p)
+                    start = to_2d(p)
+                    end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
+                    a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
+                          end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
+                    a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
+                          end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
+                    wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
+                    eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+                    eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                    eg += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
+                    eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                    eg += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
+                    eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
 
-            eg += dof_arrow(dof.dof_point(), dof.dof_direction(), dof_i, "#DD2299")
+                eg += dof_arrow(dof.dof_point(), dof.dof_direction(), dof_i, "#DD2299")
 
-            eg += "</svg>\n"
-            if not images_only:
-                eg += "</div><div style='display:inline-block;padding-left:10px'>"
-                eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-                eg += describe_dof(element, dof) + "\\)<br /><br />"
-                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                eg += to_tex(func) + "\\)"
-                eg += "</div></div>"
+                eg += "</svg>\n"
+                if not images_only:
+                    eg += "</div><div style='display:inline-block;padding-left:10px'>"
+                    eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
+                    eg += describe_dof(element, dof) + "\\)<br /><br />"
+                    eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+                    eg += to_tex(func) + "\\)"
+                    eg += "</div></div>"
     return eg
 
 

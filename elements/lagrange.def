@@ -1,5 +1,10 @@
 name: Lagrange
 html-name: Lagrange
+alt-names:
+  - P
+  - CG
+  - DG
+  - Q (quadrilateral, hexahedron)
 categories:
   - scalar
 reference elements:

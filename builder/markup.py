@@ -51,6 +51,8 @@ def markup(content):
     out = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", out)
 
     out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)}}", plot_element, out)
+    out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)::([1-9][0-9]*)}}", plot_single_element, out)
+    out = re.sub(r"{{reference::([^}]+)}}", plot_reference, out)
 
     if len(page_references) > 0:
         out += "<h2>References</h2>"
@@ -67,6 +69,20 @@ def plot_element(matches):
     import symfem
     e = symfem.create_element(matches[1], matches[2], int(matches[3]))
     return f"<center>{markup_element(e, True)}</center>"
+
+
+def plot_single_element(matches):
+    from elements import markup_element
+    import symfem
+    e = symfem.create_element(matches[1], matches[2], int(matches[3]))
+    return f"<center>{markup_element(e, True, int(matches[4]))}</center>"
+
+
+def plot_reference(matches):
+    from elements import svg_reference
+    import symfem
+    e = symfem.create_reference(matches[1])
+    return f"<center>{svg_reference(e)}</center>"
 
 
 def add_citation(matches):
