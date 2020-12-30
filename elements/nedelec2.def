@@ -1,4 +1,5 @@
-name: N&eacute;d&eacute;lec (second kind)
+name: Nedelec (second kind)
+html-name: N&eacute;d&eacute;lec (second kind)
 categories:
   - Hcurl
 reference elements:
@@ -7,6 +8,10 @@ reference elements:
 polynomial set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
+dofs:
+  edges: tangent integral moments with (lagrange,k)
+  faces: integral moments with (raviart-thomas,k-1)
+  volumes: integral moments with (raviart-thomas,k-2)
 symfem:
   triangle: N2curl
   tetrahedron: N2curl

@@ -1,0 +1,54 @@
+name: Raviart-Thomas
+html-name: Raviart&ndash;Thomas
+alt-names:
+  - Rao&ndash;Wilton&ndash;Glisson
+categories:
+  - Hdiv
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k-1]^d & [k][\left\{\left(\begin{array}{v}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
+  tetrahedron: poly[k-1]^d & [k][\left\{\left(\begin{array}{v}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
+dofs:
+  facets: normal integral moments with (lagrange,k-1)
+  cell: integral moments with (vector-lagrange,k-2)
+symfem:
+  triangle: N1div
+  tetrahedron: N1div
+examples:
+  - triangle,1
+  - triangle,2
+  - tetrahedron,1
+  - tetrahedron,2
+references:
+  - title: A mixed finite element method for 2nd order elliptic problems
+    author:
+      - Raviart, P.-A.
+      - Thomas, J.-M.
+    booktitle: Mathematical aspects of finite element methods
+    pagestart: 292
+    pageend: 315
+    series: Lecture Notes in Mathematics
+    volume: 606
+    year: 1977
+  - title: Mixed finite elements in \(\mathbb{R}^3\)
+    author: N&eacute;d&eacute;lec, J. C.
+    year: 1980
+    journal: Numerische Mathematik
+    volume: 35
+    issue: 3
+    pagestart: 315
+    pageend: 341
+    doi: 10.1007/BF01396415
+  - title: Electromagnetic scattering by surfaces of arbitrary shape
+    author:
+      - Rao, S.
+      - Wilton, D.
+      - Glisson, A.
+    journal: IEEE transactions on antennas and propagation
+    volume: 30
+    year: 1982
+    pagestart: 409
+    pageend: 418
+    doi: 10.1109/TAP.1982.1142818

@@ -1,4 +1,5 @@
 name: Lagrange
+html-name: Lagrange
 categories:
   - scalar
 reference elements:
@@ -8,10 +9,10 @@ reference elements:
   - tetrahedron
   - hexahedron
 dofs:
-  - vertices: point evaluations
-  - edges: point evaluations
-  - faces: point evaluations
-  - volumes: point evaluations
+  vertices: point evaluations
+  edges: point evaluations
+  faces: point evaluations
+  volumes: point evaluations
 polynomial set:
   interval: poly[k]
   triangle: poly[k]

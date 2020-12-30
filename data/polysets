@@ -1,7 +1,13 @@
 poly:
   - \mathcal{P}
-  - \left\{\sum_{i=1}^dx_i^{p_i}\middle|\sum_{i=1}^dp_i\leqslant k\right\}
+  - \operatorname{span}\left\{\sum_{i=1}^dx_i^{p_i}\middle|\sum_{i=1}^dp_i\leqslant k\right\}
+tpoly:
+  - \hat{\mathcal{P}}
+  - \operatorname{span}\left\{\sum_{i=1}^dx_i^{p_i}\middle|\sum_{i=1}^dp_i=k\right\}=\mathcal{P}_k\setminus\mathcal{P}_{k-1}
 qoly:
   - \mathcal{Q}
-  - \left\{\sum_{i=1}^dx_i^{p_i}\middle|\max_i(p_i)\leqslant k\right\}
+  - \operatorname{span}\left\{\sum_{i=1}^dx_i^{p_i}\middle|\max_i(p_i)\leqslant k\right\}
+tqoly:
+  - \hat{\mathcal{Q}}
+  - \operatorname{span}\left\{\sum_{i=1}^dx_i^{p_i}\middle|\max_i(p_i)=k\right\}=\mathcal{Q}_k\setminus\mathcal{Q}_{k-1}
 

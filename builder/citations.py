@@ -4,7 +4,13 @@ import re
 def markup_citation(r):
     out = ""
     if "author" in r:
-        out += r["author"]
+        try:
+            out += r["author"]
+        except:  # noqa: E722
+            if len(r["author"]) == 2:
+                out += r["author"][0] + " and " + r["author"][1]
+            else:
+                out += ", ".join(r["author"][:-1]) + ", and " + r["author"][-1]
     else:
         out += "<i>(unknown author)</i>"
     out += f" {r['title']}"
@@ -35,9 +41,14 @@ def make_bibtex(id, r):
     if 'type' not in r:
         r["type"] = "article"
     out = f"@{r['type']}{{{id},\n"
-    for i, j in [
-        ("AUTHOR", "author"), ("TITLE", "title"),
-    ]:
+    if "author" in r:
+        out += "    AUTHOR = {"
+        try:
+            out += wrap_caps(r["author"])
+        except:  # noqa: E722
+            out += " and ".join([wrap_caps(i) for i in r["author"]])
+        out += "}\n"
+    for i, j in [("TITLE", "title")]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{wrap_caps(r[j])}}},\n"
     for i, j in [

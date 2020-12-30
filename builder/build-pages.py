@@ -68,6 +68,30 @@ for file in os.listdir(pages_path):
 elementlist = []
 refels = {}
 
+
+def dofs_on_entity(dofs):
+    global elementlist
+    if "integral moment" in dofs:
+        mom_type, space_info = dofs.split(" with ")
+        space, order = space_info.split("(")[1].split(")")[0].split(",")
+        space = space.strip()
+        order = order.strip()
+        space_link = "*ERROR*"
+        for i, j, k in elementlist:
+            if k == space:
+                space_link = f"<a href='/elements/{j}'>{i}</a>"
+        assert space_link != "*ERROR*"
+        return f"{mom_type} with an order \\({order}\\) {space_link} space"
+    return dofs
+
+
+for file in os.listdir(element_path):
+    if file.endswith(".def") and not file.startswith("."):
+        with open(os.path.join(element_path, file)) as f:
+            data = yaml.load(f, Loader=yaml.FullLoader)
+        fname = file[:-4]
+        elementlist.append((data['html-name'], f"{fname}.html", fname))
+
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
@@ -75,14 +99,18 @@ for file in os.listdir(element_path):
 
         print(data["name"])
         fname = file[:-4]
-        content = f"<h1>{data['name']}</h1>"
+        content = f"<h1>{data['html-name']}</h1>"
         element_data = []
+
+        # Alternative names
+        if "alt-names" in data:
+            element_data.append(("Alternative names", ", ".join(data["alt-names"])))
 
         # Reference elements
         for e in data["reference elements"]:
             if e not in refels:
                 refels[e] = []
-            refels[e].append((data["name"], f"{fname}.html"))
+            refels[e].append((data["html-name"], f"{fname}.html"))
         element_data.append(
             ("Reference elements",
              ", ".join([f"<a href='/lists/references/{e}.html'>{e}</a>"
@@ -123,10 +151,28 @@ for file in os.listdir(element_path):
                 set_data += "</script>"
             element_data.append(("Polynomial set", set_data))
 
+        # DOFs
+        if "dofs" in data:
+            dof_data = []
+            for i, j in [
+                ("On each vertex", "vertices"),
+                ("On each edge", "edges"),
+                ("On each face", "faces"),
+                ("On each volume", "volumes"),
+                ("On each ridge", "ridges"),
+                ("On each peak", "peaks"),
+                ("On each facet", "facets"),
+                ("On the interior of the reference element", "cell"),
+            ]:
+                if j in data["dofs"]:
+                    dof_data.append(f"<li>{i}: {dofs_on_entity(data['dofs'][j])}</li>")
+            if len(dof_data) > 0:
+                element_data.append(("DOFs", "<ul>\n" + "\n".join(dof_data) + "</ul>"))
+
         # Categories
         if "categories" in data:
             for c in data["categories"]:
-                category_pages[c].append((data["name"], f"{fname}.html"))
+                category_pages[c].append((data["html-name"], f"{fname}.html"))
             element_data.append(
                 ("Categories",
                  ", ".join([f"<a href='/lists/categories/{c}.html'>{categories[c]}</a>"
@@ -195,8 +241,6 @@ for file in os.listdir(element_path):
             content += "</ul>"
 
         # Write file
-        elementlist.append((data['name'], f"{fname}.html"))
-
         with open(os.path.join(htmlelement_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
 
@@ -204,7 +248,7 @@ for file in os.listdir(element_path):
 elementlist.sort(key=lambda x: x[0])
 
 content = "<h1>Index of elements</h1>\n<ul>"
-content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in elementlist])
+content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j, k in elementlist])
 content += "</ul>"
 
 with open(os.path.join(htmlelement_path, "index.html"), "w") as f:

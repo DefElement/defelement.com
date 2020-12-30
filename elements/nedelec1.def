@@ -1,12 +1,17 @@
-name: N&eacute;d&eacute;lec (first kind)
+name: Nedelec (first kind)
+html-name: N&eacute;d&eacute;lec (first kind)
 categories:
   - Hcurl
 reference elements:
   - triangle
   - tetrahedron
 polynomial set:
-  triangle: poly[k-1]^d & [k][\left\{\mathbf{p}\in{{poly[k]}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
-  tetrahedron: poly[k-1]^d & [k][\left\{\mathbf{p}\in{{poly[k]}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
+  triangle: poly[k-1]^d & [k][\left\{\mathbf{p}\in{{tpoly[k]^d}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
+  tetrahedron: poly[k-1]^d & [k][\left\{\mathbf{p}\in{{tpoly[k]^d}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
+dofs:
+  edges: tangent integral moments with (lagrange,k-1)
+  faces: integral moments with (vector-lagrange,k-2)
+  volumes: integral moments with (vector-lagrange,k-3)
 symfem:
   triangle: N1curl
   tetrahedron: N1curl
