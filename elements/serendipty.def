@@ -1,0 +1,29 @@
+name: serendipity
+html-name: serendipity
+min-order: 1
+categories:
+  - scalar
+reference elements:
+  - interval
+  - quadrilateral
+  - hexahedron
+dofs:
+  vertices: point evaluations
+  edges: integral moments with (lagrange,k-2)
+  faces: integral moments with (lagrange,k-4)
+  volumes: integral moments with (lagrange,k-6)
+notes:
+  - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
+polynomial set:
+  interval: poly[k] & [k][\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}]
+  quadrilateral: poly[k] & [k][\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}]
+  hexahedron: poly[k] & [k][\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}]
+symfem:
+  interval: serendipity
+  quadrilateral: serendipity
+  hexahedron: serendipity
+examples:
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
+test: 1
