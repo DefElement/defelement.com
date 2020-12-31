@@ -1,5 +1,8 @@
 name: serendipity H(div)
 html-name: serendipity H(div)
+alt-names:
+  - BDMCf (quadrilateral)
+  - AAf (hexahedron)
 min-order: 1
 categories:
   - vector
