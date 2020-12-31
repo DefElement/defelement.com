@@ -1,0 +1,38 @@
+name: Q H(curl)
+html-name: Q H(curl)
+alt-names:
+  - RTce (quadrilateral)
+  - Nce (hexahedron)
+min-order: 1
+categories:
+  - vector
+  - Hcurl
+reference elements:
+  - quadrilateral
+  - hexahedron
+dofs:
+  edges: tangent integral moments with (q,k-1)
+  faces: integral moments with (qdiv,k-1)
+  volumes: integral moments with (qdiv,k-1)
+polynomial set:
+  quadrilateral: qoly[k-1]^d && [k][\left\{\mathbf{q}\in{{tqoly[k]}}\middle|\mathbf{q}(\mathbf{x})\cdot x_i\mathbf{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
+  hexahedron: qoly[k]^d && [k][\left\{\mathbf{q}\in{{tqoly[k]}}\middle|\mathbf{q}(\mathbf{x})\cdot x_i\mathbf{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
+symfem:
+  quadrilateral: Qcurl
+  hexahedron: Qcurl
+examples:
+  - quadrilateral,1
+  - quadrilateral,2
+  - hexahedron,1
+  - hexahedron,2
+references:
+  - title: Mixed finite elements in \(\mathbb{R}^3\)
+    author: N&eacute;d&eacute;lec, J. C.
+    year: 1980
+    journal: Numerische Mathematik
+    volume: 35
+    issue: 3
+    pagestart: 315
+    pageend: 341
+    doi: 10.1007/BF01396415
+test: 1
