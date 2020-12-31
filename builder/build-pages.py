@@ -70,7 +70,6 @@ for file in os.listdir(pages_path):
             f.write(make_html_page(content))
 
 elementlist = []
-altlist = []
 refels = {}
 
 
@@ -85,6 +84,7 @@ def dofs_on_entity(entity, dofs):
         for i, j, k in elementlist:
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"
+                break
         if space_link == "*ERROR*":
             print(space)
         assert space_link != "*ERROR*"
@@ -101,7 +101,7 @@ for file in os.listdir(element_path):
 
         if "alt-names" in data:
             for i in data["alt-names"]:
-                altlist.append((i.split(" (")[0], f"{fname}.html", fname))
+                elementlist.append((i.split(" (")[0], f"{fname}.html", fname))
 
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
@@ -137,6 +137,9 @@ for file in os.listdir(element_path):
             if e not in refels:
                 refels[e] = []
             refels[e].append((data["html-name"], f"{fname}.html"))
+            if "alt-names" in data:
+                for i in data["alt-names"]:
+                    refels[e].append((i.split(" (")[0], f"{fname}.html"))
         element_data.append(
             ("Reference elements",
              ", ".join([f"<a href='/lists/references/{e}.html'>{e}</a>"
@@ -212,6 +215,9 @@ for file in os.listdir(element_path):
         if "categories" in data:
             for c in data["categories"]:
                 category_pages[c].append((data["html-name"], f"{fname}.html"))
+                if "alt-names" in data:
+                    for i in data["alt-names"]:
+                        category_pages[c].append((i.split(" (")[0], f"{fname}.html"))
             element_data.append(
                 ("Categories",
                  ", ".join([f"<a href='/lists/categories/{c}.html'>{categories[c]}</a>"
@@ -284,7 +290,6 @@ for file in os.listdir(element_path):
             f.write(make_html_page(content))
 
 # Index page
-elementlist += altlist
 elementlist.sort(key=lambda x: x[0])
 
 content = "<h1>Index of elements</h1>\n<ul>"

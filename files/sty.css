@@ -68,3 +68,5 @@ table.element-info tr td {border-bottom:2px dashed #AAAAAA}
 table.element-info tr:last-of-type td {border-bottom:none}
 table.element-info td {padding:8px 0px}
 table.element-info tr td:first-of-type {padding-right:10px;font-variant:all-small-caps}
+
+a#show_pset_link, a#hide_pset_link {font-size:80%;padding-top:10px;padding-bottom:10px}
