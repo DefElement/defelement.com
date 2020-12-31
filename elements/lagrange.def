@@ -1,6 +1,9 @@
 name: Lagrange
 html-name: Lagrange
 alt-names:
+  - Polynomial
+  - Galerkin
+short-names:
   - P
   - CG
   - DG

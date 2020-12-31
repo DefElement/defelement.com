@@ -9,7 +9,7 @@ named = {}
 
 
 def make_name(i):
-    return f"\\mathcal{{A}}^{{({i})}}"
+    return f"\\mathcal{{Z}}^{{({i})}}"
 
 
 def make_poly_set(p):
@@ -39,31 +39,31 @@ def make_poly_set(p):
 
 def make_extra_info(p):
     done = []
-    out = ""
+    out = []
     for a in p.split("&&"):
         a = a.strip()
         if re.match(r"^\[([^\]]+)\]\[(.+)\]$", a):
             the_set = re.match(r"^\[([^\]]+)\]\[(.+)\]$", a)[2]
-            out += f"\\[{named[the_set]}_k={insert_terms(the_set)}\\]"
+            out.append(f"\\({named[the_set]}_k={insert_terms(the_set)}\\)")
             for i, (j, k) in poly_sets.items():
                 if f"{{{{{i}[" in a and i not in done:
-                    out += f"\\[{j}_k={k}\\]"
+                    out.append(f"\\({j}_k={k}\\)")
                     done.append(i)
             continue
         for i, (j, k) in poly_sets.items():
             if re.match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p):
                 if i + "(d)" not in done:
-                    out += f"\\[{j}_k(\\mathbb{{R}}^d)={k}\\]"
+                    out.append(f"\\({j}_k(\\mathbb{{R}}^d)={k}\\)")
                     done.append(i)
                 break
             if re.match(rf"^{i}\[([^\]]+)\](?:\^d)?$", a):
                 if i not in done:
-                    out += f"\\[{j}_k={k}\\]"
+                    out.append(f"\\({j}_k={k}\\)")
                     done.append(i)
                 break
         else:
             raise ValueError(f"Unknown polynomial set: {a}")
-    return out
+    return "<br /><br />".join(out)
 
 
 def insert_terms(the_set):

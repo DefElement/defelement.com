@@ -2,6 +2,8 @@ name: Q
 html-name: Q
 alt-names:
   - Lagrange
+short-names:
+  - Q
 categories:
   - scalar
 reference elements:

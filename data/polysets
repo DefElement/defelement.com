@@ -10,4 +10,9 @@ qoly:
 tqoly:
   - \hat{\mathcal{Q}}
   - \operatorname{span}\left\{\prod_{i=1}^dx_i^{p_i}\middle|\max_i(p_i)=k\right\}=\mathcal{Q}_k\setminus\mathcal{Q}_{k-1}
-
+serendipity:
+  - \mathcal{X}
+  - \operatorname{span}\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}
+apoly:
+  - \mathcal{A}
+  - \operatorname{span}\bigcup_{p\in\mathcal{P}_k(\mathbb{R}^{d-1})}\left\{\left(\begin{array}{c}0\\xzp(y,z)\\-xyp(y,z)\end{array}\right),\left(\begin{array}{c}yzp(x,z)\\0\\-xyp(x,z)\end{array}\right),\left(\begin{array}{c}yzp(x,y)\\-xzp(x,y)\\0\end{array}\right)\right\}

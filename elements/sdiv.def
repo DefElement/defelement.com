@@ -1,6 +1,9 @@
 name: serendipity H(div)
 html-name: serendipity H(div)
 alt-names:
+  - Brezzi&ndash;Douglas&ndash;Marini cubical H(div) (quadrilateral)
+  - Arnold&ndash;Awanou cubical H(div) (hexahedron)
+short-names:
   - BDMcf (quadrilateral)
   - AAf (hexahedron)
 min-order: 1
@@ -17,7 +20,7 @@ notes:
   - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
 polynomial set:
   quadrilateral: poly[k]^d && [k][\operatorname{span}\left\{\left(\begin{array}{c}x^{k+1}\\-(k+1)x^ky\end{array}\right),\left(\begin{array}{c}(k+1)xy^k\\-y^{k+1}\end{array}\right)\right\}]
-  hexahedron: poly[k]^d && [k][\left\{\nabla\times\mathbf{p}\middle|\mathbf{p}\in\operatorname{span}\bigcup_{p\in{{poly[k](d-1)}}}\left\{\left(\begin{array}{c}0\\xzp(y,z)\\-xyp(y,z)\end{array}\right),\left(\begin{array}{c}yzp(x,z)\\0\\-xyp(x,z)\end{array}\right),\left(\begin{array}{c}yzp(x,y)\\-xzp(x,y)\\0\end{array}\right)\right\}\right\}]
+  hexahedron: poly[k]^d && [k][\left\{\nabla\times\mathbf{p}\middle|\mathbf{p}\in{{apoly[k]}}\right\}]
 symfem:
   quadrilateral: Sdiv
   hexahedron: Sdiv
@@ -36,4 +39,3 @@ references:
     year: 2014
     pagestart: 1551
     pageend: 5170
-test: 1

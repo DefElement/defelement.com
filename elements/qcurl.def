@@ -1,6 +1,9 @@
 name: Q H(curl)
 html-name: Q H(curl)
 alt-names:
+  - Raviart&ndash;Thomas cubical H(curl) (quadrilateral)
+  - N&eacute;d&eacute;lec cubical H(curl) (hexahedron)
+short-names:
   - RTce (quadrilateral)
   - Nce (hexahedron)
 min-order: 1
@@ -35,4 +38,3 @@ references:
     pagestart: 315
     pageend: 341
     doi: 10.1007/BF01396415
-test: 1

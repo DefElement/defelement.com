@@ -4,6 +4,9 @@ min-order: 1
 categories:
   - vector
   - Hcurl
+short-names:
+  - N1curl
+  - NC
 reference elements:
   - triangle
   - tetrahedron

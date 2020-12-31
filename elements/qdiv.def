@@ -1,6 +1,9 @@
 name: Q H(div)
 html-name: Q H(div)
 alt-names:
+  - Raviart&ndash;Thomas cubical H(div) (quadrilateral)
+  - N&eacute;d&eacute;lec cubical H(div) (hexahedron)
+short-names:
   - RTcf (quadrilateral)
   - Ncf (hexahedron)
 min-order: 1

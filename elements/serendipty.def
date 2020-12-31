@@ -1,5 +1,7 @@
 name: serendipity
 html-name: serendipity
+short-names:
+  - S
 min-order: 1
 categories:
   - scalar
@@ -15,9 +17,9 @@ dofs:
 notes:
   - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
 polynomial set:
-  interval: poly[k] && [k][\operatorname{span}\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}]
-  quadrilateral: poly[k] && [k][\operatorname{span}\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}]
-  hexahedron: poly[k] && [k][\operatorname{span}\left\{\prod_{i=1}^dx_i^{p_i}\middle|k<\sum_{i=1}^da_i\leqslant k+\#\left\{i\in\{1,\dots,d\}\middle| a_i=1\right\}\right\}]
+  interval: poly[k] && serendipity[k]
+  quadrilateral: poly[k] && serendipity[k]
+  hexahedron: poly[k] && serendipity[k]
 symfem:
   interval: serendipity
   quadrilateral: serendipity

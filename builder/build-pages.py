@@ -70,6 +70,7 @@ for file in os.listdir(pages_path):
             f.write(make_html_page(content))
 
 elementlist = []
+altlist = []
 refels = {}
 
 
@@ -98,12 +99,14 @@ for file in os.listdir(element_path):
         fname = file[:-4]
         elementlist.append((data['html-name'], f"{fname}.html", fname))
 
+        if "alt-names" in data:
+            for i in data["alt-names"]:
+                altlist.append((i.split(" (")[0], f"{fname}.html", fname))
+
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
-        if test_mode and "test" not in data:
-            continue
 
         print(data["name"])
         fname = file[:-4]
@@ -113,6 +116,10 @@ for file in os.listdir(element_path):
         # Alternative names
         if "alt-names" in data:
             element_data.append(("Alternative names", ", ".join(data["alt-names"])))
+
+        # Short names
+        if "short-names" in data:
+            element_data.append(("Abbreviated names", ", ".join(data["short-names"])))
 
         # Orders
         if "min-order" in data:
@@ -220,7 +227,7 @@ for file in os.listdir(element_path):
         element_names = []
         element_examples = []
 
-        if "examples" in data:
+        if (not test_mode or "test" in data) and "examples" in data:
             for e in data["examples"]:
                 cell = e.split(",")[0]
                 order = int(e.split(",")[1])
@@ -277,6 +284,7 @@ for file in os.listdir(element_path):
             f.write(make_html_page(content))
 
 # Index page
+elementlist += altlist
 elementlist.sort(key=lambda x: x[0])
 
 content = "<h1>Index of elements</h1>\n<ul>"

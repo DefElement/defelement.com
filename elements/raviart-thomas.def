@@ -3,6 +3,9 @@ html-name: Raviart&ndash;Thomas
 min-order: 1
 alt-names:
   - Rao&ndash;Wilton&ndash;Glisson
+short-names:
+  - RT
+  - RWG
 categories:
   - vector
   - Hdiv
