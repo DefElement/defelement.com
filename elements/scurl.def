@@ -1,0 +1,42 @@
+name: serendipity H(curl)
+html-name: serendipity H(curl)
+alt-names:
+  - Brezzi&ndash;Douglas&ndash;Marini cubical H(curl) (quadrilateral)
+  - Arnold&ndash;Awanou cubical H(curl) (hexahedron)
+short-names:
+  - BDMce (quadrilateral)
+  - AAe (hexahedron)
+min-order: 1
+categories:
+  - vector
+  - Hcurl
+reference elements:
+  - quadrilateral
+  - hexahedron
+dofs:
+  edges: tangent integral moments with (lagrange,k)
+  faces: integral moments with (vector-lagrange,k-2)
+  volumes: integral moments with (vector-lagrange,k-4)
+notes:
+  - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
+polynomial set:
+  quadrilateral: poly[k]^d && [k][\operatorname{span}\left\{\left(\begin{array}{c}(k+1)x^ky\\x^{k+1}\end{array}\right),\left(\begin{array}{c}(k+1)y^{k+1}\\(k+1)xy^k\end{array}\right)\right\}]
+  hexahedron: poly[k]^d && apoly[k-1] && [k][\left\{\nabla p\middle|p\in{{serendipity[k+1]}}\right\}]
+symfem:
+  quadrilateral: Scurl
+  hexahedron: Scurl
+examples:
+  - quadrilateral,1
+  - quadrilateral,2
+  - hexahedron,1
+  - hexahedron,2
+references:
+  - title: Finite element differential forms on cubical meshes
+    author:
+      - Arnold, D. N.
+      - Awanou, G.
+    journal: Mathematics of computation
+    volume: 83
+    year: 2014
+    pagestart: 1551
+    pageend: 5170
