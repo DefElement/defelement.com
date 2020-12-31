@@ -84,6 +84,8 @@ def dofs_on_entity(entity, dofs):
         for i, j, k in elementlist:
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"
+        if space_link == "*ERROR*":
+            print(space)
         assert space_link != "*ERROR*"
         return f"{mom_type} with an order \\({order}\\) {space_link} space"
     return dofs
@@ -150,7 +152,7 @@ for file in os.listdir(element_path):
                 for i, j in psets.items():
                     set_data += f"<li>\\({make_poly_set(i)}\\) ({', '.join(j)})</li>\n"
                 set_data += "</ul>\n"
-            extra = make_extra_info(" & ".join(psets.keys()))
+            extra = make_extra_info(" && ".join(psets.keys()))
             if len(extra) > 0:
                 set_data += "<a id='show_pset_link' href='javascript:show_psets()'>"
                 set_data += "Show polynomial set definitions</a>"

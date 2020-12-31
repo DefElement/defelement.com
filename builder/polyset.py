@@ -14,8 +14,8 @@ def make_name(i):
 
 def make_poly_set(p):
     global named
-    if "&" in p:
-        return " \\oplus ".join([make_poly_set(i.strip()) for i in p.split("&")])
+    if "&&" in p:
+        return " \\oplus ".join([make_poly_set(i.strip()) for i in p.split("&&")])
     p = p.strip()
     if re.match(r"^\[([^\]]+)\]\[(.+)\]$", p):
         order = re.match(r"^\[([^\]]+)\]\[(.+)\]$", p)[1]
@@ -40,7 +40,7 @@ def make_poly_set(p):
 def make_extra_info(p):
     done = []
     out = ""
-    for a in p.split("&"):
+    for a in p.split("&&"):
         a = a.strip()
         if re.match(r"^\[([^\]]+)\]\[(.+)\]$", a):
             the_set = re.match(r"^\[([^\]]+)\]\[(.+)\]$", a)[2]
