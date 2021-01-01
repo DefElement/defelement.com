@@ -45,6 +45,7 @@ def wrap_caps(txt):
 def html_to_tex(txt):
     txt = re.sub(r"&([A-Za-z])acute;", r"\\'\1", txt)
     txt = re.sub(r"&([A-Za-z])uml;", r"\\\"\1", txt)
+    txt = re.sub(r"&([A-Za-z])cedil;", r"\\c{\1}", txt)
     return txt
 
 

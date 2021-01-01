@@ -17,9 +17,9 @@ def make_poly_set(p):
     if "&&" in p:
         return " \\oplus ".join([make_poly_set(i.strip()) for i in p.split("&&")])
     p = p.strip()
-    if re.match(r"^\[([^\]]+)\]\[(.+)\]$", p):
-        order = re.match(r"^\[([^\]]+)\]\[(.+)\]$", p)[1]
-        the_set = re.match(r"^\[([^\]]+)\]\[(.+)\]$", p)[2]
+    if re.match(r"^\<([^\]]+)\>\[(.+)\]$", p):
+        order = re.match(r"^\<([^\]]+)\>\[(.+)\]$", p)[1]
+        the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]$", p)[2]
         if the_set not in named:
             named[the_set] = make_name(len(named))
         return f"{named[the_set]}_{{{order}}}"
@@ -27,6 +27,9 @@ def make_poly_set(p):
         if re.match(rf"^{i}\[([^\]]+)\]$", p):
             order = re.match(rf"^{i}\[([^\]]+)\]$", p)[1]
             return f"{j}_{{{order}}}"
+        if re.match(rf"^{i}\[([^\]]+)\]\^dd$", p):
+            order = re.match(rf"^{i}\[([^\]]+)\]\^dd$", p)[1]
+            return f"{j}_{{{order}}}^{{d\\times d}}"
         if re.match(rf"^{i}\[([^\]]+)\]\^d$", p):
             order = re.match(rf"^{i}\[([^\]]+)\]\^d$", p)[1]
             return f"{j}_{{{order}}}^d"
@@ -42,8 +45,8 @@ def make_extra_info(p):
     out = []
     for a in p.split("&&"):
         a = a.strip()
-        if re.match(r"^\[([^\]]+)\]\[(.+)\]$", a):
-            the_set = re.match(r"^\[([^\]]+)\]\[(.+)\]$", a)[2]
+        if re.match(r"^\<([^\]]+)\>\[(.+)\]$", a):
+            the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]$", a)[2]
             out.append(f"\\({named[the_set]}_k={insert_terms(the_set)}\\)")
             for i, (j, k) in poly_sets.items():
                 if f"{{{{{i}[" in a and i not in done:
@@ -56,7 +59,7 @@ def make_extra_info(p):
                     out.append(f"\\({j}_k(\\mathbb{{R}}^d)={k}\\)")
                     done.append(i)
                 break
-            if re.match(rf"^{i}\[([^\]]+)\](?:\^d)?$", a):
+            if re.match(rf"^{i}\[([^\]]+)\](?:\^d+)?$", a):
                 if i not in done:
                     out.append(f"\\({j}_k={k}\\)")
                     done.append(i)
@@ -69,6 +72,8 @@ def make_extra_info(p):
 def insert_terms(the_set):
     the_set = the_set.replace("{{x}}", "\\mathbf{x}")
     for i, (j, k) in poly_sets.items():
+        the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\^dd}}}}", rf"{escape(j)}_{{\1}}^{{d\\times d}}",
+                         the_set)
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\^d}}}}", rf"{escape(j)}_{{\1}}^d", the_set)
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]}}}}", rf"{escape(j)}_{{\1}}", the_set)
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\(([^\)]+)\)}}}}",
