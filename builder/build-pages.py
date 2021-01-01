@@ -81,7 +81,7 @@ def dofs_on_entity(entity, dofs):
         space = space.strip()
         order = order.strip()
         space_link = "*ERROR*"
-        for i, j, k in elementlist:
+        for i, j, k, _, _ in elementlist:
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"
                 break
@@ -97,11 +97,22 @@ for file in os.listdir(element_path):
         with open(os.path.join(element_path, file)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
         fname = file[:-4]
-        elementlist.append((data['html-name'], f"{fname}.html", fname))
+        if "categories" in data:
+            cats = data["categories"]
+        else:
+            cats = []
+        elementlist.append((data['html-name'], f"{fname}.html", fname,
+                            data["reference elements"], cats))
 
         if "alt-names" in data:
             for i in data["alt-names"]:
-                elementlist.append((i.split(" (")[0], f"{fname}.html", fname))
+                if " (" in i:
+                    elementlist.append((i.split(" (")[0], f"{fname}.html", fname,
+                                        [j.strip() for j in i.split(" (")[1].split(",")],
+                                        cats))
+                else:
+                    elementlist.append((i, f"{fname}.html", fname,
+                                        data["reference elements"], cats))
 
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
@@ -164,11 +175,12 @@ for file in os.listdir(element_path):
                 set_data += "</ul>\n"
             extra = make_extra_info(" && ".join(psets.keys()))
             if len(extra) > 0:
-                set_data += "<a id='show_pset_link' href='javascript:show_psets()'>"
-                set_data += "Show polynomial set definitions</a>"
+                set_data += "<a id='show_pset_link' href='javascript:show_psets()'"
+                set_data += " style='display:block'>"
+                set_data += "&darr; Show polynomial set definitions &darr;</a>"
                 set_data += "<a id='hide_pset_link' href='javascript:hide_psets()'"
                 set_data += " style='display:none'>"
-                set_data += "Hide polynomial set definitions</a>"
+                set_data += "&uarr; Hide polynomial set definitions &uarr;</a>"
                 set_data += "<div id='psets' style='display:none'>"
                 set_data += extra
                 set_data += "</div>"
@@ -292,8 +304,107 @@ for file in os.listdir(element_path):
 # Index page
 elementlist.sort(key=lambda x: x[0])
 
-content = "<h1>Index of elements</h1>\n<ul>"
-content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j, k in elementlist])
+content = "<h1>Index of elements</h1>\n"
+# Generate filtering Javascript
+content += "<script type='text/javascript'>\n"
+content += "function do_filter_refall(){\n"
+content += "    if(document.getElementById('check-ref-all').checked){\n"
+for r in refels:
+    content += f"        document.getElementById('check-ref-{r}').checked = false\n"
+content += "    }\n"
+content += "    do_filter()\n"
+content += "}\n"
+content += "function do_filter_catall(){\n"
+content += "    if(document.getElementById('check-cat-all').checked){\n"
+for c in categories:
+    content += f"        document.getElementById('check-cat-{c}').checked = false\n"
+content += "    }\n"
+content += "    do_filter()\n"
+content += "}\n"
+content += "function do_filter_cat(){\n"
+content += "    if(document.getElementById('check-cat-all').checked){\n"
+content += "        if("
+content += " || ".join([f"document.getElementById('check-cat-{c}').checked" for c in categories])
+content += "){"
+content += "            document.getElementById('check-cat-all').checked = false\n"
+content += "        }\n"
+content += "    }\n"
+content += "    do_filter()\n"
+content += "}\n"
+content += "function do_filter_ref(){\n"
+content += "    if(document.getElementById('check-ref-all').checked){\n"
+content += "        if("
+content += " || ".join([f"document.getElementById('check-ref-{r}').checked" for r in refels])
+content += "){"
+content += "            document.getElementById('check-ref-all').checked = false\n"
+content += "        }\n"
+content += "    }\n"
+content += "    do_filter()\n"
+content += "}\n"
+content += "function do_filter(){\n"
+content += "    var els = document.getElementsByClassName('element-on-list')\n"
+content += "    for(var i=0; i < els.length; i++){\n"
+content += "        var ref_show = false\n"
+content += "        if(document.getElementById('check-ref-all').checked){\n"
+content += "            ref_show = true\n"
+content += "        } else {\n"
+for r in refels:
+
+    content += f"            if(document.getElementById('check-ref-{r}').checked"
+    content += f" && els[i].id.indexOf('ref-{r}') != -1){{ref_show = true}}\n"
+content += "        }\n"
+content += "        var cat_show = false\n"
+content += "        if(document.getElementById('check-cat-all').checked){\n"
+content += "            cat_show = true\n"
+content += "        } else {\n"
+for c in categories:
+
+    content += f"            if(document.getElementById('check-cat-{c}').checked"
+    content += f" && els[i].id.indexOf('cat-{c}') != -1){{cat_show = true}}\n"
+content += "        }\n"
+content += "        if(cat_show && ref_show){\n"
+content += "            els[i].style.display='block'\n"
+content += "        } else {\n"
+content += "            els[i].style.display='none'\n"
+content += "        }\n"
+content += "    }\n"
+content += "}\n"
+content += "function show_filtering(){\n"
+content += "    document.getElementById('show-flink').style.display='none'\n"
+content += "    document.getElementById('hide-flink').style.display='block'\n"
+content += "    document.getElementById('the-filters').style.display='block'\n"
+content += "}\n"
+content += "function hide_filtering(){\n"
+content += "    document.getElementById('show-flink').style.display='block'\n"
+content += "    document.getElementById('hide-flink').style.display='none'\n"
+content += "    document.getElementById('the-filters').style.display='none'\n"
+content += "}\n"
+content += "</script>"
+content += "<a href='javascript:show_filtering()' id='show-flink' style='display:block'"
+content += ">&darr; Show filters &darr;</a>\n"
+content += "<a href='javascript:hide_filtering()' id='hide-flink' style='display:none'"
+content += ">&uarr; Hide filters &uarr;</a>\n"
+content += "<table id='the-filters' class='filters' style='display:none'>"
+content += "<tr><td>Reference&nbsp;elements</td><td>"
+content += "<label><input type='checkbox' checked id='check-ref-all' onchange='do_filter_refall()'"
+content += ">&nbsp;show all</label> "
+for r in refels:
+    content += f"<label><input type='checkbox' id='check-ref-{r}' onchange='do_filter_ref()'"
+    content += f">&nbsp;{r}</label> "
+content += "</td></tr>"
+content += "<tr><td>Categories</td><td>"
+content += "<label><input type='checkbox' checked id='check-cat-all'onchange='do_filter_catall()'"
+content += ">&nbsp;show all</label> "
+for c in categories:
+    content += f"<label><input type='checkbox' id='check-cat-{c}'onchange='do_filter_cat()'"
+    content += f">&nbsp;{categories[c]}</label> "
+content += "</td></tr>"
+content += "</table>\n"
+# Write element list
+content += "<ul>"
+for i, j, k, refs, cats in elementlist:
+    id = " ".join([f"ref-{r}" for r in refs] + [f"cat-{c}" for c in cats])
+    content += f"<li class='element-on-list' id='{id}'><a href='/elements/{j}'>{i}</a></li>"
 content += "</ul>"
 
 with open(os.path.join(htmlelement_path, "index.html"), "w") as f:
