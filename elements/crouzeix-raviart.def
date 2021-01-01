@@ -1,0 +1,32 @@
+name: Crouzeix-Raviart
+html-name: Crouzeix&ndash;Raviart
+min-order: 1
+max-order: 1
+short-names:
+  - CR
+categories:
+  - scalar
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k]
+  tetrahedron: poly[k]
+dofs:
+  facets: point evaluation at midpoint
+symfem:
+  triangle: Crouzeix-Raviart
+  tetrahedron: Crouzeix-Raviart
+examples:
+  - triangle,1
+references:
+  - title: Conforming and nonconforming finite element methods for solving the stationary Stokes equations
+    author:
+      - Crouzeix, M.
+      - Raviart, P.
+    year: 1973
+    journal: Revue Fran&ccedil;aise d'Automatique, Informatique et Recherche Op&eacute;rationnelle
+    volume: 3
+    pagestart: 33
+    pageend: 75
+    doi: 10.1051/m2an/197307R300331
