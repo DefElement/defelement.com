@@ -2,7 +2,7 @@ name: serendipity H(div)
 html-name: serendipity H(div)
 alt-names:
   - Brezzi&ndash;Douglas&ndash;Marini cubical H(div) (quadrilateral)
-  - Arnold&ndash;Awanou cubical H(div) (hexahedron)
+  - Arnold&ndash;Awanou H(div) (hexahedron)
 short-names:
   - BDMcf (quadrilateral)
   - AAf (hexahedron)

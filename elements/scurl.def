@@ -2,7 +2,7 @@ name: serendipity H(curl)
 html-name: serendipity H(curl)
 alt-names:
   - Brezzi&ndash;Douglas&ndash;Marini cubical H(curl) (quadrilateral)
-  - Arnold&ndash;Awanou cubical H(curl) (hexahedron)
+  - Arnold&ndash;Awanou H(curl) (hexahedron)
 short-names:
   - BDMce (quadrilateral)
   - AAe (hexahedron)
