@@ -158,10 +158,9 @@ for file in os.listdir(element_path):
             ):
                 set_data = f"\\({make_poly_set(list(psets.keys())[0])}\\)<br />"
             else:
-                set_data = "<ul>\n"
+                set_data = ""
                 for i, j in psets.items():
-                    set_data += f"<li>\\({make_poly_set(i)}\\) ({', '.join(j)})</li>\n"
-                set_data += "</ul>\n"
+                    set_data += f"\\({make_poly_set(i)}\\) ({', '.join(j)})<br />\n"
             extra = make_extra_info(" && ".join(psets.keys()))
             if len(extra) > 0:
                 set_data += "<a id='show_pset_link' href='javascript:show_psets()'>"
@@ -200,16 +199,15 @@ for file in os.listdir(element_path):
                 ("On the interior of the reference element", "cell"),
             ]:
                 if j in data["dofs"]:
-                    dof_data.append(f"<li>{i}: {dofs_on_entity(j, data['dofs'][j])}</li>")
+                    dof_data.append(f"{i}: {dofs_on_entity(j, data['dofs'][j])}")
             if len(dof_data) > 0:
-                element_data.append(("DOFs", "<ul>\n" + "\n".join(dof_data) + "</ul>"))
+                element_data.append(("DOFs", "<br />\n".join(dof_data)))
 
         # Notes
         if "notes" in data:
             element_data.append(
                 ("Notes",
-                 "<ul>\n" + "\n".join([f"<li>{insert_links(i)}</li>"
-                                       for i in data["notes"]]) + "</ul>"))
+                 "<br />\n".join([insert_links(i) for i in data["notes"]])))
 
         # Categories
         if "categories" in data:
