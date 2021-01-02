@@ -67,7 +67,7 @@ The entries in this yaml file are:
 <tr><td>`ndofs-oeis`</td><td></td><td>A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
 <tr><td>`reference&nbsp;elements`</td><td>Yes</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
-<tr><td>`dofs`</td><td>Yes</td><td>Description of the DOFs of this element.</td></tr>
+<tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`polynomial&nbsp;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>
 <tr><td>`symfem`</td><td></td><td>The string used to define this element in [symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
