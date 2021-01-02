@@ -1,19 +1,31 @@
 <div style='float:right;width:220px;padding:10px'>
-<div>{{plot::triangle,Lagrange,2::1}}</div>
-<div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 2 [Lagrange space](element::lagrange) on a triangle</div>
 <div>{{plot::triangle,Raviart-Thomas,1::1}}</div>
 <div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [Raviart&ndash;Thomas space](element::raviart-thomas) on a triangle</div>
-<div>{{reference::triangle}}</div>
-<div style='font-size:80%;color:#AAAAAA;text-align:center'>The reference triangle</div>
+<div>{{plot::quadrilateral,Q,2::3}}</div>
+<div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 2 [Q space](element::q) on a quadrilateral</div>
+<div>{{plot::tetrahedron,N1curl,1::1}}</div>
+<div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [N&eacute;d&eacute;lec (first kind) space](element::nedelec1) on a tetrahedron</div>
+<div>{{plot::hexahedron,Scurl,1::13}}</div>
+<div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [Arnold&ndash;Awanou H(curl) space](element::scurl) on a hexahedron</div>
 </div>
 
 Welcome to DefElement: an encyclopedia of finite element definitions.
 
 This website contains a collection of definitions of finite elements, 
 including commonly used elements such as
-[Lagrange](element::lagrange) and [Raviart&ndash;Thomas](element::raviart-thomas) elements,
+[Lagrange](element::lagrange),
+[Raviart&ndash;Thomas](element::raviart-thomas),
+[N&eacute;d&eacute;lec (first kind)](element::nedelec1)
+and
+[N&eacute;d&eacute;lec (second kind)](element::nedelec2)
+elements,
 and more exotic elements such as
-[serendipity H(div)](element::sdiv) elements.
+[serendipity H(div)](element::sdiv),
+[serendipity H(curl)](element::scurl)
+and
+[Regge](element::regge)
+elements.
+
 You can:
 <ul>
 <li>[view the full alphabetical list of elements](index::all)</li>

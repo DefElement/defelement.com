@@ -45,8 +45,8 @@ def markup(content):
 
     out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
     out = insert_links(out)
-    out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)}}", plot_element, out)
-    out = re.sub(r"{{plot::([^,]+),([^,]+),([1-9][0-9]*)::([1-9][0-9]*)}}",
+    out = re.sub(r"{{plot::([^,]+),([^,]+),([0-9]+)}}", plot_element, out)
+    out = re.sub(r"{{plot::([^,]+),([^,]+),([0-9]+)::([0-9]+)}}",
                  plot_single_element, out)
     out = re.sub(r"{{reference::([^}]+)}}", plot_reference, out)
 
