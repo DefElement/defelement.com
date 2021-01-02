@@ -1,7 +1,7 @@
 import symbols
 import sympy
-from symfem import functionals
-from symfem.symbolic import x
+from symfem.core import functionals
+from symfem.core.symbolic import x
 
 
 def to_2d(c, width=200, height=200):
@@ -146,14 +146,13 @@ def svg_reference(ref):
 
 
 def to_tex(f, tfrac=False):
-    try:
-        return "\\left(\\begin{array}{c}" + "\\\\".join(
-            [to_tex(i, tfrac) for i in f]) + "\\end{array}\\right)"
-    except:  # noqa: E722
-        if tfrac:
-            return sympy.latex(f).replace("\\frac", "\\tfrac")
-        else:
-            return sympy.latex(f)
+    out = sympy.latex(f)
+    out = out.replace("\\left[", "\\left(")
+    out = out.replace("\\right]", "\\right)")
+    if tfrac:
+        return out.replace("\\frac", "\\tfrac")
+    else:
+        return out
 
 
 def get_entity_number(element, dof):
@@ -218,6 +217,16 @@ def describe_dof(element, d):
                 desc += "(" + to_tex(d.f) + ")"
             desc += "v"
         return desc
+    elif isinstance(d, functionals.PointInnerProduct):
+        desc = "\\mathbf{V}\\mapsto"
+        desc += "\\left(\\begin{array}{c}"
+        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\end{array}\\right)^t"
+        desc += "\\mathbf{V}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        desc += "\\left(\\begin{array}{c}"
+        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\end{array}\\right)"
+        return desc
     else:
         raise ValueError(f"Unknown functional: {d.__class__}")
 
@@ -231,7 +240,7 @@ def markup_element(element, images_only=False, which="ALL"):
         eg += "<center>" + svg_reference(element.reference) + "</center>\n"
         # Polynomial set
         eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
-        eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.basis])
+        eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.get_polynomial_basis()])
         eg += "</li>\n"
         # Dual basis
         eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
@@ -369,6 +378,18 @@ def markup_element(element, images_only=False, which="ALL"):
                     eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
                     eg += to_tex(func) + "\\)"
                     eg += "</div></div>"
+    else:
+        for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
+            if which == "ALL" or which == dof_i and not images_only:
+                eg += "<div class='basisf'>"
+                eg += "<div style='display:inline-block'>"
+                eg += "</div><div style='display:inline-block;padding-left:10px'>"
+                eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
+                eg += describe_dof(element, dof) + "\\)<br /><br />"
+                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+                eg += to_tex(func) + "\\)"
+                eg += "</div></div>\n"
+
     return eg
 
 

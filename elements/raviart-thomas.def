@@ -13,8 +13,8 @@ reference elements:
   - triangle
   - tetrahedron
 polynomial set:
-  triangle: poly[k-1]^d && [k][\left\{\left(\begin{array}{v}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
-  tetrahedron: poly[k-1]^d && [k][\left\{\left(\begin{array}{v}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
+  triangle: poly[k-1]^d && <k>[\left\{\left(\begin{array}{v}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
+  tetrahedron: poly[k-1]^d && <k>[\left\{\left(\begin{array}{v}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
 dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (vector-lagrange,k-2)

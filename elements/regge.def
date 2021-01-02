@@ -1,0 +1,41 @@
+name: Regge
+html-name: Regge
+min-order: 1
+categories:
+  - tensor
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]
+  tetrahedron: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]
+dofs:
+  edges: point evaluations of inner products with direction of edge
+  faces: point evaluations of inner products with direction of edges
+  volumes: point evaluations of inner products with direction of edges
+symfem:
+  triangle: Regge
+  tetrahedron: Regge
+examples:
+  - triangle,1
+  - triangle,2
+references:
+  - title: General relativity without coordinates
+    author: Regge, T.
+    journal: Il Nuovo Cimento
+    volume: 19
+    issue: 3
+    pagestart: 558
+    pageend: 571
+    year: 1961
+    doi: 10.1007/BF02733251
+  - title: On the linearization of Regge calculus
+    author: Christiansen, S. H.
+    journal: Numerische Mathematik
+    volume: 119
+    issue: 4
+    pagestart: 613
+    pageend: 640
+    year: 2011
+    doi: 10.1007/s00211-011-0394-z
+test: 1

@@ -85,8 +85,6 @@ def dofs_on_entity(entity, dofs):
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"
                 break
-        if space_link == "*ERROR*":
-            print(space)
         assert space_link != "*ERROR*"
         return f"{mom_type} with an order \\({order}\\) {space_link} space"
     return dofs
@@ -138,8 +136,11 @@ for file in os.listdir(element_path):
         else:
             min_o = 0
         if 'max-order' in data:
-            element_data.append(("Orders",
-                                 f"\\({min_o}\\leqslant k\\leqslant {data['max-order']}\\)"))
+            if data['max-order'] == min_o:
+                element_data.append(("Orders", f"\\(k={min_o}\\)"))
+            else:
+                element_data.append(("Orders",
+                                     f"\\({min_o}\\leqslant k\\leqslant {data['max-order']}\\)"))
         else:
             element_data.append(("Orders", f"\\({min_o}\\leqslant k\\)"))
 
