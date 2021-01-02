@@ -50,6 +50,8 @@ def markup(content):
                  plot_single_element, out)
     out = re.sub(r"{{reference::([^}]+)}}", plot_reference, out)
 
+    out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
+
     if len(page_references) > 0:
         out += "<h2>References</h2>"
         out += "<ul class='citations'>"

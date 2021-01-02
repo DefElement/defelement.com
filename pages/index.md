@@ -34,3 +34,16 @@ functions they lead to for a selection of low-order spaces.
 
 You can read a detailed description of how the finite element definitions can be understood
 [here](ciarlet.md).
+
+## Contributing to DefElement
+If you find an error or inaccuracy in a DefElement entry, please open
+[an issue on GitHub](https://github.com/mscroggs/defelement.com/issues).
+You can also open an issue to suggest a new element that should be added to the database.
+
+Alternatively, you could fork the [DefElement GitHub repo](https://github.com/mscroggs/defelement.com),
+make the changes yourself, and open a pull request. You can find more information about adding
+an element to DefElement [here](contributing.md).
+
+The functional information and examples on the element pages are generated using
+[symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
+Before adding an element to DefElement, it should first be implemented in symfem.
