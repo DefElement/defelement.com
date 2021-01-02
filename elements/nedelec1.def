@@ -7,6 +7,12 @@ categories:
 short-names:
   - N1curl
   - NC
+ndofs:
+  triangle: k(k+2)
+  tetrahedron: k(k+2)(k+3)/2
+ndofs-oeis:
+  triangle: A005563
+  tetrahedron: A005564
 reference elements:
   - triangle
   - tetrahedron
