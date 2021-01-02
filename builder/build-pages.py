@@ -104,6 +104,8 @@ for file in os.listdir(element_path):
 
         if "alt-names" in data:
             for i in data["alt-names"]:
+                if i[0] == "(" and i[-1] == ")":
+                    continue
                 if " (" in i:
                     elementlist.append((i.split(" (")[0], f"{fname}.html", fname,
                                         [j.strip() for j in i.split(" (")[1].split(",")],
@@ -124,7 +126,8 @@ for file in os.listdir(element_path):
 
         # Alternative names
         if "alt-names" in data:
-            element_data.append(("Alternative names", ", ".join(data["alt-names"])))
+            element_data.append(("Alternative names", ", ".join(
+                [i[1:-1] if i[0] == "(" and i[-1] == ")" else i for i in data["alt-names"]])))
 
         # Short names
         if "short-names" in data:
