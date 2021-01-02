@@ -62,6 +62,9 @@ table.bordered, table.bordered tr, table.bordered td {border:1px solid #AAAAAA;b
 table.bordered td {padding:2px 6px;text-align:center}
 table.bordered thead {font-weight:bold;font-size:80%}
 
+table.bordered.align-left td {padding:2px 6px;text-align:left}
+table.bordered.align-right td {padding:2px 6px;text-align:right}
+
 table.element-info {width:100%}
 table.element-info, table.element-info tr, table.element-info td, table.element-info tr td
     {border-collapse:collapsed}
