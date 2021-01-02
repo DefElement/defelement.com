@@ -9,6 +9,12 @@ reference elements:
   - interval
   - quadrilateral
   - hexahedron
+ndofs:
+  interval: k+1
+  quadrilateral: \begin{cases}4k&k=1,2,3\\k(k+3)/2+3&k>3\end{cases}
+  hexahedron: \begin{cases}12k-4 &k=1,2,3\\3k^2-3k+14 &k=4,5\\k(k-1)(k+1)/6+k^2+5k+4&k>6\end{cases}
+ndofs-oeis:
+  interval: A000027
 dofs:
   vertices: point evaluations
   edges: integral moments with (lagrange,k-2)

@@ -13,6 +13,12 @@ categories:
 reference elements:
   - quadrilateral
   - hexahedron
+ndofs:
+  quadrilateral: 2k(k+1)
+  hexahedron: 3k(k+1)^2
+ndofs-oeis:
+  quadrilateral: A046092
+  hexahedron: A059986
 dofs:
   edges: tangent integral moments with (q,k-1)
   faces: integral moments with (qdiv,k-1)

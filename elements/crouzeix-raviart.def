@@ -6,6 +6,9 @@ short-names:
   - CR
 categories:
   - scalar
+ndofs:
+  triangle: 3
+  tetrahedron: 4
 reference elements:
   - triangle
   - tetrahedron

@@ -10,6 +10,14 @@ reference elements:
   - interval
   - quadrilateral
   - hexahedron
+ndofs:
+  interval: k+1
+  quadrilateral: (k+1)^2
+  hexahedron: (k+1)^3
+ndofs-oeis:
+  interval: A000027
+  quadrilateral: A000290
+  hexahedron: A000578
 dofs:
   vertices: point evaluations
   edges: point evaluations

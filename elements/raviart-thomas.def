@@ -6,6 +6,12 @@ alt-names:
 short-names:
   - RT
   - RWG
+ndofs:
+  triangle: k(k+2)
+  tetrahedron: k(k+1)(k+3)/2
+ndofs-oeis:
+  triangle: A005563
+  tetrahedron: A077414
 categories:
   - vector
   - Hdiv
