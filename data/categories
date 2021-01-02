@@ -1,5 +1,5 @@
 scalar: Scalar-valued elements
 vector: Vector-valued elements
-tensor: Tensor-valued elements
+matrix: Matrix-valued elements
 Hcurl: H(curl) conforming elements
 Hdiv: H(div) conforming elements

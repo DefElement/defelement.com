@@ -2,7 +2,7 @@ name: Regge
 html-name: Regge
 min-order: 1
 categories:
-  - tensor
+  - matrix
 reference elements:
   - triangle
   - tetrahedron

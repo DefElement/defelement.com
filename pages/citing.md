@@ -11,7 +11,7 @@ website, you can use the following BibTeX:
 
 ```
 @misc{defelement,
-       AUTHOR = {Matthew Scroggs},
+       AUTHOR = {{The DefElement contributors}},
         TITLE = {{D}ef{E}lement: an encyclopedia of finite element definitions},
          YEAR = {{{{date:Y}}}},
  HOWPUBLISHED = {\url{https://defelement.com}},
@@ -22,5 +22,5 @@ website, you can use the following BibTeX:
 This will create a reference along the lines of:
 
 <ul class='citations'>
-<li>Scroggs, M. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
+<li>The DefElement contributors. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
 </ul>

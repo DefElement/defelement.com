@@ -29,6 +29,7 @@ a:hover {color:#FF8800}
 
 .head, .footer {font-family: 'Varela Round', sans-serif;}
 
+h2 {margin-top:50px}
 h1, h2, h3, h4, h5, h6 {font-family: 'Varela Round', sans-serif;font-weight:normal;color:#44AAFF}
 body, p {font-family:sans}
 p {text-align:justify}
@@ -60,6 +61,9 @@ a.refid:target {font-weight:bold; color:#FF8800}
 table.bordered, table.bordered tr, table.bordered td {border:1px solid #AAAAAA;border-collapse:collapse}
 table.bordered td {padding:2px 6px;text-align:center}
 table.bordered thead {font-weight:bold;font-size:80%}
+
+table.bordered.align-left td {padding:2px 6px;text-align:left}
+table.bordered.align-right td {padding:2px 6px;text-align:right}
 
 table.element-info {width:100%}
 table.element-info, table.element-info tr, table.element-info td, table.element-info tr td
