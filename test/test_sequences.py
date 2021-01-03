@@ -30,7 +30,9 @@ def test_sequence(file, cellname):
     with open(os.path.join(element_path, file)) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
 
-    if cellname not in data["symfem"]:
+    if "symfem" not in data or cellname not in data["symfem"]:
+        pytest.skip()
+    if "ndofs" not in data and "ndofs-oeis" not in data:
         pytest.skip()
 
     seq = {}
