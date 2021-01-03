@@ -38,9 +38,6 @@ def test_sequence(file, cellname):
         except NotImplementedError:
             pass
 
-    print(seq)
-    print(list(seq.values()))
-
     if "ndofs" in data and cellname in data["ndofs"]:
         formula = data["ndofs"][cellname]
 
