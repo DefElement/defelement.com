@@ -46,7 +46,7 @@ def test_sequence(file, cellname):
     for k in range(mink, maxk + 1):
         try:
             signal.signal(signal.SIGALRM, handler)
-            signal.alarm(15)
+            signal.alarm(25)
             term = len(symfem.create_element(cellname, data["symfem"][cellname], k).dofs)
             seq[k] = term
         except NotImplementedError:
