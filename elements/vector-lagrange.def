@@ -6,11 +6,9 @@ reference elements:
   - triangle
   - tetrahedron
 ndofs:
-  interval: k+1
   triangle: (k+1)(k+2)
   tetrahedron: (k+1)(k+2)(k+3)/2
 ndofs-oeis:
-  interval: A000027
   triangle: A002378
   tetrahedron: A027480
 dofs:

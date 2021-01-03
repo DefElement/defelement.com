@@ -6,6 +6,7 @@ short-names:
   - Q
 categories:
   - scalar
+min-order: 1
 reference elements:
   - interval
   - quadrilateral
