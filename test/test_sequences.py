@@ -1,9 +1,19 @@
-import urllib.request
 import os
-import symfem
 import pytest
 import re
+import signal
+import symfem
+import urllib.request
 import yaml
+
+
+class TimeOutTheTest(BaseException):
+    pass
+
+
+def handler(signum, frame):
+    raise TimeOutTheTest()
+
 
 element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
 
@@ -28,15 +38,19 @@ def test_sequence(file, cellname):
         mink = data["min-order"]
     else:
         mink = 0
-    maxk = 5
+    maxk = 10
     if "max-order" in data:
         maxk = min(maxk, data["max-order"])
     for k in range(mink, maxk + 1):
         try:
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(30)
             term = len(symfem.create_element(cellname, data["symfem"][cellname], k).dofs)
             seq[k] = term
         except NotImplementedError:
             pass
+        except TimeOutTheTest:
+            break
 
     if "ndofs" in data and cellname in data["ndofs"]:
         formula = data["ndofs"][cellname]
