@@ -44,10 +44,12 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get install -y python3-setuptools python3-pip python3-pytest
+      - run: |
+            sudo apt-get install -y python3-setuptools python3-pip python3-pytest
+            sudo pip3 install pytest-xdist
         name: Install dependencies
       - uses: actions/checkout@v2
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 -m pytest test
+      - run: python3 -m pytest -n4 test
         name: Run tests with pytest

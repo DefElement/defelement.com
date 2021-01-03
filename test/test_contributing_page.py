@@ -4,7 +4,7 @@ element_path = os.path.join(dir_path, "../elements")
 pages_path = os.path.join(dir_path, "../pages")
 
 
-def test_contributung_page():
+def test_contributing_page():
     with open(os.path.join(element_path, "lagrange.def")) as f:
         lagrange = f.read().strip()
 
