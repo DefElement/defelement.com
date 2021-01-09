@@ -177,6 +177,13 @@ def describe_dof(element, d):
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
         return desc
+    elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
+        desc = "v\\mapsto"
+        desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        desc += "\\cdot\\left(\\begin{array}{c}"
+        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\end{array}\\right)"
+        return desc
     elif isinstance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
@@ -308,8 +315,10 @@ def markup_element(element, images_only=False, which="ALL"):
                 else:
                     eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
                 eg += reference
-                assert dof.dof_direction() is None
-                eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
+                if dof.dof_direction() is None:
+                    eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
+                else:
+                    eg += dof_arrow(dof.dof_point() + (0, ), dof.dof_direction() + (0, ), dof_i, "#DD2299")
                 for p, q in pairs:
                     r1 = subs(func, eval_points[p])
                     r2 = subs(func, eval_points[q])
