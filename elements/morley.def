@@ -11,10 +11,9 @@ reference elements:
 polynomial set:
   triangle: poly[k]
 dofs:
-  vertices: point evaluation
-  edges: point evaluation of normal derivative at midpoint
-symfem:
-  triangle: Morley
+  vertices: point evaluations
+  edges: point evaluations of normal derivatives at midpoints
+symfem: Morley
 examples:
   - triangle,2
 references:

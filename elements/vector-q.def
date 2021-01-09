@@ -23,9 +23,7 @@ dofs:
 polynomial set:
   quadrilateral: qoly[k]^d
   hexahedron: qoly[k]^d
-symfem:
-  quadrilateral: vector Q
-  hexahedron: vector Q
+symfem: vector Q
 examples:
   - quadrilateral,1
   - quadrilateral,2

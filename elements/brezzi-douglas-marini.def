@@ -19,9 +19,7 @@ polynomial set:
 dofs:
   facets: normal integral moments with (lagrange,k)
   cell: integral moments with (nedelec1,k-1)
-symfem:
-  triangle: N2div
-  tetrahedron: N2div
+symfem: N2div
 examples:
   - triangle,1
   - triangle,2

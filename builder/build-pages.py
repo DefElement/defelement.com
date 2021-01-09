@@ -75,6 +75,9 @@ refels = {}
 
 def dofs_on_entity(entity, dofs):
     global elementlist
+    if not isinstance(dofs, str):
+        doflist = [dofs_on_entity(entity, d) for d in dofs]
+        return ", ".join(doflist[:-1]) + ", and " + doflist[-1]
     if "integral moment" in dofs:
         mom_type, space_info = dofs.split(" with ")
         space, order = space_info.split("(")[1].split(")")[0].split(",")
@@ -278,7 +281,7 @@ for file in os.listdir(element_path):
             for e in data["examples"]:
                 cell = e.split(",")[0]
                 order = int(e.split(",")[1])
-                element_type = data["symfem"][cell]
+                element_type = data["symfem"]
 
                 element = create_element(cell, element_type, order)
 

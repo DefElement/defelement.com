@@ -26,9 +26,7 @@ dofs:
 polynomial set:
   quadrilateral: qoly[k-1]^d && <k>[\left\{\mathbf{q}\in{{tqoly[k]}}\middle|\mathbf{q}(\mathbf{x})\cdot x_i\mathbf{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
   hexahedron: qoly[k]^d && <k>[\left\{\mathbf{q}\in{{tqoly[k]}}\middle|\mathbf{q}(\mathbf{x})\cdot x_i\mathbf{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
-symfem:
-  quadrilateral: Qcurl
-  hexahedron: Qcurl
+symfem: Qcurl
 examples:
   - quadrilateral,1
   - quadrilateral,2

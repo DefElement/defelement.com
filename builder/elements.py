@@ -180,6 +180,16 @@ def describe_dof(element, d):
     elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        entity_n = get_entity_number(element, d)
+        desc += "\\cdot\\hat{\\mathbf{n}}" + f"_{{{entity_n}}}"
+        return desc
+    elif isinstance(d, functionals.PointDirectionalDerivativeEvaluation):
+        if element.reference.tdim == 1:
+            desc = "v\\mapsto "
+            desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+            return desc
+        desc = "v\\mapsto"
+        desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
