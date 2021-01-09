@@ -46,6 +46,8 @@ def html_to_tex(txt):
     txt = re.sub(r"&([A-Za-z])acute;", r"\\'\1", txt)
     txt = re.sub(r"&([A-Za-z])uml;", r"\\\"\1", txt)
     txt = re.sub(r"&([A-Za-z])cedil;", r"\\c{\1}", txt)
+    txt = txt.replace("&ndash;", "--")
+    txt = txt.replace("&mdash;", "---")
     return txt
 
 
