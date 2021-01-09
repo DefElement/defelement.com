@@ -194,6 +194,13 @@ def describe_dof(element, d):
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
         return desc
+    elif isinstance(d, functionals.PointComponentSecondDerivativeEvaluation):
+        desc = "v\\mapsto"
+        desc += "\\frac{\partial^2v}{"
+        for c in d.component:
+            desc += "\\partial " + "xyz"[c]
+        desc += "}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        return desc
     elif isinstance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
