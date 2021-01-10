@@ -1,0 +1,50 @@
+name: bubble
+html-name: bubble
+min-order:
+  interval: 2
+  triangle: 3
+  tetrahedron: 4
+ndofs:
+  interval: k-1
+  triangle: (k-2)(k-1)/2
+  tetrahedron: (k-3)(k-2)(k-1)/6
+ndofs-oeis:
+  interval: A000027
+  triangle: A000217
+  tetrahedron: A000292
+categories:
+  - scalar
+reference elements:
+  - interval
+  - triangle
+  - tetrahedron
+dofs:
+  cell: point evaluations
+polynomial set:
+  interval: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
+  triangle: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
+  tetrahedron: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
+symfem: bubble
+examples:
+  - interval,2
+  - interval,3
+  - triangle,3
+  - triangle,4
+references:
+  - type: incollection
+    title: Common and unusual finite elements
+    author:
+      - Kirby, R. C.
+      - Logg, A.
+      - Rognes, M. E.
+      - Terrel, A. R.
+    booktitle: Automated solution of differential equations by the finite element method
+    editor:
+      - Logg, A.
+      - Mardal, K. A.
+      - Wells, G. N.
+    pagestart: 95
+    pageend: 119
+    series: Lecture Notes in Computational Science and Engineering
+    volume: 84
+    doi: 10.1007/978-3-642-23099-8_3

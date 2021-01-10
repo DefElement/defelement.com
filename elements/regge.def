@@ -19,9 +19,7 @@ dofs:
   edges: point evaluations of inner products with direction of edge
   faces: point evaluations of inner products with direction of edges
   volumes: point evaluations of inner products with direction of edges
-symfem:
-  triangle: Regge
-  tetrahedron: Regge
+symfem: Regge
 examples:
   - triangle,1
   - triangle,2

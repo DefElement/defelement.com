@@ -30,10 +30,14 @@ htmlindices_path = os.path.join(html_path, "lists")
 test_mode = args.test
 
 
-def make_html_page(content):
+def make_html_page(content, pagetitle=None):
     out = ""
     with open(os.path.join(template_path, "intro.html")) as f:
         out += insert_dates(f.read())
+    if pagetitle is None:
+        out = out.replace("{{: pagetitle}}", "")
+    else:
+        out = out.replace("{{: pagetitle}}", f": {pagetitle} element")
     out += content
     with open(os.path.join(template_path, "outro.html")) as f:
         out += insert_dates(f.read())
@@ -75,6 +79,9 @@ refels = {}
 
 def dofs_on_entity(entity, dofs):
     global elementlist
+    if not isinstance(dofs, str):
+        doflist = [dofs_on_entity(entity, d) for d in dofs]
+        return ", ".join(doflist[:-1]) + ", and " + doflist[-1]
     if "integral moment" in dofs:
         mom_type, space_info = dofs.split(" with ")
         space, order = space_info.split("(")[1].split(")")[0].split(",")
@@ -88,6 +95,45 @@ def dofs_on_entity(entity, dofs):
         assert space_link != "*ERROR*"
         return f"{mom_type} with an order \\({order}\\) {space_link} space"
     return dofs
+
+
+def make_dof_descs(data, post=""):
+    dof_data = []
+    for i in ["interval", "triangle", "tetrahedron", "quadrilateral", "hexahedron"]:
+        if i in data:
+            dof_data.append(make_dof_descs(data[i], f" ({i})"))
+    if len(dof_data) != 0:
+        return "<br />\n<br />\n".join(dof_data)
+
+    for i, j in [
+        ("On each vertex", "vertices"),
+        ("On each edge", "edges"),
+        ("On each face", "faces"),
+        ("On each volume", "volumes"),
+        ("On each ridge", "ridges"),
+        ("On each peak", "peaks"),
+        ("On each facet", "facets"),
+        ("On the interior of the reference element", "cell"),
+    ]:
+        if j in data:
+            dof_data.append(f"{i}{post}: {dofs_on_entity(j, data[j])}")
+    return "<br />\n".join(dof_data)
+
+
+def make_order_data(min_o, max_o):
+    if isinstance(min_o, dict):
+        orders = []
+        for i, min_i in min_o.items():
+            if isinstance(max_o, dict) and i in max_o:
+                orders.append(i + ": " + make_order_data(min_i, max_o[i]))
+            else:
+                orders.append(i + ": " + make_order_data(min_i, max_o))
+        return "<br />\n".join(orders)
+    if max_o is None:
+        return f"\\({min_o}\\leqslant k\\)"
+    if max_o == min_o:
+        return f"\\(k={min_o}\\)"
+    return f"\\({min_o}\\leqslant k\\leqslant {max_o}\\)"
 
 
 for file in os.listdir(element_path):
@@ -134,18 +180,9 @@ for file in os.listdir(element_path):
             element_data.append(("Abbreviated names", ", ".join(data["short-names"])))
 
         # Orders
-        if "min-order" in data:
-            min_o = data["min-order"]
-        else:
-            min_o = 0
-        if 'max-order' in data:
-            if data['max-order'] == min_o:
-                element_data.append(("Orders", f"\\(k={min_o}\\)"))
-            else:
-                element_data.append(("Orders",
-                                     f"\\({min_o}\\leqslant k\\leqslant {data['max-order']}\\)"))
-        else:
-            element_data.append(("Orders", f"\\({min_o}\\leqslant k\\)"))
+        element_data.append(("Orders", make_order_data(
+            data["min-order"] if "min-order" in data else 0,
+            data["max-order"] if "max-order" in data else None)))
 
         # Reference elements
         for e in data["reference elements"]:
@@ -203,21 +240,9 @@ for file in os.listdir(element_path):
 
         # DOFs
         if "dofs" in data:
-            dof_data = []
-            for i, j in [
-                ("On each vertex", "vertices"),
-                ("On each edge", "edges"),
-                ("On each face", "faces"),
-                ("On each volume", "volumes"),
-                ("On each ridge", "ridges"),
-                ("On each peak", "peaks"),
-                ("On each facet", "facets"),
-                ("On the interior of the reference element", "cell"),
-            ]:
-                if j in data["dofs"]:
-                    dof_data.append(f"{i}: {dofs_on_entity(j, data['dofs'][j])}")
+            dof_data = make_dof_descs(data["dofs"])
             if len(dof_data) > 0:
-                element_data.append(("DOFs", "<br />\n".join(dof_data)))
+                element_data.append(("DOFs", dof_data))
 
         # Number of DOFs
         if "ndofs" in data or "ndofs-oeis" in data:
@@ -278,7 +303,7 @@ for file in os.listdir(element_path):
             for e in data["examples"]:
                 cell = e.split(",")[0]
                 order = int(e.split(",")[1])
-                element_type = data["symfem"][cell]
+                element_type = data["symfem"]
 
                 element = create_element(cell, element_type, order)
 
@@ -328,10 +353,10 @@ for file in os.listdir(element_path):
 
         # Write file
         with open(os.path.join(htmlelement_path, f"{fname}.html"), "w") as f:
-            f.write(make_html_page(content))
+            f.write(make_html_page(content, data["html-name"]))
 
 # Index page
-elementlist.sort(key=lambda x: x[0])
+elementlist.sort(key=lambda x: x[0].lower())
 
 content = "<h1>Index of elements</h1>\n"
 # Generate filtering Javascript
@@ -446,7 +471,7 @@ with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
 os.mkdir(os.path.join(htmlindices_path, "categories"))
 content = f"<h1>Categories</h1>\n"
 for c in categories:
-    category_pages[c].sort(key=lambda x: x[0])
+    category_pages[c].sort(key=lambda x: x[0].lower())
 
     content += f"<h2><a name='{c}'></a>{categories[c]}</h2>\n<ul>"
     content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
@@ -467,7 +492,7 @@ with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
 os.mkdir(os.path.join(htmlindices_path, "references"))
 content = f"<h1>Reference elements</h1>\n"
 for c in refels:
-    refels[c].sort(key=lambda x: x[0])
+    refels[c].sort(key=lambda x: x[0].lower())
 
     content += f"<h2><a name='{c}'></a>{c[0].upper()}{c[1:]}</h2>\n<ul>"
     content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in refels[c]])

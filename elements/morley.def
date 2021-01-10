@@ -1,0 +1,28 @@
+name: Morley
+html-name: Morley
+min-order: 2
+max-order: 2
+categories:
+  - scalar
+ndofs:
+  triangle: 6
+reference elements:
+  - triangle
+polynomial set:
+  triangle: poly[k]
+dofs:
+  vertices: point evaluations
+  edges: point evaluations of normal derivatives at midpoints
+symfem: Morley
+examples:
+  - triangle,2
+references:
+  - title: The triangular equilibrium element in the solution of plate bending problems
+    author: Morley, L. S.
+    year: 1968
+    journal: The Aeronautical Quarterly
+    volume: 19
+    issue: 2
+    pagestart: 149
+    pageend: 169
+    doi: 10.1017/S0001925900004546

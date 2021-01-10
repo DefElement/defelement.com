@@ -1,0 +1,54 @@
+name: Mardal-Tai-Winther
+html-name: Mardal&ndash;Tai&ndash;Winther
+min-order: 3
+max-order: 3
+short-names:
+  - MTW
+ndofs:
+  triangle: 9
+  tetrahedron: 24
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k]^d
+  tetrahedron: poly[k]^d && <k>[\left\{\nabla\times(xyz(1-x-y-z)\mathbf{p})\middle|\mathbf{p}\in{{poly[k]^d}}\right\}]
+dofs:
+  triangle:
+    facets:
+      - normal integral moments with (lagrange,1)
+      - tangent integral moments with (lagrange,0)
+  tetrahedron:
+    facets:
+      - normal integral moments with (lagrange,1)
+      - integral moments with (nedelec1,1)
+symfem: MTW
+examples:
+  - triangle,3
+  - tetrahedron,3
+references:
+  - title: A Robust Finite Element Method for Darcy&ndash;Stokes Flow
+    author:
+      - Mardal, K. A.
+      - Tai, X.-C.
+      - Winther, R.
+    year: 2002
+    journal: SIAM Journal on Numerical Analysis
+    volume: 40
+    issue: 5
+    pagestart: 1605
+    pageend: 1631
+    doi: 10.1137/S0036142901383910
+  - title: A discrete de Rham complex with enhanced smoothness
+    author:
+      - Tai, X.-C.
+      - Mardal, K. A.
+    year: 2006
+    journal: Calcolo
+    volume: 43
+    pagestart: 287
+    pageend: 306
+    doi: 10.1007/s10092-006-0124-6

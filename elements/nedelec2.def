@@ -24,9 +24,7 @@ dofs:
   edges: tangent integral moments with (lagrange,k)
   faces: integral moments with (raviart-thomas,k-1)
   volumes: integral moments with (raviart-thomas,k-2)
-symfem:
-  triangle: N2curl
-  tetrahedron: N2curl
+symfem: N2curl
 examples:
   - triangle,1
   - triangle,2

@@ -146,7 +146,10 @@ def svg_reference(ref):
 
 
 def to_tex(f, tfrac=False):
-    out = sympy.latex(f)
+    if isinstance(f, (list, tuple)):
+        return "\\left(\\begin{array}{c}" + "\\\\".join(
+            ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
+    out = sympy.latex(sympy.simplify(sympy.expand(f)))
     out = out.replace("\\left[", "\\left(")
     out = out.replace("\\right]", "\\right)")
     if tfrac:
@@ -176,6 +179,30 @@ def describe_dof(element, d):
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
+        return desc
+    elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
+        desc = "v\\mapsto"
+        desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        entity_n = get_entity_number(element, d)
+        desc += "\\cdot\\hat{\\mathbf{n}}" + f"_{{{entity_n}}}"
+        return desc
+    elif isinstance(d, functionals.PointDirectionalDerivativeEvaluation):
+        if element.reference.tdim == 1:
+            desc = "v\\mapsto "
+            desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+            return desc
+        desc = "v\\mapsto"
+        desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        desc += "\\cdot\\left(\\begin{array}{c}"
+        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\end{array}\\right)"
+        return desc
+    elif isinstance(d, functionals.PointComponentSecondDerivativeEvaluation):
+        desc = "v\\mapsto"
+        desc += "\\frac{\\partial^2v}{"
+        for c in d.component:
+            desc += "\\partial " + "xyz"[c]
+        desc += "}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc
     elif isinstance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
@@ -308,8 +335,11 @@ def markup_element(element, images_only=False, which="ALL"):
                 else:
                     eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
                 eg += reference
-                assert dof.dof_direction() is None
-                eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
+                if dof.dof_direction() is None:
+                    eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
+                else:
+                    eg += dof_arrow(dof.dof_point() + (0, ), dof.dof_direction() + (0, ),
+                                    dof_i, "#DD2299")
                 for p, q in pairs:
                     r1 = subs(func, eval_points[p])
                     r2 = subs(func, eval_points[q])

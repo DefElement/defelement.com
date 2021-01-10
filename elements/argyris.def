@@ -1,0 +1,36 @@
+name: Argyris
+html-name: Argyris
+min-order: 5
+max-order: 5
+categories:
+  - scalar
+ndofs:
+  triangle: 21
+reference elements:
+  - interval
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k]
+dofs:
+  vertices:
+    - point evaluations
+    - point evaluations of derivatives in coordinate directions
+    - point evaluations of components of Jacobian
+  edges: point evaluations of normal derivatives at midpoints
+symfem: Argyris
+examples:
+  - triangle,5
+references:
+  - title: The TUBA Family of Plate Elements for the Matrix Displacement Method
+    author:
+      - Argyris, J. H.
+      - Fried, I.
+      - Scharpf, D. W.
+    year: 1968
+    journal: The Aeronautical Journal
+    volume: 72
+    issue: 692
+    pagestart: 701
+    pageend: 709
+    doi: 10.1017/S000192400008489X

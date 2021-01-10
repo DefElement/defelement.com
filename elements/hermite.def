@@ -1,0 +1,40 @@
+name: Hermite
+html-name: Hermite
+min-order: 3
+max-order: 3
+categories:
+  - scalar
+ndofs:
+  interval: 4
+  triangle: 10
+  tetrahedron: 20
+reference elements:
+  - interval
+  - triangle
+  - tetrahedron
+polynomial set:
+  interval: poly[k]
+  triangle: poly[k]
+  tetrahedron: poly[k]
+dofs:
+  vertices:
+    - point evaluations
+    - point evaluations of derivatives in coordinate directions
+  faces: point evaluations at midpoints
+symfem: Hermite
+examples:
+  - interval,3
+  - triangle,3
+  - tetrahedron,3
+references:
+  - title: Interpolation theory over curved elements, with applications to finite element methods
+    author:
+      - Ciarlet, P. G.
+      - Raviart, P.-A.
+    year: 1972
+    journal: Computer Methods in Applied Mechanics and Engineering
+    volume: 1
+    issue: 2
+    pagestart: 217
+    pageend: 249
+    doi: 10.1016/0045-7825(72)90006-0

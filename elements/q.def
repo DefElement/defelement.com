@@ -28,10 +28,7 @@ polynomial set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
-symfem:
-  interval: Q
-  quadrilateral: Q
-  hexahedron: Q
+symfem: Q
 examples:
   - interval,1
   - interval,2

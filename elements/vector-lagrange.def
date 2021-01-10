@@ -19,9 +19,7 @@ dofs:
 polynomial set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
-symfem:
-  triangle: vector Lagrange
-  tetrahedron: vector Lagrange
+symfem: vector Lagrange
 examples:
   - triangle,1
   - triangle,2

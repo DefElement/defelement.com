@@ -17,9 +17,7 @@ polynomial set:
   tetrahedron: poly[k]
 dofs:
   facets: point evaluation at midpoint
-symfem:
-  triangle: Crouzeix-Raviart
-  tetrahedron: Crouzeix-Raviart
+symfem: Crouzeix-Raviart
 examples:
   - triangle,1
 references:
