@@ -9,7 +9,7 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
       - uses: actions/checkout@v2
-      - run: sudo python3 -m pip install git+https://github.com/mscroggs/symfem.git@more-elements
+      - run: sudo python3 -m pip install git+https://github.com/mscroggs/symfem.git
         name: Install symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
@@ -25,7 +25,7 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
-      - run: sudo python3 -m pip install git+https://github.com/mscroggs/symfem.git@more-elements
+      - run: sudo python3 -m pip install git+https://github.com/mscroggs/symfem.git
         name: Install symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
@@ -53,7 +53,7 @@ jobs:
             sudo pip3 install pytest-xdist
         name: Install dependencies
       - uses: actions/checkout@v2
-      - run: sudo python3 -m pip install git+https://github.com/mscroggs/symfem.git@more-elements
+      - run: sudo python3 -m pip install git+https://github.com/mscroggs/symfem.git
         name: Install symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
