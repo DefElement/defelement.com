@@ -30,10 +30,14 @@ htmlindices_path = os.path.join(html_path, "lists")
 test_mode = args.test
 
 
-def make_html_page(content):
+def make_html_page(content, pagetitle=None):
     out = ""
     with open(os.path.join(template_path, "intro.html")) as f:
         out += insert_dates(f.read())
+    if pagetitle is None:
+        out = out.replace("{{: pagetitle}}", "")
+    else:
+        out = out.replace("{{: pagetitle}}", f": {pagetitle} element")
     out += content
     with open(os.path.join(template_path, "outro.html")) as f:
         out += insert_dates(f.read())
@@ -349,7 +353,7 @@ for file in os.listdir(element_path):
 
         # Write file
         with open(os.path.join(htmlelement_path, f"{fname}.html"), "w") as f:
-            f.write(make_html_page(content))
+            f.write(make_html_page(content, data["html-name"]))
 
 # Index page
 elementlist.sort(key=lambda x: x[0].lower())
