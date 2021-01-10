@@ -39,10 +39,7 @@ polynomial set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]
-symfem:
-  interval: Lagrange
-  triangle: Lagrange
-  tetrahedron: Lagrange
+symfem: Lagrange
 examples:
   - interval,1
   - interval,2
