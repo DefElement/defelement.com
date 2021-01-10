@@ -116,6 +116,22 @@ def make_dof_descs(data, post=""):
     return "<br />\n".join(dof_data)
 
 
+def make_order_data(min_o, max_o):
+    if isinstance(min_o, dict):
+        orders = []
+        for i, min_i in min_o.items():
+            if isinstance(max_o, dict) and i in max_o:
+                orders.append(i + ": " + make_order_data(min_i, max_o[i]))
+            else:
+                orders.append(i + ": " + make_order_data(min_i, max_o))
+        return "<br />\n".join(orders)
+    if max_o is None:
+        return f"\\({min_o}\\leqslant k\\)"
+    if max_o == min_o:
+        return f"\\(k={min_o}\\)"
+    return f"\\({min_o}\\leqslant k\\leqslant {max_o}\\)"
+
+
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
@@ -160,18 +176,9 @@ for file in os.listdir(element_path):
             element_data.append(("Abbreviated names", ", ".join(data["short-names"])))
 
         # Orders
-        if "min-order" in data:
-            min_o = data["min-order"]
-        else:
-            min_o = 0
-        if 'max-order' in data:
-            if data['max-order'] == min_o:
-                element_data.append(("Orders", f"\\(k={min_o}\\)"))
-            else:
-                element_data.append(("Orders",
-                                     f"\\({min_o}\\leqslant k\\leqslant {data['max-order']}\\)"))
-        else:
-            element_data.append(("Orders", f"\\({min_o}\\leqslant k\\)"))
+        element_data.append(("Orders", make_order_data(
+            data["min-order"] if "min-order" in data else 0,
+            data["max-order"] if "max-order" in data else None)))
 
         # Reference elements
         for e in data["reference elements"]:
@@ -345,7 +352,7 @@ for file in os.listdir(element_path):
             f.write(make_html_page(content))
 
 # Index page
-elementlist.sort(key=lambda x: x[0])
+elementlist.sort(key=lambda x: x[0].lower())
 
 content = "<h1>Index of elements</h1>\n"
 # Generate filtering Javascript
@@ -460,7 +467,7 @@ with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
 os.mkdir(os.path.join(htmlindices_path, "categories"))
 content = f"<h1>Categories</h1>\n"
 for c in categories:
-    category_pages[c].sort(key=lambda x: x[0])
+    category_pages[c].sort(key=lambda x: x[0].lower())
 
     content += f"<h2><a name='{c}'></a>{categories[c]}</h2>\n<ul>"
     content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
@@ -481,7 +488,7 @@ with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
 os.mkdir(os.path.join(htmlindices_path, "references"))
 content = f"<h1>Reference elements</h1>\n"
 for c in refels:
-    refels[c].sort(key=lambda x: x[0])
+    refels[c].sort(key=lambda x: x[0].lower())
 
     content += f"<h2><a name='{c}'></a>{c[0].upper()}{c[1:]}</h2>\n<ul>"
     content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in refels[c]])

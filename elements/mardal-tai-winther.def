@@ -15,7 +15,7 @@ reference elements:
   - tetrahedron
 polynomial set:
   triangle: poly[k]^d
-  tetrahedron: poly[k]^d && <k>[{\left\{\testbf{curl}(xyz(1-x-y-z)p)\middle|p\in{{poly[k]^d}}\right\}]
+  tetrahedron: poly[k]^d && <k>[\left\{\nabla\times(xyz(1-x-y-z)\mathbf{p})\middle|\mathbf{p}\in{{poly[k]^d}}\right\}]
 dofs:
   triangle:
     facets:
@@ -52,4 +52,3 @@ references:
     pagestart: 287
     pageend: 306
     doi: 10.1007/s10092-006-0124-6
-test: 1
