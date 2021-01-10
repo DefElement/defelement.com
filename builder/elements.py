@@ -199,7 +199,7 @@ def describe_dof(element, d):
         return desc
     elif isinstance(d, functionals.PointComponentSecondDerivativeEvaluation):
         desc = "v\\mapsto"
-        desc += "\\frac{\partial^2v}{"
+        desc += "\\frac{\\partial^2v}{"
         for c in d.component:
             desc += "\\partial " + "xyz"[c]
         desc += "}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
@@ -338,7 +338,8 @@ def markup_element(element, images_only=False, which="ALL"):
                 if dof.dof_direction() is None:
                     eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
                 else:
-                    eg += dof_arrow(dof.dof_point() + (0, ), dof.dof_direction() + (0, ), dof_i, "#DD2299")
+                    eg += dof_arrow(dof.dof_point() + (0, ), dof.dof_direction() + (0, ),
+                                    dof_i, "#DD2299")
                 for p, q in pairs:
                     r1 = subs(func, eval_points[p])
                     r2 = subs(func, eval_points[q])
