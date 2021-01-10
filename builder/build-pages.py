@@ -93,6 +93,29 @@ def dofs_on_entity(entity, dofs):
     return dofs
 
 
+def make_dof_descs(data, post=""):
+    dof_data = []
+    for i in ["interval", "triangle", "tetrahedron", "quadrilateral", "hexahedron"]:
+        if i in data:
+            dof_data.append(make_dof_descs(data[i], f" ({i})"))
+    if len(dof_data) != 0:
+        return "<br />\n<br />\n".join(dof_data)
+
+    for i, j in [
+        ("On each vertex", "vertices"),
+        ("On each edge", "edges"),
+        ("On each face", "faces"),
+        ("On each volume", "volumes"),
+        ("On each ridge", "ridges"),
+        ("On each peak", "peaks"),
+        ("On each facet", "facets"),
+        ("On the interior of the reference element", "cell"),
+    ]:
+        if j in data:
+            dof_data.append(f"{i}{post}: {dofs_on_entity(j, data[j])}")
+    return "<br />\n".join(dof_data)
+
+
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
@@ -206,21 +229,9 @@ for file in os.listdir(element_path):
 
         # DOFs
         if "dofs" in data:
-            dof_data = []
-            for i, j in [
-                ("On each vertex", "vertices"),
-                ("On each edge", "edges"),
-                ("On each face", "faces"),
-                ("On each volume", "volumes"),
-                ("On each ridge", "ridges"),
-                ("On each peak", "peaks"),
-                ("On each facet", "facets"),
-                ("On the interior of the reference element", "cell"),
-            ]:
-                if j in data["dofs"]:
-                    dof_data.append(f"{i}: {dofs_on_entity(j, data['dofs'][j])}")
+            dof_data = make_dof_descs(data["dofs"])
             if len(dof_data) > 0:
-                element_data.append(("DOFs", "<br />\n".join(dof_data)))
+                element_data.append(("DOFs", dof_data))
 
         # Number of DOFs
         if "ndofs" in data or "ndofs-oeis" in data:

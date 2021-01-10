@@ -146,7 +146,10 @@ def svg_reference(ref):
 
 
 def to_tex(f, tfrac=False):
-    out = sympy.latex(f)
+    if isinstance(f, (list, tuple)):
+        return "\\left(\\begin{array}{c}" + "\\\\".join(
+            ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
+    out = sympy.latex(sympy.simplify(sympy.expand(f)))
     out = out.replace("\\left[", "\\left(")
     out = out.replace("\\right]", "\\right)")
     if tfrac:

@@ -6,20 +6,29 @@ short-names:
   - MTW
 ndofs:
   triangle: 9
+  tetrahedron: 24
 categories:
   - vector
   - Hdiv
 reference elements:
   - triangle
+  - tetrahedron
 polynomial set:
   triangle: poly[k]^d
+  tetrahedron: poly[k]^d && <k>[{\left\{\testbf{curl}(xyz(1-x-y-z)p)\middle|p\in{{poly[k]^d}}\right\}]
 dofs:
-  facets:
-    - normal integral moments with (lagrange,1)
-    - tangent integral moments with (lagrange,0)
+  triangle:
+    facets:
+      - normal integral moments with (lagrange,1)
+      - tangent integral moments with (lagrange,0)
+  tetrahedron:
+    facets:
+      - normal integral moments with (lagrange,1)
+      - integral moments with (nedelec1,1)
 symfem: MTW
 examples:
   - triangle,3
+  - tetrahedron,3
 references:
   - title: A Robust Finite Element Method for Darcy&ndash;Stokes Flow
     author:
