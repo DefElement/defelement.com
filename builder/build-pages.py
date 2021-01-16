@@ -171,9 +171,25 @@ for file in os.listdir(element_path):
         element_data = []
 
         # Alternative names
+        alt_names = []
         if "alt-names" in data:
-            element_data.append(("Alternative names", ", ".join(
-                [i[1:-1] if i[0] == "(" and i[-1] == ")" else i for i in data["alt-names"]])))
+            alt_names = [i[1:-1] if i[0] == "(" and i[-1] == ")" else i
+                         for i in data["alt-names"]]
+        if "exterior-calculus" in data:
+            ec = data["exterior-calculus"]
+            if not isinstance(ec, (list, tuple)):
+                ec = [ec]
+            for e in ec:
+                i, j = e.split(",")
+                name = "\\("
+                name += f"\\mathcal{{{i[0]}}}"
+                if len(i) > 1:
+                    name += f"^{i[1]}"
+                name += f"_k\\Lambda^{{{j}}}(\\Delta_d)"
+                name += "\\)"
+                alt_names.append(name)
+        if len(alt_names) > 0:
+            element_data.append(("Alternative names", ", ".join(alt_names)))
 
         # Short names
         if "short-names" in data:

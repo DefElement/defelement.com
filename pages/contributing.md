@@ -16,6 +16,9 @@ short-names:
   - P
   - CG
   - DG
+exterior-calculus:
+  - P-,0
+  - P,0
 ndofs:
   interval: k+1
   triangle: (k+1)(k+2)/2
@@ -60,6 +63,7 @@ The entries in this yaml file are:
 <tr><td>`html-name`</td><td>Yes</td><td>The name of the element, including HTML special characters.</td></tr>
 <tr><td>`alt-names`</td><td></td><td>Alternative (HTML) names of the element.</td></tr>
 <tr><td>`short-names`</td><td></td><td>Abbreviated names of the element.</td></tr>
+<tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has.</td></tr>
 <tr><td>`ndofs-oeis`</td><td></td><td>A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
