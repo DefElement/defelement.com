@@ -26,6 +26,7 @@ args = parser.parse_args()
 html_path = args.destination
 htmlelement_path = os.path.join(html_path, "elements")
 htmlindices_path = os.path.join(html_path, "lists")
+htmlfamilies_path = os.path.join(html_path, "families")
 
 test_mode = args.test
 
@@ -49,6 +50,7 @@ if os.path.isdir(html_path):
 os.mkdir(html_path)
 os.mkdir(htmlelement_path)
 os.mkdir(htmlindices_path)
+os.mkdir(htmlfamilies_path)
 os.mkdir(os.path.join(htmlelement_path, "bibtex"))
 
 os.system(f"cp -r {files_path}/* {html_path}")
@@ -75,6 +77,7 @@ for file in os.listdir(pages_path):
 
 elementlist = []
 refels = {}
+ec_families = {}
 
 
 def dofs_on_entity(entity, dofs):
@@ -180,13 +183,23 @@ for file in os.listdir(element_path):
             if not isinstance(ec, (list, tuple)):
                 ec = [ec]
             for e in ec:
-                i, j = e.split(",")
-                name = "\\("
-                name += f"\\mathcal{{{i[0]}}}"
+                i, j, k = e.split(",")
+                if i not in ec_families:
+                    ec_families[i] = {}
+                if k not in ec_families[i]:
+                    ec_families[i][k] = {}
+                ec_families[i][k][j] = (data["html-name"], f"{fname}.html")
+                name = f"<a href='/families/{i}.html'>\\(\\mathcal{{{i[0]}}}"
                 if len(i) > 1:
                     name += f"^{i[1]}"
-                name += f"_k\\Lambda^{{{j}}}(\\Delta_d)"
-                name += "\\)"
+                name += f"_k\\Lambda^{{{j}}}("
+                if k == "simplex":
+                    name += "\\Delta"
+                else:
+                    assert k == "tp"
+                    name += "\\square"
+                name += "_d)"
+                name += "\\)</a>"
                 alt_names.append(name)
         if len(alt_names) > 0:
             element_data.append(("Alternative names", ", ".join(alt_names)))
@@ -482,7 +495,6 @@ with open(os.path.join(htmlelement_path, "index.html"), "w") as f:
 with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
-
 # Category index
 os.mkdir(os.path.join(htmlindices_path, "categories"))
 content = f"<h1>Categories</h1>\n"
@@ -506,7 +518,7 @@ with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
 
 # Reference elements index
 os.mkdir(os.path.join(htmlindices_path, "references"))
-content = f"<h1>Reference elements</h1>\n"
+content = "<h1>Reference elements</h1>\n"
 for c in refels:
     refels[c].sort(key=lambda x: x[0].lower())
 
@@ -525,6 +537,37 @@ for c in refels:
         f.write(make_html_page(sub_content))
 
 with open(os.path.join(htmlindices_path, "references/index.html"), "w") as f:
+    f.write(make_html_page(content))
+
+# Families
+content = "<h1>Families</h1>\n"
+content += "<ul>\n"
+for fname, family in ec_families.items():
+    tex_name = f"\\mathcal{{{fname[0]}}}"
+    if len(fname) > 1:
+        tex_name += f"^{fname[1]}"
+    sub_content = f"<h1>The \\({tex_name}\\) family</h1>"
+
+    sub_content += "<ul>"
+    for cell in ["simplex", "tp"]:
+        if cell in family:
+            for order in ["0", "1", "d-1", "d"]:
+                if order in family[cell]:
+                    sub_content += f"<li><a href='/elements/{family[cell][order][1]}'>"
+                    sub_content += f"\\({tex_name}_k\\Lambda^{{{order}}}("
+                    if cell == "simplex":
+                        sub_content += "\\Delta"
+                    else:
+                        sub_content += "\\square"
+                    sub_content += f"_d)\\) ({family[cell][order][0]})</a></li>"
+    sub_content += "</ul>"
+
+    with open(os.path.join(htmlfamilies_path, f"{fname}.html"), "w") as f:
+        f.write(make_html_page(sub_content))
+
+    content += f"<li><a href='/families/{fname}.html'>\\({tex_name}\\)</a></li>\n"
+content += "</ul>"
+with open(os.path.join(htmlfamilies_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # List of lists
