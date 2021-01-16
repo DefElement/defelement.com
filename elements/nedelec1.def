@@ -7,6 +7,7 @@ categories:
 short-names:
   - N1curl
   - NC
+exterior-calculus: P-,1
 ndofs:
   triangle: k(k+2)
   tetrahedron: k(k+2)(k+3)/2

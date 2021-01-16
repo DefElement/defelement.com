@@ -7,6 +7,9 @@ short-names:
   - P
   - CG
   - DG
+exterior-calculus:
+  - P-,0
+  - P,0
 ndofs:
   interval: k+1
   triangle: (k+1)(k+2)/2

@@ -4,6 +4,7 @@ alt-names:
   - (Lagrange)
 short-names:
   - Q
+exterior-calculus: Q-,0
 categories:
   - scalar
 min-order: 1
