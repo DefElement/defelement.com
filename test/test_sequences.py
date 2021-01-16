@@ -46,7 +46,7 @@ def test_sequence(file, cellname):
     maxk = 10
     if "max-order" in data:
         if isinstance(data["max-order"], dict):
-            maxk = data["max-order"][celltype]
+            maxk = data["max-order"][cellname]
         else:
             maxk = min(maxk, data["max-order"])
     for k in range(mink, maxk + 1):
