@@ -502,7 +502,7 @@ for c in categories:
     category_pages[c].sort(key=lambda x: x[0].lower())
 
     content += f"<h2><a name='{c}'></a>{categories[c]}</h2>\n<ul>"
-    content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in category_pages[c]])
+    content += "".join([f"<li><a href='/elements/{j}'>{i}</a></l*i>" for i, j in category_pages[c]])
     content += "</ul>"
 
     sub_content = f"<h1>{categories[c]}</h1>\n<ul>"
@@ -546,15 +546,17 @@ for fname, family in ec_families.items():
     tex_name = f"\\mathcal{{{fname[0]}}}"
     if len(fname) > 1:
         tex_name += f"^{fname[1]}"
-    sub_content = f"<h1>The \\({tex_name}\\) family</h1>"
+    tex_name += "_k\\Lambda"
+    sub_content = f"<h1>The \\({tex_name}^r\\) family</h1>"
 
     sub_content += "<ul>"
     for cell in ["simplex", "tp"]:
         if cell in family:
             for order in ["0", "1", "d-1", "d"]:
                 if order in family[cell]:
-                    sub_content += f"<li><a href='/elements/{family[cell][order][1]}'>"
-                    sub_content += f"\\({tex_name}_k\\Lambda^{{{order}}}("
+                    sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"
+                    sub_content += " style='text-decoration:none'>"
+                    sub_content += f"\\({tex_name}^{{{order}}}("
                     if cell == "simplex":
                         sub_content += "\\Delta"
                     else:
@@ -565,7 +567,7 @@ for fname, family in ec_families.items():
     with open(os.path.join(htmlfamilies_path, f"{fname}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
-    content += f"<li><a href='/families/{fname}.html'>\\({tex_name}\\)</a></li>\n"
+    content += f"<li><a href='/families/{fname}.html'>\\({tex_name}^r\\)</a></li>\n"
 content += "</ul>"
 with open(os.path.join(htmlfamilies_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
