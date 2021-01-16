@@ -6,6 +6,7 @@ alt-names:
 short-names:
   - RT
   - RWG
+exterior-calculus: P-,d-1
 ndofs:
   triangle: k(k+2)
   tetrahedron: k(k+1)(k+3)/2

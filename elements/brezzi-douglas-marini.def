@@ -1,6 +1,9 @@
 name: Brezzi-Douglas-Marini
 html-name: Brezzi&ndash;Douglas&ndash;Marini
 min-order: 1
+short-names:
+  - BDM
+exterior-calculus: P,d-1
 categories:
   - vector
   - Hdiv
