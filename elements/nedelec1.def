@@ -7,7 +7,7 @@ categories:
 short-names:
   - N1curl
   - NC
-exterior-calculus: P-,1
+exterior-calculus: P-,1,simplex
 ndofs:
   triangle: k(k+2)
   tetrahedron: k(k+2)(k+3)/2

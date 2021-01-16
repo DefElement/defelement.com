@@ -6,7 +6,7 @@ categories:
   - Hcurl
 short-names:
   - N2curl
-exterior-calculus: P,1
+exterior-calculus: P,1,simplex
 ndofs:
   interval: k+1
   triangle: (k+1)(k+2)

@@ -6,7 +6,7 @@ alt-names:
 short-names:
   - RTce (quadrilateral)
   - Nce (hexahedron)
-exterior-calculus: Q-,1
+exterior-calculus: Q-,1,tp
 min-order: 1
 categories:
   - vector

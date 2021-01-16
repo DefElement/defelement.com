@@ -2,7 +2,7 @@ name: serendipity
 html-name: serendipity
 short-names:
   - S
-exterior-calculus: S,0
+exterior-calculus: S,0,tp
 min-order: 1
 categories:
   - scalar
@@ -29,6 +29,9 @@ polynomial set:
   hexahedron: poly[k] && serendipity[k]
 symfem: serendipity
 examples:
+  - interval,1
+  - interval,2
+  - interval,3
   - quadrilateral,1
   - quadrilateral,2
   - quadrilateral,3

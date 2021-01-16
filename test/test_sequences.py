@@ -30,24 +30,30 @@ def test_sequence(file, cellname):
     with open(os.path.join(element_path, file)) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
 
-    if "symfem" not in data or cellname not in data["symfem"]:
+    if "symfem" not in data:
         pytest.skip()
     if "ndofs" not in data and "ndofs-oeis" not in data:
         pytest.skip()
 
     seq = {}
     if "min-order" in data:
-        mink = data["min-order"]
+        if isinstance(data["min-order"], dict):
+            mink = data["min-order"][cellname]
+        else:
+            mink = data["min-order"]
     else:
         mink = 0
     maxk = 10
     if "max-order" in data:
-        maxk = min(maxk, data["max-order"])
+        if isinstance(data["max-order"], dict):
+            maxk = data["max-order"][cellname]
+        else:
+            maxk = min(maxk, data["max-order"])
     for k in range(mink, maxk + 1):
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(25)
-            term = len(symfem.create_element(cellname, data["symfem"][cellname], k).dofs)
+            term = len(symfem.create_element(cellname, data["symfem"], k).dofs)
             seq[k] = term
         except NotImplementedError:
             pass

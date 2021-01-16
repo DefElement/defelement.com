@@ -8,8 +8,8 @@ short-names:
   - CG
   - DG
 exterior-calculus:
-  - P-,0
-  - P,0
+  - P-,0,simplex
+  - P,0,simplex
 ndofs:
   interval: k+1
   triangle: (k+1)(k+2)/2

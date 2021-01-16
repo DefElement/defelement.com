@@ -7,9 +7,7 @@ categories:
 ndofs:
   triangle: 21
 reference elements:
-  - interval
   - triangle
-  - tetrahedron
 polynomial set:
   triangle: poly[k]
 dofs:
