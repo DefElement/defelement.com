@@ -30,7 +30,7 @@ def test_sequence(file, cellname):
     with open(os.path.join(element_path, file)) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
 
-    if "symfem" not in data or cellname not in data["symfem"]:
+    if "symfem" not in data:
         pytest.skip()
     if "ndofs" not in data and "ndofs-oeis" not in data:
         pytest.skip()
@@ -47,7 +47,7 @@ def test_sequence(file, cellname):
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(25)
-            term = len(symfem.create_element(cellname, data["symfem"][cellname], k).dofs)
+            term = len(symfem.create_element(cellname, data["symfem"], k).dofs)
             seq[k] = term
         except NotImplementedError:
             pass
