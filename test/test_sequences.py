@@ -37,12 +37,18 @@ def test_sequence(file, cellname):
 
     seq = {}
     if "min-order" in data:
-        mink = data["min-order"]
+        if isinstance(data["min-order"], dict):
+            mink = data["min-order"][cellname]
+        else:
+            mink = data["min-order"]
     else:
         mink = 0
     maxk = 10
     if "max-order" in data:
-        maxk = min(maxk, data["max-order"])
+        if isinstance(data["max-order"], dict):
+            maxk = data["max-order"][celltype]
+        else:
+            maxk = min(maxk, data["max-order"])
     for k in range(mink, maxk + 1):
         try:
             signal.signal(signal.SIGALRM, handler)
