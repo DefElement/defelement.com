@@ -37,13 +37,14 @@ def make_lattice(element, n, offset=False):
                     for i in range(n) for j in range(n - i) for k in range(n - i - j)]
     elif element.reference.name == "quadrilateral":
         if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1)) for i in range(n) for j in range(n)]
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
+                    for i in range(n + 1) for j in range(n + 1)]
         else:
             return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n)]
     elif element.reference.name == "hexahedron":
         if offset:
             return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
-                    for i in range(n) for j in range(n) for k in range(n)]
+                    for i in range(n + 1) for j in range(n + 1) for k in range(n + 1)]
         else:
             return [(i / (n - 1), j / (n - 1), k / (n - 1))
                     for i in range(n) for j in range(n) for k in range(n)]
