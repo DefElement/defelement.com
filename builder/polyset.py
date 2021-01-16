@@ -47,7 +47,9 @@ def make_extra_info(p):
         a = a.strip()
         if re.match(r"^\<([^\]]+)\>\[(.+)\]$", a):
             the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]$", a)[2]
-            out.append(f"\\({named[the_set]}_k={insert_terms(the_set)}\\)")
+            if named[the_set] not in done:
+                out.append(f"\\({named[the_set]}_k={insert_terms(the_set)}\\)")
+                done.append(named[the_set])
             for i, (j, k) in poly_sets.items():
                 if f"{{{{{i}[" in a and i not in done:
                     out.append(f"\\({j}_k={k}\\)")
