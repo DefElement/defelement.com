@@ -108,6 +108,8 @@ def insert_dates(txt):
     now = datetime.now()
     txt = txt.replace("{{date:Y}}", now.strftime("%Y"))
     txt = txt.replace("{{date:D-M-Y}}", now.strftime("%d-%B-%Y"))
+    txt = re.sub("{{symbols\\.([^}\(]+)\(([0-9]+)\)}}",
+                 lambda m: getattr(symbols, m[1])(int(m[2])), txt)
     txt = re.sub("{{symbols\\.([^}]+)}}", lambda m: getattr(symbols, m[1]), txt)
 
     return txt

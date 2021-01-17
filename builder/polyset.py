@@ -72,7 +72,7 @@ def make_extra_info(p):
 
 
 def insert_terms(the_set):
-    the_set = the_set.replace("{{x}}", "\\mathbf{x}")
+    the_set = the_set.replace("{{x}}", "\\boldsymbol{x}")
     for i, (j, k) in poly_sets.items():
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\^dd}}}}", rf"{escape(j)}_{{\1}}^{{d\\times d}}",
                          the_set)

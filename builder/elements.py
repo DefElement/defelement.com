@@ -175,8 +175,8 @@ def describe_dof(element, d):
     if isinstance(d, functionals.PointEvaluation):
         return "v\\mapsto v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
     elif isinstance(d, functionals.DotPointEvaluation):
-        desc = "\\mathbf{v}\\mapsto"
-        desc += "\\mathbf{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        desc = "\\boldsymbol{v}\\mapsto"
+        desc += "\\boldsymbol{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
@@ -185,7 +185,7 @@ def describe_dof(element, d):
         desc = "v\\mapsto"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         entity_n = get_entity_number(element, d)
-        desc += "\\cdot\\hat{\\mathbf{n}}" + f"_{{{entity_n}}}"
+        desc += "\\cdot\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc
     elif isinstance(d, functionals.PointDirectionalDerivativeEvaluation):
         if element.reference.tdim == 1:
@@ -208,22 +208,22 @@ def describe_dof(element, d):
     elif isinstance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
-        desc = "\\mathbf{v}\\mapsto"
+        desc = "\\boldsymbol{v}\\mapsto"
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
-        desc += "\\mathbf{v}\\cdot"
+        desc += "\\boldsymbol{v}\\cdot"
         if d.f != 1:
             desc += "(" + to_tex(d.f) + ")"
-        desc += "\\hat{\\mathbf{t}}" + f"_{{{entity_n}}}"
+        desc += "\\hat{\\boldsymbol{t}}" + f"_{{{entity_n}}}"
         return desc
     elif isinstance(d, functionals.NormalIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
-        desc = "\\mathbf{v}\\mapsto"
+        desc = "\\boldsymbol{v}\\mapsto"
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
-        desc += "\\mathbf{v}\\cdot"
+        desc += "\\boldsymbol{v}\\cdot"
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
-        desc += "\\hat{\\mathbf{n}}" + f"_{{{entity_n}}}"
+        desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc
     elif isinstance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
@@ -232,9 +232,9 @@ def describe_dof(element, d):
             entity = f"{symbols.entity(d.entity_dim())}_{{{get_entity_number(element, d)}}}"
         try:
             d.f[0]
-            desc = "\\mathbf{v}\\mapsto"
+            desc = "\\boldsymbol{v}\\mapsto"
             desc += f"\\displaystyle\\int_{{{entity}}}"
-            desc += "\\mathbf{v}\\cdot"
+            desc += "\\boldsymbol{v}\\cdot"
             desc += "\\left(\\begin{array}{c}"
             desc += "\\\\".join([to_tex(i) for i in d.f])
             desc += "\\end{array}\\right)"
@@ -443,7 +443,12 @@ def markup_element(element):
         eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
         eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
         eg += describe_dof(element, dof) + "\\)<br /><br />"
-        eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+        if element.range_dim == 1:
+            eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+        elif element.range_shape is None or len(element.range_shape) == 1:
+            eg += f"\\(\\displaystyle {symbols.vector_basis_function}_{{{dof_i}}} = "
+        else:
+            eg += f"\\(\\displaystyle {symbols.matrix_basis_function}_{{{dof_i}}} = "
         eg += to_tex(func) + "\\)<br /><br />"
         eg += "This DOF is associated with "
         eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
