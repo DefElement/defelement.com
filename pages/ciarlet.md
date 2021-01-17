@@ -130,7 +130,7 @@ For matrix-valued basis functions, \({{symbols.matrix_basis_function}}\), the
 $$\left({{symbols.mapping}}^\text{curl curl}{{symbols.matrix_basis_function}}\right)(\boldsymbol{x})
 :=\left({{symbols.jacobian}}^{-T}{{symbols.matrix_basis_function}}{{symbols.jacobian}}^{-1}\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
 $$\left({{symbols.mapping}}^\text{div div}{{symbols.matrix_basis_function}}\right)(\boldsymbol{x})
-:=\left(\frac1{\det {{symbols.jacobian}}}{{symbols.jacobian}}{{symbols.matrix_basis_function}}{{symbols.jacobian}}^T\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
+:=\left(\frac1{\left(\det {{symbols.jacobian}}\right)^2}{{symbols.jacobian}}{{symbols.matrix_basis_function}}{{symbols.jacobian}}^T\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
 
 ## Notation
 Throughout this website, the notation given here in this section is used.
