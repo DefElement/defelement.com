@@ -14,8 +14,8 @@ reference elements:
   - triangle
   - tetrahedron
 polynomial set:
-  triangle: poly[k]^d
-  tetrahedron: poly[k]^d && <k>[\left\{\nabla\times(xyz(1-x-y-z)\mathbf{p})\middle|\mathbf{p}\in{{poly[k]^d}}\right\}]
+  triangle: <k>[\left\{\boldsymbol{p}\in{{poly[k]^d}}\middle|\operatorname{div}\boldsymbol{p}\text{ is constant, and }\boldsymbol{p}\cdot\boldsymbol{n}_{e_i}\text{ is linear on each edge }e_i\right\}]
+  tetrahedron: poly[k]^d && <k>[\left\{\nabla\times(xyz(1-x-y-z)\boldsymbol{p})\middle|\boldsymbol{p}\in{{poly[k]^d}}\right\}]
 dofs:
   triangle:
     facets:

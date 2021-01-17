@@ -225,6 +225,9 @@ for file in os.listdir(element_path):
             refels[e].append((data["html-name"], f"{fname}.html"))
             if "alt-names" in data:
                 for i in data["alt-names"]:
+                    if i[0] == "(" and i[-1] == ")":
+                        continue
+
                     refels[e].append((i.split(" (")[0], f"{fname}.html"))
         element_data.append(
             ("Reference elements",
@@ -317,6 +320,8 @@ for file in os.listdir(element_path):
                 category_pages[c].append((data["html-name"], f"{fname}.html"))
                 if "alt-names" in data:
                     for i in data["alt-names"]:
+                        if i[0] == "(" and i[-1] == ")":
+                            continue
                         category_pages[c].append((i.split(" (")[0], f"{fname}.html"))
             element_data.append(
                 ("Categories",

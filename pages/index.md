@@ -1,4 +1,4 @@
-<div style='float:right;width:220px;padding:10px'>
+<div id='sideplots' style='float:right;width:220px;padding:10px'>
 <div>{{plot::triangle,Raviart-Thomas,1::1}}</div>
 <div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [Raviart&ndash;Thomas space](element::raviart-thomas) on a triangle</div>
 <div>{{plot::quadrilateral,Q,2::3}}</div>

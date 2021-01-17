@@ -18,8 +18,8 @@ reference elements:
   - triangle
   - tetrahedron
 polynomial set:
-  triangle: poly[k-1]^d && <k>[\left\{\mathbf{p}\in{{tpoly[k]^d}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
-  tetrahedron: poly[k-1]^d && <k>[\left\{\mathbf{p}\in{{tpoly[k]^d}}\middle|\mathbf{p}({{x}})\cdot {{x}}=0\right\}]
+  triangle: poly[k-1]^d && <k>[\left\{\boldsymbol{p}\in{{tpoly[k]^d}}\middle|\boldsymbol{p}({{x}})\cdot {{x}}=0\right\}]
+  tetrahedron: poly[k-1]^d && <k>[\left\{\boldsymbol{p}\in{{tpoly[k]^d}}\middle|\boldsymbol{p}({{x}})\cdot {{x}}=0\right\}]
 dofs:
   edges: tangent integral moments with (lagrange,k-1)
   faces: integral moments with (vector-lagrange,k-2)
