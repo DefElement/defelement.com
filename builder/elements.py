@@ -2,6 +2,8 @@ import symbols
 import sympy
 from symfem.core import functionals
 from symfem.core.symbolic import x
+from symfem.core.calculus import grad
+from symfem.core.vectors import vdot, vsub
 
 
 def to_2d(c, width=200, height=200):
@@ -52,10 +54,8 @@ def make_lattice(element, n, offset=False):
 
 
 def subs(f, p):
-    try:
+    if isinstance(f, (tuple, list)):
         return [subs(i, p) for i in f]
-    except:  # noqa: E722
-        pass
     for i, j in zip(x, p):
         try:
             f = f.subs(i, j)
@@ -315,13 +315,12 @@ def get_max_l(element, eval_points):
     return _mlcache[reference][elementname][order]
 
 
-def make_point_pairs(element):
+def make_point_pairs(element, N=6):
     pairs = []
     if element.reference.tdim == 1:
-        eval_points = make_lattice(element, 10, False)
+        eval_points = make_lattice(element, N, False)
         pairs = [(i, i+1) for i, j in enumerate(eval_points[:-1])]
     elif element.reference.tdim == 2:
-        N = 6
         eval_points = make_lattice(element, N, False)
         if element.reference.name == "triangle":
             s = 0
@@ -396,13 +395,24 @@ def draw_function(element, dof_i):
         out += dof_arrow(dof.dof_point() + add, dof.dof_direction() + add,
                          dof_i, "#DD2299")
     if element.range_dim == 1:
+        if element.domain_dim == 1:
+            eval_points, pairs = make_point_pairs(element, 2)
+
         for p, q in pairs:
             r1 = subs(func, eval_points[p])
             r2 = subs(func, eval_points[q])
+            d_p1 = tuple(i + (j - i) / 3 for i, j in zip(eval_points[p], eval_points[q]))
+            d_p2 = tuple(i + 2 * (j - i) / 3 for i, j in zip(eval_points[p], eval_points[q]))
+            deriv = grad(func, element.domain_dim)
+            d1 = vdot(subs(deriv, eval_points[p]), vsub(d_p1, eval_points[p]))
+            d2 = vdot(subs(deriv, eval_points[q]), vsub(d_p2, eval_points[q]))
             start = to_2d(eval_points[p] + (r1 / max_l, ))
             end = to_2d(eval_points[q] + (r2 / max_l, ))
-            out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
-            out += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
+            mid1 = to_2d(d_p1 + ((d1 + r1) / max_l, ))
+            mid2 = to_2d(d_p2 + ((d2 + r2) / max_l, ))
+            out += f"<path d='M {start[0]} {start[1]} C {mid1[0]} {mid1[1]}, "
+            out += f"{mid2[0]} {mid2[1]}, {end[0]} {end[1]}'"
+            out += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' fill='none' />"
     out += "</svg>\n"
     return out
 
