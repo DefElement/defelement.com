@@ -101,7 +101,8 @@ The basis functions of this space are:
 
 ## Mapping finite elements
 In order to maintain desired properties when mapping finite elements from a reference
-element to an actual mesh, an appropriate mapping must be defined. 
+element to an actual mesh, an appropriate mapping must be defined.
+<ref title="Efficient assembly of H(div) and H(curl) conforming finite elements" author="Rognes, M. E. and Kirby, R. C. and Logg, A." journal="SIAM Journal on Scientific Computing" volume="31" number="6", pagestart="4130" pageend="4151" year="2009" doi="10.1137/08073901X">
 Let \({{symbols.geometry_map}}\) be a transformation that maps the reference element to a cell in the mesh,
 and let \(\boldsymbol{x}\) be a point in the cell.
 
