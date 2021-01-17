@@ -123,18 +123,20 @@ The Jacobian, \({{symbols.jacobian}}\), of the transformation \({{symbols.geomet
 \right)\) for 3D reference elements.
 
 ### Scalar-valued basis functions
-The simplest mapping&mdash;used to map scalar basis functions, \({{symbols.basis_function}}\)&mdash;is defined by:
+The simplest mapping&mdash;used to map scalar basis functions, \({{symbols.basis_function}}\)&mdash;is defined by
 $$\left({{symbols.mapping}}{{symbols.basis_function}}\right)(\boldsymbol{x})
-:=\left({{symbols.basis_function}}\circ {{symbols.geometry_map}}^{-1}\right)\boldsymbol{x}$$
+:={{symbols.basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x})).$$
+The term \({{symbols.geometry_map}}^{-1}(\boldsymbol{x})\) is the point on the reference element corresponding to the point \(\boldsymbol{x}\), so this mapping
+maps a value of the function on the reference to the same value at the corresponding point.
 
 ### Vector-valued basis functions
 For vector-valued basis functions, \({{symbols.vector_basis_function}}\), the
 <b>covariant Piola</b> (\({{symbols.mapping}}^\text{curl}\)) and
 <b>contravariant Piola</b> (\({{symbols.mapping}}^\text{div}\)) mappings are defined:
 $$\left({{symbols.mapping}}^\text{curl}{{symbols.vector_basis_function}}\right)(\boldsymbol{x})
-:=\left({{symbols.jacobian}}^{-T}{{symbols.vector_basis_function}}\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
+:={{symbols.jacobian}}^{-T}{{symbols.vector_basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x}))$$
 $$\left({{symbols.mapping}}^\text{div}{{symbols.vector_basis_function}}\right)(\boldsymbol{x})
-:=\left(\frac1{\det {{symbols.jacobian}}}{{symbols.jacobian}}{{symbols.vector_basis_function}}\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
+:=\frac1{\det {{symbols.jacobian}}}{{symbols.jacobian}}{{symbols.vector_basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x}))$$
 The covariant Piola mapping preserves the tangential component of basis functions on edges and facets,
 and are typically used to map H(div) elements.
 The contravariant Piola mapping preserves the normal component of basis functions on facets,
@@ -145,9 +147,9 @@ For matrix-valued basis functions, \({{symbols.matrix_basis_function}}\), the
 <b>double covariant Piola</b> (\({{symbols.mapping}}^\text{curl curl}\)) and
 <b>double contravariant Piola</b> (\({{symbols.mapping}}^\text{div div}\)) mappings are defined:
 $$\left({{symbols.mapping}}^\text{curl curl}{{symbols.matrix_basis_function}}\right)(\boldsymbol{x})
-:=\left({{symbols.jacobian}}^{-T}{{symbols.matrix_basis_function}}{{symbols.jacobian}}^{-1}\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
+:={{symbols.jacobian}}^{-T}{{symbols.matrix_basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x})){{symbols.jacobian}}^{-1}$$
 $$\left({{symbols.mapping}}^\text{div div}{{symbols.matrix_basis_function}}\right)(\boldsymbol{x})
-:=\left(\frac1{\left(\det {{symbols.jacobian}}\right)^2}{{symbols.jacobian}}{{symbols.matrix_basis_function}}{{symbols.jacobian}}^T\circ {{symbols.geometry_map}}^{-1}\right)(\boldsymbol{x})$$
+:=\frac1{\left(\det {{symbols.jacobian}}\right)^2}{{symbols.jacobian}}{{symbols.matrix_basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x})){{symbols.jacobian}}^T$$
 
 ## Notation
 Throughout this website, the notation given here in this section is used.
