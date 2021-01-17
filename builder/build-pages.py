@@ -173,6 +173,11 @@ for file in os.listdir(element_path):
         content = f"<h1>{data['html-name'][0].upper()}{data['html-name'][1:]}</h1>"
         element_data = []
 
+        # Link to ciarlet.htmlk
+        content += "<p><small><a href='/ciarlet.html'>"
+        content += "Click here to read what the information on this page means."
+        content += "</a></small></p>"
+
         # Alternative names
         alt_names = []
         if "alt-names" in data:
