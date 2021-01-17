@@ -22,10 +22,10 @@ reference elements of topological dimensions 0 to 3 are shown below.
 <tr><td>Topological dimension</td><td colspan=4>Entities by dimension</td><td colspan=4>Entities by codimension</td></tr>
 <tr><td></td><td>0</td><td>1</td><td>2</td><td>3</td><td>0</td><td>1 (facets)</td><td>2 (ridges)</td><td>3 (peaks)</td></td>
 </thead>
-<tr><td>0 (a vertex)</td><td>the cell</td><td>-</td><td>-</td><td>-</td><td>the cell</td><td>-</td><td>-</td><td>-</td></tr>
-<tr><td>1 (an interval)</td><td>points</td><td>the cell</td><td>-</td><td>-</td><td>the cell</td><td>points</td><td>-</td><td>-</td></tr>
-<tr><td>2 (a polygon)</td><td>points</td><td>edges</td><td>the cell</td><td>-</td><td>the cell</td><td>edges</td><td>points</td><td>-</td></tr>
-<tr><td>3 (a polyhedron)</td><td>points</td><td>edges</td><td>faces</td><td>the cell</td><td>the cell</td><td>faces</td><td>edges</td><td>points</td></tr>
+<tr><td>0 (a vertex)</td><td>point</td><td>-</td><td>-</td><td>-</td><td>the cell</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>1 (an interval)</td><td>points</td><td>edge</td><td>-</td><td>-</td><td>the cell</td><td>points</td><td>-</td><td>-</td></tr>
+<tr><td>2 (a polygon)</td><td>points</td><td>edges</td><td>face</td><td>-</td><td>the cell</td><td>edges</td><td>points</td><td>-</td></tr>
+<tr><td>3 (a polyhedron)</td><td>points</td><td>edges</td><td>faces</td><td>volume</td><td>the cell</td><td>faces</td><td>edges</td><td>points</td></tr>
 </table>
 </center>
 

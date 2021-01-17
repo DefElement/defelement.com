@@ -259,12 +259,39 @@ def describe_dof(element, d):
         raise ValueError(f"Unknown functional: {d.__class__}")
 
 
+def draw_reference(reference, dof_entity=(-1, -1), add=tuple()):
+    out = ""
+
+    if dof_entity[0] >= 2:
+        if dof_entity[0] == 2:
+            faces = [dof_entity[1]]
+        else:
+            faces = [i for i, _ in enumerate(reference.faces)]
+        for f in faces:
+            vertices = [to_2d(reference.vertices[i] + add) for i in reference.faces[f]]
+            out += "<polygon points='"
+            out += " ".join([f"{i},{j}" for i, j in vertices])
+            out += "' fill='#BBEEFF' />"
+    for n, edge in enumerate(reference.edges):
+        p0 = to_2d(reference.vertices[edge[0]] + add)
+        p1 = to_2d(reference.vertices[edge[1]] + add)
+        out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+        out += " stroke-width='4px' stroke-linecap='round' "
+        if dof_entity == (1, n):
+            out += "stroke='#44AAFF'"
+        else:
+            out += "stroke='#AAAAAA'"
+        out += " />"
+    return out
+
+
 def markup_element(element, images_only=False, which="ALL"):
     eg = ""
     if not images_only:
         eg += "<ul>\n"
         # Reference
-        eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}</li>\n"
+        eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
+        eg += " The following numbering of the subentities of the reference is used:</li>\n"
         eg += "<center>" + svg_reference(element.reference) + "</center>\n"
         # Polynomial set
         eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
@@ -278,16 +305,10 @@ def markup_element(element, images_only=False, which="ALL"):
         eg += "<li>Functionals and basis functions:</li>"
         eg += "</ul>"
 
+
     if element.range_dim == 1:
         if element.reference.tdim not in [1, 2]:
             return ""
-
-        reference = ""
-        for edge in element.reference.edges:
-            p0 = to_2d(element.reference.vertices[edge[0]] + (0, ))
-            p1 = to_2d(element.reference.vertices[edge[1]] + (0, ))
-            reference += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
-            reference += " stroke-width='4px' stroke-linecap='round' stroke='#AAAAAA' />"
 
         pairs = []
         if element.reference.tdim == 1:
@@ -332,10 +353,10 @@ def markup_element(element, images_only=False, which="ALL"):
                     eg += "<div class='basisf'>"
                     eg += "<div style='display:inline-block'>"
                 if element.reference.name == "quadrilateral":
-                    eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
+                    eg += "<svg width='215' height='200'>\n"
                 else:
-                    eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
-                eg += reference
+                    eg += "<svg width='200' height='200'>\n"
+                eg += draw_reference(element.reference, dof.entity, (0, ))
                 if dof.dof_direction() is None:
                     eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
                 else:
@@ -350,22 +371,18 @@ def markup_element(element, images_only=False, which="ALL"):
                     eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
                 eg += "</svg>\n"
                 if not images_only:
-                    eg += "</div><div style='display:inline-block;padding-left:10px'>"
+                    eg += "</div><div style='display:inline-block;padding-left:10px;"
+                    eg += "padding-bottom:10px'>"
                     eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
                     eg += describe_dof(element, dof) + "\\)<br /><br />"
                     eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                    eg += to_tex(func) + "\\)"
-                    eg += "</div></div>\n"
+                    eg += to_tex(func) + "\\)<br /><br />"
+                    eg += "This DOF is associated with "
+                    eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+                    eg += " of the reference element.</div></div>"
 
     elif element.range_dim == element.reference.tdim:
         eval_points = make_lattice(element, 6, True)
-
-        reference = ""
-        for edge in element.reference.edges:
-            p0 = to_2d(element.reference.vertices[edge[0]])
-            p1 = to_2d(element.reference.vertices[edge[1]])
-            reference += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
-            reference += " stroke-width='4px' stroke-linecap='round' stroke='#AAAAAA' />"
 
         max_l = 0
         for f in element.get_basis_functions():
@@ -379,10 +396,10 @@ def markup_element(element, images_only=False, which="ALL"):
                     eg += "<div class='basisf'>"
                     eg += "<div style='display:inline-block'>"
                 if element.reference.name == "hexahedron":
-                    eg += "<svg width='215' height='200' style='vertical-align:middle'>\n"
+                    eg += "<svg width='215' height='200'>\n"
                 else:
-                    eg += "<svg width='200' height='200' style='vertical-align:middle'>\n"
-                eg += reference
+                    eg += "<svg width='200' height='200'>\n"
+                eg += draw_reference(element.reference, dof.entity)
                 for p in eval_points:
                     res = subs(func, p)
                     start = to_2d(p)
@@ -403,23 +420,29 @@ def markup_element(element, images_only=False, which="ALL"):
 
                 eg += "</svg>\n"
                 if not images_only:
-                    eg += "</div><div style='display:inline-block;padding-left:10px'>"
+                    eg += "</div><div style='display:inline-block;padding-left:10px;"
+                    eg += "padding-bottom:10px'>"
                     eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
                     eg += describe_dof(element, dof) + "\\)<br /><br />"
                     eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                    eg += to_tex(func) + "\\)"
-                    eg += "</div></div>"
+                    eg += to_tex(func) + "\\)<br /><br />"
+                    eg += "This DOF is associated with "
+                    eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+                    eg += " of the reference element.</div></div>"
     else:
         for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
             if which == "ALL" or which == dof_i and not images_only:
                 eg += "<div class='basisf'>"
                 eg += "<div style='display:inline-block'>"
-                eg += "</div><div style='display:inline-block;padding-left:10px'>"
+                eg += "</div><div style='display:inline-block;padding-left:10px;"
+                eg += "padding-bottom:10px'>"
                 eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
                 eg += describe_dof(element, dof) + "\\)<br /><br />"
                 eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                eg += to_tex(func) + "\\)"
-                eg += "</div></div>\n"
+                eg += to_tex(func) + "\\)<br /><br />"
+                eg += "This DOF is associated with "
+                eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+                eg += " of the reference element.</div></div>"
 
     return eg
 
