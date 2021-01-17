@@ -74,17 +74,17 @@ def insert_links(txt):
 
 
 def plot_element(matches):
-    from elements import markup_element
+    from elements import draw_function
     import symfem
     e = symfem.create_element(matches[1], matches[2], int(matches[3]))
-    return f"<center>{markup_element(e, True)}</center>"
+    return f"<center>{''.join([draw_function(e, i) for i in range(e.space_dim)])}</center>"
 
 
 def plot_single_element(matches):
-    from elements import markup_element
+    from elements import draw_function
     import symfem
     e = symfem.create_element(matches[1], matches[2], int(matches[3]))
-    return f"<center>{markup_element(e, True, int(matches[4]))}</center>"
+    return f"<center>{draw_function(e, int(matches[4]))}</center>"
 
 
 def plot_reference(matches):
@@ -108,6 +108,8 @@ def insert_dates(txt):
     now = datetime.now()
     txt = txt.replace("{{date:Y}}", now.strftime("%Y"))
     txt = txt.replace("{{date:D-M-Y}}", now.strftime("%d-%B-%Y"))
+    txt = re.sub("{{symbols\\.([^}\\(]+)\\(([0-9]+)\\)}}",
+                 lambda m: getattr(symbols, m[1])(int(m[2])), txt)
     txt = re.sub("{{symbols\\.([^}]+)}}", lambda m: getattr(symbols, m[1]), txt)
 
     return txt

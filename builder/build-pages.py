@@ -38,7 +38,7 @@ def make_html_page(content, pagetitle=None):
     if pagetitle is None:
         out = out.replace("{{: pagetitle}}", "")
     else:
-        out = out.replace("{{: pagetitle}}", f": {pagetitle} element")
+        out = out.replace("{{: pagetitle}}", f": {pagetitle}")
     out += content
     with open(os.path.join(template_path, "outro.html")) as f:
         out += insert_dates(f.read())
@@ -172,6 +172,11 @@ for file in os.listdir(element_path):
         fname = file[:-4]
         content = f"<h1>{data['html-name'][0].upper()}{data['html-name'][1:]}</h1>"
         element_data = []
+
+        # Link to ciarlet.htmlk
+        content += "<p><small><a href='/ciarlet.html'>"
+        content += "Click here to read what the information on this page means."
+        content += "</a></small></p>"
 
         # Alternative names
         alt_names = []
