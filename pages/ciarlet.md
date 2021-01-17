@@ -102,8 +102,24 @@ The basis functions of this space are:
 ## Mapping finite elements
 In order to maintain desired properties when mapping finite elements from a reference
 element to an actual mesh, an appropriate mapping must be defined. 
-Let \({{symbols.geometry_map}}\) be a function that maps the reference element to a cell in the mesh,
+Let \({{symbols.geometry_map}}\) be a transformation that maps the reference element to a cell in the mesh,
 and let \(\boldsymbol{x}\) be a point in the cell.
+
+The Jacobian, \({{symbols.jacobian}}\), of the transformation \({{symbols.geometry_map}}\) is
+\(\displaystyle\frac{\mathrm{d}F}{\mathrm{d}x}\) for 1D reference elements,
+\(\displaystyle\left(
+\begin{array}{cc}
+\frac{\partial F_1}{\partial x}&\frac{\partial F_1}{\partial y}\\
+\frac{\partial F_2}{\partial x}&\frac{\partial F_2}{\partial y}
+\end{array}
+\right)\) for 2D reference elements, or
+\(\displaystyle\left(
+\begin{array}{ccc}
+\frac{\partial F_1}{\partial x}&\frac{\partial F_1}{\partial y}&\frac{\partial F_1}{\partial z}\\
+\frac{\partial F_2}{\partial x}&\frac{\partial F_2}{\partial y}&\frac{\partial F_2}{\partial z}\\
+\frac{\partial F_3}{\partial x}&\frac{\partial F_3}{\partial y}&\frac{\partial F_3}{\partial z}
+\end{array}
+\right)\) for 3D reference elements.
 
 ### Scalar-valued basis functions
 The simplest mapping&mdash;used to map scalar basis functions, \({{symbols.basis_function}}\)&mdash;is defined by:
