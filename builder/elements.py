@@ -285,164 +285,159 @@ def draw_reference(reference, dof_entity=(-1, -1), add=tuple()):
     return out
 
 
-def markup_element(element, images_only=False, which="ALL"):
-    eg = ""
-    if not images_only:
-        eg += "<ul>\n"
-        # Reference
-        eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
-        eg += " The following numbering of the subentities of the reference is used:</li>\n"
-        eg += "<center>" + svg_reference(element.reference) + "</center>\n"
-        # Polynomial set
-        eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
-        eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.get_polynomial_basis()])
-        eg += "</li>\n"
-        # Dual basis
-        eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
-        eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
+_mlcache = {}
 
-        # Basis functions
-        eg += "<li>Functionals and basis functions:</li>"
-        eg += "</ul>"
 
+def get_max_l(element, eval_points):
+    reference = element.reference.name
+    elementname = element.names[0]
+    order = element.order
+    if reference not in _mlcache:
+        _mlcache[reference] = {}
+    if elementname not in _mlcache[reference]:
+        _mlcache[reference][elementname] = {}
+    if order not in _mlcache[reference][elementname]:
+        if element.range_dim == 1:
+            max_l = 0
+            for f in element.get_basis_functions():
+                for p in eval_points:
+                    r1 = subs(f, p)
+                    max_l = max(max_l, r1)
+        else:
+            max_l = 0
+            for f in element.get_basis_functions():
+                for p in eval_points:
+                    res = subs(f, p)
+                    max_l = max(max_l, sum(i**2 for i in res) ** 0.5)
+
+        _mlcache[reference][elementname][order] = max_l
+
+    return _mlcache[reference][elementname][order]
+
+
+def make_point_pairs(element):
+    pairs = []
+    if element.reference.tdim == 1:
+        eval_points = make_lattice(element, 10, False)
+        pairs = [(i, i+1) for i, j in enumerate(eval_points[:-1])]
+    elif element.reference.tdim == 2:
+        N = 6
+        eval_points = make_lattice(element, N, False)
+        if element.reference.name == "triangle":
+            s = 0
+            for j in range(N-1, 0, -1):
+                pairs += [(i, i+1) for i in range(s, s+j)]
+                s += j + 1
+            for k in range(N + 1):
+                s = k
+                for i in range(N, k, -1):
+                    if i != k + 1:
+                        pairs += [(s, s + i)]
+                    if k != 0:
+                        pairs += [(s, s + i - 1)]
+                    s += i
+        if element.reference.name == "quadrilateral":
+            for i in range(N):
+                for j in range(N):
+                    node = i * N + j
+                    if j != N - 1:
+                        pairs += [(node, node + 1)]
+                    if i != N - 1:
+                        pairs += [(node, node + N)]
+                        if j != 0:
+                            pairs += [(node, node + N - 1)]
+    return eval_points, pairs
+
+
+def draw_function(element, dof_i):
+    dof = element.dofs[dof_i]
+    func = element.get_basis_functions()[dof_i]
+
+    if element.range_dim == 1 and element.reference.tdim not in [1, 2]:
+        return ""
+    if element.range_dim not in [1, element.domain_dim]:
+        return ""
 
     if element.range_dim == 1:
-        if element.reference.tdim not in [1, 2]:
-            return ""
-
-        pairs = []
-        if element.reference.tdim == 1:
-            eval_points = make_lattice(element, 10, False)
-            pairs = [(i, i+1) for i, j in enumerate(eval_points[:-1])]
-        elif element.reference.tdim == 2:
-            N = 6
-            eval_points = make_lattice(element, N, False)
-            if element.reference.name == "triangle":
-                s = 0
-                for j in range(N-1, 0, -1):
-                    pairs += [(i, i+1) for i in range(s, s+j)]
-                    s += j + 1
-                for k in range(N + 1):
-                    s = k
-                    for i in range(N, k, -1):
-                        if i != k + 1:
-                            pairs += [(s, s + i)]
-                        if k != 0:
-                            pairs += [(s, s + i - 1)]
-                        s += i
-            if element.reference.name == "quadrilateral":
-                for i in range(N):
-                    for j in range(N):
-                        node = i * N + j
-                        if j != N - 1:
-                            pairs += [(node, node + 1)]
-                        if i != N - 1:
-                            pairs += [(node, node + N)]
-                            if j != 0:
-                                pairs += [(node, node + N - 1)]
-
-        max_l = 0
-        for f in element.get_basis_functions():
-            for p in eval_points:
-                r1 = subs(f, p)
-                max_l = max(max_l, r1)
-
-        for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            if which == "ALL" or which == dof_i:
-                if not images_only:
-                    eg += "<div class='basisf'>"
-                    eg += "<div style='display:inline-block'>"
-                if element.reference.name == "quadrilateral":
-                    eg += "<svg width='215' height='200'>\n"
-                else:
-                    eg += "<svg width='200' height='200'>\n"
-                eg += draw_reference(element.reference, dof.entity, (0, ))
-                if dof.dof_direction() is None:
-                    eg += dof_arrow(dof.dof_point() + (0, ), None, dof_i, "#DD2299")
-                else:
-                    eg += dof_arrow(dof.dof_point() + (0, ), dof.dof_direction() + (0, ),
-                                    dof_i, "#DD2299")
-                for p, q in pairs:
-                    r1 = subs(func, eval_points[p])
-                    r2 = subs(func, eval_points[q])
-                    start = to_2d(eval_points[p] + (r1 / max_l, ))
-                    end = to_2d(eval_points[q] + (r2 / max_l, ))
-                    eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
-                    eg += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
-                eg += "</svg>\n"
-                if not images_only:
-                    eg += "</div><div style='display:inline-block;padding-left:10px;"
-                    eg += "padding-bottom:10px'>"
-                    eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-                    eg += describe_dof(element, dof) + "\\)<br /><br />"
-                    eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                    eg += to_tex(func) + "\\)<br /><br />"
-                    eg += "This DOF is associated with "
-                    eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
-                    eg += " of the reference element.</div></div>"
-
-    elif element.range_dim == element.reference.tdim:
-        eval_points = make_lattice(element, 6, True)
-
-        max_l = 0
-        for f in element.get_basis_functions():
-            for p in eval_points:
-                res = subs(f, p)
-                max_l = max(max_l, sum(i**2 for i in res) ** 0.5)
-
-        for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            if which == "ALL" or which == dof_i:
-                if not images_only:
-                    eg += "<div class='basisf'>"
-                    eg += "<div style='display:inline-block'>"
-                if element.reference.name == "hexahedron":
-                    eg += "<svg width='215' height='200'>\n"
-                else:
-                    eg += "<svg width='200' height='200'>\n"
-                eg += draw_reference(element.reference, dof.entity)
-                for p in eval_points:
-                    res = subs(func, p)
-                    start = to_2d(p)
-                    end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
-                    a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
-                          end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
-                    a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
-                          end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
-                    wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
-                    eg += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
-                    eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-                    eg += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
-                    eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-                    eg += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
-                    eg += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-
-                eg += dof_arrow(dof.dof_point(), dof.dof_direction(), dof_i, "#DD2299")
-
-                eg += "</svg>\n"
-                if not images_only:
-                    eg += "</div><div style='display:inline-block;padding-left:10px;"
-                    eg += "padding-bottom:10px'>"
-                    eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-                    eg += describe_dof(element, dof) + "\\)<br /><br />"
-                    eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                    eg += to_tex(func) + "\\)<br /><br />"
-                    eg += "This DOF is associated with "
-                    eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
-                    eg += " of the reference element.</div></div>"
+        eval_points, pairs = make_point_pairs(element)
+        add = (0, )
     else:
-        for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            if which == "ALL" or which == dof_i and not images_only:
-                eg += "<div class='basisf'>"
-                eg += "<div style='display:inline-block'>"
-                eg += "</div><div style='display:inline-block;padding-left:10px;"
-                eg += "padding-bottom:10px'>"
-                eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-                eg += describe_dof(element, dof) + "\\)<br /><br />"
-                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-                eg += to_tex(func) + "\\)<br /><br />"
-                eg += "This DOF is associated with "
-                eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
-                eg += " of the reference element.</div></div>"
+        eval_points = make_lattice(element, 6, True)
+        add = tuple()
+
+    max_l = get_max_l(element, eval_points)
+
+    if element.reference.name == "hexahedron" or (
+        element.range_dim == 1 and element.reference.name == "quadrilateral"
+    ):
+        out = "<svg width='215' height='200'>\n"
+    else:
+        out = "<svg width='200' height='200'>\n"
+    out += draw_reference(element.reference, dof.entity, add)
+    if element.range_dim != 1:
+        for p in eval_points:
+            res = subs(func, p)
+            start = to_2d(p)
+            end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
+            a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
+                  end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
+            a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
+                  end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
+            wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
+            out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+            out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+            out += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
+            out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+            out += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
+            out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+    if dof.dof_direction() is None:
+        out += dof_arrow(dof.dof_point() + add, None, dof_i, "#DD2299")
+    else:
+        out += dof_arrow(dof.dof_point() + add, dof.dof_direction() + add,
+                         dof_i, "#DD2299")
+    if element.range_dim == 1:
+        for p, q in pairs:
+            r1 = subs(func, eval_points[p])
+            r2 = subs(func, eval_points[q])
+            start = to_2d(eval_points[p] + (r1 / max_l, ))
+            end = to_2d(eval_points[q] + (r2 / max_l, ))
+            out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+            out += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' />"
+    out += "</svg>\n"
+    return out
+
+
+def markup_element(element):
+    eg = ""
+    eg += "<ul>\n"
+    # Reference
+    eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
+    eg += " The following numbering of the subentities of the reference is used:</li>\n"
+    eg += "<center>" + svg_reference(element.reference) + "</center>\n"
+    # Polynomial set
+    eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
+    eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.get_polynomial_basis()])
+    eg += "</li>\n"
+    # Dual basis
+    eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
+    eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
+
+    # Basis functions
+    eg += "<li>Functionals and basis functions:</li>"
+    eg += "</ul>"
+
+    for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
+        eg += "<div class='basisf'><div style='display:inline-block'>"
+        eg += draw_function(element, dof_i)
+        eg += "</div>"
+        eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
+        eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
+        eg += describe_dof(element, dof) + "\\)<br /><br />"
+        eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+        eg += to_tex(func) + "\\)<br /><br />"
+        eg += "This DOF is associated with "
+        eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+        eg += " of the reference element.</div></div>"
 
     return eg
 

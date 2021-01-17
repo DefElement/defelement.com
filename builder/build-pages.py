@@ -38,7 +38,7 @@ def make_html_page(content, pagetitle=None):
     if pagetitle is None:
         out = out.replace("{{: pagetitle}}", "")
     else:
-        out = out.replace("{{: pagetitle}}", f": {pagetitle} element")
+        out = out.replace("{{: pagetitle}}", f": {pagetitle}")
     out += content
     with open(os.path.join(template_path, "outro.html")) as f:
         out += insert_dates(f.read())
