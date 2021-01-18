@@ -269,6 +269,8 @@ def draw_reference(reference, dof_entity=(-1, -1), add=tuple()):
             faces = [i for i, _ in enumerate(reference.faces)]
         for f in faces:
             vertices = [to_2d(reference.vertices[i] + add) for i in reference.faces[f]]
+            if len(vertices) == 4:
+                vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
             out += "<polygon points='"
             out += " ".join([f"{i},{j}" for i, j in vertices])
             out += "' fill='#BBEEFF' />"
