@@ -90,4 +90,7 @@ table.filters tr td:first-of-type {padding-right:10px;font-variant:all-small-cap
 table.filters tr td:last-of-type {font-size:80%}
 
 a#show-flink, a#hide-flink,
-a#show_pset_link, a#hide_pset_link {font-size:80%;padding-top:10px;padding-bottom:10px}
+a#show_pset_link, a#hide_pset_link,
+a#show_symfem_link, a#hide_symfem_link {font-size:80%;padding-top:10px;padding-bottom:10px}
+
+p.pcode {margin-left:50px;margin-right:50px;font-family:monospace}

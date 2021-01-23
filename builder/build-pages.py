@@ -2,7 +2,7 @@ import os
 import argparse
 import yaml
 from symfem import create_element
-from markup import markup, insert_dates, insert_links
+from markup import markup, insert_dates, insert_links, python_highlight
 from elements import markup_element
 from citations import markup_citation, make_bibtex
 from polyset import make_poly_set, make_extra_info
@@ -263,14 +263,14 @@ for file in os.listdir(element_path):
                 set_data += "</div>"
                 set_data += "<script type='text/javascript'>\n"
                 set_data += "function show_psets(){\n"
-                set_data += "   document.getElementById('show_pset_link').style.display = 'none'\n"
-                set_data += "   document.getElementById('hide_pset_link').style.display = 'block'\n"
-                set_data += "   document.getElementById('psets').style.display = 'block'\n"
+                set_data += "  document.getElementById('show_pset_link').style.display = 'none'\n"
+                set_data += "  document.getElementById('hide_pset_link').style.display = 'block'\n"
+                set_data += "  document.getElementById('psets').style.display = 'block'\n"
                 set_data += "}\n"
                 set_data += "function hide_psets(){\n"
-                set_data += "   document.getElementById('show_pset_link').style.display = 'block'\n"
-                set_data += "   document.getElementById('hide_pset_link').style.display = 'none'\n"
-                set_data += "   document.getElementById('psets').style.display = 'none'\n"
+                set_data += "  document.getElementById('show_pset_link').style.display = 'block'\n"
+                set_data += "  document.getElementById('hide_pset_link').style.display = 'none'\n"
+                set_data += "  document.getElementById('psets').style.display = 'none'\n"
                 set_data += "}\n"
                 set_data += "</script>"
             element_data.append(("Polynomial set", set_data))
@@ -313,6 +313,59 @@ for file in os.listdir(element_path):
             element_data.append(
                 ("Notes",
                  "<br />\n".join([insert_links(i) for i in data["notes"]])))
+
+        # Symfem string
+        if "symfem" in data:
+            symfem_info = f"<code>\"{data['symfem']}\"</code>"
+            symfem_info += "<br />"
+
+            symfem_info += "<a id='show_symfem_link' href='javascript:show_symfem_eg()'"
+            symfem_info += " style='display:block'>"
+            symfem_info += "&darr; Show Symfem examples &darr;</a>"
+            symfem_info += "<a id='hide_symfem_link' href='javascript:hide_symfem_eg()'"
+            symfem_info += " style='display:none'>"
+            symfem_info += "&uarr; Hide Symfem examples &uarr;</a>"
+            symfem_info += "<div id='symfem_eg' style='display:none'>"
+            symfem_info += "Before trying this example, you must install "
+            symfem_info += "<a href='https://github.com/mscroggs/symfem'>Symfem</a>:"
+            symfem_info += "<p class='pcode'>pip3 install symfem</p>"
+            symfem_info += "This element can then be created with the following lines of Python:"
+            symfem_example = "import symfem"
+            for ref in data["reference elements"]:
+                if "min-order" in data:
+                    if isinstance(data["min-order"], dict):
+                        min_o = data["min-order"][ref]
+                    else:
+                        min_o = data["min-order"]
+                else:
+                    min_o = 0
+                max_o = min_o + 2
+                if "max-order" in data:
+                    if isinstance(data["max-order"], dict):
+                        max_o = min(data["max-order"][ref], max_o)
+                    else:
+                        max_o = min(data["max-order"], max_o)
+                for ord in range(min_o, max_o):
+                    symfem_example += "\n\n"
+                    symfem_example += f"# Create {data['name']} order {ord} on a {ref}\n"
+                    symfem_example += f"element = symfem.create_element(\"{ref}\","
+                    symfem_example += f" \"{data['symfem']}\", {ord})"
+            symfem_info += "<p class='pcode'>" + python_highlight(symfem_example) + "</p>"
+            symfem_info += "</div>"
+            symfem_info += "<script type='text/javascript'>\n"
+            symfem_info += "function show_symfem_eg(){\n"
+            symfem_info += "  document.getElementById('show_symfem_link').style.display = 'none'\n"
+            symfem_info += "  document.getElementById('hide_symfem_link').style.display = 'block'\n"
+            symfem_info += "  document.getElementById('symfem_eg').style.display = 'block'\n"
+            symfem_info += "}\n"
+            symfem_info += "function hide_symfem_eg(){\n"
+            symfem_info += "  document.getElementById('show_symfem_link').style.display = 'block'\n"
+            symfem_info += "  document.getElementById('hide_symfem_link').style.display = 'none'\n"
+            symfem_info += "  document.getElementById('symfem_eg').style.display = 'none'\n"
+            symfem_info += "}\n"
+            symfem_info += "</script>"
+
+            element_data.append(("Symfem string", symfem_info))
 
         # Categories
         if "categories" in data:

@@ -12,6 +12,7 @@ def markup(content):
     out = ""
     popen = False
     code = False
+    is_python = False
     for line in content.split("\n"):
         if line.startswith("#"):
             if popen:
@@ -28,15 +29,22 @@ def markup(content):
                 popen = False
         elif line == "```":
             code = not code
+            is_python = False
+        elif line == "```python":
+            code = not code
+            is_python = True
         else:
             if not popen and not line.startswith("<") and not line.startswith("\\["):
                 if code:
-                    out += "<p style='margin-left:50px;margin-right:50px;font-family:monospace'>"
+                    out += "<p class='pcode'>"
                 else:
                     out += "<p>"
                 popen = True
             if code:
-                out += line.replace(" ", "&nbsp;")
+                if is_python:
+                    out += python_highlight(line.replace(" ", "&nbsp;"))
+                else:
+                    out += line.replace(" ", "&nbsp;")
                 out += "<br />"
             else:
                 out += line
@@ -113,3 +121,26 @@ def insert_dates(txt):
     txt = re.sub("{{symbols\\.([^}]+)}}", lambda m: getattr(symbols, m[1]), txt)
 
     return txt
+
+
+def python_highlight(txt):
+    txt = txt.replace(" ", "&nbsp;")
+    out = []
+    for line in txt.split("\n"):
+        comment = ""
+        if "#" in line:
+            lsp = line.split("#", 1)
+            line = lsp[0]
+            comment = f"<span style='color:#FF8800'>#{lsp[1]}</span>"
+
+        lsp = line.split("\"")
+        line = lsp[0]
+
+        for i, j in enumerate(lsp[1:]):
+            if i % 2 == 0:
+                line += f"<span style='color:#DD2299'>\"{j}"
+            else:
+                line += f"\"</span>{j}"
+
+        out.append(line + comment)
+    return "<br />".join(out)
