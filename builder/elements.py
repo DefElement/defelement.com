@@ -502,7 +502,8 @@ def draw_piecewise_function(element, func):
                 a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
                       end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
                 wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
-                out += f"<line x1='{start[0] + 80}' y1='{start[1]}' x2='{end[0] + 80}' y2='{end[1]}'"
+                out += f"<line x1='{start[0] + 80}' y1='{start[1]}'"
+                out += f" x2='{end[0] + 80}' y2='{end[1]}'"
                 out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
                 out += f"<line x1='{a1[0] + 80}' y1='{a1[1]}' x2='{end[0] + 80}' y2='{end[1]}'"
                 out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
