@@ -1,0 +1,32 @@
+name: rotated Buffa-Christiansen
+html-name: rotated Buffa&ndash;Christiansen
+short-names:
+  - RBC
+ndofs:
+  dual polygon(n): n
+min-order: 1
+max-order: 1
+categories:
+  - vector
+  - Hcurl
+reference elements:
+  - dual polygon
+symfem: RBC
+examples:
+  - dual polygon(4),1
+  - dual polygon(5),1
+  - dual polygon(6),1
+notes:
+  - These elements are defined on the barycentric dual grid.
+  - These elements are defined as a linear combination of [N&eacute;d&eacute;lec first kind](element::nedelec1) basis functions on the fine grid.
+references:
+  - author:
+    - Buffa, A.
+    - Christiansen, S. H.
+    title: A dual finite element complex on the barycentric refinement
+    journal: Mathematics of Computation
+    volume: 76
+    number: 260
+    year: 2007
+    pagestart: 1743
+    pageend: 1769

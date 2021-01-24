@@ -1,0 +1,33 @@
+name: Buffa-Christiansen
+html-name: Buffa&ndash;Christiansen
+short-names:
+  - BC
+ndofs:
+  dual polygon(n): n
+min-order: 1
+max-order: 1
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - dual polygon
+symfem: BC
+examples:
+  - dual polygon(4),1
+  - dual polygon(5),1
+  - dual polygon(6),1
+notes:
+  - These elements are defined on the barycentric dual grid.
+  - These elements are defined as a linear combination of [Raviart-Thomas](element::raviart-thomas) basis functions on the fine grid.
+references:
+  - author:
+    - Buffa, A.
+    - Christiansen, S. H.
+    title: A dual finite element complex on the barycentric refinement
+    journal: Mathematics of Computation
+    volume: 76
+    number: 260
+    year: 2007
+    pagestart: 1743
+    pageend: 1769
+test: 1
