@@ -488,22 +488,26 @@ def draw_piecewise_function(element, func):
         out = "<svg width='300' height='300'>\n"
     out += draw_reference(element.reference, (-1, -1), add)
 
-    # if element.range_dim != 1:
-    #    for p in eval_points:
-    #        res = subs(func, p)
-    #        start = to_2d(p)
-    #        end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
-    #        a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
-    #              end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
-    #        a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
-    #              end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
-    #        wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
-    #        out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
-    #        out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-    #        out += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
-    #        out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
-    #        out += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
-    #        out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+    if element.range_dim != 1:
+        for vs, f in func.pieces:
+            sub_e = create_element("triangle", element.fine_space, element.order)
+            eval_points = make_lattice(sub_e, 3, True)
+            eval_points = [tuple(subs(sub_e.reference.get_map_to(vs), p)) for p in eval_points]
+            for p in eval_points:
+                res = subs(f, p)
+                start = to_2d(p)
+                end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
+                a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
+                      end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
+                a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
+                      end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
+                wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
+                out += f"<line x1='{start[0] + 80}' y1='{start[1]}' x2='{end[0] + 80}' y2='{end[1]}'"
+                out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                out += f"<line x1='{a1[0] + 80}' y1='{a1[1]}' x2='{end[0] + 80}' y2='{end[1]}'"
+                out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+                out += f"<line x1='{end[0] + 80}' y1='{end[1]}' x2={a2[0] + 80} y2={a2[1]}"
+                out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
 
     # if dof.dof_direction() is None:
     #    out += dof_arrow(dof.dof_point() + add, None, dof_i, "#DD2299")

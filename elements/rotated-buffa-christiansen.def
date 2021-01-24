@@ -1,24 +1,24 @@
-name: dual polynomial
-html-name: dual polynomial
+name: rotated Buffa-Christiansen
+html-name: rotated Buffa&ndash;Christiansen
 short-names:
-  - dual
+  - RBC
 ndofs:
-  dual polygon(n): \begin{cases}1&k=0\\n&k=1\end{cases}
-min-order: 0
+  dual polygon(n): n
+min-order: 1
 max-order: 1
 categories:
-  - scalar
+  - vector
+  - Hcurl
 reference elements:
   - dual polygon
-symfem: dual
+symfem: RBC
 examples:
-  - dual polygon(6),0
   - dual polygon(4),1
   - dual polygon(5),1
   - dual polygon(6),1
 notes:
   - These elements are defined on the barycentric dual grid.
-  - These elements are defined as a linear combination of [Lagrange](element::lagrange) basis functions on the fine grid.
+  - These elements are defined as a linear combination of [N&eacute;d&eacute;lec first kind](element::nedelec1) basis functions on the fine grid.
 references:
   - author:
     - Buffa, A.
