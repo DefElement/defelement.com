@@ -1,5 +1,6 @@
 import symbols
 import sympy
+from symfem import create_element
 from symfem.core import functionals
 from symfem.core.symbolic import x
 from symfem.core.calculus import grad
@@ -65,7 +66,9 @@ def subs(f, p):
 
 
 def svg_reference(ref):
-    if ref.name == "interval":
+    if ref.name == "dual polygon":
+        return svg_dual_reference(ref)
+    elif ref.name == "interval":
         w = 130
         h = 30
     elif ref.name == "hexahedron":
@@ -141,6 +144,43 @@ def svg_reference(ref):
         for i, e in enumerate(ref.volumes):
             c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
             out += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
+    out += "</svg>"
+
+    return out
+
+
+def svg_dual_reference(ref):
+    assert ref.name == "dual polygon"
+    assert ref.tdim == 2
+
+    out = "<svg width='260' height='260'>"
+
+    for v in ref.vertices:
+        p0 = [float(130 + 110 * i) for i in ref.origin]
+        p1 = [float(130 + 110 * i) for i in v]
+        out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+        out += " stroke-width='2px' stroke-linecap='round' stroke='#AAAAAA'"
+        out += " stroke-dasharray='3, 5' />"
+    for edge in ref.edges:
+        p0 = [float(130 + 110 * i) for i in ref.vertices[edge[0]]]
+        p1 = [float(130 + 110 * i) for i in ref.vertices[edge[1]]]
+        out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+        out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
+
+    for i, v in enumerate(ref.vertices):
+        out += dof_arrow([float(130 + 110 * i) for i in v], None, i, "#FF8800", map_to_2d=False)
+
+    for i, e in enumerate(ref.edges):
+        c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
+        out += dof_arrow([float(130 + 110 * i) for i in c], None, i, "#44AAFF", map_to_2d=False)
+
+    for i, e in enumerate(ref.faces):
+        c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
+        out += dof_arrow([float(130 + 110 * i) for i in c], None, i, "#55FF00", map_to_2d=False)
+
+    for i, e in enumerate(ref.volumes):
+        c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
+        out += dof_arrow([float(130 + 110 * i) for i in c], None, i, "#DD2299", map_to_2d=False)
     out += "</svg>"
 
     return out
@@ -277,7 +317,12 @@ def draw_reference(reference, dof_entity=(-1, -1), add=tuple()):
     for n, edge in enumerate(reference.edges):
         p0 = to_2d(reference.vertices[edge[0]] + add)
         p1 = to_2d(reference.vertices[edge[1]] + add)
-        out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+        if reference.name == "dual polygon":
+            out += f"<line x1='{80 + float(p0[0])}' y1='{float(p0[1])}'"
+            out += f" x2='{80 + float(p1[0])}' y2='{float(p1[1])}'"
+        else:
+            out += f"<line x1='{float(p0[0])}' y1='{float(p0[1])}'"
+            out += f" x2='{float(p1[0])}' y2='{float(p1[1])}'"
         out += " stroke-width='4px' stroke-linecap='round' "
         if dof_entity == (1, n):
             out += "stroke='#44AAFF'"
@@ -419,6 +464,78 @@ def draw_function(element, dof_i):
     return out
 
 
+def draw_piecewise_function(element, func):
+    if element.range_dim == 1 and element.reference.tdim not in [1, 2]:
+        return ""
+    if element.range_dim not in [1, element.domain_dim]:
+        return ""
+
+    if element.range_dim == 1:
+        # eval_points, pairs = make_point_pairs(element)
+        add = (0, )
+    else:
+        # eval_points = make_lattice(element, 6, True)
+        add = tuple()
+
+    max_l = 1  # get_max_l(element, eval_points)
+
+    assert element.reference.name == "dual polygon"
+    assert element.domain_dim == 2
+
+    if element.range_dim == 1:
+        out = "<svg width='300' height='200'>\n"
+    else:
+        out = "<svg width='300' height='300'>\n"
+    out += draw_reference(element.reference, (-1, -1), add)
+
+    # if element.range_dim != 1:
+    #    for p in eval_points:
+    #        res = subs(func, p)
+    #        start = to_2d(p)
+    #        end = to_2d([i + j * 0.4 / max_l for i, j in zip(p, res)])
+    #        a1 = [end[0] + 0.25 * (start[0] - end[0]) - 0.12 * (start[1] - end[1]),
+    #              end[1] + 0.25 * (start[1] - end[1]) + 0.12 * (start[0] - end[0])]
+    #        a2 = [end[0] + 0.25 * (start[0] - end[0]) + 0.12 * (start[1] - end[1]),
+    #              end[1] + 0.25 * (start[1] - end[1]) - 0.12 * (start[0] - end[0])]
+    #        wid = 4 * sum(i**2 for i in res) ** 0.5 / max_l
+    #        out += f"<line x1='{start[0]}' y1='{start[1]}' x2='{end[0]}' y2='{end[1]}'"
+    #        out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+    #        out += f"<line x1='{a1[0]}' y1='{a1[1]}' x2='{end[0]}' y2='{end[1]}'"
+    #        out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+    #        out += f"<line x1='{end[0]}' y1='{end[1]}' x2={a2[0]} y2={a2[1]}"
+    #        out += f" stroke='#FF8800' stroke-width='{wid}px' stroke-linecap='round' />"
+
+    # if dof.dof_direction() is None:
+    #    out += dof_arrow(dof.dof_point() + add, None, dof_i, "#DD2299")
+    # else:
+    #    out += dof_arrow(dof.dof_point() + add, dof.dof_direction() + add,
+    #                     dof_i, "#DD2299")
+
+    if element.range_dim == 1:
+        for vs, f in func.pieces:
+            sub_e = create_element("triangle", element.fine_space, element.order)
+            eval_points, pairs = make_point_pairs(sub_e, 3)
+            eval_points = [tuple(subs(sub_e.reference.get_map_to(vs), p)) for p in eval_points]
+
+            for p, q in pairs:
+                r1 = subs(f, eval_points[p])
+                r2 = subs(f, eval_points[q])
+                d_p1 = tuple(i + (j - i) / 3 for i, j in zip(eval_points[p], eval_points[q]))
+                d_p2 = tuple(i + 2 * (j - i) / 3 for i, j in zip(eval_points[p], eval_points[q]))
+                deriv = grad(f, element.domain_dim)
+                d1 = vdot(subs(deriv, eval_points[p]), vsub(d_p1, eval_points[p]))
+                d2 = vdot(subs(deriv, eval_points[q]), vsub(d_p2, eval_points[q]))
+                start = to_2d(eval_points[p] + (r1 / max_l, ))
+                end = to_2d(eval_points[q] + (r2 / max_l, ))
+                mid1 = to_2d(d_p1 + ((d1 + r1) / max_l, ))
+                mid2 = to_2d(d_p2 + ((d2 + r2) / max_l, ))
+                out += f"<path d='M {start[0] + 80} {start[1]} C {mid1[0] + 80} {mid1[1]}, "
+                out += f"{mid2[0] + 80} {mid2[1]}, {end[0] + 80} {end[1]}'"
+                out += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' fill='none' />"
+    out += "</svg>\n"
+    return out
+
+
 def markup_element(element):
     eg = ""
     eg += "<ul>\n"
@@ -427,41 +544,57 @@ def markup_element(element):
     eg += " The following numbering of the subentities of the reference is used:</li>\n"
     eg += "<center>" + svg_reference(element.reference) + "</center>\n"
     # Polynomial set
-    eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
-    eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.get_polynomial_basis()])
-    eg += "</li>\n"
+    if element.reference.name != "dual polygon":
+        eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
+        eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.get_polynomial_basis()])
+        eg += "</li>\n"
     # Dual basis
-    eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
-    eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
+    if element.reference.name != "dual polygon":
+        eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
+        eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
 
     # Basis functions
-    eg += "<li>Functionals and basis functions:</li>"
+    if element.reference.name == "dual polygon":
+        eg += "<li>Basis functions:</li>"
+    else:
+        eg += "<li>Functionals and basis functions:</li>"
     eg += "</ul>"
 
-    for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-        eg += "<div class='basisf'><div style='display:inline-block'>"
-        eg += draw_function(element, dof_i)
-        eg += "</div>"
-        eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
-        eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-        eg += describe_dof(element, dof) + "\\)<br /><br />"
-        if element.range_dim == 1:
-            eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-        elif element.range_shape is None or len(element.range_shape) == 1:
-            eg += f"\\(\\displaystyle {symbols.vector_basis_function}_{{{dof_i}}} = "
-        else:
-            eg += f"\\(\\displaystyle {symbols.matrix_basis_function}_{{{dof_i}}} = "
-        eg += to_tex(func) + "\\)<br /><br />"
-        eg += "This DOF is associated with "
-        eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
-        eg += " of the reference element.</div></div>"
+    if element.reference.name == "dual polygon":
+        for f in element.get_basis_functions():
+            eg += "<div class='basisf'><div style='display:inline-block'>"
+            eg += draw_piecewise_function(element, f)
+            eg += "</div>"
+            eg += "</div>"
+    else:
+        for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
+            eg += "<div class='basisf'><div style='display:inline-block'>"
+            eg += draw_function(element, dof_i)
+            eg += "</div>"
+            eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
+            eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
+            eg += describe_dof(element, dof) + "\\)<br /><br />"
+            if element.range_dim == 1:
+                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+            elif element.range_shape is None or len(element.range_shape) == 1:
+                eg += f"\\(\\displaystyle {symbols.vector_basis_function}_{{{dof_i}}} = "
+            else:
+                eg += f"\\(\\displaystyle {symbols.matrix_basis_function}_{{{dof_i}}} = "
+            eg += to_tex(func) + "\\)<br /><br />"
+            eg += "This DOF is associated with "
+            eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+            eg += " of the reference element.</div></div>"
 
     return eg
 
 
-def dof_arrow(point, dir, n, color="#000000", width=200, height=200):
+def dof_arrow(point, dir, n, color="#000000", width=200, height=200, map_to_2d=True):
     out = ""
-    start = to_2d(tuple(float(i) for i in point), width=width, height=height)
+    if map_to_2d:
+        start = to_2d(tuple(float(i) for i in point), width=width, height=height)
+    else:
+        assert dir is None
+        start = point
     if dir is not None:
         norma = sum(i**2 for i in dir) ** 0.5
         dir = tuple(i / norma for i in dir)
