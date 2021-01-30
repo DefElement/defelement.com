@@ -43,3 +43,15 @@ references:
     year: 2014
     pagestart: 1551
     pageend: 5170
+  - title: Two families of mixed finite elements for second order elliptic problems
+    author:
+      - Brezzi, F.
+      - Douglas, J.
+      - Marini, L. D.
+    journal: Numerische Mathematik
+    volume: 47
+    number: 2
+    year: 1985
+    pagestart: 217
+    pageend: 235
+    doi: 10.1007/BF01389710
