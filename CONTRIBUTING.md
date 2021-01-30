@@ -1,7 +1,8 @@
 # How to contribute
 
 ## Reporting mistakes
-If you find a mistake in the DefElement database, please report it on the [issue tracker](https://github.com/mscroggs/defelement.com/issues/new?assignees=&labels=bug&template=mistake-report.md&title=)
+If you find a mistake in the DefElement database, please report it on the
+[issue tracker](https://github.com/mscroggs/defelement.com/issues/new?assignees=&labels=bug&template=mistake-report.md&title=)
 using the *Mistake report* template.
 
 ## Suggesting new elements
