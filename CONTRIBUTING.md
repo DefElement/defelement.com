@@ -19,7 +19,10 @@ If you want to directly submit changes to DefElement, you can do this by forking
 If you want to contribute, but are unsure where to start, have a look at the
 [issue tracker](https://github.com/mscroggs/defelement.com/labels/good%20first%20issue) for issues labelled "good first issue".
 
-On opening a pull request, unit tests and flake8 style checks will run. You can click on these in the pull request
+Information about adding an element of DefElement can be found at
+[defelement.com/contributing.html](https://defelement.com/contributing.html).
+
+On opening a pull request, unit tests and style checks will run. You can click on these in the pull request
 to see where (if anywhere) there are errors in your changes.
 
 ## Code of conduct
