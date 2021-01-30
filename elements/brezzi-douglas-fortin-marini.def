@@ -1,0 +1,50 @@
+name: Brezzi-Douglas-Fortin-Marini
+html-name: Brezzi&ndash;Douglas&ndash;Fortin&ndash;Marini
+min-order: 1
+short-names:
+  - BDFM
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - triangle
+  - quadrilateral
+  - tetrahedron
+  - hexahedron
+ndofs:
+  triangle: k(k+2)
+  quadrilateral: k(k+3)
+  tetrahedron: k(k+1)(k+3)/2
+  hexahedron: k(k+1)(k+5)/2
+ndofs-oeis:
+  quadrilateral: A028552
+polynomial set:
+  triangle: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
+  quadrilateral: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
+  tetrahedron: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
+  hexahedron: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
+dofs:
+  facets: normal integral moments with (lagrange,k-1)
+  cell: integral moments with (vector-lagrange,k-2)
+symfem: BDFM
+examples:
+  - triangle,1
+  - triangle,2
+  - quadrilateral,1
+  - quadrilateral,2
+  - tetrahedron,2
+  - hexahedron,2
+references:
+  - author:
+      - Brezzi, F.
+      - Douglas, J.
+      - Fortin, M.
+      - Marini, L. D.
+    title: Efficient rectangular mixed finite elements in two and three space variables
+    doi: 10.1051/m2an/1987210405811
+    journal: "ESAIM: Mathematical Modelling and Numerical Analysis"
+    year: 1987
+    volume: 21
+    number: 4
+    pagestart: 581
+    pageend: 604

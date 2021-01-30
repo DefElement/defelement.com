@@ -1,7 +1,8 @@
 # How to contribute
 
 ## Reporting mistakes
-If you find a mistake in the DefElement database, please report it on the [issue tracker](https://github.com/mscroggs/defelement.com/issues/new?assignees=&labels=bug&template=mistake-report.md&title=)
+If you find a mistake in the DefElement database, please report it on the
+[issue tracker](https://github.com/mscroggs/defelement.com/issues/new?assignees=&labels=bug&template=mistake-report.md&title=)
 using the *Mistake report* template.
 
 ## Suggesting new elements
@@ -19,7 +20,10 @@ If you want to directly submit changes to DefElement, you can do this by forking
 If you want to contribute, but are unsure where to start, have a look at the
 [issue tracker](https://github.com/mscroggs/defelement.com/labels/good%20first%20issue) for issues labelled "good first issue".
 
-On opening a pull request, unit tests and flake8 style checks will run. You can click on these in the pull request
+Information about adding an element of DefElement can be found at
+[defelement.com/contributing.html](https://defelement.com/contributing.html).
+
+On opening a pull request, unit tests and style checks will run. You can click on these in the pull request
 to see where (if anywhere) there are errors in your changes.
 
 ## Code of conduct
