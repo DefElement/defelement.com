@@ -16,6 +16,7 @@ ndofs:
   quadrilateral: k(k+3)
   tetrahedron: k(k+1)(k+3)/2
   hexahedron: k(k+1)(k+5)/2
+min-order: 1
 ndofs-oeis:
   quadrilateral: A028552
 polynomial set:
