@@ -1,0 +1,35 @@
+name: Brezzi-Douglas-Duran-Fortin
+html-name: Brezzi&ndash;Douglas&ndash;Dur&aacute;n&ndash;Fortin
+min-order: 1
+short-names:
+  - BDDF
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - hexahedron
+ndofs:
+  hexahedron: (k+1)(k^2+5k+12)/2
+polynomial set:
+  hexahedron: poly[k]^d && <k>[\operatorname{span}\left\{\nabla\times(0,0,x^{k+1}y), \nabla\times(0,xz^{k+1},0), \nabla\times(y^{k+1}z,0,0)\right\}] && <k>[\left\{\nabla\times(0,0,xy^{i+1}z^{k-i}), \nabla\times(0,x^{i+1}y^{k-i}z,0), \nabla\times(x^{k-i}yz^{i+1},0,0)\middle|i=1,...,k\right\}]
+dofs:
+  facets: normal integral moments with (lagrange,k)
+  cell: integral moments with (vector-lagrange,k-2)
+symfem: BDDF
+min-order: 1
+examples:
+  - hexahedron,1
+  - hexahedron,2
+references:
+  - author:
+      - Brezzi, F.
+      - Douglas, J.
+      - Dur&aacute;n, R.
+      - Fortin, M.
+    title: Mixed finite elements for second order elliptic problems in three variables
+    doi: 10.1007/BF01396752
+    journal: Numerische Mathematik
+    year: 1987
+    volume: 51
+    pagestart: 237
+    pageend: 250
