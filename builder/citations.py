@@ -26,6 +26,8 @@ def markup_citation(r):
                 out += f"({r['issue']})"
         if "pagestart" in r and "pageend" in r:
             out += f", {r['pagestart']}&ndash;{r['pageend']}"
+    elif "arxiv" in r:
+        out += f", ar&Chi;iv: <a href='https://arxiv.org/abs/{r['arxiv']}'>{r['arxiv']}</a>"
     if "booktitle" in r:
         out += f", in <em>{r['booktitle']}</em>"
         if "editor" in r:

@@ -19,8 +19,10 @@ examples:
   - triangle,1
   - triangle,2
 references:
-  - title: The Hellan-Herrmann-Johnson method with curved elements 
-    author: Douglas N. Arnold and Shawn W. Walker
+  - title: The Hellan&ndash;Herrmann&ndash;Johnson method with curved elements 
+    author:
+      - Arnold, D. N.
+      - Walker, S. W.
     year: 2020
     arxiv: 1909.09687
 test: 1
