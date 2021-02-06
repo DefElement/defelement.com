@@ -265,6 +265,17 @@ def describe_dof(element, d):
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc
+    elif isinstance(d, functionals.NormalInnerProductIntegralMoment):
+        entity = symbols.entity(d.entity_dim())
+        entity_n = get_entity_number(element, d)
+        desc = "\\mathbf{V}\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += "\\hat{\\boldsymbol{n}}^t" + f"_{{{entity_n}}}"
+        desc += "\\mathbf{V}"
+        desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
+        return desc
     elif isinstance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
             entity = symbols.reference
@@ -272,12 +283,24 @@ def describe_dof(element, d):
             entity = f"{symbols.entity(d.entity_dim())}_{{{get_entity_number(element, d)}}}"
         try:
             d.f[0]
-            desc = "\\boldsymbol{v}\\mapsto"
-            desc += f"\\displaystyle\\int_{{{entity}}}"
-            desc += "\\boldsymbol{v}\\cdot"
-            desc += "\\left(\\begin{array}{c}"
-            desc += "\\\\".join([to_tex(i) for i in d.f])
-            desc += "\\end{array}\\right)"
+            if len(d.f) == element.reference.tdim:
+                desc = "\\boldsymbol{v}\\mapsto"
+                desc += f"\\displaystyle\\int_{{{entity}}}"
+                desc += "\\boldsymbol{v}\\cdot"
+                desc += "\\left(\\begin{array}{c}"
+                desc += "\\\\".join([to_tex(i) for i in d.f])
+                desc += "\\end{array}\\right)"
+            else:
+                assert len(d.f) == element.reference.tdim ** 2
+                desc = "\\mathbf{V}\\mapsto"
+                desc += f"\\displaystyle\\int_{{{entity}}}"
+                desc += "\\mathbf{V}:"
+                desc += "\\left(\\begin{array}{" + "c" * element.reference.tdim + "}"
+                desc += "\\\\".join(["&".join(
+                    [to_tex(d.f[i]) for i in range(element.reference.tdim * row,
+                                                   element.reference.tdim * (row + 1))]
+                ) for row in range(element.reference.tdim)])
+                desc += "\\end{array}\\right)"
         except:  # noqa: E722
             desc = "v\\mapsto"
             desc += f"\\displaystyle\\int_{{{entity}}}"

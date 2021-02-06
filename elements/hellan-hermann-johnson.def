@@ -1,0 +1,26 @@
+name: Hellan-Herrmann-Johnson
+html-name: Hellan&ndash;Herrmann&ndash;Johnson
+min-order: 0
+categories:
+  - matrix
+reference elements:
+  - triangle
+ndofs:
+  triangle: 3(k+1)(k+2)/2
+ndofs-oeis:
+  triangle: A045943
+polynomial set:
+  triangle: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]
+dofs:
+  edges: integral moments of inner products of normal to edge with (lagrange,k)
+  faces: point evaluations of tensor products with symmetric matrices whose entries are in (lagrange,k-1)
+symfem: HHJ
+examples:
+  - triangle,1
+  - triangle,2
+references:
+  - title: The Hellan-Herrmann-Johnson method with curved elements 
+    author: Douglas N. Arnold and Shawn W. Walker
+    year: 2020
+    arxiv: 1909.09687
+test: 1
