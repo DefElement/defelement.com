@@ -272,6 +272,7 @@ def describe_dof(element, d):
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
+        desc += f"|{{{entity}_{{{entity_n}}}}}|"
         desc += "\\hat{\\boldsymbol{n}}^t" + f"_{{{entity_n}}}"
         desc += "\\mathbf{V}"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
