@@ -36,4 +36,16 @@ examples:
   - quadrilateral,1
   - quadrilateral,2
   - quadrilateral,3
+references:
+  - title: The serendipity family of finite elements
+    author:
+      - Arnold, D. N.
+      - Awanou, G.
+    year: 2011
+    journal: Foundations of Computational Mathematics
+    volume: 11
+    issue: 3
+    pagestart: 337
+    pageend: 344
+    doi: 10.1007/s10208-011-9087-3
 test: 1
