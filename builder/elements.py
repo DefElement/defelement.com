@@ -312,11 +312,11 @@ def describe_dof(element, d):
     elif isinstance(d, functionals.PointInnerProduct):
         desc = "\\mathbf{V}\\mapsto"
         desc += "\\left(\\begin{array}{c}"
-        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\\\".join([to_tex(i) for i in d.lvec])
         desc += "\\end{array}\\right)^t"
         desc += "\\mathbf{V}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\left(\\begin{array}{c}"
-        desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
+        desc += "\\\\".join([to_tex(i) for i in d.rvec])
         desc += "\\end{array}\\right)"
         return desc
     else:
