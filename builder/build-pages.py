@@ -93,7 +93,7 @@ def dofs_on_entity(entity, dofs):
         space_link = "*ERROR*"
         if space == "arnold-winther-extras":
             out = f"{mom_type} with \\(\\frac{{\\partial}}{{\\partial(x, y)}}x^2y^2(1-x-y)^2f\\)"
-            out += f" for each f in an order \\({order}\\)"
+            out += f" for each order \\({order}\\) polynomial \\(f\\) in an order \\({order}\\)"
             out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
             return out
         for i, j, k, _, _ in elementlist:
