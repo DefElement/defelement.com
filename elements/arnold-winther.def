@@ -1,0 +1,33 @@
+name: Arnold-Winther
+html-name: Arnold&ndash;Winther
+min-order: 3
+categories:
+  - matrix
+reference elements:
+  - triangle
+ndofs:
+  triangle: (3k^2+5k+6)/2
+polynomial set:
+  triangle: <k-1>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}] && <k>[\left{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and }\operatorname{div}\mathbf{M}=0\right}]
+dofs:
+  vertices: point evaluations of three components
+  edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,k-2)
+  faces:
+    - integral moments of three components with (lagrange,k-3)
+    - integral moments of tensor dot product with (arnold-winther-extras,k-4)
+symfem: AW
+examples:
+  - triangle,3
+  - triangle,4
+references:
+  - title: Mixed finite elements for elasticity
+    author:
+      - Arnold, D. N.
+      - Winther, R.
+    year: 2002
+    journal: Numerische Mathematik
+    pagestart: 401
+    pageend: 419
+    volume: 92
+    issue: 3
+    doi: 10.1007/s002110100348
