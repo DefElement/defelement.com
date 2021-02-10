@@ -12,6 +12,7 @@ jobs:
       - run: |
           git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
+          git checkout quadrature
           sudo pip3 install .
         name: Install latest symfem
       - run: sudo pip3 install -r requirements.txt
@@ -31,6 +32,7 @@ jobs:
       - run: |
           git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
+          git checkout quadrature
           sudo pip3 install .
         name: Install latest symfem
       - run: sudo pip3 install -r requirements.txt
@@ -62,6 +64,7 @@ jobs:
       - run: |
           git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
+          git checkout quadrature
           sudo pip3 install .
         name: Install latest symfem
       - run: sudo pip3 install -r requirements.txt
