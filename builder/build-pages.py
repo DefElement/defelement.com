@@ -418,7 +418,7 @@ for file in os.listdir(element_path):
                     element_examples.append(eg)
 
         if len(element_names) > 0:
-            content += f"<h2>Examples</h2>\n"
+            content += "<h2>Examples</h2>\n"
             for i, e in enumerate(element_names):
                 cl = "eglink"
                 if i == 0:
@@ -572,7 +572,7 @@ with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
 
 # Category index
 os.mkdir(os.path.join(htmlindices_path, "categories"))
-content = f"<h1>Categories</h1>\n"
+content = "<h1>Categories</h1>\n"
 for c in categories:
     category_pages[c].sort(key=lambda x: x[0].lower())
 
