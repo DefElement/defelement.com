@@ -55,7 +55,11 @@ def test_sequence(file, cellname):
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(25)
-            term = len(symfem.create_element(cellname, data["symfem"], k).dofs)
+            if "variant=" in data["symfem"]:
+                elementname, variant = data["symfem"].split(" variant=")
+                term = len(symfem.create_element(cellname, elementname, k, variant).dofs)
+            else:
+                term = len(symfem.create_element(cellname, data["symfem"], k).dofs)
             seq[k] = term
         except NotImplementedError:
             pass

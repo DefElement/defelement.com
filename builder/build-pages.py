@@ -354,7 +354,11 @@ for file in os.listdir(element_path):
                     symfem_example += "\n\n"
                     symfem_example += f"# Create {data['name']} order {ord} on a {ref}\n"
                     symfem_example += f"element = symfem.create_element(\"{ref}\","
-                    symfem_example += f" \"{data['symfem']}\", {ord})"
+                    if "variant=" in data["symfem"]:
+                        e_name, variant = data["symfem"].split(" variant=")
+                        symfem_example += f" \"{e_name}\", {ord}, \"{variant}\")"
+                    else:
+                        symfem_example += f" \"{data['symfem']}\", {ord})"
             symfem_info += "<p class='pcode'>" + python_highlight(symfem_example) + "</p>"
             symfem_info += "</div>"
             symfem_info += "<script type='text/javascript'>\n"
@@ -400,9 +404,12 @@ for file in os.listdir(element_path):
             for e in data["examples"]:
                 cell = e.split(",")[0]
                 order = int(e.split(",")[1])
-                element_type = data["symfem"]
-
-                element = create_element(cell, element_type, order)
+                if "variant=" in data["symfem"]:
+                    element_type, variant = data["symfem"].split(" variant=")
+                    element = create_element(cell, element_type, order, variant)
+                else:
+                    element_type = data["symfem"]
+                    element = create_element(cell, element_type, order)
 
                 eg = markup_element(element)
 
@@ -411,7 +418,7 @@ for file in os.listdir(element_path):
                     element_examples.append(eg)
 
         if len(element_names) > 0:
-            content += f"<h2>Examples</h2>\n"
+            content += "<h2>Examples</h2>\n"
             for i, e in enumerate(element_names):
                 cl = "eglink"
                 if i == 0:
@@ -565,7 +572,7 @@ with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
 
 # Category index
 os.mkdir(os.path.join(htmlindices_path, "categories"))
-content = f"<h1>Categories</h1>\n"
+content = "<h1>Categories</h1>\n"
 for c in categories:
     category_pages[c].sort(key=lambda x: x[0].lower())
 

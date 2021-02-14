@@ -238,6 +238,21 @@ def describe_dof(element, d):
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
         return desc
+    elif isinstance(d, functionals.DerivativePointEvaluation):
+        if element.reference.tdim == 1:
+            desc = "v\\mapsto "
+            desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+            return desc
+        desc = "v\\mapsto"
+        desc += f"\\frac{{\\partial^{{{sum(d.derivative)}}}}}{{"
+        for v, i in zip("xyz", d.derivative):
+            if i > 0:
+                desc += f"\\partial {v}"
+                if i > 1:
+                    desc += f"^{{{i}}}"
+        desc += "}"
+        desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        return desc
     elif isinstance(d, functionals.PointComponentSecondDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\frac{\\partial^2v}{"

@@ -26,7 +26,7 @@ polynomial set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
-symfem: GLL
+symfem: Q variant=lobatto
 examples:
   - interval,1
   - interval,2

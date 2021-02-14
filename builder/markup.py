@@ -84,14 +84,22 @@ def insert_links(txt):
 def plot_element(matches):
     from elements import draw_function
     import symfem
-    e = symfem.create_element(matches[1], matches[2], int(matches[3]))
+    if "variant=" in matches[1]:
+        a, b = matches[1].split(" variant=")
+        e = symfem.create_element(a, matches[2], int(matches[3]), b)
+    else:
+        e = symfem.create_element(matches[1], matches[2], int(matches[3]))
     return f"<center>{''.join([draw_function(e, i) for i in range(e.space_dim)])}</center>"
 
 
 def plot_single_element(matches):
     from elements import draw_function
     import symfem
-    e = symfem.create_element(matches[1], matches[2], int(matches[3]))
+    if "variant=" in matches[1]:
+        a, b = matches[1].split(" variant=")
+        e = symfem.create_element(a, matches[2], int(matches[3]), b)
+    else:
+        e = symfem.create_element(matches[1], matches[2], int(matches[3]))
     return f"<center>{draw_function(e, int(matches[4]))}</center>"
 
 
