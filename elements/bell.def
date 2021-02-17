@@ -1,0 +1,31 @@
+name: Bell
+html-name: Bell
+min-order: 5
+max-order: 5
+categories:
+  - scalar
+ndofs:
+  triangle: 21
+reference elements:
+  - triangle
+polynomial set:
+  triangle: poly[k]
+dofs:
+  vertices:
+    - point evaluations
+    - point evaluations of derivatives in coordinate directions
+    - point evaluations of components of Jacobian
+  edges: integral moments of normal derivatives with (lagrange,0)
+symfem: Bell
+examples:
+  - triangle,5
+references:
+  - title: A refined triangular plate bending finite element
+    author: Bell, K.
+    year: 1969
+    journal: International Journal for Numerical Methods in Engineering
+    volume: 1
+    issue: 1
+    pagestart: 101
+    pageend: 122
+    doi: 10.1002/nme.1620010108
