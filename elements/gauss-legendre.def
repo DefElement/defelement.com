@@ -2,7 +2,7 @@ name: Gauss-Legendre
 html-name: Gauss&ndash;Legendre
 categories:
   - scalar
-min-order: 1
+min-order: 0
 reference elements:
   - interval
   - quadrilateral
@@ -28,6 +28,5 @@ symfem: Q variant=legendre
 examples:
   - interval,1
   - interval,2
-  - interval,3
   - quadrilateral,1
   - quadrilateral,2
