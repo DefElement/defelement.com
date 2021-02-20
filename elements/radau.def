@@ -28,7 +28,5 @@ symfem: Q variant=radau
 examples:
   - interval,1
   - interval,2
-  - interval,3
-  - interval,4
   - quadrilateral,1
   - quadrilateral,2
