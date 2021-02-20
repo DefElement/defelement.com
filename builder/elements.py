@@ -292,6 +292,15 @@ def describe_dof(element, d):
         desc += "\\mathbf{V}"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc
+    elif isinstance(d, functionals.IntegralAgainst):
+        entity = symbols.entity(d.entity_dim())
+        entity_n = get_entity_number(element, d)
+        desc = "\\mathbf{V}\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += "v"
+        return desc
     elif isinstance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
             entity = symbols.reference
