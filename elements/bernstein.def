@@ -30,3 +30,4 @@ examples:
   - triangle,1
   - triangle,2
   - triangle,3
+test: 1
