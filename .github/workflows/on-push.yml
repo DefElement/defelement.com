@@ -43,7 +43,7 @@ jobs:
   build-website:
     name: Build defelement.com
     runs-on: ubuntu-latest
-    requires:
+    needs:
       - test-build-website
       - run-tests
     steps:
