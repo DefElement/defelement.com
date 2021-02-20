@@ -96,6 +96,8 @@ def dofs_on_entity(entity, dofs):
             out += f" for each order \\({order}\\) polynomial \\(f\\) in an order \\({order}\\)"
             out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
             return out
+        if space == "bernstein-polynomials":
+            return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
         for i, j, k, _, _ in elementlist:
             if k == space:
                 space_link = f"<a href='/elements/{j}'>{i}</a>"

@@ -23,9 +23,29 @@ jobs:
       - run: python3 -m flake8 test
         name: Flake8 checks on tests
     
+  test-build-website:
+    name: Test building of defelement.com
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install -y python3-setuptools python3-pip
+        name: Install dependencies
+      - uses: actions/checkout@v2
+      - run: |
+          git clone https://github.com/mscroggs/symfem.git symfem-src
+          cd symfem-src
+          sudo pip3 install .
+        name: Install latest symfem
+      - run: sudo pip3 install -r requirements.txt
+        name: Install requirements
+      - run: python3 builder/build-pages.py ../_test_html --test
+        name: Build website HTML
+
   build-website:
     name: Build defelement.com
     runs-on: ubuntu-latest
+    needs:
+      - test-build-website
+      - run-tests
     steps:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
