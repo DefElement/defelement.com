@@ -256,7 +256,7 @@ for file in os.listdir(element_path):
             element_data.append(
                 ("Definition",
                  "This is a mixed element containing these subelements:"
-                 "<ul>"+ "\n".join(subelements) + "</ul>"))
+                 "<ul>" + "\n".join(subelements) + "</ul>"))
 
         # Polynomial set
         if "polynomial set" in data:
