@@ -8,7 +8,7 @@ reference elements:
 ndofs:
   triangle: (3k^2+5k+6)/2
 polynomial set:
-  triangle: <k-1>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}] && <k>[\left{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and }\operatorname{div}\mathbf{M}=0\right}]
+  triangle: <k-1>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}] && <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and }\operatorname{div}\mathbf{M}=0\right\}]
 dofs:
   vertices: point evaluations of three components
   edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,k-2)
