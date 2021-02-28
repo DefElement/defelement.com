@@ -1,0 +1,19 @@
+name: Taylor-Hood
+html-name: Taylor&ndash;Hood
+alt-names:
+  - Hood&ndash;Taylor
+ndofs:
+  triangle: (k+1)(3k+4)/2
+  tetrahedron: (k+1)(k+2)(4k+9)/6
+categories:
+  - mixed
+reference elements:
+  - triangle
+  - tetrahedron
+mixed:
+  - vector-lagrange(k)
+  - lagrange(k-1)
+notes:
+  - These are the same as the [Scott&ndash;Vogelius](element::scott-vogelius) element, but the second subelement in this case is continuous between cells.
+min-order: 2
+test: 1

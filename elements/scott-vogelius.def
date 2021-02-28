@@ -1,0 +1,36 @@
+name: Scott-Vogelius
+html-name: Scott&ndash;Vogelius
+ndofs:
+  triangle: (k+1)(3k+4)/2
+  tetrahedron: (k+1)(k+2)(4k+9)/6
+categories:
+  - mixed
+reference elements:
+  - triangle
+  - tetrahedron
+mixed:
+  - vector-lagrange(k)
+  - lagrange(k-1)
+notes:
+  - These are the same as the [Taylor&ndash;Hood](element::taylor-hood) element, but the second subelement in this case is discontinuous between cells.
+min-order: 1
+references:
+  - author:
+      - Scott, L. R.
+      - Vogelius, M.
+    title: Norm estimates for a maximal right inverse of the divergence operator in spaces of piecewise polynomials
+    journal: "ESAIM: Mathematical Modelling and Numerical Analysis - Mod&eacute;lisation Math&eacute;matique et Analyse Num&eacute;rique"
+    pagestart: 111
+    pageend: 143
+    volume: 19
+    number: 1
+    year: 1985
+  - author: Zhang, S.
+    journal: Mathematics of Computation
+    number: 250
+    pagestart: 543
+    pageend: 554
+    title: A new family of stable mixed finite elements for the 3D Stokes equations
+    volume: 74
+    year: 2005
+    doi: 10.2307/4100078
