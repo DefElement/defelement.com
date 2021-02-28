@@ -241,6 +241,23 @@ for file in os.listdir(element_path):
              ", ".join([f"<a href='/lists/references/{e}.html'>{e}</a>"
                         for e in data["reference elements"]])))
 
+        # Mixed elements
+        if "mixed" in data:
+            subelements = []
+            for e in data["mixed"]:
+                e_type, order = e.split("(")
+                order = order.split(")")[0]
+                for i, j, k, _, _ in elementlist:
+                    if k == e_type:
+                        space_link = f"<a href='/elements/{j}'>{i}</a>"
+                        break
+                assert space_link != "*ERROR*"
+                subelements.append(f"<li>order \\({order}\\) {space_link} space</li>")
+            element_data.append(
+                ("Definition",
+                 "This is a mixed element containing these subelements:"
+                 "<ul>" + "\n".join(subelements) + "</ul>"))
+
         # Polynomial set
         if "polynomial set" in data:
             psets = {}
