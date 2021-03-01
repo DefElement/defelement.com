@@ -14,6 +14,6 @@ mixed:
   - vector-lagrange(k)
   - lagrange(k-1)
 notes:
-  - These are the same as the [Scott&ndash;Vogelius](element::scott-vogelius) element, but the second subelement in this case is continuous between cells.
+  - This is the same as the [Scott&ndash;Vogelius](element::scott-vogelius) element, but the second subelement in this case is continuous between cells.
 min-order: 2
 test: 1

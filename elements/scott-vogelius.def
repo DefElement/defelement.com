@@ -12,7 +12,7 @@ mixed:
   - vector-lagrange(k)
   - lagrange(k-1)
 notes:
-  - These are the same as the [Taylor&ndash;Hood](element::taylor-hood) element, but the second subelement in this case is discontinuous between cells.
+  - This is the same as the [Taylor&ndash;Hood](element::taylor-hood) element, but the second subelement in this case is discontinuous between cells.
 min-order: 1
 references:
   - author:
