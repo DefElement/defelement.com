@@ -1,0 +1,35 @@
+name: Taylor
+html-name: Taylor
+alt-names:
+  - discontinuous Taylor
+ndofs:
+  interval: k+1
+  triangle: (k+1)(k+2)/2
+  tetrahedron: (k+1)(k+2)(k+3)/6
+ndofs-oeis:
+  interval: A000027
+  triangle: A000217
+  tetrahedron: A000292
+categories:
+  - scalar
+reference elements:
+  - interval
+  - triangle
+  - tetrahedron
+dofs:
+  cell:
+    - integral over cell
+    - point evaluations at midpoint of derivatives up to order \(k\)
+polynomial set:
+  interval: poly[k]
+  triangle: poly[k]
+  tetrahedron: poly[k]
+symfem: Lagrange
+examples:
+  - interval,1
+  - interval,2
+  - interval,3
+  - triangle,1
+  - triangle,2
+  - triangle,3
+
