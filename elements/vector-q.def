@@ -3,7 +3,7 @@ html-name: vector Q
 categories:
   - vector
 alt-names:
-  - vector Lagrange
+  - (vector Lagrange)
 reference elements:
   - quadrilateral
   - hexahedron

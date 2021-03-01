@@ -1,0 +1,32 @@
+name: dPc
+html-name: dPc
+exterior-calculus:
+  - S,d,tp
+ndofs:
+  interval: k+1
+  quadrilateral: (k+1)(k+2)/2
+  hexahedron: (k+1)(k+2)(k+3)/6
+ndofs-oeis:
+  interval: A000027
+  quadrilateral: A000217
+  hexahedron: A000292
+categories:
+  - scalar
+reference elements:
+  - interval
+  - quadrilateral
+  - hexahedron
+dofs:
+  cell: point evaluations
+polynomial set:
+  interval: poly[k]
+  quadrilateral: poly[k]
+  hexahedron: poly[k]
+symfem: discontinuous Lagrange
+examples:
+  - interval,1
+  - interval,2
+  - interval,3
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
