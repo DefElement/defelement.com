@@ -1,0 +1,19 @@
+name: Hsieh-Clough-Tocher
+html-name: Hsieh&ndash;Clough&ndash;Tocher
+alt-names:
+  - Clough&ndash;Tocher
+short-names:
+  - HCT
+  - CT
+min-order: 3
+max-order: 3
+ndofs:
+  triangle: 12
+categories:
+  - scalar
+reference elements:
+  - triangle
+symfem: HCT
+examples:
+  - triangle,3
+test: 1

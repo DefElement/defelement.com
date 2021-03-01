@@ -1,0 +1,15 @@
+name: reduced Hsieh-Clough-Tocher
+html-name: reduced Hsieh&ndash;Clough&ndash;Tocher
+short-names:
+  - rHCT
+min-order: 3
+max-order: 3
+ndofs:
+  triangle: 9
+categories:
+  - scalar
+reference elements:
+  - triangle
+symfem: rHCT
+examples:
+  - triangle,3
