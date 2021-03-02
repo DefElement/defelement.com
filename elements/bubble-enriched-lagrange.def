@@ -1,0 +1,21 @@
+name: bubble enriched Lagrange
+html-name: bubble enriched Lagrange
+ndofs:
+  triangle: (k+1)^2
+ndofs-oeis:
+  triangle: A000290
+categories:
+  - scalar
+reference elements:
+  - triangle
+dofs:
+  vertices: point evaluations
+  edges: point evaluations
+  faces: point evaluations
+polynomial set:
+  triangle: poly[k] && <k+2>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
+symfem: bubble enriched Lagrange
+examples:
+  - triangle,1
+  - triangle,2
+  - triangle,3

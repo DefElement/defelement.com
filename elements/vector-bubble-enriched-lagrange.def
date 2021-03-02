@@ -1,0 +1,21 @@
+name: vector bubble enriched Lagrange
+html-name: vector bubble enriched Lagrange
+ndofs:
+  triangle: 2(k+1)^2
+ndofs-oeis:
+  triangle: A001105
+categories:
+  - vector
+reference elements:
+  - triangle
+dofs:
+  vertices: point evaluations in coordinate directions
+  edges: point evaluations in coordinate directions
+  faces: point evaluations in coordinate directions
+polynomial set:
+  triangle: poly[k] && <k+2>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
+symfem: vector bubble enriched Lagrange
+examples:
+  - triangle,1
+  - triangle,2
+  - triangle,3
