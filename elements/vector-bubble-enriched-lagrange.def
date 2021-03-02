@@ -14,7 +14,7 @@ dofs:
   faces: point evaluations in coordinate directions
 polynomial set:
   triangle: poly[k] && <k+2>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
-symfem: vector bubble enriched Lagrange
+symfem: bubble enriched vector Lagrange
 examples:
   - triangle,1
   - triangle,2
