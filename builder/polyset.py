@@ -24,6 +24,7 @@ def make_poly_set(p):
             named[the_set] = make_name(len(named))
         return f"{named[the_set]}_{{{order}}}"
     if re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p):
+        print("!", p)
         order = re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p)[1]
         the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p)[2]
         if the_set not in named:
@@ -51,8 +52,8 @@ def make_extra_info(p):
     out = []
     for a in p.split("&&"):
         a = a.strip()
-        if re.match(r"^\<([^\]]+)\>\[(.+)\]$", a):
-            the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]$", a)[2]
+        if re.match(r"^\<([^\]]+)\>\[(.+)\](?:\^d)?$", a):
+            the_set = re.match(r"^\<([^\]]+)\>\[(.+)\](?:\^d)?$", a)[2]
             if named[the_set] not in done:
                 out.append(f"\\({named[the_set]}_k={insert_terms(the_set)}\\)")
                 done.append(named[the_set])
