@@ -18,6 +18,5 @@ symfem: bubble enriched Lagrange
 examples:
   - triangle,1
   - triangle,2
-  - triangle,3
 min-order: 1
 max-order: 2
