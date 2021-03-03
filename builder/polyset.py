@@ -29,7 +29,7 @@ def make_poly_set(p):
         the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p)[2]
         if the_set not in named:
             named[the_set] = make_name(len(named))
-        return f"{named[the_set]}_{{{order}}}^d"
+        return f"\\left({named[the_set]}_{{{order}}}\\right)^d"
     for i, (j, k) in poly_sets.items():
         if re.match(rf"^{i}\[([^\]]+)\]$", p):
             order = re.match(rf"^{i}\[([^\]]+)\]$", p)[1]
