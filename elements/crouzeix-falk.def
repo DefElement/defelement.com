@@ -24,7 +24,7 @@ symfem: Crouzeix-Falk
 examples:
   - triangle,3
 references:
-  - title: Nonconforming Finite Elements for the Stokes Problem
+  - title: Nonconforming finite elements for the Stokes problem
     author:
       - Crouzeix, M.
       - Falk, R. S.
