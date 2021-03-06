@@ -1,0 +1,37 @@
+name: Crouzeix-Falk
+html-name: Crouzeix&ndash;Falk
+min-order: 3
+max-order: 3
+alt-names:
+  - (Crouzeix&ndash;Raviart)
+short-names:
+  - CF
+categories:
+  - scalar
+ndofs:
+  triangle: 10
+  tetrahedron: 20
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k]
+  tetrahedron: poly[k]
+dofs:
+  facets: point evaluation at three points
+  cells: point evaluation at midpoint
+symfem: Crouzeix-Falk
+examples:
+  - triangle,3
+references:
+  - title: Nonconforming Finite Elements for the Stokes Problem
+    author:
+      - Crouzeix, M.
+      - Falk, R. S.
+    year: 1989
+    journal: Mathematics of Computation
+    volume: 52
+    number: 186
+    pagestart: 437
+    pageend: 456
+    doi: 10.2307/2008475
