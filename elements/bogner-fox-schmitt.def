@@ -1,0 +1,29 @@
+name: Bogner-Fox-Schmitt
+html-name: Bogner&ndash;Fox&ndash;Schmitt
+min-order: 3
+max-order: 3
+categories:
+  - scalar
+ndofs:
+  quadrilateral: 10
+reference elements:
+  - quadrilateral
+polynomial set:
+  quadrilateral: qoly[k]
+dofs:
+  vertices:
+    - point evaluations
+    - point evaluations of derivatives in coordinate directions
+symfem: BFS
+examples:
+  - quadrilateral,3
+references:
+  - title: The generation of interelement compatible stiffness and mass matrices by the use of interpolation formulae
+    author:
+      - Bogner, F. K.
+      - Fox, R. L.
+      - Schmit, L. A.
+    year: 1965
+    journal: Proceedings of the Conference on Matrix Methods in Structural Mechanics
+    pagestart: 397
+    pageend: 444
