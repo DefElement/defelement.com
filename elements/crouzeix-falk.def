@@ -1,0 +1,32 @@
+name: Fortin-Soulie
+html-name: Fortin&ndash;Soulie
+min-order: 2
+max-order: 2
+short-names:
+  - FS
+categories:
+  - scalar
+ndofs:
+  triangle: 6
+reference elements:
+  - triangle
+polynomial set:
+  triangle: poly[k]
+dofs:
+  facets: point evaluation at two points (but only one point on one of the edges)
+  cells: point evaluation at midpoint
+symfem: Fortin-Soulie
+examples:
+  - triangle,2
+references:
+  - title: Nonconforming finite elements for the Stokes problem
+    author:
+      - Crouzeix, M.
+      - Falk, R. S.
+    year: 1989
+    journal: Mathematics of Computation
+    volume: 52
+    number: 186
+    pagestart: 437
+    pageend: 456
+    doi: 10.2307/2008475

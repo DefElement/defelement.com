@@ -1,5 +1,7 @@
 name: Nedelec (first kind)
 html-name: N&eacute;d&eacute;lec (first kind)
+alt-names:
+  - Whitney
 min-order: 1
 categories:
   - vector
