@@ -3,6 +3,10 @@ html-name: Lagrange
 alt-names:
   - Polynomial
   - Galerkin
+  - DGT
+  - Hdiv trace
+notes:
+  - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
 short-names:
   - P
   - CG
