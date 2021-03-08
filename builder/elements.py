@@ -195,12 +195,13 @@ def to_tex(f, tfrac=False):
     if isinstance(f, PiecewiseFunction):
         out = "\\begin{cases}\n"
         joiner = ""
-        for points, f in f.pieces:
+        for points, func in f.pieces:
             out += joiner
             joiner = "\\\\"
-            out += to_tex(f, True)
+            out += to_tex(func, True)
             out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
         out += "\\end{cases}"
+        return out
     out = sympy.latex(sympy.simplify(sympy.expand(f)))
     out = out.replace("\\left[", "\\left(")
     out = out.replace("\\right]", "\\right)")
