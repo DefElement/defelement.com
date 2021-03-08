@@ -1,7 +1,10 @@
 name: Test and build
 
 on:
-  push
+  push:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   style-checks:

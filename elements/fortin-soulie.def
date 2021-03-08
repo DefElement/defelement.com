@@ -1,0 +1,32 @@
+name: Fortin-Soulie
+html-name: Fortin&ndash;Soulie
+min-order: 2
+max-order: 2
+short-names:
+  - FS
+categories:
+  - scalar
+ndofs:
+  triangle: 6
+reference elements:
+  - triangle
+polynomial set:
+  triangle: poly[k]
+dofs:
+  facets: point evaluation at two points (but only one point on one of the edges)
+  cells: point evaluation at midpoint
+symfem: Fortin-Soulie
+examples:
+  - triangle,2
+references:
+  - title: A non‐conforming piecewise quadratic finite element on triangles
+    author:
+      - Fortin, M.
+      - Soulie, M.
+    year: 1983
+    journal: International Journal for Numerical Methods in Engineering
+    volume: 19
+    number: 4
+    pagestart: 505
+    pageend: 520
+    doi: 10.1002/nme.1620190405

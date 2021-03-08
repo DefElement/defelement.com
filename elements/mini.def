@@ -1,0 +1,26 @@
+name: mini
+html-name: mini
+ndofs:
+  triangle: (k+1)(3k+4)/2
+categories:
+  - mixed
+reference elements:
+  - triangle
+mixed:
+  - vector-bubble-enriched-lagrange(1)
+  - lagrange(1)
+min-order: 1
+max-order: 1
+references:
+  - author:
+    - Arnold, D. N.
+    - Brezzi, F.
+    - Fortin, M.
+    year: 1984
+    title: A stable finite element for the stokes equations
+    journal: CALCOLO
+    pagestart: 337
+    pageend: 344
+    volume: 21
+    number: 4
+    doi: 10.1007/BF02576171

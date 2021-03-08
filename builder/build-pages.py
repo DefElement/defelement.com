@@ -369,7 +369,6 @@ for file in os.listdir(element_path):
                         max_o = min(data["max-order"][ref], max_o)
                     else:
                         max_o = min(data["max-order"], max_o)
-                print(min_o, max_o)
                 for ord in range(min_o, max_o + 1):
                     symfem_example += "\n\n"
                     symfem_example += f"# Create {data['name']} order {ord} on a {ref}\n"
