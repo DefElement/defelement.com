@@ -2,7 +2,7 @@ import symbols
 import sympy
 from symfem import create_element
 from symfem.core import functionals
-from symfem.core.symbolic import x
+from symfem.core.symbolic import x, PiecewiseFunction
 from symfem.core.calculus import grad
 from symfem.core.vectors import vdot, vsub
 
@@ -57,6 +57,8 @@ def make_lattice(element, n, offset=False):
 def subs(f, p):
     if isinstance(f, (tuple, list)):
         return [subs(i, p) for i in f]
+    if isinstance(f, PiecewiseFunction):
+        return subs(f.get_piece(p), p)
     for i, j in zip(x, p):
         try:
             f = f.subs(i, j)
@@ -190,6 +192,15 @@ def to_tex(f, tfrac=False):
     if isinstance(f, (list, tuple)):
         return "\\left(\\begin{array}{c}" + "\\\\".join(
             ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
+    if isinstance(f, PiecewiseFunction):
+        out = "\\begin{cases}\n"
+        joiner = ""
+        for points, f in f.pieces:
+            out += joiner
+            joiner = "\\\\"
+            out += to_tex(f, True)
+            out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
+        out += "\\end{cases}"
     out = sympy.latex(sympy.simplify(sympy.expand(f)))
     out = out.replace("\\left[", "\\left(")
     out = out.replace("\\right]", "\\right)")
@@ -447,6 +458,10 @@ def draw_function(element, dof_i):
     dof = element.dofs[dof_i]
     func = element.get_basis_functions()[dof_i]
 
+    if isinstance(func, PiecewiseFunction):
+        # TODO: Implement plotting of piecewise functions
+        return ""
+
     if element.range_dim == 1 and element.reference.tdim not in [1, 2]:
         return ""
     if element.range_dim not in [1, element.domain_dim]:
@@ -468,6 +483,7 @@ def draw_function(element, dof_i):
     else:
         out = "<svg width='200' height='200'>\n"
     out += draw_reference(element.reference, dof.entity, add)
+
     if element.range_dim != 1:
         for p in eval_points:
             res = subs(func, p)
@@ -508,6 +524,7 @@ def draw_function(element, dof_i):
             out += f"<path d='M {start[0]} {start[1]} C {mid1[0]} {mid1[1]}, "
             out += f"{mid2[0]} {mid2[1]}, {end[0]} {end[1]}'"
             out += " stroke='#FF8800' stroke-width='2px' stroke-linecap='round' fill='none' />"
+
     out += "</svg>\n"
     return out
 
