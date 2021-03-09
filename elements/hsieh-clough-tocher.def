@@ -17,3 +17,11 @@ symfem: HCT
 examples:
   - triangle,3
 test: 1
+references:
+  - author: Ciarlet, P. G.
+    journal: Mathematics of Computation
+    volume: 32
+    year: 1978
+    pagestart: 335
+    pageend: 344
+    doi: 10.1090/S0025-5718-1978-0482249-1
