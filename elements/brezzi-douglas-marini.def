@@ -23,6 +23,7 @@ dofs:
   facets: normal integral moments with (lagrange,k)
   cell: integral moments with (nedelec1,k-1)
 symfem: N2div
+basix: Brezzi-Douglas-Marini
 examples:
   - triangle,1
   - triangle,2

@@ -30,6 +30,7 @@ polynomial set:
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
 symfem: Q
+basix: Lagrange
 examples:
   - interval,1
   - interval,2

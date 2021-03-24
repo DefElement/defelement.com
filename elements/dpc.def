@@ -23,6 +23,7 @@ polynomial set:
   quadrilateral: poly[k]
   hexahedron: poly[k]
 symfem: discontinuous Lagrange
+basix: DPC
 examples:
   - interval,1
   - interval,2

@@ -29,6 +29,7 @@ polynomial set:
   quadrilateral: poly[k] && serendipity[k]
   hexahedron: poly[k] && serendipity[k]
 symfem: serendipity
+basix: Serendipity
 examples:
   - interval,1
   - interval,2

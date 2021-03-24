@@ -91,6 +91,7 @@ table.filters tr td:last-of-type {font-size:80%}
 
 a#show-flink, a#hide-flink,
 a#show_pset_link, a#hide_pset_link,
-a#show_symfem_link, a#hide_symfem_link {font-size:80%;padding-top:10px;padding-bottom:10px}
+a#show_symfem_link, a#hide_symfem_link,
+a#show_basix_link, a#hide_basix_link {font-size:80%;padding-top:10px;padding-bottom:10px}
 
-p.pcode {margin-left:50px;margin-right:50px;font-family:monospace}
+p.pcode {margin-left:50px;margin-right:50px;font-family:monospace;white-space:nowrap;}

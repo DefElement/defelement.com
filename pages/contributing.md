@@ -47,6 +47,7 @@ polynomial set:
   triangle: poly[k]
   tetrahedron: poly[k]
 symfem: Lagrange
+basix: Lagrange
 examples:
   - interval,1
   - interval,2
@@ -75,7 +76,8 @@ The entries in this yaml file are:
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`polynomial&nbsp;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>
-<tr><td>`symfem`</td><td></td><td>The string used to define this element in [symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
+<tr><td>`symfem`</td><td></td><td>The string used to define this element in [Symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
+<tr><td>`basix`</td><td></td><td>The string used to define this element in [Basix](https://github.com/fenics/basix)'s `create_element` function.</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 <tr><td>`test`</td><td></td><td>If included, this element's examples will be included when the test version of the website is built. If not, the examples will be skipped to speed up the test build.</td></tr>
 </table>
