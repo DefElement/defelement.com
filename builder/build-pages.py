@@ -395,6 +395,61 @@ for file in os.listdir(element_path):
 
             element_data.append(("Symfem string", symfem_info))
 
+        # Basix string
+        if "basix" in data:
+            basix_info = f"<code>\"{data['basix']}\"</code>"
+            basix_info += "<br />"
+
+            basix_info += "<a id='show_basix_link' href='javascript:show_basix_eg()'"
+            basix_info += " style='display:block'>"
+            basix_info += "&darr; Show Basix examples &darr;</a>"
+            basix_info += "<a id='hide_basix_link' href='javascript:hide_basix_eg()'"
+            basix_info += " style='display:none'>"
+            basix_info += "&uarr; Hide Basix examples &uarr;</a>"
+            basix_info += "<div id='basix_eg' style='display:none'>"
+            basix_info += "Before trying this example, you must install "
+            basix_info += "<a href='https://github.com/fenics/basix'>Basix</a>. "
+            basix_info += "This element can then be created with the following lines of Python:"
+            basix_example = "import basix"
+            for ref in data["reference elements"]:
+                if "min-order" in data:
+                    if isinstance(data["min-order"], dict):
+                        min_o = data["min-order"][ref]
+                    else:
+                        min_o = data["min-order"]
+                else:
+                    min_o = 0
+                max_o = min_o + 2
+                if "max-order" in data:
+                    if isinstance(data["max-order"], dict):
+                        max_o = min(data["max-order"][ref], max_o)
+                    else:
+                        max_o = min(data["max-order"], max_o)
+                for ord in range(min_o, max_o + 1):
+                    basix_example += "\n\n"
+                    basix_example += f"# Create {data['name']} order {ord} on a {ref}\n"
+                    basix_example += f"element = basix.create_element("
+                    if "variant=" in data["basix"]:
+                        raise NotImplementedError()
+                    else:
+                        basix_example += f"\"{data['basix']}\", \"{ref}\", {ord})"
+            basix_info += "<p class='pcode'>" + python_highlight(basix_example) + "</p>"
+            basix_info += "</div>"
+            basix_info += "<script type='text/javascript'>\n"
+            basix_info += "function show_basix_eg(){\n"
+            basix_info += "  document.getElementById('show_basix_link').style.display = 'none'\n"
+            basix_info += "  document.getElementById('hide_basix_link').style.display = 'block'\n"
+            basix_info += "  document.getElementById('basix_eg').style.display = 'block'\n"
+            basix_info += "}\n"
+            basix_info += "function hide_basix_eg(){\n"
+            basix_info += "  document.getElementById('show_basix_link').style.display = 'block'\n"
+            basix_info += "  document.getElementById('hide_basix_link').style.display = 'none'\n"
+            basix_info += "  document.getElementById('basix_eg').style.display = 'none'\n"
+            basix_info += "}\n"
+            basix_info += "</script>"
+
+            element_data.append(("Basix string", basix_info))
+
         # Categories
         if "categories" in data:
             for c in data["categories"]:
