@@ -38,6 +38,7 @@ polynomial set:
   triangle: poly[k]
   tetrahedron: poly[k]
 symfem: Lagrange
+basix: Lagrange
 examples:
   - interval,1
   - interval,2

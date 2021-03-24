@@ -26,6 +26,7 @@ dofs:
   faces: integral moments with (raviart-thomas,k-1)
   volumes: integral moments with (raviart-thomas,k-2)
 symfem: N2curl
+basix: Nedelec 2nd kind H(curl)
 examples:
   - triangle,1
   - triangle,2

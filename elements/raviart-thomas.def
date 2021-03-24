@@ -26,6 +26,7 @@ dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (vector-lagrange,k-2)
 symfem: N1div
+basix: Raviart-Thomas
 examples:
   - triangle,1
   - triangle,2
