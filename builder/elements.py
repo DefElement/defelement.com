@@ -129,24 +129,6 @@ def axes_3d(h=146):
         svg += f"text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>{axis}</text>"
     svg += "</svg>"
     return svg
-    (""
-            f"<line x1='15' y1='{h - 15}' x2='55' y2='{h - 15}' "
-            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
-            f"<line x1='50' y1='{h - 10}' x2='55' y2='{h - 15}' "
-            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
-            f"<line x1='50' y1='{h - 20}' x2='55' y2='{h - 15}' "
-            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
-            f"<text x='65' y='{h - 15}' class='small' dominant-baseline='middle' "
-            "text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>x</text>"
-            f"<line x1='15' y1='{h - 15}' x2='15' y2='{h - 55}' "
-            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
-            f"<line x1='10' y1='{h - 50}' x2='15' y2='{h - 55}' "
-            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
-            f"<line x1='20' y1='{h - 50}' x2='15' y2='{h - 55}' "
-            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
-            f"<text x='15' y='{h - 68}' class='small' dominant-baseline='middle' "
-            "text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>y</text>"
-            "</svg>")
 
 
 def svg_reference(ref):
