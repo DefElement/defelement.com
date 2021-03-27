@@ -67,9 +67,73 @@ def subs(f, p):
     return float(f)
 
 
+def axes_1d(h=30):
+    return (f"<svg width='90' height='{h}'>"
+            f"<line x1='15' y1='{h - 15}' x2='55' y2='{h - 15}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<line x1='50' y1='{h - 10}' x2='55' y2='{h - 15}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<line x1='50' y1='{h - 20}' x2='55' y2='{h - 15}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<text x='65' y='{h - 15}' class='small' dominant-baseline='middle' "
+            "text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>x</text>"
+            "</svg>")
+
+
+def axes_2d(h=130):
+    return (f"<svg width='90' height='{h}'>"
+            f"<line x1='15' y1='{h - 15}' x2='55' y2='{h - 15}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<line x1='50' y1='{h - 10}' x2='55' y2='{h - 15}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<line x1='50' y1='{h - 20}' x2='55' y2='{h - 15}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<text x='65' y='{h - 15}' class='small' dominant-baseline='middle' "
+            "text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>x</text>"
+            f"<line x1='15' y1='{h - 15}' x2='15' y2='{h - 55}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<line x1='10' y1='{h - 50}' x2='15' y2='{h - 55}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<line x1='20' y1='{h - 50}' x2='15' y2='{h - 55}' "
+            "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+            f"<text x='15' y='{h - 68}' class='small' dominant-baseline='middle' "
+            "text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>y</text>"
+            "</svg>")
+
+
+def axes_3d(h=146):
+    w = 146
+    svg = f"<svg width='{w}' height='{h}'>"
+    for p1, p2 in [
+        ((0, 0, 0), (0.5, 0, 0)),
+        ((0.47, 0, 0.03), (0.5, 0, 0)),
+        ((0.47, 0, -0.03), (0.5, 0, 0)),
+        ((0, 0, 0), (0, 0.5, 0)),
+        ((0, 0.47, 0.03), (0, 0.5, 0)),
+        ((0, 0.47, -0.03), (0, 0.5, 0)),
+        ((0, 0, 0), (0, 0, 0.5)),
+        ((0.03, 0, 0.47), (0, 0, 0.5)),
+        ((-0.03, 0, 0.47), (0, 0, 0.5)),
+    ]:
+        pt1 = to_2d(p1, w, h)
+        pt2 = to_2d(p2, w, h)
+        svg += f"<line x1='{pt1[0]}' y1='{pt1[1]}' x2='{pt2[0]}' y2='{pt2[1]}' "
+        svg += "stroke-width='3px' stroke-linecap='round' stroke='#000000' />"
+    for p, axis in [
+        ((0.57, 0, 0), "x"),
+        ((0, 0.64, 0), "y"),
+        ((0, 0, 0.57), "z")
+    ]:
+        pt = to_2d(p, w, h)
+        svg += f"<text x='{pt[0]}' y='{pt[1]}' class='small' dominant-baseline='middle' "
+        svg += f"text-anchor='middle' style='font-family:MJXZERO, MJXTEX-I'>{axis}</text>"
+    svg += "</svg>"
+    return svg
+
+
 def svg_reference(ref):
     if ref.name == "dual polygon":
-        return svg_dual_reference(ref)
+        return axes_2d() + svg_dual_reference(ref)
     elif ref.name == "interval":
         w = 130
         h = 30
@@ -82,7 +146,13 @@ def svg_reference(ref):
     else:
         w = 130
         h = 130
-    out = f"<svg width='{w}' height='{h}'>"
+    if ref.tdim == 1:
+        out = axes_1d(h)
+    if ref.tdim == 2:
+        out = axes_2d(h)
+    if ref.tdim == 3:
+        out = axes_3d(h)
+    out += f"<svg width='{w}' height='{h}'>"
     if ref.tdim == 3:
         fg = ""
 
