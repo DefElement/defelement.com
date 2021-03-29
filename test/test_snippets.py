@@ -1,20 +1,7 @@
-import os
 import pytest
-import re
-import signal
-import symfem
-import urllib.request
+import os
 import yaml
 from builder.snippets import symfem_example, basix_example
-
-
-class TimeOutTheTest(BaseException):
-    pass
-
-
-def handler(signum, frame):
-    raise TimeOutTheTest()
-
 
 element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
 
