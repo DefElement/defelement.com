@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 7 * * 1"
 
 jobs:
   style-checks:
@@ -14,11 +16,16 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
       - uses: actions/checkout@v2
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m flake8 builder
@@ -33,11 +40,16 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 builder/build-pages.py ../_test_html --test
@@ -53,11 +65,16 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 builder/build-pages.py ../_html
@@ -84,11 +101,37 @@ jobs:
             sudo pip3 install pytest-xdist
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
+
+      - name: Clone Basix
+        uses: actions/checkout@v2
+        with:
+          path: ./basix-src
+          repository: FEniCS/basix
+          ref: main
+      - run: |
+          sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev ninja-build
+          sudo pip3 install pybind11
+        name: Install Basix dependencies
+      - run: |
+          cd basix-src
+          ls
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DXTENSOR_ENABLE_ASSERT=ON -B build-dir -S .
+          cmake --build build-dir
+          sudo cmake --install build-dir
+          sudo pip3 install ./python/
+        name: Install Basix
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test

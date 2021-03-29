@@ -6,6 +6,7 @@ from markup import markup, insert_dates, insert_links, python_highlight
 from elements import markup_element
 from citations import markup_citation, make_bibtex
 from polyset import make_poly_set, make_extra_info
+from snippets import symfem_example, basix_example
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
@@ -354,31 +355,8 @@ for file in os.listdir(element_path):
             symfem_info += "<a href='https://github.com/mscroggs/symfem'>Symfem</a>:"
             symfem_info += "<p class='pcode'>pip3 install symfem</p>"
             symfem_info += "This element can then be created with the following lines of Python:"
-            symfem_example = "import symfem"
-            for ref in data["reference elements"]:
-                if "min-order" in data:
-                    if isinstance(data["min-order"], dict):
-                        min_o = data["min-order"][ref]
-                    else:
-                        min_o = data["min-order"]
-                else:
-                    min_o = 0
-                max_o = min_o + 2
-                if "max-order" in data:
-                    if isinstance(data["max-order"], dict):
-                        max_o = min(data["max-order"][ref], max_o)
-                    else:
-                        max_o = min(data["max-order"], max_o)
-                for ord in range(min_o, max_o + 1):
-                    symfem_example += "\n\n"
-                    symfem_example += f"# Create {data['name']} order {ord} on a {ref}\n"
-                    symfem_example += f"element = symfem.create_element(\"{ref}\","
-                    if "variant=" in data["symfem"]:
-                        e_name, variant = data["symfem"].split(" variant=")
-                        symfem_example += f" \"{e_name}\", {ord}, \"{variant}\")"
-                    else:
-                        symfem_example += f" \"{data['symfem']}\", {ord})"
-            symfem_info += "<p class='pcode'>" + python_highlight(symfem_example) + "</p>"
+
+            symfem_info += "<p class='pcode'>" + python_highlight(symfem_example(data)) + "</p>"
             symfem_info += "</div>"
             symfem_info += "<script type='text/javascript'>\n"
             symfem_info += "function show_symfem_eg(){\n"
@@ -410,30 +388,7 @@ for file in os.listdir(element_path):
             basix_info += "Before trying this example, you must install "
             basix_info += "<a href='https://github.com/fenics/basix'>Basix</a>. "
             basix_info += "This element can then be created with the following lines of Python:"
-            basix_example = "import basix"
-            for ref in data["reference elements"]:
-                if "min-order" in data:
-                    if isinstance(data["min-order"], dict):
-                        min_o = data["min-order"][ref]
-                    else:
-                        min_o = data["min-order"]
-                else:
-                    min_o = 0
-                max_o = min_o + 2
-                if "max-order" in data:
-                    if isinstance(data["max-order"], dict):
-                        max_o = min(data["max-order"][ref], max_o)
-                    else:
-                        max_o = min(data["max-order"], max_o)
-                for ord in range(min_o, max_o + 1):
-                    basix_example += "\n\n"
-                    basix_example += f"# Create {data['name']} order {ord} on a {ref}\n"
-                    basix_example += f"element = basix.create_element("
-                    if "variant=" in data["basix"]:
-                        raise NotImplementedError()
-                    else:
-                        basix_example += f"\"{data['basix']}\", \"{ref}\", {ord})"
-            basix_info += "<p class='pcode'>" + python_highlight(basix_example) + "</p>"
+            basix_info += "<p class='pcode'>" + python_highlight(basix_example(data)) + "</p>"
             basix_info += "</div>"
             basix_info += "<script type='text/javascript'>\n"
             basix_info += "function show_basix_eg(){\n"
