@@ -2,17 +2,11 @@ name: Test and build
 
 on:
   push:
-    inputs:
-      build: true
   pull_request:
     branches:
       - main
-    inputs:
-      build: false
   schedule:
     - cron: "0 7 * * 1"
-      inputs:
-        build: false
 
 jobs:
   style-checks:
@@ -96,7 +90,7 @@ jobs:
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
           git push -u origin gh-pages --force
         name: Push website to gh-pages branch
-        if: ${{ github.ref == 'refs/heads/main' && github.event.inputs.build }}
+        if: github.ref == 'refs/heads/main'
 
   run-tests:
     name: Run tests
