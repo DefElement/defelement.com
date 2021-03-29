@@ -16,11 +16,16 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
       - uses: actions/checkout@v2
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m flake8 builder
@@ -35,11 +40,16 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 builder/build-pages.py ../_test_html --test
@@ -55,11 +65,16 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 builder/build-pages.py ../_html
@@ -86,13 +101,25 @@ jobs:
             sudo pip3 install pytest-xdist
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem-src
+          repository: mscroggs/symfem
+          ref: main
       - run: |
-          git clone https://github.com/mscroggs/symfem.git symfem-src
           cd symfem-src
           sudo pip3 install .
-        name: Install latest symfem
+        name: Install Symfem
+
+      - name: Clone Basix
+        uses: actions/checkout@v2
+        with:
+          path: ./basix-src
+          repository: FEniCS/dolfinx
+          ref: main
       - run: |
-          git clone https://github.com/FEniCS/basix.gix basix-src
           cd basix-src
           sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev ninja-build
           sudo pip3 install pybind11
@@ -101,6 +128,7 @@ jobs:
           sudo cmake --install build-dir
           sudo pip3 install ./python/
         name: Install Basix
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
