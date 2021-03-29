@@ -117,12 +117,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: ./basix-src
-          repository: FEniCS/dolfinx
+          repository: FEniCS/basix
           ref: main
       - run: |
-          cd basix-src
           sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev ninja-build
           sudo pip3 install pybind11
+        name: Install Basix dependencies
+      - run: |
+          cd basix-src
+          ls
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DXTENSOR_ENABLE_ASSERT=ON -B build-dir -S .
           cmake --build build-dir
           sudo cmake --install build-dir
