@@ -66,6 +66,8 @@ def test_sequence(file, cellname):
         except TimeOutTheTest:
             break
 
+    signal.alarm(0)
+
     print(seq)
 
     if "ndofs" in data and cellname in data["ndofs"]:
