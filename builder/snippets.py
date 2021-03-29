@@ -43,6 +43,10 @@ def basix_example(data):
                 min_o = data["min-order"]
         else:
             min_o = 0
+
+        if data["name"] == "Lagrange":
+            min_o = 1
+
         max_o = min_o + 2
         if "max-order" in data:
             if isinstance(data["max-order"], dict):

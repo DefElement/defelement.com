@@ -28,8 +28,6 @@ def test_basix_snippet(file):
     with open(os.path.join(element_path, file)) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
 
-    print(data)
-
     if "basix" not in data:
         pytest.skip()
 
