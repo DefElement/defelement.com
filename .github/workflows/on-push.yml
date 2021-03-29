@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 7 * * 1"
 
 jobs:
   style-checks:
@@ -89,6 +91,16 @@ jobs:
           cd symfem-src
           sudo pip3 install .
         name: Install latest symfem
+      - run: |
+          git clone https://github.com/fenics/basix.gix basix-src
+          cd basix-src
+          sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev ninja-build
+          sudo pip3 install pybind11
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DXTENSOR_ENABLE_ASSERT=ON -B build-dir -S .
+          cmake --build build-dir
+          sudo cmake --install build-dir
+          sudo pip3 install ./python/
+        name: Install Basix
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
