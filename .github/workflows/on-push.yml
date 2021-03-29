@@ -11,8 +11,8 @@ on:
       build: false
   schedule:
     - cron: "0 7 * * 1"
-    inputs:
-      build: false
+      inputs:
+        build: false
 
 jobs:
   style-checks:
