@@ -20,11 +20,9 @@ ndofs:
 ndofs-oeis:
   quadrilateral: A014206
 dofs:
-  edges: tangent integral moments with (lagrange,k)
-  faces: integral moments with (vector-lagrange,k-2)
-  volumes: integral moments with (vector-lagrange,k-4)
-notes:
-  - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
+  edges: tangent integral moments with (dpc,k)
+  faces: integral moments with (vector-dpc,k-2)
+  volumes: integral moments with (vector-dpc,k-4)
 polynomial set:
   quadrilateral: poly[k]^d && <k>[\operatorname{span}\left\{\left(\begin{array}{c}(k+1)x^ky\\x^{k+1}\end{array}\right),\left(\begin{array}{c}(k+1)y^{k+1}\\(k+1)xy^k\end{array}\right)\right\}]
   hexahedron: poly[k]^d && apoly[k-1] && <k>[\left\{\nabla p\middle|p\in{{serendipity[k+1]}}\right\}]

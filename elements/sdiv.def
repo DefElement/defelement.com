@@ -20,10 +20,8 @@ ndofs:
 ndofs-oeis:
   quadrilateral: A014206
 dofs:
-  facets: normal integral moments with (lagrange,k)
-  cell: integral moments with (vector-lagrange,k-2)
-notes:
-  - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
+  facets: normal integral moments with (dpc,k)
+  cell: integral moments with (vector-dpc,k-2)
 polynomial set:
   quadrilateral: poly[k]^d && <k>[\operatorname{span}\left\{\left(\begin{array}{c}x^{k+1}\\-(k+1)x^ky\end{array}\right),\left(\begin{array}{c}(k+1)xy^k\\-y^{k+1}\end{array}\right)\right\}]
   hexahedron: poly[k]^d && <k>[\left\{\nabla\times\boldsymbol{p}\middle|\boldsymbol{p}\in{{apoly[k]}}\right\}]
