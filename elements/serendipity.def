@@ -19,11 +19,9 @@ ndofs-oeis:
   quadrilateral: A340266
 dofs:
   vertices: point evaluations
-  edges: integral moments with (lagrange,k-2)
-  faces: integral moments with (lagrange,k-4)
-  volumes: integral moments with (lagrange,k-6)
-notes:
-  - The integral moments use [Lagrange](element::lagrange) spaces defined on triangles and tetrahedra, not [Q](element::q) spaces defined on quadrilaterals and hexahedra.
+  edges: integral moments with (dpc,k-2)
+  faces: integral moments with (dpc,k-4)
+  volumes: integral moments with (dpc,k-6)
 polynomial set:
   interval: poly[k] && serendipity[k]
   quadrilateral: poly[k] && serendipity[k]
