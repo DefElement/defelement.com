@@ -180,6 +180,7 @@ for file in os.listdir(element_path):
         fname = file[:-4]
         content = f"<h1>{data['html-name'][0].upper()}{data['html-name'][1:]}</h1>"
         element_data = []
+        implementations = []
 
         # Link to ciarlet.htmlk
         content += "<p><small><a href='/ciarlet.html'>"
@@ -371,7 +372,7 @@ for file in os.listdir(element_path):
             symfem_info += "}\n"
             symfem_info += "</script>"
 
-            element_data.append(("Symfem string", symfem_info))
+            implementations.append(("Symfem string", symfem_info))
 
         # Basix string
         if "basix" in data:
@@ -403,7 +404,7 @@ for file in os.listdir(element_path):
             basix_info += "}\n"
             basix_info += "</script>"
 
-            element_data.append(("Basix string", basix_info))
+            implementations.append(("Basix string", basix_info))
 
         # Categories
         if "categories" in data:
@@ -424,6 +425,14 @@ for file in os.listdir(element_path):
         for i, j in element_data:
             content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
         content += "</table>"
+
+        # Write implementations
+        if len(implementations) > 0:
+            content += "<h2>Implementations</h2>\n"
+            content += "<table class='element-info'>"
+            for i, j in implementations:
+                content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
+            content += "</table>"
 
         # Write examples using symfem
         element_names = []
