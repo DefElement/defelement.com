@@ -334,6 +334,34 @@ for file in os.listdir(element_path):
                         dof_text.append(f"<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>")
                 element_data.append(("Number of DOFs", "<br />\n".join(dof_text)))
 
+        # Number of DOFs on subentities
+        if "entity-ndofs" in data or "entity-ndofs-oeis" in data:
+            dof_data = {}
+            if "entity-ndofs" in data:
+                for e, formula in data["entity-ndofs"].items():
+                    if e not in dof_data:
+                        dof_data[e] = {}
+                    dof_data[e]["formula"] = formula
+            if "entity-ndofs-oeis" in data:
+                for e, oeis in data["entity-ndofs-oeis"].items():
+                    if e not in dof_data:
+                        dof_data[e] = {}
+                    dof_data[e]["oeis"] = oeis
+
+            if len(dof_data) > 0:
+                dof_text = []
+                for i, j in dof_data.items():
+                    if "formula" in j and "oeis" in j:
+                        dof_text.append(
+                            f"{i}: \\({j['formula']}\\)"
+                            f" (<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>)")
+                    elif "formula" in j:
+                        dof_text.append(f"{i}: \\({j['formula']}\\)")
+                    elif "oeis" in j:
+                        dof_text.append(f"<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>")
+                element_data.append(("Number of DOFs<breakable>on subentities",
+                                     "<br />\n".join(dof_text)))
+
         # Notes
         if "notes" in data:
             element_data.append(
@@ -423,7 +451,8 @@ for file in os.listdir(element_path):
         # Write element data
         content += "<table class='element-info'>"
         for i, j in element_data:
-            content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
+            content += f"<tr><td>{i.replace(' ', '&nbsp;').replace('<breakable>', ' ')}</td>"
+            content += f"<td>{j}</td></tr>"
         content += "</table>"
 
         # Write implementations
