@@ -170,7 +170,7 @@ def test_entity_sequences(file, cellname):
                                  ["vertices", "edges", "faces", "volumes"]):
                 seq[e_name][k] = len(e.entity_dofs(d, 0))
             for co_d, e_name in zip(range(e.reference.tdim),
-                                          ["cell", "facets", "ridges", "peaks"]):
+                                    ["cell", "facets", "ridges", "peaks"]):
                 seq[e_name][k] = len(e.entity_dofs(e.reference.tdim - co_d, 0))
         except NotImplementedError:
             pass
