@@ -22,6 +22,17 @@ ndofs-oeis:
   interval: A000027
   triangle: A000217
   tetrahedron: A000292
+entity-ndofs:
+  vertices: \begin{cases}1&k>0\end{cases}
+  edges: \begin{cases}k-1&k>0\end{cases}
+  faces: \begin{cases}(k-1)(k-2)/2&k>0\end{cases}
+  volumes: \begin{cases}(k-1)(k-2)(k-3)/6&k>0\end{cases}
+  cell: \begin{cases}1&k=0\end{cases}
+entity-ndofs-oeis:
+  vertices: A000012
+  edges: A000027
+  faces: A000217
+  volumes: A000292
 categories:
   - scalar
 reference elements:

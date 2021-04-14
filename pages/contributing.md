@@ -31,6 +31,17 @@ ndofs-oeis:
   interval: A000027
   triangle: A000217
   tetrahedron: A000292
+entity-ndofs:
+  vertices: \begin{cases}1&k>0\end{cases}
+  edges: \begin{cases}k-1&k>0\end{cases}
+  faces: \begin{cases}(k-1)(k-2)/2&k>0\end{cases}
+  volumes: \begin{cases}(k-1)(k-2)(k-3)/6&k>0\end{cases}
+  cell: \begin{cases}1&k=0\end{cases}
+entity-ndofs-oeis:
+  vertices: A000012
+  edges: A000027
+  faces: A000217
+  volumes: A000292
 categories:
   - scalar
 reference elements:
@@ -71,6 +82,8 @@ The entries in this yaml file are:
 <tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has.</td></tr>
 <tr><td>`ndofs-oeis`</td><td></td><td>A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
+<tr><td>`entity-ndofs`</td><td></td><td>The number of DOFs the element has per subentity type.</td></tr>
+<tr><td>`entity-ndofs-oeis`</td><td></td><td>A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs per subentity type.</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
 <tr><td>`reference&nbsp;elements`</td><td>Yes</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
