@@ -1,0 +1,36 @@
+name: Bernardi-Raugel
+html-name: Bernardi&ndash;Raugel
+min-order: 1
+max-order: 1
+short-names:
+  - BR
+ndofs:
+  triangle: 9
+  tetrahedron: 16
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - triangle
+  - tetrahedron
+polynomial set:
+  triangle: poly[k-1]^d && <k>[\left\{\left(\begin{array}{v}xy\\xy\end{array}\right),\left(\begin{array}{v}y(x+y)\\0\end{array},\left(\begin{array}{v}0\\x(x+y)\end{array}\right)\right)\right\}]
+  tetrahedron: poly[k-1]^d && <k>[\left\{\left(\begin{array}{v}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{v}yz(x+y+z)\\0\\0\end{array},\left(\begin{array}{v}0\\xz(x+y+z)\\0\end{array}\right)\right),\left(\begin{array}{v}0\\0\\xy(x+y+z)\end{array}\right)\right)\right\}]
+dofs:
+  vertices: point evaluations in $d$ directions
+  facets: normal integral moments with (lagrange,k-1)
+symfem: Berndardi-Raugel
+examples:
+  - triangle,1
+  - tetrahedron,1
+references:
+  - title: Analysis of some finite elements for the Stokes problem
+    author:
+      - Bernardi, C.
+      - Raugel, G.
+    pagestart: 71
+    pageend: 79
+    journal: Mathematics of Computation
+    volume: 44
+    year: 1985
+    doi: 10.1090/S0025-5718-1985-0771031-7
