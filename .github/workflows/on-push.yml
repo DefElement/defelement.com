@@ -19,7 +19,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: bernardi-raugel
+          ref: main
       - run: |
           cd symfem-src
           sudo pip3 install .
@@ -43,7 +43,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: bernardi-raugel
+          ref: main
       - run: |
           cd symfem-src
           sudo pip3 install .
@@ -68,7 +68,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: bernardi-raugel
+          ref: main
       - run: |
           cd symfem-src
           sudo pip3 install .
@@ -105,7 +105,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: bernardi-raugel
+          ref: main
       - run: |
           cd symfem-src
           sudo pip3 install .
