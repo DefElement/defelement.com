@@ -26,3 +26,4 @@ A smaller version of the website (that will be faster to build) can be built by 
 ```bash
 python builder/build-pages.py --test
 ```
+
