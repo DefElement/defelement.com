@@ -19,7 +19,7 @@ polynomial set:
 dofs:
   vertices: point evaluations in $d$ directions
   facets: normal integral moments with (lagrange,k-1)
-symfem: Berndardi-Raugel
+symfem: Bernardi-Raugel
 examples:
   - triangle,1
   - tetrahedron,1
