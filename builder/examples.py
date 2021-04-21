@@ -677,7 +677,7 @@ def draw_piecewise_function(element, func):
     return out
 
 
-def markup_element(element):
+def markup_example(element):
     eg = ""
     eg += "<ul>\n"
     # Reference

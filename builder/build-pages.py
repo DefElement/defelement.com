@@ -3,10 +3,9 @@ import argparse
 import yaml
 from symfem import create_element
 from markup import markup, insert_dates, insert_links, python_highlight
-from elements import markup_element
+from examples import markup_example
 from citations import markup_citation, make_bibtex
-from polyset import make_poly_set, make_extra_info
-from snippets import symfem_example, basix_example
+from element import Element, Categoriser
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
@@ -46,6 +45,11 @@ def make_html_page(content, pagetitle=None):
     return out
 
 
+def cap_first(txt):
+    return txt[:1].upper() + txt[1:]
+
+
+# Prepare paths
 if os.path.isdir(html_path):
     os.system(f"rm -rf {html_path}")
 os.mkdir(html_path)
@@ -59,14 +63,7 @@ os.system(f"cp -r {files_path}/* {html_path}")
 with open(os.path.join(html_path, "CNAME"), "w") as f:
     f.write("defelement.com")
 
-categories = {}
-with open(os.path.join(data_path, "categories")) as f:
-    for line in f:
-        a, b = line.split(":", 1)
-        categories[a.strip()] = b.strip()
-
-category_pages = {i: [] for i in categories.keys()}
-
+# Make pages
 for file in os.listdir(pages_path):
     if file.endswith(".md"):
         fname = file[:-3]
@@ -76,477 +73,238 @@ for file in os.listdir(pages_path):
         with open(os.path.join(html_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
 
-elementlist = []
-refels = {}
-ec_families = {}
+# Load categories and reference elements
+categoriser = Categoriser()
+with open(os.path.join(data_path, "categories")) as f:
+    for line in f:
+        if line.strip() != "":
+            a, b = line.split(":", 1)
+            categoriser.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
 
+with open(os.path.join(data_path, "references")) as f:
+    for line in f:
+        if line.strip() != "":
+            categoriser.add_reference(line.strip(), f"{line.strip()}.html")
 
-def dofs_on_entity(entity, dofs):
-    global elementlist
-    if not isinstance(dofs, str):
-        doflist = [dofs_on_entity(entity, d) for d in dofs]
-        return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
-    if "integral moment" in dofs:
-        mom_type, space_info = dofs.split(" with ")
-        space, order = space_info.split("(")[1].split(")")[0].split(",")
-        space = space.strip()
-        order = order.strip()
-        space_link = "*ERROR*"
-        if space == "arnold-winther-extras":
-            out = f"{mom_type} with \\(\\frac{{\\partial}}{{\\partial(x, y)}}x^2y^2(1-x-y)^2f\\)"
-            out += f" for each order \\({order}\\) polynomial \\(f\\) in an order \\({order}\\)"
-            out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
-            return out
-        if space == "bernstein-polynomials":
-            return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
-        for i, j, k, _, _ in elementlist:
-            if k == space:
-                space_link = f"<a href='/elements/{j}'>{i}</a>"
-                break
-        assert space_link != "*ERROR*"
-        return f"{mom_type} with an order \\({order}\\) {space_link} space"
-    return dofs
-
-
-def make_dof_descs(data, post=""):
-    dof_data = []
-    for i in ["interval", "triangle", "tetrahedron", "quadrilateral", "hexahedron"]:
-        if i in data:
-            dof_data.append(make_dof_descs(data[i], f" ({i})"))
-    if len(dof_data) != 0:
-        return "<br />\n<br />\n".join(dof_data)
-
-    for i, j in [
-        ("On each vertex", "vertices"),
-        ("On each edge", "edges"),
-        ("On each face", "faces"),
-        ("On each volume", "volumes"),
-        ("On each ridge", "ridges"),
-        ("On each peak", "peaks"),
-        ("On each facet", "facets"),
-        ("On the interior of the reference element", "cell"),
-    ]:
-        if j in data:
-            dof_data.append(f"{i}{post}: {dofs_on_entity(j, data[j])}")
-    return "<br />\n".join(dof_data)
-
-
-def make_order_data(min_o, max_o):
-    if isinstance(min_o, dict):
-        orders = []
-        for i, min_i in min_o.items():
-            if isinstance(max_o, dict) and i in max_o:
-                orders.append(i + ": " + make_order_data(min_i, max_o[i]))
-            else:
-                orders.append(i + ": " + make_order_data(min_i, max_o))
-        return "<br />\n".join(orders)
-    if max_o is None:
-        return f"\\({min_o}\\leqslant k\\)"
-    if max_o == min_o:
-        return f"\\(k={min_o}\\)"
-    return f"\\({min_o}\\leqslant k\\leqslant {max_o}\\)"
-
-
-def make_dof_data(ndofs):
-    if isinstance(ndofs, list):
-        return "<br /><br />".join([f"\\({i}\\):<br />{make_dof_data(j)}"
-                                    for a in ndofs for i, j in a.items()])
-
-    dof_text = []
-    for i, j in ndofs.items():
-        txt = f"{i}: "
-        txt += make_formula(j)
-        dof_text.append(txt)
-
-    return "<br />".join(dof_text)
-
-
-def make_formula(data):
-    txt = ""
-    if "formula" not in data and "oeis" not in data:
-        return ", ".join(f"{make_formula(j)} ({i})"
-                         for i, j in data.items())
-    if "formula" in data:
-        txt += "\\("
-        if isinstance(data["formula"], list):
-            txt += "\\begin{cases}"
-            txt += "\\\\".join([f"{c}&{b}" for a in data["formula"] for b, c in a.items()])
-            txt += "\\end{cases}"
-        else:
-            txt += f"{data['formula']}"
-        txt += "\\)"
-    if "oeis" in data:
-        if "formula" in data:
-            txt += " ("
-        txt += f"<a href='http://oeis.org/{data['oeis']}'>{data['oeis']}</a>"
-        if "formula" in data:
-            txt += ")"
-    return txt
-
-
-for file in os.listdir(element_path):
-    if file.endswith(".def") and not file.startswith("."):
-        with open(os.path.join(element_path, file)) as f:
-            data = yaml.load(f, Loader=yaml.FullLoader)
-        fname = file[:-4]
-        if "categories" in data:
-            cats = data["categories"]
-        else:
-            cats = []
-        elementlist.append((data['html-name'], f"{fname}.html", fname,
-                            data["reference elements"], cats))
-
-        if "alt-names" in data:
-            for i in data["alt-names"]:
-                if i[0] == "(" and i[-1] == ")":
-                    continue
-                if " (" in i:
-                    elementlist.append((i.split(" (")[0], f"{fname}.html", fname,
-                                        [j.strip() for j in i.split(" (")[1].split(",")],
-                                        cats))
-                else:
-                    elementlist.append((i, f"{fname}.html", fname,
-                                        data["reference elements"], cats))
-
+# Load elements from .def files
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
 
-        print(data["name"])
         fname = file[:-4]
-        content = f"<h1>{data['html-name'][0].upper()}{data['html-name'][1:]}</h1>"
-        element_data = []
-        implementations = []
 
-        # Link to ciarlet.htmlk
-        content += "<p><small><a href='/ciarlet.html'>"
-        content += "Click here to read what the information on this page means."
-        content += "</a></small></p>"
+        categoriser.add_element(Element(data, fname))
 
-        # Alternative names
-        alt_names = []
-        if "alt-names" in data:
-            alt_names = [i[1:-1] if i[0] == "(" and i[-1] == ")" else i
-                         for i in data["alt-names"]]
-        if "exterior-calculus" in data:
-            ec = data["exterior-calculus"]
-            if not isinstance(ec, (list, tuple)):
-                ec = [ec]
-            for e in ec:
-                i, j, k = e.split(",")
-                if i not in ec_families:
-                    ec_families[i] = {}
-                if k not in ec_families[i]:
-                    ec_families[i][k] = {}
-                ec_families[i][k][j] = (data["html-name"], f"{fname}.html")
-                name = f"<a href='/families/{i}.html'>\\(\\mathcal{{{i[0]}}}"
-                if len(i) > 1:
-                    name += f"^{i[1]}"
-                name += f"_k\\Lambda^{{{j}}}("
-                if k == "simplex":
-                    name += "\\Delta"
-                else:
-                    assert k == "tp"
-                    name += "\\square"
-                name += "_d)"
-                name += "\\)</a>"
-                alt_names.append(name)
-        if len(alt_names) > 0:
-            element_data.append(("Alternative names", ", ".join(alt_names)))
+# Generate element pages
+for e in categoriser.elements:
+    print(e.name)
+    content = f"<h1>{cap_first(e.html_name)}</h1>"
+    element_data = []
+    implementations = []
 
-        # Short names
-        if "short-names" in data:
-            element_data.append(("Abbreviated names", ", ".join(data["short-names"])))
+    # Link to ciarlet.html
+    content += "<p><small><a href='/ciarlet.html'>"
+    content += "Click here to read what the information on this page means."
+    content += "</a></small></p>"
 
-        # Orders
-        element_data.append(("Orders", make_order_data(
-            data["min-order"] if "min-order" in data else 0,
-            data["max-order"] if "max-order" in data else None)))
+    # Alternative names
+    alt_names = e.alternative_names()
+    if len(alt_names) > 0:
+        element_data.append(("Alternative names", ", ".join(alt_names)))
 
-        # Reference elements
-        for e in data["reference elements"]:
-            if e not in refels:
-                refels[e] = []
-            refels[e].append((data["html-name"], f"{fname}.html"))
-            if "alt-names" in data:
-                for i in data["alt-names"]:
-                    if i[0] == "(" and i[-1] == ")":
-                        continue
+    # Short names
+    short_names = e.short_names()
+    if len(short_names) > 0:
+        element_data.append(("Abbreviated names", ", ".join(short_names)))
 
-                    refels[e].append((i.split(" (")[0], f"{fname}.html"))
+    # Orders
+    element_data.append(("Orders", e.order_range()))
+
+    # Reference elements
+    refs = e.reference_elements()
+    element_data.append(("Reference elements", ", ".join(refs)))
+
+    # Mixed elements
+    if e.is_mixed:
+        subelements = e.sub_elements()
         element_data.append(
-            ("Reference elements",
-             ", ".join([f"<a href='/lists/references/{e}.html'>{e}</a>"
-                        for e in data["reference elements"]])))
+            ("Definition",
+             "This is a mixed element containing these subelements:"
+             "<ul>" + "\n".join(subelements) + "</ul>"))
 
-        # Mixed elements
-        if "mixed" in data:
-            subelements = []
-            for e in data["mixed"]:
-                e_type, order = e.split("(")
-                order = order.split(")")[0]
-                for i, j, k, _, _ in elementlist:
-                    if k == e_type:
-                        space_link = f"<a href='/elements/{j}'>{i}</a>"
-                        break
-                assert space_link != "*ERROR*"
-                subelements.append(f"<li>order \\({order}\\) {space_link} space</li>")
-            element_data.append(
-                ("Definition",
-                 "This is a mixed element containing these subelements:"
-                 "<ul>" + "\n".join(subelements) + "</ul>"))
+    # Polynomial set
+    psets = e.make_polynomial_set_html()
+    if len(psets) > 0:
+        element_data.append(("Polynomial set", psets))
 
-        # Polynomial set
-        if "polynomial set" in data:
-            psets = {}
-            for i, j in data["polynomial set"].items():
-                if j not in psets:
-                    psets[j] = []
-                psets[j].append(i)
-            if (
-                "reference elements" in data and len(psets) == 1
-                and len(list(psets.values())[0]) == len(data["reference elements"])
-            ):
-                set_data = f"\\({make_poly_set(list(psets.keys())[0])}\\)<br />"
-            else:
-                set_data = ""
-                for i, j in psets.items():
-                    set_data += f"\\({make_poly_set(i)}\\) ({', '.join(j)})<br />\n"
-            extra = make_extra_info(" && ".join(psets.keys()))
-            if len(extra) > 0:
-                set_data += "<a id='show_pset_link' href='javascript:show_psets()'"
-                set_data += " style='display:block'>"
-                set_data += "&darr; Show polynomial set definitions &darr;</a>"
-                set_data += "<a id='hide_pset_link' href='javascript:hide_psets()'"
-                set_data += " style='display:none'>"
-                set_data += "&uarr; Hide polynomial set definitions &uarr;</a>"
-                set_data += "<div id='psets' style='display:none'>"
-                set_data += extra
-                set_data += "</div>"
-                set_data += "<script type='text/javascript'>\n"
-                set_data += "function show_psets(){\n"
-                set_data += "  document.getElementById('show_pset_link').style.display = 'none'\n"
-                set_data += "  document.getElementById('hide_pset_link').style.display = 'block'\n"
-                set_data += "  document.getElementById('psets').style.display = 'block'\n"
-                set_data += "}\n"
-                set_data += "function hide_psets(){\n"
-                set_data += "  document.getElementById('show_pset_link').style.display = 'block'\n"
-                set_data += "  document.getElementById('hide_pset_link').style.display = 'none'\n"
-                set_data += "  document.getElementById('psets').style.display = 'none'\n"
-                set_data += "}\n"
-                set_data += "</script>"
-            element_data.append(("Polynomial set", set_data))
+    # DOFs
+    dofs = e.make_dof_descriptions()
+    if len(dofs) > 0:
+        element_data.append(("DOFs", dofs))
 
-        # DOFs
-        if "dofs" in data:
-            dof_data = make_dof_descs(data["dofs"])
-            if len(dof_data) > 0:
-                element_data.append(("DOFs", dof_data))
+    # Number of DOFs
+    ndofs = e.dof_counts()
+    if len(ndofs) > 0:
+        element_data.append(("Number of DOFs", ndofs))
 
-        # Number of DOFs
-        if "ndofs" in data:
-            dof_data = make_dof_data(data["ndofs"])
-            element_data.append(("Number of DOFs", dof_data))
+    # Number of DOFs on subentities
+    ndofs = e.entity_dof_counts()
+    if len(ndofs) > 0:
+        element_data.append(("Number of DOFs<breakable>on subentities", ndofs))
 
-        # Number of DOFs on subentities
-        if "entity-ndofs" in data:
-            dof_data = make_dof_data(data["entity-ndofs"])
-            element_data.append(("Number of DOFs<breakable>on subentities", dof_data))
+    # Notes
+    notes = e.notes
+    if len(notes) > 0:
+        element_data.append(
+            ("Notes", "<br />\n".join([insert_links(i) for i in notes])))
 
-        # Notes
-        if "notes" in data:
-            element_data.append(
-                ("Notes",
-                 "<br />\n".join([insert_links(i) for i in data["notes"]])))
+    # Implementations
+    libraries = [
+        ("symfem", "Symfem", "https://github.com/mscroggs/symfem", "pip3 install symfem"),
+        ("basix", "Basix", "https://github.com/fenics/basix", None)
+    ]
+    for codename, libname, url, pip in libraries:
+        if e.implemented(codename):
+            info = e.list_of_implementation_strings(codename)
 
-        # Symfem string
-        if "symfem" in data:
-            symfem_info = ""
-            if isinstance(data["symfem"], dict):
-                symfem_dict = {}
-                for i, j in data["symfem"].items():
-                    if j not in symfem_dict:
-                        symfem_dict[j] = []
-                    symfem_dict[j].append(i)
-                for i, j in symfem_dict.items():
-                    symfem_info += f"<code>\"{i}\"</code> ({', '.join(j)})<br />"
-            else:
-                symfem_info += f"<code>\"{data['symfem']}\"</code><br />"
+            if e.has_implementation_examples(codename):
 
-            symfem_info += "<a id='show_symfem_link' href='javascript:show_symfem_eg()'"
-            symfem_info += " style='display:block'>"
-            symfem_info += "&darr; Show Symfem examples &darr;</a>"
-            symfem_info += "<a id='hide_symfem_link' href='javascript:hide_symfem_eg()'"
-            symfem_info += " style='display:none'>"
-            symfem_info += "&uarr; Hide Symfem examples &uarr;</a>"
-            symfem_info += "<div id='symfem_eg' style='display:none'>"
-            symfem_info += "Before trying this example, you must install "
-            symfem_info += "<a href='https://github.com/mscroggs/symfem'>Symfem</a>:"
-            symfem_info += "<p class='pcode'>pip3 install symfem</p>"
-            symfem_info += "This element can then be created with the following lines of Python:"
+                info += "<br />"
 
-            symfem_info += "<p class='pcode'>" + python_highlight(symfem_example(data)) + "</p>"
-            symfem_info += "</div>"
-            symfem_info += "<script type='text/javascript'>\n"
-            symfem_info += "function show_symfem_eg(){\n"
-            symfem_info += "  document.getElementById('show_symfem_link').style.display = 'none'\n"
-            symfem_info += "  document.getElementById('hide_symfem_link').style.display = 'block'\n"
-            symfem_info += "  document.getElementById('symfem_eg').style.display = 'block'\n"
-            symfem_info += "}\n"
-            symfem_info += "function hide_symfem_eg(){\n"
-            symfem_info += "  document.getElementById('show_symfem_link').style.display = 'block'\n"
-            symfem_info += "  document.getElementById('hide_symfem_link').style.display = 'none'\n"
-            symfem_info += "  document.getElementById('symfem_eg').style.display = 'none'\n"
-            symfem_info += "}\n"
-            symfem_info += "</script>"
+                info += f"<a id='show_{codename}_link' href='javascript:show_{codename}_eg()'"
+                info += " style='display:block'>"
+                info += f"&darr; Show {libname} examples &darr;</a>"
+                info += f"<a id='hide_{codename}_link' href='javascript:hide_{codename}_eg()'"
+                info += " style='display:none'>"
+                info += f"&uarr; Hide {libname} examples &uarr;</a>"
+                info += f"<div id='{codename}_eg' style='display:none'>"
+                info += "Before trying this example, you must install "
+                info += f"<a href='{url}'>{libname}</a>"
+                if pip is None:
+                    info += ". "
+                else:
+                    info += f":<p class='pcode'>{pip}</p>"
+                info += "This element can then be created with the following lines of Python:"
 
-            implementations.append(("Symfem string", symfem_info))
+                info += "<p class='pcode'>" + python_highlight(
+                    e.make_implementation_examples(codename)) + "</p>"
+                info += "</div>"
+                info += "<script type='text/javascript'>\n"
+                info += f"function show_{codename}_eg(){{\n"
+                info += f" document.getElementById('show_{codename}_link').style.display='none'\n"
+                info += f" document.getElementById('hide_{codename}_link').style.display='block'\n"
+                info += f" document.getElementById('{codename}_eg').style.display='block'\n"
+                info += "}\n"
+                info += f"function hide_{codename}_eg(){{\n"
+                info += f" document.getElementById('show_{codename}_link').style.display='block'\n"
+                info += f" document.getElementById('hide_{codename}_link').style.display='none'\n"
+                info += f" document.getElementById('{codename}_eg').style.display='none'\n"
+                info += "}\n"
+                info += "</script>"
 
-        # Basix string
-        if "basix" in data:
-            basix_info = f"<code>\"{data['basix']}\"</code>"
-            basix_info += "<br />"
+                implementations.append((f"{libname} string", info))
 
-            basix_info += "<a id='show_basix_link' href='javascript:show_basix_eg()'"
-            basix_info += " style='display:block'>"
-            basix_info += "&darr; Show Basix examples &darr;</a>"
-            basix_info += "<a id='hide_basix_link' href='javascript:hide_basix_eg()'"
-            basix_info += " style='display:none'>"
-            basix_info += "&uarr; Hide Basix examples &uarr;</a>"
-            basix_info += "<div id='basix_eg' style='display:none'>"
-            basix_info += "Before trying this example, you must install "
-            basix_info += "<a href='https://github.com/fenics/basix'>Basix</a>. "
-            basix_info += "This element can then be created with the following lines of Python:"
-            basix_info += "<p class='pcode'>" + python_highlight(basix_example(data)) + "</p>"
-            basix_info += "</div>"
-            basix_info += "<script type='text/javascript'>\n"
-            basix_info += "function show_basix_eg(){\n"
-            basix_info += "  document.getElementById('show_basix_link').style.display = 'none'\n"
-            basix_info += "  document.getElementById('hide_basix_link').style.display = 'block'\n"
-            basix_info += "  document.getElementById('basix_eg').style.display = 'block'\n"
-            basix_info += "}\n"
-            basix_info += "function hide_basix_eg(){\n"
-            basix_info += "  document.getElementById('show_basix_link').style.display = 'block'\n"
-            basix_info += "  document.getElementById('hide_basix_link').style.display = 'none'\n"
-            basix_info += "  document.getElementById('basix_eg').style.display = 'none'\n"
-            basix_info += "}\n"
-            basix_info += "</script>"
+    # Categories
+    cats = e.categories()
+    if len(cats) > 0:
+        element_data.append(("Categories", ", ".join(cats)))
 
-            implementations.append(("Basix string", basix_info))
+    # Write element data
+    content += "<table class='element-info'>"
+    for i, j in element_data:
+        content += f"<tr><td>{i.replace(' ', '&nbsp;').replace('<breakable>', ' ')}</td>"
+        content += f"<td>{j}</td></tr>"
+    content += "</table>"
 
-        # Categories
-        if "categories" in data:
-            for c in data["categories"]:
-                category_pages[c].append((data["html-name"], f"{fname}.html"))
-                if "alt-names" in data:
-                    for i in data["alt-names"]:
-                        if i[0] == "(" and i[-1] == ")":
-                            continue
-                        category_pages[c].append((i.split(" (")[0], f"{fname}.html"))
-            element_data.append(
-                ("Categories",
-                 ", ".join([f"<a href='/lists/categories/{c}.html'>{categories[c]}</a>"
-                            for c in data["categories"]])))
-
-        # Write element data
+    # Write implementations
+    if len(implementations) > 0:
+        content += "<h2>Implementations</h2>\n"
         content += "<table class='element-info'>"
-        for i, j in element_data:
-            content += f"<tr><td>{i.replace(' ', '&nbsp;').replace('<breakable>', ' ')}</td>"
-            content += f"<td>{j}</td></tr>"
+        for i, j in implementations:
+            content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
         content += "</table>"
 
-        # Write implementations
-        if len(implementations) > 0:
-            content += "<h2>Implementations</h2>\n"
-            content += "<table class='element-info'>"
-            for i, j in implementations:
-                content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
-            content += "</table>"
+    # Write examples using symfem
+    element_names = []
+    element_examples = []
 
-        # Write examples using symfem
-        element_names = []
-        element_examples = []
+    if (not test_mode or e.test) and e.has_examples:
+        assert e.implemented("symfem")
 
-        if (not test_mode or "test" in data) and "examples" in data:
-            for e in data["examples"]:
-                cell = e.split(",")[0]
-                order = int(e.split(",")[1])
-                if isinstance(data["symfem"], dict):
-                    symfem_name = data["symfem"][cell]
-                else:
-                    symfem_name = data["symfem"]
-                if "variant=" in symfem_name:
-                    element_type, variant = symfem_name.split(" variant=")
-                    element = create_element(cell, element_type, order, variant)
-                else:
-                    element_type = symfem_name
-                    element = create_element(cell, element_type, order)
+        for eg in e.examples:
+            cell = eg.split(",")[0]
+            order = int(eg.split(",")[1])
+            symfem_name, variant = e.get_implementation_string("symfem", cell)
 
-                eg = markup_element(element)
+            if variant is None:
+                element = create_element(cell, symfem_name, order)
+            else:
+                element = create_element(cell, symfem_name, order, variant)
 
-                if eg != "":
-                    element_names.append(f"{cell}<br />order {order}")
-                    element_examples.append(eg)
+            example = markup_example(element)
 
-        if len(element_names) > 0:
-            content += "<h2>Examples</h2>\n"
-            for i, e in enumerate(element_names):
-                cl = "eglink"
-                if i == 0:
-                    cl += " current"
-                content += f"<a class='{cl}' href='javascript:showeg({i})' id='eg{i}'>{e}</a>"
-            for i, e in enumerate(element_examples):
-                cl = "egdetail"
-                if i == 0:
-                    cl += " current"
-                content += f"<div class='{cl}' id='egd{i}'>{e}</div>"
+            if len(example) > 0:
+                element_names.append(f"{cell}<br />order {order}")
+                element_examples.append(example)
 
-            content += "<script type='text/javascript'>\n"
-            content += "function showeg(i){\n"
-            content += f"    for(var j=0;j<{len(element_names)};j++){{\n"
-            content += "        if(i==j){\n"
-            content += "            document.getElementById('eg'+j).className='eglink current'\n"
-            content += "            document.getElementById('egd'+j).className='egdetail current'\n"
-            content += "        } else {\n"
-            content += "            document.getElementById('eg'+j).className='eglink'\n"
-            content += "            document.getElementById('egd'+j).className='egdetail'\n"
-            content += "        }\n"
-            content += "    }\n"
-            content += "}\n"
-            content += "</script>"
+    if len(element_names) > 0:
+        content += "<h2>Examples</h2>\n"
+        for i, eg in enumerate(element_names):
+            cl = "eglink"
+            if i == 0:
+                cl += " current"
+            content += f"<a class='{cl}' href='javascript:showeg({i})' id='eg{i}'>{eg}</a>"
+        for i, eg in enumerate(element_examples):
+            cl = "egdetail"
+            if i == 0:
+                cl += " current"
+            content += f"<div class='{cl}' id='egd{i}'>{eg}</div>"
 
-        # Write references section
-        if "references" in data:
-            content += "<h2>References</h2>\n"
-            content += "<ul class='citations'>\n"
-            for i, r in enumerate(data["references"]):
-                content += f"<li>{markup_citation(r)}"
-                content += f" [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
-                with open(os.path.join(htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
-                    f.write(make_bibtex(f"{fname}-{i}", r))
-            content += "</ul>"
+        content += "<script type='text/javascript'>\n"
+        content += "function showeg(i){\n"
+        content += f"    for(var j=0;j<{len(element_names)};j++){{\n"
+        content += "        if(i==j){\n"
+        content += "            document.getElementById('eg'+j).className='eglink current'\n"
+        content += "            document.getElementById('egd'+j).className='egdetail current'\n"
+        content += "        } else {\n"
+        content += "            document.getElementById('eg'+j).className='eglink'\n"
+        content += "            document.getElementById('egd'+j).className='egdetail'\n"
+        content += "        }\n"
+        content += "    }\n"
+        content += "}\n"
+        content += "</script>"
 
-        # Write file
-        with open(os.path.join(htmlelement_path, f"{fname}.html"), "w") as f:
-            f.write(make_html_page(content, data["html-name"]))
+    # Write references section
+    refs = e.references()
+    if len(refs) > 0:
+        content += "<h2>References</h2>\n"
+        content += "<ul class='citations'>\n"
+        for i, r in enumerate(refs):
+            content += f"<li>{markup_citation(r)}"
+            content += f" [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
+            with open(os.path.join(htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
+                f.write(make_bibtex(f"{fname}-{i}", r))
+        content += "</ul>"
+
+    # Write file
+    with open(os.path.join(htmlelement_path, e.html_filename), "w") as f:
+        f.write(make_html_page(content, e.html_name))
 
 # Index page
-elementlist.sort(key=lambda x: x[0].lower())
-
 content = "<h1>Index of elements</h1>\n"
 # Generate filtering Javascript
 content += "<script type='text/javascript'>\n"
 content += "function do_filter_refall(){\n"
 content += "    if(document.getElementById('check-ref-all').checked){\n"
-for r in refels:
+for r in categoriser.references:
     content += f"        document.getElementById('check-ref-{r}').checked = false\n"
 content += "    }\n"
 content += "    do_filter()\n"
 content += "}\n"
 content += "function do_filter_catall(){\n"
 content += "    if(document.getElementById('check-cat-all').checked){\n"
-for c in categories:
+for c in categoriser.categories:
     content += f"        document.getElementById('check-cat-{c}').checked = false\n"
 content += "    }\n"
 content += "    do_filter()\n"
@@ -554,7 +312,8 @@ content += "}\n"
 content += "function do_filter_cat(){\n"
 content += "    if(document.getElementById('check-cat-all').checked){\n"
 content += "        if("
-content += " || ".join([f"document.getElementById('check-cat-{c}').checked" for c in categories])
+content += " || ".join([f"document.getElementById('check-cat-{c}').checked"
+                        for c in categoriser.categories])
 content += "){"
 content += "            document.getElementById('check-cat-all').checked = false\n"
 content += "        }\n"
@@ -564,7 +323,8 @@ content += "}\n"
 content += "function do_filter_ref(){\n"
 content += "    if(document.getElementById('check-ref-all').checked){\n"
 content += "        if("
-content += " || ".join([f"document.getElementById('check-ref-{r}').checked" for r in refels])
+content += " || ".join([f"document.getElementById('check-ref-{r}').checked"
+                        for r in categoriser.references])
 content += "){"
 content += "            document.getElementById('check-ref-all').checked = false\n"
 content += "        }\n"
@@ -578,7 +338,7 @@ content += "        var ref_show = false\n"
 content += "        if(document.getElementById('check-ref-all').checked){\n"
 content += "            ref_show = true\n"
 content += "        } else {\n"
-for r in refels:
+for r in categoriser.references:
 
     content += f"            if(document.getElementById('check-ref-{r}').checked"
     content += f" && els[i].id.indexOf('ref-{r}') != -1){{ref_show = true}}\n"
@@ -587,7 +347,7 @@ content += "        var cat_show = false\n"
 content += "        if(document.getElementById('check-cat-all').checked){\n"
 content += "            cat_show = true\n"
 content += "        } else {\n"
-for c in categories:
+for c in categoriser.categories:
 
     content += f"            if(document.getElementById('check-cat-{c}').checked"
     content += f" && els[i].id.indexOf('cat-{c}') != -1){{cat_show = true}}\n"
@@ -618,24 +378,29 @@ content += "<table id='the-filters' class='filters' style='display:none'>"
 content += "<tr><td>Reference&nbsp;elements</td><td>"
 content += "<label><input type='checkbox' checked id='check-ref-all' onchange='do_filter_refall()'"
 content += ">&nbsp;show all</label> "
-for r in refels:
+for r in categoriser.references:
     content += f"<label><input type='checkbox' id='check-ref-{r}' onchange='do_filter_ref()'"
     content += f">&nbsp;{r}</label> "
 content += "</td></tr>"
 content += "<tr><td>Categories</td><td>"
 content += "<label><input type='checkbox' checked id='check-cat-all'onchange='do_filter_catall()'"
 content += ">&nbsp;show all</label> "
-for c in categories:
+for c in categoriser.categories:
     content += f"<label><input type='checkbox' id='check-cat-{c}'onchange='do_filter_cat()'"
-    content += f">&nbsp;{categories[c]}</label> "
+    content += f">&nbsp;{categoriser.get_category_name(c)}</label> "
 content += "</td></tr>"
 content += "</table>\n"
 # Write element list
-content += "<ul>"
-for i, j, k, refs, cats in elementlist:
-    id = " ".join([f"ref-{r}" for r in refs] + [f"cat-{c}" for c in cats])
-    content += f"<li class='element-on-list' id='{id}'><a href='/elements/{j}'>{i}</a></li>"
-content += "</ul>"
+elementlist = []
+for e in categoriser.elements:
+    id = " ".join([f"ref-{r}" for r in e.reference_elements(False)]
+                  + [f"cat-{c}" for c in e.categories(False, False)])
+    for name in [e.html_name] + e.alternative_names(False, False, False, True):
+        elementlist.append((name.lower(),
+                            f"<li class='element-on-list' id='{id}'>"
+                            f"<a href='/elements/{e.html_filename}'>{name}</a></li>"))
+elementlist.sort(key=lambda x: x[0])
+content += "<ul>" + "\n".join([i[1] for i in elementlist]) + "</ul>"
 
 with open(os.path.join(htmlelement_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
@@ -645,16 +410,21 @@ with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
 # Category index
 os.mkdir(os.path.join(htmlindices_path, "categories"))
 content = "<h1>Categories</h1>\n"
-for c in categories:
-    category_pages[c].sort(key=lambda x: x[0].lower())
+for c in categoriser.categories:
+    category_pages = []
+    for e in categoriser.elements_in_category(c):
+        for name in [e.html_name] + e.alternative_names(False, False, False, True):
+            category_pages.append((name.lower(),
+                                   f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
 
-    content += f"<h2><a name='{c}'></a>{categories[c]}</h2>\n<ul>"
-    content += "".join([f"<li><a href='/elements/{j}'>{i}</a></l*i>" for i, j in category_pages[c]])
+    category_pages.sort(key=lambda x: x[0])
+
+    content += f"<h2><a name='{c}'>{categoriser.get_category_name(c)}</a></h2>\n<ul>"
+    content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
-    sub_content = f"<h1>{categories[c]}</h1>\n<ul>"
-    sub_content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>"
-                            for i, j in category_pages[c]])
+    sub_content = f"<h1>{categoriser.get_category_name(c)}</h1>\n<ul>"
+    sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
     with open(os.path.join(htmlindices_path, f"categories/{c}.html"), "w") as f:
@@ -666,19 +436,23 @@ with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
 # Reference elements index
 os.mkdir(os.path.join(htmlindices_path, "references"))
 content = "<h1>Reference elements</h1>\n"
-for c in refels:
-    refels[c].sort(key=lambda x: x[0].lower())
+for c in categoriser.references:
+    refels = []
+    for e in categoriser.elements_by_reference(c):
+        for name in [e.html_name] + e.alternative_names(False, False, False, True):
+            refels.append((name.lower(),
+                           f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
 
-    content += f"<h2><a name='{c}'></a>{c[0].upper()}{c[1:]}</h2>\n<ul>"
-    content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in refels[c]])
-    content += "</ul>"
+    refels.sort(key=lambda x: x[0])
+
+    content += f"<h2><a name='{c}'></a>{cap_first(c)}</h2>\n"
+    content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
     sub_content = "<h1>Finite elements on a"
     if c[0] in "aeiou":
         sub_content += "n"
-    sub_content += f" {c}</h1>\n<ul>"
-    sub_content += "".join([f"<li><a href='/elements/{j}'>{i}</a></li>" for i, j in refels[c]])
-    sub_content += "</ul>"
+    sub_content += f" {c}</h1>\n"
+    sub_content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
     with open(os.path.join(htmlindices_path, f"references/{c}.html"), "w") as f:
         f.write(make_html_page(sub_content))
@@ -689,7 +463,7 @@ with open(os.path.join(htmlindices_path, "references/index.html"), "w") as f:
 # Families
 content = "<h1>Families</h1>\n"
 content += "<ul>\n"
-for fname, family in ec_families.items():
+for fname, family in categoriser.exterior_families.items():
     tex_name = f"\\mathcal{{{fname[0]}}}"
     if len(fname) > 1:
         tex_name += f"^{fname[1]}"
