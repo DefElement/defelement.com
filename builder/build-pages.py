@@ -149,7 +149,8 @@ def make_order_data(min_o, max_o):
 
 def make_dof_data(ndofs):
     if isinstance(ndofs, list):
-        return "<br /><br />".join(f"\\({i}\\):<br />{make_dof_data(j)}" for a in ndofs for i, j in a.items())
+        return "<br /><br />".join([f"\\({i}\\):<br />{make_dof_data(j)}"
+                                    for a in ndofs for i, j in a.items()])
 
     dof_text = []
     for i, j in ndofs.items():
