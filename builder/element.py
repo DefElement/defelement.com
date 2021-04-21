@@ -1,7 +1,11 @@
 import os
 import yaml
-from builder.polyset import make_poly_set, make_extra_info
-from builder import snippets
+try:
+    from builder.polyset import make_poly_set, make_extra_info
+    from builder import snippets
+except ImportError
+    from polyset import make_poly_set, make_extra_info
+    import snippets
 
 
 def make_dof_data(ndofs):
