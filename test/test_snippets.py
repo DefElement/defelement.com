@@ -20,4 +20,5 @@ def test_snippets(element, library):
         pytest.skip()
 
     code = e.make_implementation_examples(library)
+    print(code)
     exec(code)
