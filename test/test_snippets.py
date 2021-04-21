@@ -20,5 +20,9 @@ def test_snippets(element, library):
         pytest.skip()
 
     code = e.make_implementation_examples(library)
-    print(code)
+    lines = code.split("\n")
+    for i, j in enumerate(lines):
+        print(j)
+        exec(code[:i+1])
+
     exec(code)
