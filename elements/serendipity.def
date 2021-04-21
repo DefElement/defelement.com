@@ -16,7 +16,7 @@ ndofs:
     oeis: A000027
   quadrilateral:
     formula:
-    - k=1: 1
+    - k=1: 4
     - k>1: k(k+3)/2+3
     oeis: A340266
   hexahedron:
