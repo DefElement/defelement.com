@@ -3,7 +3,7 @@ import yaml
 try:
     from builder.polyset import make_poly_set, make_extra_info
     from builder import snippets
-except ImportError
+except ImportError:
     from polyset import make_poly_set, make_extra_info
     import snippets
 
