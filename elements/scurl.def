@@ -15,10 +15,13 @@ reference elements:
   - quadrilateral
   - hexahedron
 ndofs:
-  quadrilateral: k^2+3k+4
-  hexahedron: \begin{cases}6(k^2+k+2) &k=1,2,3\\k(k+1)(k-1)/2 + 3k^2 + 12k + 9 &k>3\end{cases}
-ndofs-oeis:
-  quadrilateral: A014206
+  quadrilateral:
+    formula: k^2+3k+4
+    oeis: A014206
+  hexahedron:
+    formula: 
+    - k=1,2,3: 6(k^2+k+2)
+    - k > 3: k(k+1)(k-1)/2 + 3k^2 + 12k + 9
 dofs:
   edges: tangent integral moments with (dpc,k)
   faces: integral moments with (vector-dpc,k-2)

@@ -1,9 +1,9 @@
 name: vector bubble enriched Lagrange
 html-name: vector bubble enriched Lagrange
 ndofs:
-  triangle: 2(k+1)^2
-ndofs-oeis:
-  triangle: A001105
+  triangle:
+    formula: 2(k+1)^2
+    oeis: A001105
 categories:
   - vector
 reference elements:

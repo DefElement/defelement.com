@@ -7,7 +7,8 @@ short-names:
 categories:
   - scalar
 ndofs:
-  triangle: 10
+  triangle:
+    formula: 10
 reference elements:
   - triangle
 polynomial set:

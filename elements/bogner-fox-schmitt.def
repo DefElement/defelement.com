@@ -5,7 +5,8 @@ max-order: 3
 categories:
   - scalar
 ndofs:
-  quadrilateral: 16
+  quadrilateral:
+    formula: 16
 reference elements:
   - quadrilateral
 polynomial set:

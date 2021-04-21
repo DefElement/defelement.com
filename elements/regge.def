@@ -7,11 +7,12 @@ reference elements:
   - triangle
   - tetrahedron
 ndofs:
-  triangle: 3(k+1)(k+2)/2
-  tetrahedron: (k+1)(k+2)(k+3)
-ndofs-oeis:
-  triangle: A045943
-  tetrahedron: A007531
+  triangle:
+    formula: 3(k+1)(k+2)/2
+    oeis: A045943
+  tetrahedron:
+    formula: (k+1)(k+2)(k+3)
+    oeis: A007531
 polynomial set:
   triangle: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]
   tetrahedron: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]

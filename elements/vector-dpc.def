@@ -1,11 +1,12 @@
 name: vector dPc
 html-name: vector dPc
 ndofs:
-  quadrilateral: (k+1)(k+2)
-  hexahedron: (k+1)(k+2)(k+3)/2
-ndofs-oeis:
-  quadrilateral: A002378
-  hexahedron: A027480
+  quadrilateral:
+    formula: (k+1)(k+2)
+    oeis: A002378
+  hexahedron:
+    formula: (k+1)(k+2)(k+3)/2
+    oeis: A027480
 categories:
   - scalar
 reference elements:

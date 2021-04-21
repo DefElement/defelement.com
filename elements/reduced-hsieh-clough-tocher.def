@@ -5,7 +5,8 @@ short-names:
 min-order: 3
 max-order: 3
 ndofs:
-  triangle: 9
+  triangle:
+    formula: 9
 categories:
   - scalar
 reference elements:

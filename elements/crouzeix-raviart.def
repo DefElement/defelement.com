@@ -7,8 +7,10 @@ short-names:
 categories:
   - scalar
 ndofs:
-  triangle: 3
-  tetrahedron: 4
+  triangle:
+    formula: 3
+  tetrahedron:
+    formula: 4
 reference elements:
   - triangle
   - tetrahedron

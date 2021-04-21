@@ -8,13 +8,15 @@ reference elements:
   - quadrilateral
   - hexahedron
 ndofs:
-  interval: k+1
-  quadrilateral: 2(k+1)^2
-  hexahedron: 3(k+1)^3
-ndofs-oeis:
-  interval: A000027
-  quadrilateral: A001105
-  hexahedron: A117642
+  interval:
+    formula: k+1
+    oeis: A000027
+  quadrilateral:
+    formula: 2(k+1)^2
+    oeis: A001105
+  hexahedron:
+    formula: 3(k+1)^3
+    oeis: A117642
 dofs:
   vertices: point evaluations in coordinate directions
   edges: point evaluations in coordinate directions

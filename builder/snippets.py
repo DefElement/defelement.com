@@ -18,6 +18,10 @@ def symfem_example(data):
         if data["name"] == "Radau":
             max_o = min(2, max_o)
 
+        if isinstance(data["symfem"], dict):
+            symfem_name = data["symfem"][ref]
+        else:
+            symfem_name = data["symfem"]
         for ord in range(min_o, max_o + 1):
             out += "\n\n"
             out += f"# Create {data['name']} order {ord} on a {ref}\n"
@@ -25,11 +29,11 @@ def symfem_example(data):
                 out += f"element = symfem.create_element(\"{ref}(4)\","
             else:
                 out += f"element = symfem.create_element(\"{ref}\","
-            if "variant=" in data["symfem"]:
-                e_name, variant = data["symfem"].split(" variant=")
+            if "variant=" in symfem_name:
+                e_name, variant = symfem_name.split(" variant=")
                 out += f" \"{e_name}\", {ord}, \"{variant}\")"
             else:
-                out += f" \"{data['symfem']}\", {ord})"
+                out += f" \"{symfem_name}\", {ord})"
     return out
 
 

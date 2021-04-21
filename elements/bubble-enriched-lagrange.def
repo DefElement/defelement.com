@@ -1,9 +1,9 @@
 name: bubble enriched Lagrange
 html-name: bubble enriched Lagrange
 ndofs:
-  triangle: (k+1)^2
-ndofs-oeis:
-  triangle: A000290
+  triangle:
+    formula: (k+1)^2
+    oeis: A000290
 categories:
   - scalar
 reference elements:

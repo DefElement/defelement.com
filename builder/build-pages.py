@@ -147,6 +147,42 @@ def make_order_data(min_o, max_o):
     return f"\\({min_o}\\leqslant k\\leqslant {max_o}\\)"
 
 
+def make_dof_data(ndofs):
+    if isinstance(ndofs, list):
+        return "<br /><br />".join(f"\\({i}\\):<br />{make_dof_data(j)}" for a in ndofs for i, j in a.items())
+
+    dof_text = []
+    for i, j in ndofs.items():
+        txt = f"{i}: "
+        txt += make_formula(j)
+        dof_text.append(txt)
+
+    return "<br />".join(dof_text)
+
+
+def make_formula(data):
+    txt = ""
+    if "formula" not in data and "oeis" not in data:
+        return ", ".join(f"{make_formula(j)} ({i})"
+                         for i, j in data.items())
+    if "formula" in data:
+        txt += "\\("
+        if isinstance(data["formula"], list):
+            txt += "\\begin{cases}"
+            txt += "\\\\".join([f"{c}&{b}" for a in data["formula"] for b, c in a.items()])
+            txt += "\\end{cases}"
+        else:
+            txt += f"{data['formula']}"
+        txt += "\\)"
+    if "oeis" in data:
+        if "formula" in data:
+            txt += " ("
+        txt += f"<a href='http://oeis.org/{data['oeis']}'>{data['oeis']}</a>"
+        if "formula" in data:
+            txt += ")"
+    return txt
+
+
 for file in os.listdir(element_path):
     if file.endswith(".def") and not file.startswith("."):
         with open(os.path.join(element_path, file)) as f:
@@ -308,59 +344,14 @@ for file in os.listdir(element_path):
                 element_data.append(("DOFs", dof_data))
 
         # Number of DOFs
-        if "ndofs" in data or "ndofs-oeis" in data:
-            dof_data = {}
-            if "ndofs" in data:
-                for e, formula in data["ndofs"].items():
-                    if e not in dof_data:
-                        dof_data[e] = {}
-                    dof_data[e]["formula"] = formula
-            if "ndofs-oeis" in data:
-                for e, oeis in data["ndofs-oeis"].items():
-                    if e not in dof_data:
-                        dof_data[e] = {}
-                    dof_data[e]["oeis"] = oeis
-
-            if len(dof_data) > 0:
-                dof_text = []
-                for i, j in dof_data.items():
-                    if "formula" in j and "oeis" in j:
-                        dof_text.append(
-                            f"{i}: \\({j['formula']}\\)"
-                            f" (<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>)")
-                    elif "formula" in j:
-                        dof_text.append(f"{i}: \\({j['formula']}\\)")
-                    elif "oeis" in j:
-                        dof_text.append(f"<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>")
-                element_data.append(("Number of DOFs", "<br />\n".join(dof_text)))
+        if "ndofs" in data:
+            dof_data = make_dof_data(data["ndofs"])
+            element_data.append(("Number of DOFs", dof_data))
 
         # Number of DOFs on subentities
-        if "entity-ndofs" in data or "entity-ndofs-oeis" in data:
-            dof_data = {}
-            if "entity-ndofs" in data:
-                for e, formula in data["entity-ndofs"].items():
-                    if e not in dof_data:
-                        dof_data[e] = {}
-                    dof_data[e]["formula"] = formula
-            if "entity-ndofs-oeis" in data:
-                for e, oeis in data["entity-ndofs-oeis"].items():
-                    if e not in dof_data:
-                        dof_data[e] = {}
-                    dof_data[e]["oeis"] = oeis
-
-            if len(dof_data) > 0:
-                dof_text = []
-                for i, j in dof_data.items():
-                    if "formula" in j and "oeis" in j:
-                        dof_text.append(
-                            f"{i}: \\({j['formula']}\\)"
-                            f" (<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>)")
-                    elif "formula" in j:
-                        dof_text.append(f"{i}: \\({j['formula']}\\)")
-                    elif "oeis" in j:
-                        dof_text.append(f"<a href='http://oeis.org/{j['oeis']}'>{j['oeis']}</a>")
-                element_data.append(("Number of DOFs<breakable>on subentities",
-                                     "<br />\n".join(dof_text)))
+        if "entity-ndofs" in data:
+            dof_data = make_dof_data(data["entity-ndofs"])
+            element_data.append(("Number of DOFs<breakable>on subentities", dof_data))
 
         # Notes
         if "notes" in data:
@@ -370,8 +361,17 @@ for file in os.listdir(element_path):
 
         # Symfem string
         if "symfem" in data:
-            symfem_info = f"<code>\"{data['symfem']}\"</code>"
-            symfem_info += "<br />"
+            symfem_info = ""
+            if isinstance(data["symfem"], dict):
+                symfem_dict = {}
+                for i, j in data["symfem"].items():
+                    if j not in symfem_dict:
+                        symfem_dict[j] = []
+                    symfem_dict[j].append(i)
+                for i, j in symfem_dict.items():
+                    symfem_info += f"<code>\"{i}\"</code> ({', '.join(j)})<br />"
+            else:
+                symfem_info += f"<code>\"{data['symfem']}\"</code><br />"
 
             symfem_info += "<a id='show_symfem_link' href='javascript:show_symfem_eg()'"
             symfem_info += " style='display:block'>"
@@ -471,11 +471,15 @@ for file in os.listdir(element_path):
             for e in data["examples"]:
                 cell = e.split(",")[0]
                 order = int(e.split(",")[1])
-                if "variant=" in data["symfem"]:
-                    element_type, variant = data["symfem"].split(" variant=")
+                if isinstance(data["symfem"], dict):
+                    symfem_name = data["symfem"][cell]
+                else:
+                    symfem_name = data["symfem"]
+                if "variant=" in symfem_name:
+                    element_type, variant = symfem_name.split(" variant=")
                     element = create_element(cell, element_type, order, variant)
                 else:
-                    element_type = data["symfem"]
+                    element_type = symfem_name
                     element = create_element(cell, element_type, order)
 
                 eg = markup_element(element)

@@ -12,13 +12,16 @@ reference elements:
   - tetrahedron
   - hexahedron
 ndofs:
-  triangle: k(k+2)
-  quadrilateral: k(k+3)
-  tetrahedron: k(k+1)(k+3)/2
-  hexahedron: k(k+1)(k+5)/2
+  triangle:
+    formula: k(k+2)
+  quadrilateral:
+    formula: k(k+3)
+    oeis: A028552
+  tetrahedron:
+    formula: k(k+1)(k+3)/2
+  hexahedron:
+    formula: k(k+1)(k+5)/2
 min-order: 1
-ndofs-oeis:
-  quadrilateral: A028552
 polynomial set:
   triangle: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
   quadrilateral: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]

@@ -5,8 +5,10 @@ max-order: 3
 short-names:
   - MTW
 ndofs:
-  triangle: 9
-  tetrahedron: 24
+  triangle:
+    formula: 9
+  tetrahedron:
+    formula: 24
 categories:
   - vector
   - Hdiv

@@ -15,13 +15,14 @@ reference elements:
   - quadrilateral
   - hexahedron
 ndofs:
-  quadrilateral: 2k(k+1)
-  hexahedron: 3k^2(k+1)
-ndofs-oeis:
-  quadrilateral: A046092
-  hexahedron: A270205
+  quadrilateral:
+    formula: 2k(k+1)
+    oeis: A046092
+  hexahedron:
+    formula: 3k^2(k+1)
+    oeis: A270205
 dofs:
-  facets: normal integral moments with (q,k-1)
+  facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (qcurl,k-1)
 polynomial set:
   quadrilateral: qoly[k-1]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_j\in\begin{cases}{{tqoly[k+1]}}&i=j\\{{tqoly[k]}}&i\not=j\end{cases}\text{ for }i,j=1,\dots,d\right\}]
