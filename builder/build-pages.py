@@ -85,7 +85,7 @@ def dofs_on_entity(entity, dofs):
     global elementlist
     if not isinstance(dofs, str):
         doflist = [dofs_on_entity(entity, d) for d in dofs]
-        return ", ".join(doflist[:-1]) + ", and " + doflist[-1]
+        return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
     if "integral moment" in dofs:
         mom_type, space_info = dofs.split(" with ")
         space, order = space_info.split("(")[1].split(")")[0].split(",")
