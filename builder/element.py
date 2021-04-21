@@ -61,7 +61,6 @@ class Categoriser:
                 if line.strip() != "":
                     self.add_reference(line.strip(), f"{line.strip()}.html")
 
-
     def load_folder(self, folder):
         for file in os.listdir(folder):
             if file.endswith(".def") and not file.startswith("."):
