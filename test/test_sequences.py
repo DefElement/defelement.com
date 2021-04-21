@@ -16,33 +16,38 @@ def handler(signum, frame):
     raise TimeOutTheTest()
 
 
-def check_formula(formula, seq):
+def latex_to_pyth(formula):
     formula = re.sub(r"([0-9])\(", r"\1*(", str(formula))
     formula = re.sub(r"([0-9])k", r"\1*k", str(formula))
     formula = formula.replace(")(", ")*(")
     formula = formula.replace("k(", "k*(")
     formula = formula.replace("^", "**")
     formula = formula.replace("/", "//")
-    if "{cases}" in formula:
-        formula = formula.split("\\begin{cases}")[1].split("\\end{cases}")[0]
-        formula = [i.split("&") for i in formula.split("\\\\")]
-        for i, (j, k) in enumerate(formula):
+    return formula
+
+
+def check_formula(formula, seq):
+    if isinstance(formula, list):
+        parts = []
+        for i, fpart in enumerate(formula):
+            k, j = list(fpart.items())[0]
             if "=" in k:
-                formula[i][1] = [int(a) for a in k.split("=")[1].split(",")]
+                ns = [int(a) for a in k.split("=")[1].split(",")]
             elif ">=" in k:
-                formula[i][1] = [a for a in seq if a >= int(k.split(">=")[1])]
+                ns = [a for a in seq if a >= int(k.split(">=")[1])]
             elif ">" in k:
-                formula[i][1] = [a for a in seq if a > int(k.split(">")[1])]
+                ns = [a for a in seq if a > int(k.split(">")[1])]
+            parts.append((j, ns))
         for k, s in seq.items():
-            for i, j in formula:
+            for i, j in parts:
                 if k in j:
-                    assert s == eval(i.replace("k", str(k)))
+                    assert s == eval(latex_to_pyth(i).replace("k", str(k)))
                     break
             else:
                 warnings.warn(f"k={k} is not included in this sequence")
     else:
         for k, s in seq.items():
-            assert s == eval(formula.replace("k", str(k)))
+            assert s == eval(latex_to_pyth(formula).replace("k", str(k)))
 
 
 def is_satisfied(condition, n):
