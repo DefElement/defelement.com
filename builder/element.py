@@ -1,7 +1,7 @@
 import os
 import yaml
-from polyset import make_poly_set, make_extra_info
-import snippets
+from .polyset import make_poly_set, make_extra_info
+from . import snippets
 
 
 def make_dof_data(ndofs):
@@ -47,6 +47,20 @@ class Categoriser:
         self.exterior_families = {}
         self.references = {}
         self.categories = {}
+
+    def load_categories(self, folder):
+        with open(folder) as f:
+            for line in f:
+                if line.strip() != "":
+                    a, b = line.split(":", 1)
+                    self.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
+
+    def load_references(self, folder):
+        with open(folder) as f:
+            for line in f:
+                if line.strip() != "":
+                    self.add_reference(line.strip(), f"{line.strip()}.html")
+
 
     def load_folder(self, folder):
         for file in os.listdir(folder):
@@ -112,6 +126,20 @@ class Element:
         self.data = data
         self.filename = fname
         self._c = None
+
+    def min_order(self, ref):
+        if "min-order" not in self.data:
+            return 0
+        if isinstance(self.data["min-order"], dict):
+            return self.data["min-order"][ref]
+        return self.data["min-order"]
+
+    def max_order(self, ref):
+        if "max-order" not in self.data:
+            return None
+        if isinstance(self.data["max-order"], dict):
+            return self.data["max-order"][ref]
+        return self.data["max-order"]
 
     def reference_elements(self, link=True):
         if link:

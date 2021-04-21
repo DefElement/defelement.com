@@ -1,68 +1,48 @@
 def symfem_example(element):
     out = "import symfem"
     for ref in element.data["reference elements"]:
-        if "min-order" in element.data:
-            if isinstance(element.data["min-order"], dict):
-                min_o = element.data["min-order"][ref]
-            else:
-                min_o = element.data["min-order"]
+        min_o = element.min_order(ref)
+        max_o = element.max_order(ref)
+        if max_o is None:
+            max_o = min_o + 2
         else:
-            min_o = 0
-        max_o = min_o + 2
-        if "max-order" in element.data:
-            if isinstance(element.data["max-order"], dict):
-                max_o = min(element.data["max-order"][ref], max_o)
-            else:
-                max_o = min(element.data["max-order"], max_o)
+            max_o = min(max_o, min_o + 2)
 
-        if element.data["name"] == "Radau":
+        if element.name == "Radau":
             max_o = min(2, max_o)
 
-        if isinstance(element.data["symfem"], dict):
-            symfem_name = element.data["symfem"][ref]
-        else:
-            symfem_name = element.data["symfem"]
+        symfem_name, variant = element.get_implementation_string("symfem", ref)
+
         for ord in range(min_o, max_o + 1):
             out += "\n\n"
-            out += f"# Create {element.data['name']} order {ord} on a {ref}\n"
+            out += f"# Create {element.name} order {ord} on a {ref}\n"
             if ref == "dual polygon":
                 out += f"element = symfem.create_element(\"{ref}(4)\","
             else:
                 out += f"element = symfem.create_element(\"{ref}\","
-            if "variant=" in symfem_name:
-                e_name, variant = symfem_name.split(" variant=")
-                out += f" \"{e_name}\", {ord}, \"{variant}\")"
-            else:
+            if variant is None:
                 out += f" \"{symfem_name}\", {ord})"
+            else:
+                out += f" \"{symfem_name}\", {ord}, \"{variant}\")"
     return out
 
 
 def basix_example(element):
     out = "import basix"
     for ref in element.data["reference elements"]:
-        if "min-order" in element.data:
-            if isinstance(element.data["min-order"], dict):
-                min_o = element.data["min-order"][ref]
-            else:
-                min_o = element.data["min-order"]
+        min_o = element.min_order(ref)
+        max_o = element.max_order(ref)
+        if max_o is None:
+            max_o = min_o + 2
         else:
-            min_o = 0
+            max_o = min(max_o, min_o + 2)
 
-        if element.data["name"] == "Lagrange":
-            min_o = 1
+        basix_name, variant = element.get_implementation_string("basix", ref)
+        assert variant is None
 
-        max_o = min_o + 2
-        if "max-order" in element.data:
-            if isinstance(element.data["max-order"], dict):
-                max_o = min(element.data["max-order"][ref], max_o)
-            else:
-                max_o = min(element.data["max-order"], max_o)
         for ord in range(min_o, max_o + 1):
             out += "\n\n"
-            out += f"# Create {element.data['name']} order {ord} on a {ref}\n"
+            out += f"# Create {element.name} order {ord} on a {ref}\n"
             out += f"element = basix.create_element("
-            if "variant=" in element.data["basix"]:
-                raise NotImplementedError()
-            else:
-                out += f"\"{element.data['basix']}\", \"{ref}\", {ord})"
+            out += f"\"{basix_name}\", \"{ref}\", {ord})"
     return out

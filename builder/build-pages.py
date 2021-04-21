@@ -74,16 +74,8 @@ for file in os.listdir(pages_path):
 
 # Load categories and reference elements
 categoriser = Categoriser()
-with open(os.path.join(data_path, "categories")) as f:
-    for line in f:
-        if line.strip() != "":
-            a, b = line.split(":", 1)
-            categoriser.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
-
-with open(os.path.join(data_path, "references")) as f:
-    for line in f:
-        if line.strip() != "":
-            categoriser.add_reference(line.strip(), f"{line.strip()}.html")
+categoriser.load_categories(os.path.join(data_path, "categories"))
+categoriser.load_references(os.path.join(data_path, "references"))
 
 # Load elements from .def files
 categoriser.load_folder(element_path)

@@ -4,9 +4,11 @@ import yaml
 from builder.snippets import symfem_example, basix_example
 from builder.element import Categoriser
 
-element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
+dir = os.path.dirname(os.path.realpath(__file__))
 c = Categoriser()
-c.load_folder(element_path)
+c.load_categories(os.path.join(dir, "../data/categories"))
+c.load_references(os.path.join(dir, "../data/references"))
+c.load_folder(os.path.join(dir, "../elements"))
 
 elements = [e.name for e in c.elements]
 
