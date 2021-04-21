@@ -8,11 +8,12 @@ short-names:
   - RWG
 exterior-calculus: P-,d-1,simplex
 ndofs:
-  triangle: k(k+2)
-  tetrahedron: k(k+1)(k+3)/2
-ndofs-oeis:
-  triangle: A005563
-  tetrahedron: A077414
+  triangle:
+    formula: k(k+2)
+    oeis: A005563
+  tetrahedron:
+    formula: k(k+1)(k+3)/2
+    oeis: A077414
 categories:
   - vector
   - Hdiv

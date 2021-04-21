@@ -3,7 +3,10 @@ html-name: dual polynomial
 short-names:
   - dual
 ndofs:
-  dual polygon(n): \begin{cases}1&k=0\\n&k=1\end{cases}
+  dual polygon(n):
+    formula:
+    - k=0: 1
+    - k=1: n
 min-order: 0
 max-order: 1
 categories:

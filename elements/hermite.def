@@ -5,9 +5,12 @@ max-order: 3
 categories:
   - scalar
 ndofs:
-  interval: 4
-  triangle: 10
-  tetrahedron: 20
+  interval:
+    formula: 4
+  triangle:
+    formula: 10
+  tetrahedron:
+    formula: 20
 reference elements:
   - interval
   - triangle

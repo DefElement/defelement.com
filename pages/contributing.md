@@ -14,6 +14,7 @@ alt-names:
   - Galerkin
   - DGT
   - Hdiv trace
+  - Q (quadrilaterals and hexahedra)
 notes:
   - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
 short-names:
@@ -23,31 +24,56 @@ short-names:
 exterior-calculus:
   - P-,0,simplex
   - P,0,simplex
+  - Q-,0,tp
 ndofs:
-  interval: k+1
-  triangle: (k+1)(k+2)/2
-  tetrahedron: (k+1)(k+2)(k+3)/6
-ndofs-oeis:
-  interval: A000027
-  triangle: A000217
-  tetrahedron: A000292
+  interval:
+    formula: k+1
+    oeis: A000027
+  triangle:
+    formula: (k+1)(k+2)/2
+    oeis: A000217
+  tetrahedron:
+    formula: (k+1)(k+2)(k+3)/6
+    oeis: A000292
+  quadrilateral:
+    formula: (k+1)^2
+    oeis: A000290
+  hexahedron:
+    formula: (k+1)^3
+    oeis: A000578
 entity-ndofs:
-  vertices: \begin{cases}1&k>0\end{cases}
-  edges: \begin{cases}k-1&k>0\end{cases}
-  faces: \begin{cases}(k-1)(k-2)/2&k>0\end{cases}
-  volumes: \begin{cases}(k-1)(k-2)(k-3)/6&k>0\end{cases}
-  cell: \begin{cases}1&k=0\end{cases}
-entity-ndofs-oeis:
-  vertices: A000012
-  edges: A000027
-  faces: A000217
-  volumes: A000292
+  - k=0:
+      cell:
+        formula: 1
+  - k>0:
+      vertices:
+        formula: 1
+        oeis: A000012
+      edges:
+        formula: k-1
+        oeis: A000027
+      faces:
+        triangle:
+          formula: (k-1)(k-2)/2
+          oeis: A000217
+        quadrilateral:
+          formula: (k-1)^2
+          oeis: A000290
+      volumes:
+        tetrahedron:
+          formula: (k-1)(k-2)(k-3)/6
+          oeis: A000292
+        hexahedron:
+          formula: (k-1)^3
+          oeis: A000578
 categories:
   - scalar
 reference elements:
   - interval
   - triangle
   - tetrahedron
+  - quadrilateral
+  - hexahedron
 dofs:
   vertices: point evaluations
   edges: point evaluations
@@ -57,7 +83,14 @@ polynomial set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]
-symfem: Lagrange
+  quadrilateral: qoly[k]
+  hexahedron: qoly[k]
+symfem:
+  interval: Lagrange
+  triangle: Lagrange
+  tetrahedron: Lagrange
+  quadrilateral: Q
+  hexahedron: Q
 basix: Lagrange
 examples:
   - interval,1
@@ -66,6 +99,9 @@ examples:
   - triangle,1
   - triangle,2
   - triangle,3
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
 test: 1
 ```
 
@@ -80,10 +116,8 @@ The entries in this yaml file are:
 <tr><td>`alt-names`</td><td></td><td>Alternative (HTML) names of the element.</td></tr>
 <tr><td>`short-names`</td><td></td><td>Abbreviated names of the element.</td></tr>
 <tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
-<tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has.</td></tr>
-<tr><td>`ndofs-oeis`</td><td></td><td>A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
-<tr><td>`entity-ndofs`</td><td></td><td>The number of DOFs the element has per subentity type.</td></tr>
-<tr><td>`entity-ndofs-oeis`</td><td></td><td>A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs per subentity type.</td></tr>
+<tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
+<tr><td>`entity-ndofs`</td><td></td><td>The number of DOFs the element has per subentity type and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
 <tr><td>`reference&nbsp;elements`</td><td>Yes</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>

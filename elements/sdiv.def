@@ -15,10 +15,11 @@ reference elements:
   - quadrilateral
   - hexahedron
 ndofs:
-  quadrilateral: k^2+3k+4
-  hexahedron: (k+1)(k^2+5k+12)/2
-ndofs-oeis:
-  quadrilateral: A014206
+  quadrilateral:
+    formula: k^2+3k+4
+    oeis: A014206
+  hexahedron:
+    formula: (k+1)(k^2+5k+12)/2
 dofs:
   facets: normal integral moments with (dpc,k)
   cell: integral moments with (vector-dpc,k-2)

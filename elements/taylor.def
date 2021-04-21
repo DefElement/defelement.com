@@ -3,13 +3,15 @@ html-name: Taylor
 alt-names:
   - discontinuous Taylor
 ndofs:
-  interval: k+1
-  triangle: (k+1)(k+2)/2
-  tetrahedron: (k+1)(k+2)(k+3)/6
-ndofs-oeis:
-  interval: A000027
-  triangle: A000217
-  tetrahedron: A000292
+  interval:
+    formula: k+1
+    oeis: A000027
+  triangle:
+    formula: (k+1)(k+2)/2
+    oeis: A000217
+  tetrahedron:
+    formula: (k+1)(k+2)(k+3)/6
+    oeis: A000292
 categories:
   - scalar
 reference elements:

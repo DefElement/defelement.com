@@ -11,12 +11,19 @@ reference elements:
   - quadrilateral
   - hexahedron
 ndofs:
-  interval: k+1
-  quadrilateral: \begin{cases}4&k=1\\k(k+3)/2+3&k>1\end{cases}
-  hexahedron: \begin{cases}12k-4 &k=1,2,3\\3k^2-3k+14 &k=4,5\\k(k-1)(k+1)/6+k^2+5k+4&k>6\end{cases}
-ndofs-oeis:
-  interval: A000027
-  quadrilateral: A340266
+  interval:
+    formula: k+1
+    oeis: A000027
+  quadrilateral:
+    formula:
+    - k=1: 4
+    - k>1: k(k+3)/2+3
+    oeis: A340266
+  hexahedron:
+    formula:
+    - k=1,2,3: 12k-4
+    - k=4,5: 3k^2-3k+14
+    - k>6: k(k-1)(k+1)/6+k^2+5k+4
 dofs:
   vertices: point evaluations
   edges: integral moments with (dpc,k-2)

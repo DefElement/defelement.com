@@ -1,8 +1,10 @@
 name: Scott-Vogelius
 html-name: Scott&ndash;Vogelius
 ndofs:
-  triangle: (k+1)(3k+4)/2
-  tetrahedron: (k+1)(k+2)(4k+9)/6
+  triangle:
+    formula: (k+1)(3k+4)/2
+  tetrahedron:
+    formula: (k+1)(k+2)(4k+9)/6
 categories:
   - mixed
 reference elements:

@@ -1,7 +1,8 @@
 name: mini
 html-name: mini
 ndofs:
-  triangle: (k+1)(3k+4)/2
+  triangle:
+    formula: (k+1)(3k+4)/2
 categories:
   - mixed
 reference elements:

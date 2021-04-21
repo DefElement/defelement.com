@@ -5,8 +5,10 @@ max-order: 1
 short-names:
   - BR
 ndofs:
-  triangle: 9
-  tetrahedron: 16
+  triangle:
+    formula: 9
+  tetrahedron:
+    formula: 16
 categories:
   - vector
   - Hdiv

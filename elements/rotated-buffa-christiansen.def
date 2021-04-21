@@ -3,7 +3,8 @@ html-name: rotated Buffa&ndash;Christiansen
 short-names:
   - RBC
 ndofs:
-  dual polygon(n): n
+  dual polygon(n):
+    formula: n
 min-order: 1
 max-order: 1
 categories:

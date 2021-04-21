@@ -5,7 +5,8 @@ max-order: 2
 categories:
   - scalar
 ndofs:
-  triangle: 6
+  triangle:
+    formula: 6
 reference elements:
   - triangle
 polynomial set:
