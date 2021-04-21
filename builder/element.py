@@ -58,7 +58,6 @@ class Categoriser:
 
                 self.add_element(Element(data, fname))
 
-
     def add_exterior_family(self, e, name, fname):
         i, j, k = e.split(",")
         if i not in self.exterior_families:
