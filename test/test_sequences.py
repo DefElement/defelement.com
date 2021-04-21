@@ -89,7 +89,7 @@ def test_sequence(file, cellname):
 
     if "symfem" not in data:
         pytest.skip()
-    if "ndofs" not in data and "ndofs-oeis" not in data:
+    if "ndofs" not in data:
         pytest.skip()
 
     seq = {}
@@ -106,15 +106,23 @@ def test_sequence(file, cellname):
             maxk = data["max-order"][cellname]
         else:
             maxk = min(maxk, data["max-order"])
+
+    if isinstance(data["symfem"], dict):
+        if cellname not in data["symfem"]:
+            pytest.skip()
+        symfem_name = data["symfem"][cellname]
+    else:
+        symfem_name = data["symfem"]
+
     for k in range(mink, maxk + 1):
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(25)
-            if "variant=" in data["symfem"]:
-                elementname, variant = data["symfem"].split(" variant=")
+            if "variant=" in symfem_name:
+                elementname, variant = symfem_name.split(" variant=")
                 term = len(symfem.create_element(cellname, elementname, k, variant).dofs)
             else:
-                term = len(symfem.create_element(cellname, data["symfem"], k).dofs)
+                term = len(symfem.create_element(cellname, symfem_name, k).dofs)
             seq[k] = term
         except NotImplementedError:
             pass
@@ -123,11 +131,11 @@ def test_sequence(file, cellname):
 
     signal.alarm(0)
 
-    if "ndofs" in data and cellname in data["ndofs"]:
-        check_formula(data["ndofs"][cellname], seq)
-
-    if "ndofs-oeis" in data and cellname in data["ndofs-oeis"]:
-        check_oeis(data["ndofs-oeis"][cellname], seq)
+    if cellname in data["ndofs"]:
+        if "formula" in data["ndofs"][cellname]:
+            check_formula(data["ndofs"][cellname]["formula"], seq)
+        if "oeis" in data["ndofs"][cellname]:
+            check_oeis(data["ndofs"][cellname]["oeis"], seq)
 
 
 @pytest.mark.parametrize("file, cellname", inputs)
@@ -139,7 +147,7 @@ def test_entity_sequences(file, cellname):
 
     if "symfem" not in data:
         pytest.skip()
-    if "entity-ndofs" not in data and "entity-ndofs-oeis" not in data:
+    if "entity-ndofs" not in data:
         pytest.skip()
 
     seq = {"vertices": {}, "edges": {}, "faces": {}, "volumes": {},
@@ -157,15 +165,23 @@ def test_entity_sequences(file, cellname):
             maxk = data["max-order"][cellname]
         else:
             maxk = min(maxk, data["max-order"])
+
+    if isinstance(data["symfem"], dict):
+        if cellname not in data["symfem"]:
+            pytest.skip()
+        symfem_name = data["symfem"][cellname]
+    else:
+        symfem_name = data["symfem"]
+
     for k in range(mink, maxk + 1):
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(25)
-            if "variant=" in data["symfem"]:
-                elementname, variant = data["symfem"].split(" variant=")
+            if "variant=" in symfem_name:
+                elementname, variant = symfem_name.split(" variant=")
                 e = symfem.create_element(cellname, elementname, k, variant)
             else:
-                e = symfem.create_element(cellname, data["symfem"], k)
+                e = symfem.create_element(cellname, symfem_name, k)
             for d, e_name in zip(range(e.reference.tdim),
                                  ["vertices", "edges", "faces", "volumes"]):
                 seq[e_name][k] = len(e.entity_dofs(d, 0))
@@ -179,10 +195,16 @@ def test_entity_sequences(file, cellname):
 
     signal.alarm(0)
 
-    if "entity-ndofs" in data:
-        for entity in data["entity-ndofs"]:
-            check_formula(data["entity-ndofs"][entity], seq[entity])
+    def run_entity_test(data):
+        if isinstance(data, list):
+            for i in data:
+                run_entity_test(i)
+        else:
+            for entity in data:
+                if "formula" in data[entity]:
+                    check_formula(data[entity]["formula"], seq[entity])
+                if "oeis" in data[entity]:
+                    check_oeis(data[entity]["oeis"], seq[entity])
 
-    if "entity-ndofs-oeis" in data:
-        for entity in data["entity-ndofs-oeis"]:
-            check_oeis(data["entity-ndofs-oeis"][entity], seq[entity])
+    if "entity-ndofs" in data:
+        run_entity_test(data["entity-ndofs"])
