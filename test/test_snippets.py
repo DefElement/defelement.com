@@ -23,6 +23,6 @@ def test_snippets(element, library):
     lines = code.split("\n")
     for i, j in enumerate(lines):
         print(j)
-        exec(code[:i+1])
+        exec("\n".join(lines[:i+1]))
 
     exec(code)
