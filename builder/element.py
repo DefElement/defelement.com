@@ -1,3 +1,5 @@
+import os
+import yaml
 from polyset import make_poly_set, make_extra_info
 import snippets
 
@@ -45,6 +47,17 @@ class Categoriser:
         self.exterior_families = {}
         self.references = {}
         self.categories = {}
+
+    def load_folder(self, folder):
+        for file in os.listdir(folder):
+            if file.endswith(".def") and not file.startswith("."):
+                with open(os.path.join(folder, file)) as f:
+                    data = yaml.load(f, Loader=yaml.FullLoader)
+
+                fname = file[:-4]
+
+                self.add_element(Element(data, fname))
+
 
     def add_exterior_family(self, e, name, fname):
         i, j, k = e.split(",")

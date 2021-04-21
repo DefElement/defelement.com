@@ -87,14 +87,7 @@ with open(os.path.join(data_path, "references")) as f:
             categoriser.add_reference(line.strip(), f"{line.strip()}.html")
 
 # Load elements from .def files
-for file in os.listdir(element_path):
-    if file.endswith(".def") and not file.startswith("."):
-        with open(os.path.join(element_path, file)) as f:
-            data = yaml.load(f, Loader=yaml.FullLoader)
-
-        fname = file[:-4]
-
-        categoriser.add_element(Element(data, fname))
+categoriser.load_folder(element_path)
 
 # Generate element pages
 for e in categoriser.elements:
