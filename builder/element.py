@@ -85,6 +85,12 @@ class Categoriser:
                 break
         raise ValueError(f"Could not find space: {element}")
 
+    def get_element(self, ename):
+        for e in self.elements:
+            if e.name == ename:
+                return e
+        raise ValueError(f"Could not find element: {ename}")
+
     def add_element(self, e):
         self.elements.append(e)
         e._c = self
