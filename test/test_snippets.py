@@ -1,7 +1,5 @@
 import pytest
 import os
-import yaml
-from builder.snippets import symfem_example, basix_example
 from builder.element import Categoriser
 
 dir = os.path.dirname(os.path.realpath(__file__))
