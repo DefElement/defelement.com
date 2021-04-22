@@ -1,7 +1,7 @@
 import shlex
 import re
 from datetime import datetime
-from citations import markup_citation
+from .citations import markup_citation
 import symbols
 
 page_references = []

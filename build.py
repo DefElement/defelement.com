@@ -1,10 +1,10 @@
 import os
 import argparse
 from symfem import create_element
-from markup import markup, insert_dates, insert_links, python_highlight
-from examples import markup_example
-from citations import markup_citation, make_bibtex
-from element import Categoriser
+from builder.markup import markup, insert_dates, insert_links, python_highlight
+from builder.examples import markup_example
+from builder.citations import markup_citation, make_bibtex
+from builder.element import Categoriser
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
