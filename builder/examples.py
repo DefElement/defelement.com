@@ -7,12 +7,16 @@ from symfem.core.calculus import grad
 from symfem.core.vectors import vdot, vsub
 
 
-def to_2d(c):
+def to_2d(c, width=200, height=200):
+    if height > 100:
+        hst = 50 + height / 2
+    else:
+        hst = height / 2
     if len(c) == 1:
-        return (c[0], 0)
+        return ((width - 100) / 2 + c[0] * 100, hst)
     if len(c) == 2:
-        return (c[0], c[1])
-    return (c[0] + c[1] / 2, 8/100 * c[0] - c[1] / 5 - c[2])
+        return ((width - 100) / 2 + c[0] * 100, hst - 100 * c[1])
+    return ((width - 120) / 2 + c[0] * 100 + 50 * c[1], hst - 100 * c[2] + 8 * c[0] - 20 * c[1])
 
 
 def make_lattice(element, n, offset=False):
@@ -131,7 +135,7 @@ def svg_reference(ref):
     if ref.name == "dual polygon":
         return axes_2d() + svg_dual_reference(ref)
     elif ref.name == "interval":
-        w = 230
+        w = 130
         h = 30
     elif ref.name == "hexahedron":
         w = 210
@@ -192,27 +196,26 @@ def svg_reference(ref):
                 out += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
         out += fg
     else:
-        for d in range(tdim + 1):
-            for edge in ref.edges:
-                p0 = to_2d(ref.vertices[edge[0]])
-                p1 = to_2d(ref.vertices[edge[1]])
-                out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
-                out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
+        for edge in ref.edges:
+            p0 = to_2d(ref.vertices[edge[0]])
+            p1 = to_2d(ref.vertices[edge[1]])
+            out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
+            out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
 
-            for i, v in enumerate(ref.vertices):
-                out += dof_arrow(v, None, i, "#FF8800", width=w, height=h)
+        for i, v in enumerate(ref.vertices):
+            out += dof_arrow(v, None, i, "#FF8800", width=w, height=h)
 
-            for i, e in enumerate(ref.edges):
-                c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-                out += dof_arrow(c, None, i, "#44AAFF", width=w, height=h)
+        for i, e in enumerate(ref.edges):
+            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
+            out += dof_arrow(c, None, i, "#44AAFF", width=w, height=h)
 
-            for i, e in enumerate(ref.faces):
-                c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-                out += dof_arrow(c, None, i, "#55FF00", width=w, height=h)
+        for i, e in enumerate(ref.faces):
+            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
+            out += dof_arrow(c, None, i, "#55FF00", width=w, height=h)
 
-            for i, e in enumerate(ref.volumes):
-                c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-                out += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
+        for i, e in enumerate(ref.volumes):
+            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
+            out += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
     out += "</svg>"
 
     return out
