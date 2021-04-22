@@ -8,8 +8,12 @@ class Plot:
         self.width = 2 * self.padding
         self.origin = [self.padding, self.padding]
         self._items = []
+        self._zadd = 0.00001
 
     def map_to_2d(self, point):
+        if len(point) == 3 and self.origin[1] == self.padding:
+            self.origin[1] += self.padding
+            self.height += self.padding
         if len(point) == 0:
             return (self.origin[0], self.origin[1]), 0
         if len(point) == 1:
@@ -17,7 +21,10 @@ class Plot:
         if len(point) == 2:
             return (self.origin[0] + point[0], self.origin[1] + point[1]), 0
         if len(point) == 3:
-            return (self.origin[0] + point[0], self.origin[1] + point[1]), 0
+            return (
+                self.origin[0] + point[0] + point[1] / 2,
+                self.origin[1] + point[2] - 2 * point[0] / 25 + point[1] / 5
+            ), point[0] - 2 * point[1] + 12 * point[2] / 25
 
     def _add_line(self, start, end, z, color, width):
         line = {"type": "line",
@@ -28,7 +35,8 @@ class Plot:
                 "color": color}
         self._items.append(line)
         self.width = max(self.width, line["start"][0] + self.padding, line["end"][0] + self.padding)
-        self.height = max(self.height, line["start"][1] + self.padding, line["end"][1] + self.padding)
+        self.height = max(self.height, line["start"][1] + self.padding,
+                          line["end"][1] + self.padding)
 
     def add_line(self, start, end, color="black", width="3px"):
         start, z1 = self.map_to_2d(start)
@@ -50,7 +58,7 @@ class Plot:
     def add_math(self, text, position, anchor="center", color="black"):
         position, z = self.map_to_2d(position)
         math = {"type": "math",
-                "z-value": z + 0.2,
+                "z-value": z + self._zadd,
                 "text": text,
                 "position": position,
                 "anchor": anchor,
@@ -85,13 +93,13 @@ class Plot:
             self.add_math("x", (37, 0, 0), "west")
             self.add_math("y", (0, 40, 0), "south west")
             self.add_math("z", (0, 0, 40), "south")
-        self.set_origin(x=self.width + self.padding)
+        self.set_origin(x=self.width + self.padding * 3)
 
     def add_dof_number(self, position, number, dim):
         position, z = self.map_to_2d(position)
         dofn = {"type": "dofn",
-                "z-value": z + 0.2,
-                "text": number,
+                "z-value": z + self._zadd,
+                "number": number,
                 "position": position,
                 "dim": dim}
         self._items.append(dofn)
@@ -104,7 +112,8 @@ class Plot:
         for i in self._items:
             if i["type"] == "math":
                 assert i["color"] == "black"
-                out += f"<text x='{i['position'][0]}' y='{self.height - i['position'][1]}' class='small' "
+                out += f"<text x='{i['position'][0]}' y='{self.height - i['position'][1]}' "
+                out += "class='small' "
                 if "south" in i["anchor"]:
                     out += "dominant-baseline='text-bottom' "
                 elif "north" in i["anchor"]:
@@ -121,13 +130,17 @@ class Plot:
             elif i["type"] == "line":
                 out += f"<line x1='{i['start'][0]}' y1='{self.height - i['start'][1]}' "
                 out += f"x2='{i['end'][0]}' y2='{self.height - i['end'][1]}' "
-                out += f"stroke-width='{i['width']}' stroke-linecap='round' stroke='{i['color']}' />\n"
+                out += f"stroke-width='{i['width']}' stroke-linecap='round' "
+                out += f"stroke='{i['color']}' />\n"
             elif i["type"] == "dofn":
-                out += f"<circle cx='{i['position'][0]}' cy='{self.height - i['position'][1]}' r='10px' fill='white'"
-                out += f" stroke='{ENTITY_COLORS[i['dim']]}' stroke-width='2px' />"
+                out += f"<circle cx='{i['position'][0]}' cy='{self.height - i['position'][1]}' "
+                out += f"r='10px' fill='white' stroke='{ENTITY_COLORS[i['dim']]}' "
+                out += "stroke-width='2px' />"
                 out += f"<text x='{i['position'][0]}' y='{self.height - i['position'][1]}' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
-                out += f" fill='{ENTITY_COLORS[i['dim']]}'>{i['text']}</text>"
+                if i["number"] >= 10:
+                    out += " style='font-size:70%'"
+                out += f" fill='{ENTITY_COLORS[i['dim']]}'>{i['number']}</text>"
             else:
                 raise ValueError(f"Unknown item type: {i['type']}")
 

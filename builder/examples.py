@@ -1,4 +1,5 @@
 from . import symbols
+from . import plotting
 import sympy
 from symfem import create_element
 from symfem.core import functionals
@@ -135,94 +136,7 @@ def svg_reference(ref):
     if ref.name == "dual polygon":
         return axes_2d() + svg_dual_reference(ref)
 
-    from . import plotting
     return plotting.plot_reference(ref)
-
-    if ref.name == "interval":
-        w = 130
-        h = 30
-    elif ref.name == "hexahedron":
-        w = 210
-        h = 165
-    elif ref.tdim == 3:
-        w = 146
-        h = 146
-    else:
-        w = 130
-        h = 130
-    if ref.tdim == 1:
-        out = axes_1d(h)
-    if ref.tdim == 2:
-        out = axes_2d(h)
-    if ref.tdim == 3:
-        out = axes_3d(h)
-    out += f"<svg width='{w}' height='{h}'>"
-    if ref.tdim == 3:
-        fg = ""
-
-        for edge in ref.edges:
-            v0 = ref.vertices[edge[0]]
-            v1 = ref.vertices[edge[1]]
-            p0 = to_2d(v0, w, h)
-            p1 = to_2d(v1, w, h)
-            if v0[1] < 0.1 and v1[1] < 0.1:
-                fg += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
-                fg += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
-            else:
-                out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
-                out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
-
-        for i, v in enumerate(ref.vertices):
-            if v[1] < 0.1:
-                fg += dof_arrow(v, None, i, "#FF8800", width=w, height=h)
-            else:
-                out += dof_arrow(v, None, i, "#FF8800", width=w, height=h)
-
-        for i, e in enumerate(ref.edges):
-            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-            if c[1] < 0.1:
-                fg += dof_arrow(c, None, i, "#44AAFF", width=w, height=h)
-            else:
-                out += dof_arrow(c, None, i, "#44AAFF", width=w, height=h)
-
-        for i, e in enumerate(ref.faces):
-            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-            if c[1] < 0.1:
-                fg += dof_arrow(c, None, i, "#55FF00", width=w, height=h)
-            else:
-                out += dof_arrow(c, None, i, "#55FF00", width=w, height=h)
-
-        for i, e in enumerate(ref.volumes):
-            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-            if c[1] < 0.1:
-                fg += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
-            else:
-                out += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
-        out += fg
-    else:
-        for edge in ref.edges:
-            p0 = to_2d(ref.vertices[edge[0]], w, h)
-            p1 = to_2d(ref.vertices[edge[1]], w, h)
-            out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
-            out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
-
-        for i, v in enumerate(ref.vertices):
-            out += dof_arrow(v, None, i, "#FF8800", width=w, height=h)
-
-        for i, e in enumerate(ref.edges):
-            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-            out += dof_arrow(c, None, i, "#44AAFF", width=w, height=h)
-
-        for i, e in enumerate(ref.faces):
-            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-            out += dof_arrow(c, None, i, "#55FF00", width=w, height=h)
-
-        for i, e in enumerate(ref.volumes):
-            c = tuple(sum(j) / len(j) for j in zip(*[ref.vertices[k] for k in e]))
-            out += dof_arrow(c, None, i, "#DD2299", width=w, height=h)
-    out += "</svg>"
-
-    return out
 
 
 def svg_dual_reference(ref):
