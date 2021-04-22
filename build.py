@@ -7,16 +7,16 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-element_path = os.path.join(dir_path, "../elements")
-template_path = os.path.join(dir_path, "../templates")
-files_path = os.path.join(dir_path, "../files")
-pages_path = os.path.join(dir_path, "../pages")
-data_path = os.path.join(dir_path, "../data")
+element_path = os.path.join(dir_path, "elements")
+template_path = os.path.join(dir_path, "templates")
+files_path = os.path.join(dir_path, "files")
+pages_path = os.path.join(dir_path, "pages")
+data_path = os.path.join(dir_path, "data")
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument(
     'destination', metavar='destination', nargs="?",
-    default=os.path.join(dir_path, "../_html"),
+    default=os.path.join(dir_path, "_html"),
     help="Destination of HTML files.")
 parser.add_argument('--test', action="store_true",
                     help="Builds a version of the website with fewer elements.")

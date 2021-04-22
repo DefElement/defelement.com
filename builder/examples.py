@@ -1,4 +1,4 @@
-import symbols
+from . import symbols
 import sympy
 from symfem import create_element
 from symfem.core import functionals

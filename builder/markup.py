@@ -2,7 +2,7 @@ import shlex
 import re
 from datetime import datetime
 from .citations import markup_citation
-import symbols
+from . import symbols
 
 page_references = []
 
@@ -82,7 +82,7 @@ def insert_links(txt):
 
 
 def plot_element(matches):
-    from examples import draw_function
+    from .examples import draw_function
     import symfem
     if "variant=" in matches[1]:
         a, b = matches[1].split(" variant=")
@@ -93,7 +93,7 @@ def plot_element(matches):
 
 
 def plot_single_element(matches):
-    from examples import draw_function
+    from .examples import draw_function
     import symfem
     if "variant=" in matches[1]:
         a, b = matches[1].split(" variant=")
@@ -104,7 +104,7 @@ def plot_single_element(matches):
 
 
 def plot_reference(matches):
-    from examples import svg_reference
+    from .examples import svg_reference
     import symfem
     e = symfem.create_reference(matches[1])
     return f"<center>{svg_reference(e)}</center>"
