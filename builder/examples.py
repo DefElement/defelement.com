@@ -197,8 +197,8 @@ def svg_reference(ref):
         out += fg
     else:
         for edge in ref.edges:
-            p0 = to_2d(ref.vertices[edge[0]])
-            p1 = to_2d(ref.vertices[edge[1]])
+            p0 = to_2d(ref.vertices[edge[0]], w, h)
+            p1 = to_2d(ref.vertices[edge[1]], w, h)
             out += f"<line x1='{p0[0]}' y1='{p0[1]}' x2='{p1[0]}' y2='{p1[1]}'"
             out += " stroke-width='4px' stroke-linecap='round' stroke='#000000' />"
 
