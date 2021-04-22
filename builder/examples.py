@@ -134,7 +134,11 @@ def axes_3d(h=146):
 def svg_reference(ref):
     if ref.name == "dual polygon":
         return axes_2d() + svg_dual_reference(ref)
-    elif ref.name == "interval":
+
+    from . import plotting
+    return plotting.plot_reference(ref)
+
+    if ref.name == "interval":
         w = 130
         h = 30
     elif ref.name == "hexahedron":
