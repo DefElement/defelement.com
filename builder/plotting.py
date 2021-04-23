@@ -104,7 +104,7 @@ class Plot:
                 "dim": dim}
         self._items.append(dofn)
 
-    def to_svg(self):
+    def to_svg(self, offset=(0,0)):
         out = f"<svg width='{self.width}' height='{self.height}'>"
 
         self._items.sort(key=lambda x: x["z-value"])
@@ -112,7 +112,8 @@ class Plot:
         for i in self._items:
             if i["type"] == "math":
                 assert i["color"] == "black"
-                out += f"<text x='{i['position'][0]}' y='{self.height - i['position'][1]}' "
+                out += f"<text x='{float(i['position'][0])}' "
+                out += f"y='{float(self.height - i['position'][1])}' "
                 out += "class='small' "
                 if "south" in i["anchor"]:
                     out += "dominant-baseline='text-bottom' "
@@ -128,15 +129,18 @@ class Plot:
                     out += "text-anchor='middle' "
                 out += f"style='font-family:MJXZERO, MJXTEX-I'>{i['text']}</text>\n"
             elif i["type"] == "line":
-                out += f"<line x1='{i['start'][0]}' y1='{self.height - i['start'][1]}' "
-                out += f"x2='{i['end'][0]}' y2='{self.height - i['end'][1]}' "
+                out += f"<line x1='{float(i['start'][0])}' "
+                out += f"y1='{float(self.height - i['start'][1])}' "
+                out += f"x2='{float(i['end'][0])}' y2='{float(self.height - i['end'][1])}' "
                 out += f"stroke-width='{i['width']}' stroke-linecap='round' "
                 out += f"stroke='{i['color']}' />\n"
             elif i["type"] == "dofn":
-                out += f"<circle cx='{i['position'][0]}' cy='{self.height - i['position'][1]}' "
+                out += f"<circle cx='{float(i['position'][0])}' "
+                out += f"cy='{float(self.height - i['position'][1])}' "
                 out += f"r='10px' fill='white' stroke='{ENTITY_COLORS[i['dim']]}' "
                 out += "stroke-width='2px' />"
-                out += f"<text x='{i['position'][0]}' y='{self.height - i['position'][1]}' "
+                out += f"<text x='{float(i['position'][0])}' "
+                out += f"y='{float(self.height - i['position'][1])}' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
                 if i["number"] >= 10:
                     out += " style='font-size:70%'"
@@ -149,20 +153,25 @@ class Plot:
 
 
 def plot_reference(ref):
+    if ref.name == "dual polygon":
+        apply_scale = lambda p: [i * 0.5 + 50 for i in p]
+    else:
+        apply_scale = lambda p: p
     p = Plot()
     p.add_axes(ref.tdim)
 
     for d in range(ref.tdim + 1):
         for edge in ref.edges:
-            v1 = [100 * i for i in ref.vertices[edge[0]]]
-            v2 = [100 * i for i in ref.vertices[edge[1]]]
+            v1 = apply_scale([100 * i for i in ref.vertices[edge[0]]])
+            v2 = apply_scale([100 * i for i in ref.vertices[edge[1]]])
             p.add_line(v1, v2)
 
         for i, e in enumerate(ref.sub_entities(d)):
             if d == 0:
-                p.add_dof_number([100 * j for j in e], i, d)
+                p.add_dof_number(apply_scale([100 * j for j in e]), i, d)
             else:
-                pos = [sum(k) * 100 / len(k) for k in zip(*[ref.vertices[j] for j in e])]
+                pos = apply_scale(
+                    [sum(k) * 100 / len(k) for k in zip(*[ref.vertices[j] for j in e])])
                 p.add_dof_number(pos, i, d)
 
         p.set_origin(x=p.width + p.padding)
