@@ -223,7 +223,84 @@ class Plot:
 
 
 def make_lattice(element, n, offset=False, pairs=False):
-    points = _lattice(element, n, offset)
+    ref = element.reference
+    f = element.get_basis_functions()[0]
+    if isinstance(f, PiecewiseFunction):
+
+        if offset:
+            assert not pairs
+            points = []
+            m = n // 2
+            for piece in f.pieces:
+                assert len(piece[0]) == 3
+                og = [float(i) for i in piece[0][0]]
+                a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
+                a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
+                points += [(og[0] + a0[0] * (i + 0.5) / (m + 1) + a1[0] * (j + 0.5) / (m + 1),
+                            og[1] + a0[1] * (i + 0.5) / (m + 1) + a1[1] * (j + 0.5) / (m + 1))
+                           for i in range(m) for j in range(m - i)]
+            return points
+        else:
+            all_points = []
+            pairlist = []
+            s = 0
+            for j in range(n-1, 0, -1):
+                pairlist += [(i, i+1) for i in range(s, s+j)]
+                s += j + 1
+            for k in range(n + 1):
+                s = k
+                for i in range(n, k, -1):
+                    if i != k + 1:
+                        pairlist += [(s, s + i)]
+                    if k != 0:
+                        pairlist += [(s, s + i - 1)]
+                    s += i
+            for piece in f.pieces:
+                assert len(piece[0]) == 3
+                og = [float(i) for i in piece[0][0]]
+                a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
+                a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
+                all_points.append(
+                    [(og[0] + a0[0] * i / (m - 1) + a1[0] * j / (m - 1),
+                      og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
+                     for i in range(m) for j in range(m - i)]
+                )
+            return all_points, [pairlist for p in all_points]
+
+    if ref.name == "interval":
+        if offset:
+            points = [((i + 0.5) / (n + 1), ) for i in range(n)]
+        else:
+            points = [(i / (n - 1), ) for i in range(n)]
+    elif ref.name == "triangle":
+        if offset:
+            points = [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
+                      for i in range(n) for j in range(n - i)]
+        else:
+            points = [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n - i)]
+    elif ref.name == "tetrahedron":
+        if offset:
+            points = [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                      for i in range(n) for j in range(n - i) for k in range(n - i - j)]
+        else:
+            points = [(i / (n - 1), j / (n - 1), k / (n - 1))
+                      for i in range(n) for j in range(n - i) for k in range(n - i - j)]
+    elif ref.name == "quadrilateral":
+        if offset:
+            points = [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
+                      for i in range(n + 1) for j in range(n + 1)]
+        else:
+            points = [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n)]
+    elif ref.name == "hexahedron":
+        if offset:
+            points = [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                      for i in range(n + 1) for j in range(n + 1) for k in range(n + 1)]
+        else:
+            points = [(i / (n - 1), j / (n - 1), k / (n - 1))
+                      for i in range(n) for j in range(n) for k in range(n)]
+    else:
+        raise ValueError("Unknown cell type.")
+
     if not pairs:
         return points
 
@@ -258,68 +335,6 @@ def make_lattice(element, n, offset=False, pairs=False):
                         if j != 0:
                             pairlist += [(node, node + n - 1)]
     return points, pairlist
-
-
-def _lattice(element, n, offset):
-    ref = element.reference
-    f = element.get_basis_functions()[0]
-    if isinstance(f, PiecewiseFunction):
-        assert offset
-
-        out = []
-        m = n // 2
-        for piece in f.pieces:
-            assert len(piece[0]) == 3
-            origin = [float(i) for i in piece[0][0]]
-            axis0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
-            axis1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
-            out += [(origin[0] + axis0[0] * ((i + 0.5) / (n + 1) + axis1[0] * (j + 0.5) / (m + 1)),
-                     origin[1] + axis0[1] * ((i + 0.5) / (n + 1) + axis1[1] * (j + 0.5) / (m + 1)))
-                    for i in range(n) for j in range(m - i)]
-
-    if ref.name == "interval":
-        if offset:
-            return [((i + 0.5) / (n + 1), ) for i in range(n)]
-        else:
-            return [(i / (n - 1), ) for i in range(n)]
-    elif ref.name == "triangle":
-        if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
-                    for i in range(n) for j in range(n - i)]
-        else:
-            return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n - i)]
-    elif ref.name == "tetrahedron":
-        if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
-                    for i in range(n) for j in range(n - i) for k in range(n - i - j)]
-        else:
-            return [(i / (n - 1), j / (n - 1), k / (n - 1))
-                    for i in range(n) for j in range(n - i) for k in range(n - i - j)]
-    elif ref.name == "quadrilateral":
-        if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
-                    for i in range(n + 1) for j in range(n + 1)]
-        else:
-            return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n)]
-    elif ref.name == "hexahedron":
-        if offset:
-            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
-                    for i in range(n + 1) for j in range(n + 1) for k in range(n + 1)]
-        else:
-            return [(i / (n - 1), j / (n - 1), k / (n - 1))
-                    for i in range(n) for j in range(n) for k in range(n)]
-
-    elif ref.name == "dual polygon":
-        assert offset
-        out = []
-        for v1, v2 in zip(ref.vertices, ref.vertices[1:] + ref.vertices[:1]):
-            m = n // 2
-            out += [(
-                float(v1[0]) * (i + 0.5) / (m + 1) + float(v2[0]) * (j + 0.5) / (m + 1),
-                float(v1[1]) * (i + 0.5) / (m + 1) + float(v2[1]) * (j + 0.5) / (m + 1)
-            ) for i in range(m) for j in range(m - i)]
-        return out
-    raise ValueError("Unknown cell type.")
 
 
 def get_apply_scale(ref):
@@ -382,7 +397,12 @@ def plot_basis_functions(element):
         points, pairs = make_lattice(element, 6, offset=False, pairs=True)
     else:
         points = make_lattice(element, 6, offset=True)
-    tab = _to_float(element.tabulate_basis(points, "xyz,xyz"))
+
+    f = element.get_basis_functions()[0]
+    if element.range_dim == 1 and isinstance(f, PiecewiseFunction):
+        return NoPlot()
+    else:
+        tab = _to_float(element.tabulate_basis(points, "xyz,xyz"))
 
     scale = max(max(_norm(j) for j in i) for i in tab)
     apply_scale = get_apply_scale(element.reference)
