@@ -1,8 +1,21 @@
-ENTITY_COLORS = ["#FF8800", "#44AAFF", "#55FF00", "#DD2299"]
+from symfem.core.calculus import grad
+from symfem.core.vectors import vdot, vsub
+from symfem.core.symbolic import subs, x
+
+COLORS = {"orange": "#FF8800", "blue": "#44AAFF", "green": "#55FF00",
+          "purple": "#DD2299", "light blue": "#BBEEFF",
+          "gray": "#AAAAAA"}
+ENTITY_COLORS = [COLORS["orange"], COLORS["blue"], COLORS["green"], COLORS["purple"]]
+
+
+class NoPlot:
+    def to_svg(self):
+        return ""
 
 
 class Plot:
-    def __init__(self, padding=15):
+    def __init__(self, padding=15, dim=None):
+        self.dim = dim
         self.padding = padding
         self.height = 2 * self.padding
         self.width = 2 * self.padding
@@ -11,6 +24,11 @@ class Plot:
         self._zadd = 0.00001
 
     def map_to_2d(self, point):
+        if self.dim is not None:
+            point = tuple(point)
+            while len(point) < self.dim:
+                point += (0, )
+
         if len(point) == 3 and self.origin[1] == self.padding:
             self.origin[1] += self.padding
             self.height += self.padding
@@ -42,6 +60,24 @@ class Plot:
         start, z1 = self.map_to_2d(start)
         end, z2 = self.map_to_2d(end)
         self._add_line(start, end, min(z1, z2), color, width)
+
+    def add_bezier(self, start, mid1, mid2, end, color="black", width="3px"):
+        start, z1 = self.map_to_2d(start)
+        mid1, _ = self.map_to_2d(mid1)
+        mid2, _ = self.map_to_2d(mid2)
+        end, z2 = self.map_to_2d(end)
+        bez = {"type": "bezier",
+               "z-value": min(z1, z2),
+               "start": start,
+               "mid1": mid1,
+               "mid2": mid2,
+               "end": end,
+               "width": width,
+               "color": color}
+        self._items.append(bez)
+        self.width = max(self.width, bez["start"][0] + self.padding, bez["end"][0] + self.padding)
+        self.height = max(self.height, bez["start"][1] + self.padding,
+                          bez["end"][1] + self.padding)
 
     def add_arrow(self, start, end, color="black", width="3px"):
         start, z1 = self.map_to_2d(start)
@@ -95,25 +131,45 @@ class Plot:
             self.add_math("z", (0, 0, 40), "south")
         self.set_origin(x=self.width + self.padding * 3)
 
-    def add_dof_number(self, position, number, dim):
+    def add_dof_number(self, position, number, color="black"):
         position, z = self.map_to_2d(position)
         dofn = {"type": "dofn",
                 "z-value": z + self._zadd,
                 "number": number,
                 "position": position,
-                "dim": dim}
+                "color": color}
         self._items.append(dofn)
 
-    def to_svg(self, offset=(0,0)):
-        out = f"<svg width='{self.width}' height='{self.height}'>"
+    def add_fill(self, vertices, color="black"):
+        new_v = []
+        z = None
+        for v in vertices:
+            v, _z = self.map_to_2d(v)
+            if z is None:
+                z = _z
+            z = min(z, _z)
+            new_v.append(v)
+        fill = {"type": "fill",
+                "z-value": z - self._zadd,
+                "vertices": new_v,
+                "color": color}
+        self._items.append(fill)
+
+    def to_svg(self, offset=(0, 0)):
+        out = f"<svg width='{self.width + offset[0]}' height='{self.height + offset[1]}'>"
 
         self._items.sort(key=lambda x: x["z-value"])
 
         for i in self._items:
-            if i["type"] == "math":
+            if i["type"] == "fill":
+                out += "<polygon points='"
+                out += " ".join([f"{float(offset[0] + j)},{float(offset[1] + self.height - k)}"
+                                 for j, k in i["vertices"]])
+                out += f"' fill='{i['color']}' />"
+            elif i["type"] == "math":
                 assert i["color"] == "black"
-                out += f"<text x='{float(i['position'][0])}' "
-                out += f"y='{float(self.height - i['position'][1])}' "
+                out += f"<text x='{float(offset[0] + i['position'][0])}' "
+                out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
                 out += "class='small' "
                 if "south" in i["anchor"]:
                     out += "dominant-baseline='text-bottom' "
@@ -129,22 +185,35 @@ class Plot:
                     out += "text-anchor='middle' "
                 out += f"style='font-family:MJXZERO, MJXTEX-I'>{i['text']}</text>\n"
             elif i["type"] == "line":
-                out += f"<line x1='{float(i['start'][0])}' "
-                out += f"y1='{float(self.height - i['start'][1])}' "
-                out += f"x2='{float(i['end'][0])}' y2='{float(self.height - i['end'][1])}' "
+                out += f"<line x1='{float(offset[0] + i['start'][0])}' "
+                out += f"y1='{float(offset[1] + self.height - i['start'][1])}' "
+                out += f"x2='{float(offset[0] + i['end'][0])}' "
+                out += f"y2='{float(offset[1] + self.height - i['end'][1])}' "
                 out += f"stroke-width='{i['width']}' stroke-linecap='round' "
                 out += f"stroke='{i['color']}' />\n"
+            elif i["type"] == "bezier":
+                out += "<path d='"
+                out += f"M {float(offset[0] + i['start'][0])} "
+                out += f"{float(offset[1] + self.height - i['start'][1])} "
+                out += f"C {float(offset[0] + i['mid1'][0])} "
+                out += f"{float(offset[1] + self.height - i['mid1'][1])}, "
+                out += f" {float(offset[0] + i['mid2'][0])} "
+                out += f"{float(offset[1] + self.height - i['mid2'][1])}, "
+                out += f" {float(offset[0] + i['end'][0])} "
+                out += f"{float(offset[1] + self.height - i['end'][1])}' "
+                out += f"stroke-width='{i['width']}' stroke-linecap='round' "
+                out += f"stroke='{i['color']}' fill='none' />\n"
             elif i["type"] == "dofn":
-                out += f"<circle cx='{float(i['position'][0])}' "
-                out += f"cy='{float(self.height - i['position'][1])}' "
-                out += f"r='10px' fill='white' stroke='{ENTITY_COLORS[i['dim']]}' "
+                out += f"<circle cx='{float(offset[0] + i['position'][0])}' "
+                out += f"cy='{float(offset[1] + self.height - i['position'][1])}' "
+                out += f"r='10px' fill='white' stroke='{i['color']}' "
                 out += "stroke-width='2px' />"
-                out += f"<text x='{float(i['position'][0])}' "
-                out += f"y='{float(self.height - i['position'][1])}' "
+                out += f"<text x='{float(offset[0] + i['position'][0])}' "
+                out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
                 if i["number"] >= 10:
                     out += " style='font-size:70%'"
-                out += f" fill='{ENTITY_COLORS[i['dim']]}'>{i['number']}</text>"
+                out += f" fill='{i['color']}'>{i['number']}</text>"
             else:
                 raise ValueError(f"Unknown item type: {i['type']}")
 
@@ -152,28 +221,215 @@ class Plot:
         return out
 
 
-def plot_reference(ref):
+def make_lattice(ref, n, offset=False, pairs=False):
+    points = _lattice(ref, n, offset)
+    if not pairs:
+        return points
+
+    assert not offset
+
+    if ref.tdim == 1:
+        pairlist = [(i, i+1) for i, j in enumerate(points[:-1])]
+    elif ref.tdim == 2:
+        pairlist = []
+        if ref.name == "triangle":
+            s = 0
+            for j in range(n-1, 0, -1):
+                pairlist += [(i, i+1) for i in range(s, s+j)]
+                s += j + 1
+            for k in range(n + 1):
+                s = k
+                for i in range(n, k, -1):
+                    if i != k + 1:
+                        pairlist += [(s, s + i)]
+                    if k != 0:
+                        pairlist += [(s, s + i - 1)]
+                    s += i
+        elif ref.name == "quadrilateral":
+            for i in range(n):
+                for j in range(n):
+                    node = i * n + j
+                    if j != n - 1:
+                        pairlist += [(node, node + 1)]
+                    if i != n - 1:
+                        pairlist += [(node, node + n)]
+                        if j != 0:
+                            pairlist += [(node, node + n - 1)]
+    return points, pairlist
+
+
+def _lattice(ref, n, offset):
+    if ref.name == "interval":
+        if offset:
+            return [((i + 0.5) / (n + 1), ) for i in range(n)]
+        else:
+            return [(i / (n - 1), ) for i in range(n)]
+    elif ref.name == "triangle":
+        if offset:
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
+                    for i in range(n) for j in range(n - i)]
+        else:
+            return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n - i)]
+    elif ref.name == "tetrahedron":
+        if offset:
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                    for i in range(n) for j in range(n - i) for k in range(n - i - j)]
+        else:
+            return [(i / (n - 1), j / (n - 1), k / (n - 1))
+                    for i in range(n) for j in range(n - i) for k in range(n - i - j)]
+    elif ref.name == "quadrilateral":
+        if offset:
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1))
+                    for i in range(n + 1) for j in range(n + 1)]
+        else:
+            return [(i / (n - 1), j / (n - 1)) for i in range(n) for j in range(n)]
+    elif ref.name == "hexahedron":
+        if offset:
+            return [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                    for i in range(n + 1) for j in range(n + 1) for k in range(n + 1)]
+        else:
+            return [(i / (n - 1), j / (n - 1), k / (n - 1))
+                    for i in range(n) for j in range(n) for k in range(n)]
+
+    elif ref.name == "dual polygon":
+        assert offset
+        out = []
+        for v1, v2 in zip(ref.vertices, ref.vertices[1:] + ref.vertices[:1]):
+            m = n // 2
+            out += [(
+                float(v1[0]) * (i + 0.5) / (m + 1) + float(v2[0]) * (j + 0.5) / (m + 1),
+                float(v1[1]) * (i + 0.5) / (m + 1) + float(v2[1]) * (j + 0.5) / (m + 1)
+            ) for i in range(m) for j in range(m - i)]
+        return out
+    raise ValueError("Unknown cell type.")
+
+
+def get_apply_scale(ref):
     if ref.name == "dual polygon":
-        apply_scale = lambda p: [i * 0.5 + 50 for i in p]
-    else:
-        apply_scale = lambda p: p
+        return lambda p: [i * 50 + 50 for i in p]
+    return lambda p: [i * 100 for i in p]
+
+
+def plot_reference(ref):
+    apply_scale = get_apply_scale(ref)
+
     p = Plot()
     p.add_axes(ref.tdim)
 
     for d in range(ref.tdim + 1):
         for edge in ref.edges:
-            v1 = apply_scale([100 * i for i in ref.vertices[edge[0]]])
-            v2 = apply_scale([100 * i for i in ref.vertices[edge[1]]])
+            v1 = apply_scale(ref.vertices[edge[0]])
+            v2 = apply_scale(ref.vertices[edge[1]])
             p.add_line(v1, v2)
 
         for i, e in enumerate(ref.sub_entities(d)):
             if d == 0:
-                p.add_dof_number(apply_scale([100 * j for j in e]), i, d)
+                p.add_dof_number(apply_scale(e), i, ENTITY_COLORS[d])
             else:
                 pos = apply_scale(
-                    [sum(k) * 100 / len(k) for k in zip(*[ref.vertices[j] for j in e])])
-                p.add_dof_number(pos, i, d)
+                    [sum(k) / len(k) for k in zip(*[ref.vertices[j] for j in e])])
+                p.add_dof_number(pos, i, ENTITY_COLORS[d])
 
         p.set_origin(x=p.width + p.padding)
 
-    return p.to_svg()
+    return p
+
+
+def plot_function(element, dof_i):
+    return plot_basis_functions(element)[dof_i]
+
+
+def plot_basis_functions(element):
+    if element.range_dim == 1:
+        if element.domain_dim > 2:
+            return [NoPlot() for i in range(element.space_dim)]
+    else:
+        if element.range_dim != element.domain_dim:
+            return [NoPlot() for i in range(element.space_dim)]
+
+    def _norm(a):
+        try:
+            a = float(a)
+            return abs(a)
+        except TypeError:
+            return sum(i ** 2 for i in a) ** 0.5
+
+    def _to_float(a):
+        try:
+            return float(a)
+        except TypeError:
+            return [_to_float(b) for b in a]
+
+    if element.range_dim == 1:
+        points, pairs = make_lattice(element.reference, 6, offset=False, pairs=True)
+    else:
+        points = make_lattice(element.reference, 6, offset=True)
+    tab = _to_float(element.tabulate_basis(points, "xyz,xyz"))
+
+    scale = max(max(_norm(j) for j in i) for i in tab)
+    apply_scale = get_apply_scale(element.reference)
+
+    ps = []
+    for dofn, function in enumerate(element.get_basis_functions()):
+        if element.range_dim == 1:
+            assert element.domain_dim <= 2
+            p = Plot(dim=element.domain_dim + 1, padding=30)
+        else:
+            assert element.range_dim == element.domain_dim
+            p = Plot(dim=element.domain_dim, padding=30)
+
+        if len(element.dofs) > 0:
+            dof = element.dofs[dofn]
+
+            if dof.entity[0] >= 2:
+                if dof.entity[0] == 2:
+                    faces = [dof.entity[1]]
+                else:
+                    faces = [i for i, _ in enumerate(element.reference.faces)]
+                for f in faces:
+                    vertices = [apply_scale(element.reference.vertices[i])
+                                for i in element.reference.faces[f]]
+                    if len(vertices) == 4:
+                        vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                    p.add_fill(vertices, color=COLORS["light blue"])
+
+        for en, edge in enumerate(element.reference.edges):
+            v1 = apply_scale(element.reference.vertices[edge[0]])
+            v2 = apply_scale(element.reference.vertices[edge[1]])
+            if len(element.dofs) > 0 and dof.entity[0] == 1 and dof.entity[1] == en:
+                p.add_line(v1, v2, color=COLORS["blue"])
+            else:
+                p.add_line(v1, v2, color=COLORS["gray"])
+
+        evals = [i[dofn] for i in tab]
+
+        if element.range_dim == 1:
+            deriv = grad(function, element.domain_dim)
+            for i, j in pairs:
+                d_pi = tuple(2 * a / 3 + b / 3 for a, b in zip(points[i], points[j]))
+                d_pj = tuple(a / 3 + 2 * b / 3 for a, b in zip(points[i], points[j]))
+                di = vdot(subs(deriv, x, points[i]), vsub(d_pi, points[i]))
+                dj = vdot(subs(deriv, x, points[j]), vsub(d_pj, points[j]))
+                p.add_bezier(apply_scale(tuple(points[i]) + (evals[i] / scale, )),
+                             apply_scale(d_pi + ((evals[i] + di) / scale, )),
+                             apply_scale(d_pj + ((evals[j] + dj) / scale, )),
+                             apply_scale(tuple(points[j]) + (evals[j] / scale, )),
+                             width="2px", color=COLORS["orange"])
+        else:
+            assert element.range_dim == element.domain_dim
+
+            for pt, v in zip(points, evals):
+                wid = 4 * sum(i**2 for i in v) ** 0.5 / scale
+                p.add_arrow(apply_scale(pt),
+                            apply_scale([i + j / (2.5 * scale) for i, j in zip(pt, v)]),
+                            color=COLORS["orange"], width=f"{wid}px")
+
+        if len(element.dofs) > 0:
+            if dof.dof_direction() is not None:
+                p.add_arrow(apply_scale(dof.dof_point()),
+                            apply_scale([i + j / 4 for i, j in zip(dof.dof_point(),
+                                                                   dof.dof_direction())]),
+                            width="2px", color=COLORS["purple"])
+            p.add_dof_number(apply_scale(dof.dof_point()), dofn, color=COLORS["purple"])
+        ps.append(p)
+    return ps
