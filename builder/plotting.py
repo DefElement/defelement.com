@@ -1,6 +1,7 @@
 from symfem.core.calculus import grad
 from symfem.core.vectors import vdot, vsub
 from symfem.core.symbolic import subs, x
+from symfem.core.symbolic import PiecewiseFunction
 
 COLORS = {"orange": "#FF8800", "blue": "#44AAFF", "green": "#55FF00",
           "purple": "#DD2299", "light blue": "#BBEEFF",
@@ -221,12 +222,13 @@ class Plot:
         return out
 
 
-def make_lattice(ref, n, offset=False, pairs=False):
-    points = _lattice(ref, n, offset)
+def make_lattice(element, n, offset=False, pairs=False):
+    points = _lattice(element, n, offset)
     if not pairs:
         return points
 
     assert not offset
+    ref = element.reference
 
     if ref.tdim == 1:
         pairlist = [(i, i+1) for i, j in enumerate(points[:-1])]
@@ -258,7 +260,23 @@ def make_lattice(ref, n, offset=False, pairs=False):
     return points, pairlist
 
 
-def _lattice(ref, n, offset):
+def _lattice(element, n, offset):
+    ref = element.reference
+    f = element.get_basis_functions()[0]
+    if isinstance(f, PiecewiseFunction):
+        assert offset
+
+        out = []
+        m = n // 2
+        for piece in f.pieces:
+            assert len(piece[0]) == 3
+            origin = [float(i) for i in piece[0][0]]
+            axis0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
+            axis1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
+            out += [(origin[0] + axis0[0] * ((i + 0.5) / (n + 1) + axis1[0] * (j + 0.5) / (m + 1)),
+                     origin[1] + axis0[1] * ((i + 0.5) / (n + 1) + axis1[1] * (j + 0.5) / (m + 1)))
+                    for i in range(n) for j in range(m - i)]
+
     if ref.name == "interval":
         if offset:
             return [((i + 0.5) / (n + 1), ) for i in range(n)]
@@ -361,9 +379,9 @@ def plot_basis_functions(element):
             return [_to_float(b) for b in a]
 
     if element.range_dim == 1:
-        points, pairs = make_lattice(element.reference, 6, offset=False, pairs=True)
+        points, pairs = make_lattice(element, 6, offset=False, pairs=True)
     else:
-        points = make_lattice(element.reference, 6, offset=True)
+        points = make_lattice(element, 6, offset=True)
     tab = _to_float(element.tabulate_basis(points, "xyz,xyz"))
 
     scale = max(max(_norm(j) for j in i) for i in tab)
