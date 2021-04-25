@@ -202,17 +202,12 @@ def markup_example(element):
 
     plots = plotting.plot_basis_functions(element)
 
-    if element.reference.name == "dual polygon":
-        for dof_i, f in enumerate(element.get_basis_functions()):
-            eg += "<div class='basisf'><div style='display:inline-block'>"
-            eg += plots[dof_i].to_svg()
-            eg += "</div>"
-            eg += "</div>"
-    else:
-        for dof_i, (dof, func) in enumerate(zip(element.dofs, element.get_basis_functions())):
-            eg += "<div class='basisf'><div style='display:inline-block'>"
-            eg += plots[dof_i].to_svg()
-            eg += "</div>"
+    for dof_i, func in enumerate(element.get_basis_functions()):
+        eg += "<div class='basisf'><div style='display:inline-block'>"
+        eg += plots[dof_i].to_svg()
+        eg += "</div>"
+        if len(element.dofs) > 0:
+            dof = element.dofs[dof_i]
             eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
             eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
             eg += describe_dof(element, dof) + "\\)<br /><br />"
@@ -225,6 +220,7 @@ def markup_example(element):
             eg += to_tex(func) + "\\)<br /><br />"
             eg += "This DOF is associated with "
             eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
-            eg += " of the reference element.</div></div>"
+            eg += " of the reference element.</div>"
+        eg += "</div>"
 
     return eg

@@ -243,12 +243,12 @@ def make_lattice(element, n, offset=False, pairs=False):
             all_points = []
             pairlist = []
             s = 0
-            for j in range(n-1, 0, -1):
+            for j in range(m-1, 0, -1):
                 pairlist += [(i, i+1) for i in range(s, s+j)]
                 s += j + 1
-            for k in range(n + 1):
+            for k in range(m + 1):
                 s = k
-                for i in range(n, k, -1):
+                for i in range(m, k, -1):
                     if i != k + 1:
                         pairlist += [(s, s + i)]
                     if k != 0:
@@ -399,74 +399,128 @@ def plot_basis_functions(element):
 
     f = element.get_basis_functions()[0]
     if element.range_dim == 1 and isinstance(f, PiecewiseFunction):
-        return [NoPlot() for i in range(element.space_dim)]
+        scale = 1  # max(max(_norm(j) for j in i) for i in tab)
+        apply_scale = get_apply_scale(element.reference)
+
+        ps = []
+        for dofn, function in enumerate(element.get_basis_functions()):
+            p = Plot(dim=element.domain_dim + 1, padding=30)
+
+            if len(element.dofs) > 0:
+                dof = element.dofs[dofn]
+
+                if dof.entity[0] >= 2:
+                    if dof.entity[0] == 2:
+                        faces = [dof.entity[1]]
+                    else:
+                        faces = [i for i, _ in enumerate(element.reference.faces)]
+                    for f in faces:
+                        vertices = [apply_scale(element.reference.vertices[i])
+                                    for i in element.reference.faces[f]]
+                        if len(vertices) == 4:
+                            vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                        p.add_fill(vertices, color=COLORS["light blue"])
+
+            for en, edge in enumerate(element.reference.edges):
+                v1 = apply_scale(element.reference.vertices[edge[0]])
+                v2 = apply_scale(element.reference.vertices[edge[1]])
+                if len(element.dofs) > 0 and dof.entity[0] == 1 and dof.entity[1] == en:
+                    p.add_line(v1, v2, color=COLORS["blue"])
+                else:
+                    p.add_line(v1, v2, color=COLORS["gray"])
+
+            for pts, prs, (_, f) in zip(points, pairs, function.pieces):
+                evals = [subs(f, x, p) for p in pts]
+
+                deriv = grad(f, element.domain_dim)
+                for i, j in prs:
+                    d_pi = tuple(2 * a / 3 + b / 3 for a, b in zip(pts[i], pts[j]))
+                    d_pj = tuple(a / 3 + 2 * b / 3 for a, b in zip(pts[i], pts[j]))
+                    di = vdot(subs(deriv, x, pts[i]), vsub(d_pi, pts[i]))
+                    dj = vdot(subs(deriv, x, pts[j]), vsub(d_pj, pts[j]))
+                    p.add_bezier(apply_scale(tuple(pts[i]) + (evals[i] / scale, )),
+                                 apply_scale(d_pi + ((evals[i] + di) / scale, )),
+                                 apply_scale(d_pj + ((evals[j] + dj) / scale, )),
+                                 apply_scale(tuple(pts[j]) + (evals[j] / scale, )),
+                                 width="2px", color=COLORS["orange"])
+
+            if len(element.dofs) > 0:
+                if dof.dof_direction() is not None:
+                    p.add_arrow(apply_scale(dof.dof_point()),
+                                apply_scale([i + j / 4 for i, j in zip(dof.dof_point(),
+                                                                       dof.dof_direction())]),
+                                width="2px", color=COLORS["purple"])
+                p.add_dof_number(apply_scale(dof.dof_point()), dofn, color=COLORS["purple"])
+
+            ps.append(p)
+        return ps
     else:
         tab = _to_float(element.tabulate_basis(points, "xyz,xyz"))
 
-    scale = max(max(_norm(j) for j in i) for i in tab)
-    apply_scale = get_apply_scale(element.reference)
+        scale = max(max(_norm(j) for j in i) for i in tab)
+        apply_scale = get_apply_scale(element.reference)
 
-    ps = []
-    for dofn, function in enumerate(element.get_basis_functions()):
-        if element.range_dim == 1:
-            assert element.domain_dim <= 2
-            p = Plot(dim=element.domain_dim + 1, padding=30)
-        else:
-            assert element.range_dim == element.domain_dim
-            p = Plot(dim=element.domain_dim, padding=30)
-
-        if len(element.dofs) > 0:
-            dof = element.dofs[dofn]
-
-            if dof.entity[0] >= 2:
-                if dof.entity[0] == 2:
-                    faces = [dof.entity[1]]
-                else:
-                    faces = [i for i, _ in enumerate(element.reference.faces)]
-                for f in faces:
-                    vertices = [apply_scale(element.reference.vertices[i])
-                                for i in element.reference.faces[f]]
-                    if len(vertices) == 4:
-                        vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
-                    p.add_fill(vertices, color=COLORS["light blue"])
-
-        for en, edge in enumerate(element.reference.edges):
-            v1 = apply_scale(element.reference.vertices[edge[0]])
-            v2 = apply_scale(element.reference.vertices[edge[1]])
-            if len(element.dofs) > 0 and dof.entity[0] == 1 and dof.entity[1] == en:
-                p.add_line(v1, v2, color=COLORS["blue"])
+        ps = []
+        for dofn, function in enumerate(element.get_basis_functions()):
+            if element.range_dim == 1:
+                assert element.domain_dim <= 2
+                p = Plot(dim=element.domain_dim + 1, padding=30)
             else:
-                p.add_line(v1, v2, color=COLORS["gray"])
+                assert element.range_dim == element.domain_dim
+                p = Plot(dim=element.domain_dim, padding=30)
 
-        evals = [i[dofn] for i in tab]
+            if len(element.dofs) > 0:
+                dof = element.dofs[dofn]
 
-        if element.range_dim == 1:
-            deriv = grad(function, element.domain_dim)
-            for i, j in pairs:
-                d_pi = tuple(2 * a / 3 + b / 3 for a, b in zip(points[i], points[j]))
-                d_pj = tuple(a / 3 + 2 * b / 3 for a, b in zip(points[i], points[j]))
-                di = vdot(subs(deriv, x, points[i]), vsub(d_pi, points[i]))
-                dj = vdot(subs(deriv, x, points[j]), vsub(d_pj, points[j]))
-                p.add_bezier(apply_scale(tuple(points[i]) + (evals[i] / scale, )),
-                             apply_scale(d_pi + ((evals[i] + di) / scale, )),
-                             apply_scale(d_pj + ((evals[j] + dj) / scale, )),
-                             apply_scale(tuple(points[j]) + (evals[j] / scale, )),
-                             width="2px", color=COLORS["orange"])
-        else:
-            assert element.range_dim == element.domain_dim
+                if dof.entity[0] >= 2:
+                    if dof.entity[0] == 2:
+                        faces = [dof.entity[1]]
+                    else:
+                        faces = [i for i, _ in enumerate(element.reference.faces)]
+                    for f in faces:
+                        vertices = [apply_scale(element.reference.vertices[i])
+                                    for i in element.reference.faces[f]]
+                        if len(vertices) == 4:
+                            vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                        p.add_fill(vertices, color=COLORS["light blue"])
 
-            for pt, v in zip(points, evals):
-                wid = 4 * sum(i**2 for i in v) ** 0.5 / scale
-                p.add_arrow(apply_scale(pt),
-                            apply_scale([i + j / (2.5 * scale) for i, j in zip(pt, v)]),
-                            color=COLORS["orange"], width=f"{wid}px")
+            for en, edge in enumerate(element.reference.edges):
+                v1 = apply_scale(element.reference.vertices[edge[0]])
+                v2 = apply_scale(element.reference.vertices[edge[1]])
+                if len(element.dofs) > 0 and dof.entity[0] == 1 and dof.entity[1] == en:
+                    p.add_line(v1, v2, color=COLORS["blue"])
+                else:
+                    p.add_line(v1, v2, color=COLORS["gray"])
 
-        if len(element.dofs) > 0:
-            if dof.dof_direction() is not None:
-                p.add_arrow(apply_scale(dof.dof_point()),
-                            apply_scale([i + j / 4 for i, j in zip(dof.dof_point(),
-                                                                   dof.dof_direction())]),
-                            width="2px", color=COLORS["purple"])
-            p.add_dof_number(apply_scale(dof.dof_point()), dofn, color=COLORS["purple"])
-        ps.append(p)
-    return ps
+            evals = [i[dofn] for i in tab]
+
+            if element.range_dim == 1:
+                deriv = grad(function, element.domain_dim)
+                for i, j in pairs:
+                    d_pi = tuple(2 * a / 3 + b / 3 for a, b in zip(points[i], points[j]))
+                    d_pj = tuple(a / 3 + 2 * b / 3 for a, b in zip(points[i], points[j]))
+                    di = vdot(subs(deriv, x, points[i]), vsub(d_pi, points[i]))
+                    dj = vdot(subs(deriv, x, points[j]), vsub(d_pj, points[j]))
+                    p.add_bezier(apply_scale(tuple(points[i]) + (evals[i] / scale, )),
+                                 apply_scale(d_pi + ((evals[i] + di) / scale, )),
+                                 apply_scale(d_pj + ((evals[j] + dj) / scale, )),
+                                 apply_scale(tuple(points[j]) + (evals[j] / scale, )),
+                                 width="2px", color=COLORS["orange"])
+            else:
+                assert element.range_dim == element.domain_dim
+
+                for pt, v in zip(points, evals):
+                    wid = 4 * sum(i**2 for i in v) ** 0.5 / scale
+                    p.add_arrow(apply_scale(pt),
+                                apply_scale([i + j / (2.5 * scale) for i, j in zip(pt, v)]),
+                                color=COLORS["orange"], width=f"{wid}px")
+
+            if len(element.dofs) > 0:
+                if dof.dof_direction() is not None:
+                    p.add_arrow(apply_scale(dof.dof_point()),
+                                apply_scale([i + j / 4 for i, j in zip(dof.dof_point(),
+                                                                       dof.dof_direction())]),
+                                width="2px", color=COLORS["purple"])
+                p.add_dof_number(apply_scale(dof.dof_point()), dofn, color=COLORS["purple"])
+            ps.append(p)
+        return ps
