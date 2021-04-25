@@ -41,9 +41,9 @@ class Plot:
             return (self.origin[0] + point[0], self.origin[1] + point[1]), 0
         if len(point) == 3:
             return (
-                self.origin[0] + point[0] + point[1] / 2,
-                self.origin[1] + point[2] - 2 * point[0] / 25 + point[1] / 5
-            ), point[0] - 2 * point[1] + 12 * point[2] / 25
+                float(self.origin[0] + point[0] + point[1] / 2),
+                float(self.origin[1] + point[2] - 2 * point[0] / 25 + point[1] / 5)
+            ), float(point[0] - 2 * point[1] + 12 * point[2] / 25)
 
     def _add_line(self, start, end, z, color, width):
         line = {"type": "line",
@@ -338,7 +338,7 @@ def make_lattice(element, n, offset=False, pairs=False):
 
 def get_apply_scale(ref):
     if ref.name == "dual polygon":
-        return lambda p: [i * 50 + 50 for i in p]
+        return lambda p: [j * 50 + 50 if i < 2 else j * 100 for i, j in enumerate(p)]
     return lambda p: [i * 100 for i in p]
 
 
