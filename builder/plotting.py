@@ -226,11 +226,10 @@ def make_lattice(element, n, offset=False, pairs=False):
     ref = element.reference
     f = element.get_basis_functions()[0]
     if isinstance(f, PiecewiseFunction):
-
+        m = n // 2
         if offset:
             assert not pairs
             points = []
-            m = n // 2
             for piece in f.pieces:
                 assert len(piece[0]) == 3
                 og = [float(i) for i in piece[0][0]]
