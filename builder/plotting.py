@@ -399,7 +399,7 @@ def plot_basis_functions(element):
 
     f = element.get_basis_functions()[0]
     if element.range_dim == 1 and isinstance(f, PiecewiseFunction):
-        return NoPlot()
+        return [NoPlot() for i in range(element.space_dim)]
     else:
         tab = _to_float(element.tabulate_basis(points, "xyz,xyz"))
 
