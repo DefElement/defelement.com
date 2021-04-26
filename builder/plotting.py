@@ -221,6 +221,72 @@ class Plot:
         out += "</svg>"
         return out
 
+    def to_tikz(self, offset=(0, 0)):
+        out = "\\begin{tikzpicture}[x=0.2mm,y=0.2mm]\n"
+
+        colors = {}
+        for i in self._items:
+            if i["color"] not in colors:
+                if i["color"][0] == "#":
+                    out += f"\\definecolor{{color{len(colors)}}}{{HTML}}{{{i['color'][1:]}}}\n"
+                    colors[i["color"]] = f"color{len(colors)}"
+                else:
+                    colors[i["color"]] = i["color"]
+
+        out += f"\\clip ({self.padding / 2},{self.padding / 2})"
+        out += " rectangle "
+        out += f"({self.width + offset[0] - self.padding / 2},"
+        out += f"{self.height + offset[1] - self.padding / 2});\n"
+
+        self._items.sort(key=lambda x: x["z-value"])
+
+        for i in self._items:
+            if i["type"] == "fill":
+                out += f"\\fill[{colors[i['color']]}] "
+                out += " -- ".join([f"({float(offset[0] + j)},{float(offset[1] + k)})"
+                                    for j, k in i["vertices"]])
+                out += " -- cycle;\n"
+            elif i["type"] == "math":
+                assert i["color"] == "black"
+                out += f"\\node[anchor={i['anchor']}] "
+                out += f"at ({float(offset[0] + i['position'][0])},"
+                out += f"{float(offset[1] + i['position'][1])}) "
+                out += f"{{${i['text']}$}};\n"
+            elif i["type"] == "line":
+                out += f"\\draw[{colors[i['color']]},"
+                out += f"line width={i['width'].replace('px', 'pt')},line cap=round]"
+                out += f"({float(offset[0] + i['start'][0])},{float(offset[1] + i['start'][1])})"
+                out += " -- "
+                out += f"({float(offset[0] + i['end'][0])},{float(offset[1] + i['end'][1])});\n"
+            elif i["type"] == "bezier":
+                out += f"\\draw[{colors[i['color']]},"
+                out += f"line cap=round,line width={i['width'].replace('px', 'pt')}] "
+                out += f"({float(offset[0] + i['start'][0])},{float(offset[1] + i['start'][1])})"
+                out += " .. controls "
+                out += f"({float(offset[0] + i['mid1'][0])},{float(offset[1] + i['mid1'][1])})"
+                out += " and "
+                out += f"({float(offset[0] + i['mid2'][0])},{float(offset[1] + i['mid2'][1])})"
+                out += " .. "
+                out += f"({float(offset[0] + i['end'][0])},{float(offset[1] + i['end'][1])})"
+                out += ";\n"
+            elif i["type"] == "dofn":
+                out += f"\\draw[{colors[i['color']]},fill=white,line width=1.5pt] "
+                out += f"({float(offset[0] + i['position'][0])},"
+                out += f"{float(offset[1] + i['position'][1])})"
+                out += "circle (6pt);\n"
+                out += f"\\node[anchor=center] at ({float(offset[0] + i['position'][0])},"
+                out += f"{float(offset[1] + i['position'][1])}) {{"
+                if i["number"] >= 10:
+                    out += "\\tiny"
+                else:
+                    out += "\\small"
+                out += f"\\color{{{colors[i['color']]}}}{i['number']}}};\n"
+            else:
+                raise ValueError(f"Unknown item type: {i['type']}")
+
+        out += "\\end{tikzpicture}"
+        return out
+
 
 def make_lattice(element, n, offset=False, pairs=False):
     ref = element.reference
