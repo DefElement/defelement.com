@@ -50,7 +50,7 @@ jobs:
         name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 builder/build-pages.py ../_test_html --test
+      - run: python3 build.py ../_test_html --test
         name: Build website HTML
 
   build-website:
@@ -75,7 +75,7 @@ jobs:
         name: Install Symfem
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 builder/build-pages.py ../_html
+      - run: python3 build.py ../_html
         name: Build website HTML
       - run: |
           cd ../_html
