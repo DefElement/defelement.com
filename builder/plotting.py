@@ -221,8 +221,16 @@ class Plot:
         out += "</svg>"
         return out
 
-    def to_tikz(self, offset=(0, 0)):
-        out = "\\begin{tikzpicture}[x=0.2mm,y=0.2mm]\n"
+    def to_tikz(self, offset=(0, 0), reduce_padding=0, reduce_padding_x=None, reduce_padding_y=None,
+                include_begin_end=True, debug_bg=False):
+        if reduce_padding_x is None:
+            reduce_padding_x = reduce_padding
+        if reduce_padding_y is None:
+            reduce_padding_y = reduce_padding
+
+        out = ""
+        if include_begin_end:
+            out += "\\begin{tikzpicture}[x=0.2mm,y=0.2mm]\n"
 
         colors = {}
         for i in self._items:
@@ -233,10 +241,14 @@ class Plot:
                 else:
                     colors[i["color"]] = i["color"]
 
-        out += f"\\clip ({self.padding / 2},{self.padding / 2})"
-        out += " rectangle "
-        out += f"({self.width + offset[0] - self.padding / 2},"
-        out += f"{self.height + offset[1] - self.padding / 2});\n"
+        out += f"\\clip ({reduce_padding_x},{reduce_padding_y}) rectangle "
+        out += f"({self.width + offset[0] - reduce_padding_x},"
+        out += f"{self.height + offset[1] - reduce_padding_y});\n"
+
+        if debug_bg:
+            out += f"\\fill[red] ({reduce_padding_x},{reduce_padding_y}) rectangle "
+            out += f"({self.width + offset[0] - reduce_padding_x},"
+            out += f"{self.height + offset[1] - reduce_padding_y});\n"
 
         self._items.sort(key=lambda x: x["z-value"])
 
@@ -284,7 +296,8 @@ class Plot:
             else:
                 raise ValueError(f"Unknown item type: {i['type']}")
 
-        out += "\\end{tikzpicture}"
+        if include_begin_end:
+            out += "\\end{tikzpicture}"
         return out
 
 
