@@ -2,7 +2,7 @@
 <div>{{plot::triangle,Raviart-Thomas,1::1}}</div>
 <div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [Raviart&ndash;Thomas space](element::raviart-thomas) on a triangle</div>
 <div>{{plot::quadrilateral,Q,2::3}}</div>
-<div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 2 [Q space](element::q) on a quadrilateral</div>
+<div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 2 [Q space](element::lagrange) on a quadrilateral</div>
 <div>{{plot::tetrahedron,N1curl,1::1}}</div>
 <div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [N&eacute;d&eacute;lec (first kind) space](element::nedelec1) on a tetrahedron</div>
 <div>{{plot::hexahedron,Scurl,1::13}}</div>
