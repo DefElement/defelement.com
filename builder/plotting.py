@@ -231,7 +231,7 @@ class Plot:
                     out += "text-anchor='end' "
                 else:
                     out += "text-anchor='middle' "
-                out += "style='font-family:CMU Serif,serif;font-style:italic'>"
+                out += "style=\"font-family:'CMU Serif',serif;font-style:italic\">"
                 out += f"{i['text']}</text>\n"
             elif i["type"] == "line":
                 out += f"<line x1='{float(offset[0] + i['start'][0])}' "
