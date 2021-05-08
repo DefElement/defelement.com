@@ -368,7 +368,7 @@ class Plot:
                 f.write(svg)
             with open(os.path.join(settings.htmlimg_path, f"{self.id}.tex"), "w") as f:
                 f.write(tikz)
-            assert os.system(f"convert {settings.htmlimg_path}/{self.id}.svg "
+            assert os.system(f"convert -verbose {settings.htmlimg_path}/{self.id}.svg "
                              f"{settings.htmlimg_path}/{self.id}.png ") == 0
             img_page = f"<h1>{self.desc}</h1>\n"
             img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
