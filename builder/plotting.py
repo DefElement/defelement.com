@@ -1,6 +1,7 @@
 from . import settings
 from datetime import datetime
 import os
+from cairosvg import svg2png
 from symfem.core.calculus import grad
 from symfem.core.vectors import vdot, vsub
 from symfem.core.symbolic import subs, x
@@ -173,7 +174,8 @@ class Plot:
 
     def to_svg(self, offset=(0, 0)):
         now = datetime.now()
-        out = (f"<svg width='{self.width + offset[0]}' height='{self.height + offset[1]}'"
+        out = (f"<svg width='{float(self.width + offset[0])}' "
+               f"height='{float(self.height + offset[1])}'"
                " xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n"
                f"<title>{self.desc}</title>\n"
                "<desc>This plot is from DefElement (https://defelement.com) "
@@ -258,11 +260,12 @@ class Plot:
                 out += f"r='10px' fill='white' stroke='{i['color']}' "
                 out += "stroke-width='2px' />"
                 out += f"<text x='{float(offset[0] + i['position'][0])}' "
-                out += "style=\"font-family:'Varela Round',sans\" "
+                out += "style=\"font-family:'Varela Round',sans"
+                if i["number"] >= 10:
+                    out += ";font-size:70%"
+                out += "\" "
                 out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
-                if i["number"] >= 10:
-                    out += " style='font-size:70%'"
                 out += f" fill='{i['color']}'>{i['number']}</text>"
             else:
                 raise ValueError(f"Unknown item type: {i['type']}")
@@ -368,8 +371,8 @@ class Plot:
                 f.write(svg)
             with open(os.path.join(settings.htmlimg_path, f"{self.id}.tex"), "w") as f:
                 f.write(tikz)
-            assert os.system(f"convert -verbose {settings.htmlimg_path}/{self.id}.svg "
-                             f"{settings.htmlimg_path}/{self.id}.png ") == 0
+
+            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png ")
             img_page = f"<h1>{self.desc}</h1>\n"
             img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
 
