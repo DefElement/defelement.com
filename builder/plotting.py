@@ -15,10 +15,13 @@ all_plots = []
 
 
 class NoPlot:
-    def to_svg(self):
+    def to_svg(self, *args, **kwargs):
         return ""
 
-    def img_html(self):
+    def to_tikz(self, *args, **kwargs):
+        return ""
+
+    def img_html(self, *args, **kwargs):
         return ""
 
 
@@ -170,35 +173,35 @@ class Plot:
 
     def to_svg(self, offset=(0, 0)):
         now = datetime.now()
-        out = (f"<svg width='{self.width + offset[0]}' height='{self.height + offset[1]}'"
-               " xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n"
+        out = (f"<svg width=\"{self.width + offset[0]}\" height=\"{self.height + offset[1]}\""
+               " xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n"
                f"<title>{self.desc}</title>\n"
                "<desc>This plot is from DefElement (https://defelement.com) "
                "and is available under a Creative Commons Attribution "
                "4.0 International (CC BY 4.0) license: "
                "https://creativecommons.org/licenses/by/4.0/</desc>\n"
-               "<metadata id='license'>\n"
-               " <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
-               "xmlns:dc='http://purl.org/dc/elements/1.1/' "
-               "xmlns:cc='http://web.resource.org/cc/'>\n"
-               "   <cc:Work rdf:about=''>\n"
+               "<metadata id=\"license\">\n"
+               " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "
+               "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+               "xmlns:cc=\"http://web.resource.org/cc/\">\n"
+               "   <cc:Work rdf:about=\"\">\n"
                f"     <dc:title>{self.desc}</dc:title>\n"
-               f"     <dc:date>{now.strftime('%Y-%m-%d')}</dc:date>\n"
+               f"     <dc:date>{now.strftime(\"%Y-%m-%d\")}</dc:date>\n"
                "     <dc:creator>\n"
                "       <cc:Agent><dc:title>DefElement</dc:title></cc:Agent>\n"
                "       <cc:Agent><dc:title>Matthew Scroggs</dc:title></cc:Agent>\n"
                "     </dc:creator>\n"
                "     <dc:description>See document description</dc:description>\n"
-               "     <cc:license rdf:resource='http://creativecommons.org/licenses/by/4.0/'/>\n"
+               "     <cc:license rdf:resource=\"http://creativecommons.org/licenses/by/4.0/\"/>\n"
                "     <dc:format>image/svg+xml</dc:format>\n"
-               "     <dc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage'/>\n"
+               "     <dc:type rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n"
                "   </cc:Work>\n"
-               "   <cc:License rdf:about='http://creativecommons.org/licenses/by/4.0/'>\n"
-               "     <cc:permits rdf:resource='http://web.resource.org/cc/Reproduction'/>\n"
-               "     <cc:permits rdf:resource='http://web.resource.org/cc/Distribution'/>\n"
-               "     <cc:permits rdf:resource='http://web.resource.org/cc/DerivativeWorks'/>\n"
-               "     <cc:requires rdf:resource='http://web.resource.org/cc/Notice'/>\n"
-               "     <cc:requires rdf:resource='http://web.resource.org/cc/Attribution'/>\n"
+               "   <cc:License rdf:about=\"http://creativecommons.org/licenses/by/4.0/\">\n"
+               "     <cc:permits rdf:resource=\"http://web.resource.org/cc/Reproduction\"/>\n"
+               "     <cc:permits rdf:resource=\"http://web.resource.org/cc/Distribution\"/>\n"
+               "     <cc:permits rdf:resource=\"http://web.resource.org/cc/DerivativeWorks\"/>\n"
+               "     <cc:requires rdf:resource=\"http://web.resource.org/cc/Notice\"/>\n"
+               "     <cc:requires rdf:resource=\"http://web.resource.org/cc/Attribution\"/>\n"
                "   </cc:License>\n"
                " </rdf:RDF>\n"
                "</metadata>\n")
@@ -207,38 +210,38 @@ class Plot:
 
         for i in self._items:
             if i["type"] == "fill":
-                out += "<polygon points='"
+                out += "<polygon points=\""
                 out += " ".join([f"{float(offset[0] + j)},{float(offset[1] + self.height - k)}"
                                  for j, k in i["vertices"]])
-                out += f"' fill='{i['color']}' />"
+                out += f"\" fill=\"{i['color']}\" />"
             elif i["type"] == "math":
                 assert i["color"] == "black"
-                out += f"<text x='{float(offset[0] + i['position'][0])}' "
-                out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
-                out += "class='small' "
+                out += f"<text x=\"{float(offset[0] + i['position'][0])}\" "
+                out += f"y=\"{float(offset[1] + self.height - i['position'][1])}\" "
+                out += "class=\"small\" "
                 if "south" in i["anchor"]:
-                    out += "dominant-baseline='text-bottom' "
+                    out += "dominant-baseline=\"text-bottom\" "
                 elif "north" in i["anchor"]:
-                    out += "dominant-baseline='text-top' "
+                    out += "dominant-baseline=\"text-top\" "
                 else:
-                    out += "dominant-baseline='middle' "
+                    out += "dominant-baseline=\"middle\" "
                 if "west" in i["anchor"]:
-                    out += "text-anchor='start' "
+                    out += "text-anchor=\"start\" "
                 elif "east" in i["anchor"]:
-                    out += "text-anchor='end' "
+                    out += "text-anchor=\"end\" "
                 else:
-                    out += "text-anchor='middle' "
-                out += "style='font-family:CMU Serif,serif;font-style:italic'>"
+                    out += "text-anchor=\"middle\" "
+                out += "style=\"font-family:CMU Serif,serif;font-style:italic\">"
                 out += f"{i['text']}</text>\n"
             elif i["type"] == "line":
-                out += f"<line x1='{float(offset[0] + i['start'][0])}' "
-                out += f"y1='{float(offset[1] + self.height - i['start'][1])}' "
-                out += f"x2='{float(offset[0] + i['end'][0])}' "
-                out += f"y2='{float(offset[1] + self.height - i['end'][1])}' "
-                out += f"stroke-width='{i['width']}' stroke-linecap='round' "
-                out += f"stroke='{i['color']}' />\n"
+                out += f"<line x1=\"{float(offset[0] + i['start'][0])}\" "
+                out += f"y1=\"{float(offset[1] + self.height - i['start'][1])}\" "
+                out += f"x2=\"{float(offset[0] + i['end'][0])}\" "
+                out += f"y2=\"{float(offset[1] + self.height - i['end'][1])}\" "
+                out += f"stroke-width=\"{i['width']}\" stroke-linecap=\"round\" "
+                out += f"stroke=\"{i['color']}\" />\n"
             elif i["type"] == "bezier":
-                out += "<path d='"
+                out += "<path d=\""
                 out += f"M {float(offset[0] + i['start'][0])} "
                 out += f"{float(offset[1] + self.height - i['start'][1])} "
                 out += f"C {float(offset[0] + i['mid1'][0])} "
@@ -246,21 +249,21 @@ class Plot:
                 out += f" {float(offset[0] + i['mid2'][0])} "
                 out += f"{float(offset[1] + self.height - i['mid2'][1])}, "
                 out += f" {float(offset[0] + i['end'][0])} "
-                out += f"{float(offset[1] + self.height - i['end'][1])}' "
-                out += f"stroke-width='{i['width']}' stroke-linecap='round' "
-                out += f"stroke='{i['color']}' fill='none' />\n"
+                out += f"{float(offset[1] + self.height - i['end'][1])}\" "
+                out += f"stroke-width=\"{i['width']}\" stroke-linecap=\"round\" "
+                out += f"stroke=\"{i['color']}\" fill=\"none\" />\n"
             elif i["type"] == "dofn":
-                out += f"<circle cx='{float(offset[0] + i['position'][0])}' "
-                out += f"cy='{float(offset[1] + self.height - i['position'][1])}' "
-                out += f"r='10px' fill='white' stroke='{i['color']}' "
-                out += "stroke-width='2px' />"
-                out += f"<text x='{float(offset[0] + i['position'][0])}' "
-                out += "style='font-family:\"Varela Round\",sans' "
-                out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
-                out += "text-anchor='middle' dominant-baseline='middle'"
+                out += f"<circle cx=\"{float(offset[0] + i['position'][0])}\" "
+                out += f"cy=\"{float(offset[1] + self.height - i['position'][1])}\" "
+                out += f"r=\"10px\" fill=\"white\" stroke=\"{i['color']}\" "
+                out += "stroke-width=\"2px\" />"
+                out += f"<text x=\"{float(offset[0] + i['position'][0])}\" "
+                out += "style=\"font-family:'Varela Round',sans\" "
+                out += f"y=\"{float(offset[1] + self.height - i['position'][1])}\" "
+                out += "text-anchor=\"middle\" dominant-baseline=\"middle\""
                 if i["number"] >= 10:
-                    out += " style='font-size:70%'"
-                out += f" fill='{i['color']}'>{i['number']}</text>"
+                    out += " style=\"font-size:70%\""
+                out += f" fill=\"{i['color']}\">{i['number']}</text>"
             else:
                 raise ValueError(f"Unknown item type: {i['type']}")
 
