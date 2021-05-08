@@ -61,9 +61,9 @@ jobs:
         name: Install Varela Round
       - name: Download and install Computer Modern
         run: |
-          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-ttf.tar.xz
-          tar -xf download
-          cp cm-unicode*/cmunti.otf ~/.local/share/fonts/
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
+          tar -xf cm-unicode-0.7.0-otf.tar.xz
+          cp cm-unicode-0.7.0-otf/cmunti.otf ~/.local/share/fonts/
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
@@ -103,9 +103,9 @@ jobs:
         name: Install Varela Round
       - name: Download and install Computer Modern
         run: |
-          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-ttf.tar.xz
-          tar -xf download
-          cp cm-unicode*/cmunti.otf ~/.local/share/fonts/
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
+          tar -xf cm-unicode-0.7.0-otf.tar.xz
+          cp cm-unicode-0.7.0-otf/cmunti.otf ~/.local/share/fonts/
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
