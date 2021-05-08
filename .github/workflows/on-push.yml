@@ -63,7 +63,7 @@ jobs:
         run: |
           wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
           tar -xf cm-unicode-0.7.0-otf.tar.xz
-          cp cm-unicode-0.7.0-otf/cmunti.otf ~/.local/share/fonts/
+          cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
@@ -105,7 +105,7 @@ jobs:
         run: |
           wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
           tar -xf cm-unicode-0.7.0-otf.tar.xz
-          cp cm-unicode-0.7.0-otf/cmunti.otf ~/.local/share/fonts/
+          cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
