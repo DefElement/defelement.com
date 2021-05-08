@@ -61,7 +61,7 @@ jobs:
         name: Install Varela Round
       - name: Download and install Computer Modern
         run: |
-          wget https://sourceforge.net/projects/cm-unicode/files/latest/download
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-ttf.tar.xz
           tar -xf download
           cp cm-unicode*/cmunti.otf ~/.local/share/fonts/
 
@@ -103,7 +103,7 @@ jobs:
         name: Install Varela Round
       - name: Download and install Computer Modern
         run: |
-          wget https://sourceforge.net/projects/cm-unicode/files/latest/download
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-ttf.tar.xz
           tar -xf download
           cp cm-unicode*/cmunti.otf ~/.local/share/fonts/
 
