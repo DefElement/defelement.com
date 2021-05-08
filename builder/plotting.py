@@ -262,7 +262,7 @@ class Plot:
                 out += f"<text x='{float(offset[0] + i['position'][0])}' "
                 out += "style=\"font-family:'Varela Round',sans"
                 if i["number"] >= 10:
-                    out += ";font-size:70%"
+                    out += ";font-size:x-small"
                 out += "\" "
                 out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
