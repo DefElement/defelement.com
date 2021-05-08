@@ -90,7 +90,7 @@ def plot_element(matches):
     else:
         e = symfem.create_element(matches[1], matches[2], int(matches[3]))
     return ("<center>"
-            f"{''.join([plotting.plot_function(e, i).to_svg() for i in range(e.space_dim)])}"
+            f"{''.join([plotting.plot_function(e, i).img_html() for i in range(e.space_dim)])}"
             "</center>")
 
 
@@ -100,12 +100,12 @@ def plot_single_element(matches):
         e = symfem.create_element(a, matches[2], int(matches[3]), b)
     else:
         e = symfem.create_element(matches[1], matches[2], int(matches[3]))
-    return f"<center>{plotting.plot_function(e, int(matches[4])).to_svg()}</center>"
+    return f"<center>{plotting.plot_function(e, int(matches[4])).img_html()}</center>"
 
 
 def plot_reference(matches):
     e = symfem.create_reference(matches[1])
-    return f"<center>{plotting.plot_reference(e).to_svg()}</center>"
+    return f"<center>{plotting.plot_reference(e).img_html()}</center>"
 
 
 def add_citation(matches):

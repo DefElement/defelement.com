@@ -1,3 +1,6 @@
+from . import settings
+from datetime import datetime
+import os
 from symfem.core.calculus import grad
 from symfem.core.vectors import vdot, vsub
 from symfem.core.symbolic import subs, x
@@ -8,15 +11,24 @@ COLORS = {"orange": "#FF8800", "blue": "#44AAFF", "green": "#55FF00",
           "gray": "#AAAAAA"}
 ENTITY_COLORS = [COLORS["orange"], COLORS["blue"], COLORS["green"], COLORS["purple"]]
 
+all_plots = []
+
 
 class NoPlot:
     def to_svg(self):
         return ""
 
+    def img_html(self):
+        return ""
+
 
 class Plot:
-    def __init__(self, padding=15, dim=None):
+    def __init__(self, padding=15, dim=None, id=None, desc="DefElement plot"):
         self.dim = dim
+        self.id = None
+        self.desc = desc
+        if id is not None:
+            self.id = id.replace(" ", "_")
         self.padding = padding
         self.height = 2 * self.padding
         self.width = 2 * self.padding
@@ -157,7 +169,39 @@ class Plot:
         self._items.append(fill)
 
     def to_svg(self, offset=(0, 0)):
-        out = f"<svg width='{self.width + offset[0]}' height='{self.height + offset[1]}'>"
+        now = datetime.now()
+        out = (f"<svg width='{self.width + offset[0]}' height='{self.height + offset[1]}'"
+               " xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n"
+               f"<title>{self.desc}</title>\n"
+               "<desc>This plot is from DefElement (https://defelement.com) "
+               "and is available under a Creative Commons Attribution "
+               "4.0 International (CC BY 4.0) license: "
+               "https://creativecommons.org/licenses/by/4.0/</desc>\n"
+               "<metadata id='license'>\n"
+               " <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
+               "xmlns:dc='http://purl.org/dc/elements/1.1/' "
+               "xmlns:cc='http://web.resource.org/cc/'>\n"
+               "   <cc:Work rdf:about=''>\n"
+               f"     <dc:title>{self.desc}</dc:title>\n"
+               f"     <dc:date>{now.strftime('%Y-%m-%d')}</dc:date>\n"
+               "     <dc:creator>\n"
+               "       <cc:Agent><dc:title>DefElement</dc:title></cc:Agent>\n"
+               "       <cc:Agent><dc:title>Matthew Scroggs</dc:title></cc:Agent>\n"
+               "     </dc:creator>\n"
+               "     <dc:description>See document description</dc:description>\n"
+               "     <cc:license rdf:resource='http://creativecommons.org/licenses/by/4.0/'/>\n"
+               "     <dc:format>image/svg+xml</dc:format>\n"
+               "     <dc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage'/>\n"
+               "   </cc:Work>\n"
+               "   <cc:License rdf:about='http://creativecommons.org/licenses/by/4.0/'>\n"
+               "     <cc:permits rdf:resource='http://web.resource.org/cc/Reproduction'/>\n"
+               "     <cc:permits rdf:resource='http://web.resource.org/cc/Distribution'/>\n"
+               "     <cc:permits rdf:resource='http://web.resource.org/cc/DerivativeWorks'/>\n"
+               "     <cc:requires rdf:resource='http://web.resource.org/cc/Notice'/>\n"
+               "     <cc:requires rdf:resource='http://web.resource.org/cc/Attribution'/>\n"
+               "   </cc:License>\n"
+               " </rdf:RDF>\n"
+               "</metadata>\n")
 
         self._items.sort(key=lambda x: x["z-value"])
 
@@ -228,7 +272,12 @@ class Plot:
         if reduce_padding_y is None:
             reduce_padding_y = reduce_padding
 
-        out = ""
+        out = ("% -------------------------------------------------------\n"
+               "% This plot is from DefElement (https://defelement.com)\n"
+               "% and is available under a Creative Commons Attribution\n"
+               "% 4.0 International (CC BY 4.0) license:\n"
+               "% https://creativecommons.org/licenses/by/4.0/\n"
+               "% -------------------------------------------------------\n")
         if include_begin_end:
             out += "\\begin{tikzpicture}[x=0.2mm,y=0.2mm]\n"
 
@@ -299,6 +348,46 @@ class Plot:
         if include_begin_end:
             out += "\\end{tikzpicture}"
         return out
+
+    def img_html(self):
+        global all_plots
+        from .html import make_html_page
+
+        if self.id is None:
+            return self.to_svg()
+
+        if self.id not in all_plots:
+            svg = self.to_svg()
+            tikz = self.to_tikz()
+            with open(os.path.join(settings.htmlimg_path, f"{self.id}.svg"), "w") as f:
+                f.write(svg)
+            with open(os.path.join(settings.htmlimg_path, f"{self.id}.tex"), "w") as f:
+                f.write(tikz)
+            os.system(f"convert {settings.htmlimg_path}/{self.id}.svg "
+                      f"{settings.htmlimg_path}/{self.id}.png ")
+            img_page = f"<h1>{self.desc}</h1>\n"
+            img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
+
+            img_page += ("<p>"
+                         "This image can be used under a "
+                         "<a href='https://creativecommons.org/licenses/by/4.0/'>"
+                         "Creative Commons Attribution 4.0 International (CC BY 4.0) license"
+                         "</a>: if you use it anywhere, you must attribute DefElement. "
+                         "If you use this image anywhere online, please include a link to "
+                         "DefElement; if you use this image in a paper, please <a href='"
+                         "/citing.html'>cite DefElement</a>."
+                         "</p>")
+            img_page += "<ul>"
+            img_page += f"<li><a href='/img/{self.id}.png'>Download PNG</a></li>"
+            img_page += f"<li><a href='/img/{self.id}.svg'>Download SVG</a></li>"
+            img_page += f"<li><a href='/img/{self.id}.tex'>Download TikZ</a></li>"
+            img_page += "</ul>"
+
+            with open(os.path.join(settings.htmlimg_path, f"{self.id}.html"), "w") as f:
+                f.write(make_html_page(img_page))
+            all_plots.append(self.id)
+
+        return f"<a href='/img/{self.id}.html'><img src='/img/{self.id}.png'></a>"
 
 
 def make_lattice(element, n, offset=False, pairs=False):
@@ -424,7 +513,7 @@ def get_apply_scale(ref):
 def plot_reference(ref):
     apply_scale = get_apply_scale(ref)
 
-    p = Plot()
+    p = Plot(id=f"ref-{ref.name}", desc=f"{ref.name} reference element")
     p.add_axes(ref.tdim)
 
     for d in range(ref.tdim + 1):
@@ -483,7 +572,9 @@ def plot_basis_functions(element):
 
         ps = []
         for dofn, function in enumerate(element.get_basis_functions()):
-            p = Plot(dim=element.domain_dim + 1, padding=30)
+            p = Plot(dim=element.domain_dim + 1, padding=30,
+                     id=f"element-{element.name}-{element.order}-{dofn}",
+                     desc=f"Basis function in a {element.name} space")
 
             if len(element.dofs) > 0:
                 dof = element.dofs[dofn]
@@ -543,10 +634,14 @@ def plot_basis_functions(element):
         for dofn, function in enumerate(element.get_basis_functions()):
             if element.range_dim == 1:
                 assert element.domain_dim <= 2
-                p = Plot(dim=element.domain_dim + 1, padding=30)
+                p = Plot(dim=element.domain_dim + 1, padding=30,
+                         id=f"element-{element.name}-{element.order}-{dofn}",
+                         desc=f"Basis function in a {element.name} space")
             else:
                 assert element.range_dim == element.domain_dim
-                p = Plot(dim=element.domain_dim, padding=30)
+                p = Plot(dim=element.domain_dim, padding=30,
+                         id=f"element-{element.name}-{element.order}-{dofn}",
+                         desc=f"Basis function in a {element.name} space")
 
             if len(element.dofs) > 0:
                 dof = element.dofs[dofn]
