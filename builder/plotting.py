@@ -372,7 +372,7 @@ class Plot:
             with open(os.path.join(settings.htmlimg_path, f"{self.id}.tex"), "w") as f:
                 f.write(tikz)
 
-            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png ")
+            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png")
             img_page = f"<h1>{self.desc}</h1>\n"
             img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
 
