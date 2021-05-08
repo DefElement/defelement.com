@@ -73,7 +73,10 @@ def describe_dof(element, d):
             desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
             return desc
         desc = "v\\mapsto"
-        desc += f"\\frac{{\\partial^{{{sum(d.derivative)}}}}}{{"
+        desc += "\\frac{\\partial"
+        if sum(d.derivative) > 1:
+            desc += f"^{{{sum(d.derivative)}}}"
+        desc += "}{"
         for v, i in zip("xyz", d.derivative):
             if i > 0:
                 desc += f"\\partial {v}"
