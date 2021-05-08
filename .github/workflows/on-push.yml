@@ -48,6 +48,21 @@ jobs:
           cd symfem-src
           sudo pip3 install .
         name: Install Symfem
+
+      - name: Clone Varela Round
+        uses: actions/checkout@v2
+        with:
+          path: ./varela-r
+          repository: avrahamcornfeld/Varela-Round-Hebrew
+          ref: master
+      - run: cp varela-r/fonts/VarelaRound-Regular.otf .local/share/fonts
+        name: Install Varela Round
+      - name: Download and install Computer Modern
+        run: |
+          wget https://sourceforge.net/projects/cm-unicode/files/latest/download
+          tar -xf download
+          cp cm-unicode*/cmunti.otf .local/share/fonts
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_test_html --test
