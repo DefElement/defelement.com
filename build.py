@@ -1,47 +1,28 @@
 import os
 import argparse
 from symfem import create_element
-from builder.markup import markup, insert_dates, insert_links, python_highlight
+from builder import settings
+from builder.markup import markup, insert_links, python_highlight
 from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
-element_path = os.path.join(dir_path, "elements")
-template_path = os.path.join(dir_path, "templates")
-files_path = os.path.join(dir_path, "files")
-pages_path = os.path.join(dir_path, "pages")
-data_path = os.path.join(dir_path, "data")
+from builder.html import make_html_page
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
-parser.add_argument(
-    'destination', metavar='destination', nargs="?",
-    default=os.path.join(dir_path, "_html"),
-    help="Destination of HTML files.")
+parser.add_argument('destination', metavar='destination', nargs="?",
+                    default=None, help="Destination of HTML files.")
 parser.add_argument('--test', action="store_true",
                     help="Builds a version of the website with fewer elements.")
 
 args = parser.parse_args()
-html_path = args.destination
-htmlelement_path = os.path.join(html_path, "elements")
-htmlindices_path = os.path.join(html_path, "lists")
-htmlfamilies_path = os.path.join(html_path, "families")
+if args.destination is not None:
+    settings.html_path = args.destination
+    settings.htmlelement_path = os.path.join(settings.html_path, "elements")
+    settings.htmlimg_path = os.path.join(settings.html_path, "img")
+    settings.htmlindices_path = os.path.join(settings.html_path, "lists")
+    settings.htmlfamilies_path = os.path.join(settings.html_path, "families")
 
 test_mode = args.test
-
-
-def make_html_page(content, pagetitle=None):
-    out = ""
-    with open(os.path.join(template_path, "intro.html")) as f:
-        out += insert_dates(f.read())
-    if pagetitle is None:
-        out = out.replace("{{: pagetitle}}", "")
-    else:
-        out = out.replace("{{: pagetitle}}", f": {pagetitle}")
-    out += content
-    with open(os.path.join(template_path, "outro.html")) as f:
-        out += insert_dates(f.read())
-    return out
 
 
 def cap_first(txt):
@@ -49,36 +30,37 @@ def cap_first(txt):
 
 
 # Prepare paths
-if os.path.isdir(html_path):
-    os.system(f"rm -rf {html_path}")
-os.mkdir(html_path)
-os.mkdir(htmlelement_path)
-os.mkdir(htmlindices_path)
-os.mkdir(htmlfamilies_path)
-os.mkdir(os.path.join(htmlelement_path, "bibtex"))
+if os.path.isdir(settings.html_path):
+    os.system(f"rm -rf {settings.html_path}")
+os.mkdir(settings.html_path)
+os.mkdir(settings.htmlelement_path)
+os.mkdir(settings.htmlindices_path)
+os.mkdir(settings.htmlfamilies_path)
+os.mkdir(settings.htmlimg_path)
+os.mkdir(os.path.join(settings.htmlelement_path, "bibtex"))
 
-os.system(f"cp -r {files_path}/* {html_path}")
+os.system(f"cp -r {settings.files_path}/* {settings.html_path}")
 
-with open(os.path.join(html_path, "CNAME"), "w") as f:
+with open(os.path.join(settings.html_path, "CNAME"), "w") as f:
     f.write("defelement.com")
 
 # Make pages
-for file in os.listdir(pages_path):
+for file in os.listdir(settings.pages_path):
     if file.endswith(".md"):
         fname = file[:-3]
-        with open(os.path.join(pages_path, file)) as f:
+        with open(os.path.join(settings.pages_path, file)) as f:
             content = markup(f.read())
 
-        with open(os.path.join(html_path, f"{fname}.html"), "w") as f:
+        with open(os.path.join(settings.html_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
 
 # Load categories and reference elements
 categoriser = Categoriser()
-categoriser.load_categories(os.path.join(data_path, "categories"))
-categoriser.load_references(os.path.join(data_path, "references"))
+categoriser.load_categories(os.path.join(settings.data_path, "categories"))
+categoriser.load_references(os.path.join(settings.data_path, "references"))
 
 # Load elements from .def files
-categoriser.load_folder(element_path)
+categoriser.load_folder(settings.element_path)
 
 # Generate element pages
 for e in categoriser.elements:
@@ -267,12 +249,12 @@ for e in categoriser.elements:
         for i, r in enumerate(refs):
             content += f"<li>{markup_citation(r)}"
             content += f" [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
-            with open(os.path.join(htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
+            with open(os.path.join(settings.htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
                 f.write(make_bibtex(f"{fname}-{i}", r))
         content += "</ul>"
 
     # Write file
-    with open(os.path.join(htmlelement_path, e.html_filename), "w") as f:
+    with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
         f.write(make_html_page(content, e.html_name))
 
 # Index page
@@ -386,13 +368,13 @@ for e in categoriser.elements:
 elementlist.sort(key=lambda x: x[0])
 content += "<ul>" + "\n".join([i[1] for i in elementlist]) + "</ul>"
 
-with open(os.path.join(htmlelement_path, "index.html"), "w") as f:
+with open(os.path.join(settings.htmlelement_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
-with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
+with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Category index
-os.mkdir(os.path.join(htmlindices_path, "categories"))
+os.mkdir(os.path.join(settings.htmlindices_path, "categories"))
 content = "<h1>Categories</h1>\n"
 for c in categoriser.categories:
     category_pages = []
@@ -411,14 +393,14 @@ for c in categoriser.categories:
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
-    with open(os.path.join(htmlindices_path, f"categories/{c}.html"), "w") as f:
+    with open(os.path.join(settings.htmlindices_path, f"categories/{c}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
-with open(os.path.join(htmlindices_path, "categories/index.html"), "w") as f:
+with open(os.path.join(settings.htmlindices_path, "categories/index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Reference elements index
-os.mkdir(os.path.join(htmlindices_path, "references"))
+os.mkdir(os.path.join(settings.htmlindices_path, "references"))
 content = "<h1>Reference elements</h1>\n"
 for c in categoriser.references:
     refels = []
@@ -438,10 +420,10 @@ for c in categoriser.references:
     sub_content += f" {c}</h1>\n"
     sub_content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
-    with open(os.path.join(htmlindices_path, f"references/{c}.html"), "w") as f:
+    with open(os.path.join(settings.htmlindices_path, f"references/{c}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
-with open(os.path.join(htmlindices_path, "references/index.html"), "w") as f:
+with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Families
@@ -469,12 +451,12 @@ for fname, family in categoriser.exterior_families.items():
                     sub_content += f"_d)\\) ({family[cell][order][0]})</a></li>"
     sub_content += "</ul>"
 
-    with open(os.path.join(htmlfamilies_path, f"{fname}.html"), "w") as f:
+    with open(os.path.join(settings.htmlfamilies_path, f"{fname}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
     content += f"<li><a href='/families/{fname}.html'>\\({tex_name}^r\\)</a></li>\n"
 content += "</ul>"
-with open(os.path.join(htmlfamilies_path, "index.html"), "w") as f:
+with open(os.path.join(settings.htmlfamilies_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # List of lists
@@ -482,5 +464,5 @@ content = "<h1>Lists of elements</h1>\n<ul>\n"
 content += "<li><a href='/lists/categories'>Finite elements by category</a></li>\n"
 content += "<li><a href='/lists/references'>Finite elements by reference element</a></li>\n"
 content += "</ul>"
-with open(os.path.join(htmlindices_path, "index.html"), "w") as f:
+with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))

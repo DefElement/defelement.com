@@ -48,6 +48,23 @@ jobs:
           cd symfem-src
           sudo pip3 install .
         name: Install Symfem
+
+      - run: mkdir -p ~/.local/share/fonts
+        name: Make font folder
+      - name: Clone Varela Round
+        uses: actions/checkout@v2
+        with:
+          path: ./varela-r
+          repository: avrahamcornfeld/Varela-Round-Hebrew
+          ref: master
+      - run: cp varela-r/fonts/VarelaRound-Regular.otf ~/.local/share/fonts/
+        name: Install Varela Round
+      - name: Download and install Computer Modern
+        run: |
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
+          tar -xf cm-unicode-0.7.0-otf.tar.xz
+          cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_test_html --test
@@ -73,6 +90,23 @@ jobs:
           cd symfem-src
           sudo pip3 install .
         name: Install Symfem
+
+      - run: mkdir -p ~/.local/share/fonts
+        name: Make font folder
+      - name: Clone Varela Round
+        uses: actions/checkout@v2
+        with:
+          path: ./varela-r
+          repository: avrahamcornfeld/Varela-Round-Hebrew
+          ref: master
+      - run: cp varela-r/fonts/VarelaRound-Regular.otf ~/.local/share/fonts/
+        name: Install Varela Round
+      - name: Download and install Computer Modern
+        run: |
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
+          tar -xf cm-unicode-0.7.0-otf.tar.xz
+          cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_html

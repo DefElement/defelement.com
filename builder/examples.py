@@ -73,7 +73,10 @@ def describe_dof(element, d):
             desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
             return desc
         desc = "v\\mapsto"
-        desc += f"\\frac{{\\partial^{{{sum(d.derivative)}}}}}{{"
+        desc += "\\frac{\\partial"
+        if sum(d.derivative) > 1:
+            desc += f"^{{{sum(d.derivative)}}}"
+        desc += "}{"
         for v, i in zip("xyz", d.derivative):
             if i > 0:
                 desc += f"\\partial {v}"
@@ -182,7 +185,7 @@ def markup_example(element):
     # Reference
     eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
     eg += " The following numbering of the subentities of the reference is used:</li>\n"
-    eg += "<center>" + plotting.plot_reference(element.reference).to_svg() + "</center>\n"
+    eg += "<center>" + plotting.plot_reference(element.reference).img_html() + "</center>\n"
     # Polynomial set
     if element.reference.name != "dual polygon":
         eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
@@ -204,7 +207,7 @@ def markup_example(element):
 
     for dof_i, func in enumerate(element.get_basis_functions()):
         eg += "<div class='basisf'><div style='display:inline-block'>"
-        eg += plots[dof_i].to_svg()
+        eg += plots[dof_i].img_html()
         eg += "</div>"
         if len(element.dofs) > 0:
             dof = element.dofs[dof_i]
