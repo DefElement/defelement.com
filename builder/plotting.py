@@ -228,7 +228,7 @@ class Plot:
                     out += "text-anchor='end' "
                 else:
                     out += "text-anchor='middle' "
-                out += f"style='font-family:MJXZERO, MJXTEX-I'>{i['text']}</text>\n"
+                out += f"style='font-family:CMU Serif Italic,serif'>{i['text']}</text>\n"
             elif i["type"] == "line":
                 out += f"<line x1='{float(offset[0] + i['start'][0])}' "
                 out += f"y1='{float(offset[1] + self.height - i['start'][1])}' "
@@ -254,6 +254,7 @@ class Plot:
                 out += f"r='10px' fill='white' stroke='{i['color']}' "
                 out += "stroke-width='2px' />"
                 out += f"<text x='{float(offset[0] + i['position'][0])}' "
+                out += "style='font-family:\"Varela Round\",sans' "
                 out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
                 if i["number"] >= 10:
@@ -363,8 +364,8 @@ class Plot:
                 f.write(svg)
             with open(os.path.join(settings.htmlimg_path, f"{self.id}.tex"), "w") as f:
                 f.write(tikz)
-            os.system(f"convert {settings.htmlimg_path}/{self.id}.svg "
-                      f"{settings.htmlimg_path}/{self.id}.png ")
+            assert os.system(f"convert {settings.htmlimg_path}/{self.id}.svg "
+                             f"{settings.htmlimg_path}/{self.id}.png ") == 0
             img_page = f"<h1>{self.desc}</h1>\n"
             img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
 
