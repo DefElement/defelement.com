@@ -2,7 +2,7 @@ import os
 import argparse
 from symfem import create_element
 from builder import settings
-from builder.markup import markup, insert_links, python_highlight
+from builder.markup import markup, insert_links, python_highlight, cap_first
 from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
@@ -23,11 +23,6 @@ if args.destination is not None:
     settings.htmlfamilies_path = os.path.join(settings.html_path, "families")
 
 test_mode = args.test
-
-
-def cap_first(txt):
-    return txt[:1].upper() + txt[1:]
-
 
 # Prepare paths
 if os.path.isdir(settings.html_path):

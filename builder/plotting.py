@@ -360,6 +360,7 @@ class Plot:
     def img_html(self):
         global all_plots
         from .html import make_html_page
+        from .markup import cap_first
 
         if self.id is None:
             return self.to_svg()
@@ -373,7 +374,7 @@ class Plot:
                 f.write(tikz)
 
             svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png")
-            img_page = f"<h1>{self.desc}</h1>\n"
+            img_page = f"<h1>{cap_first(self.desc)}</h1>\n"
             img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
 
             img_page += ("<p>"

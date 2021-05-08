@@ -9,6 +9,10 @@ from . import plotting
 page_references = []
 
 
+def cap_first(txt):
+    return txt[:1].upper() + txt[1:]
+
+
 def markup(content):
     global page_references
     out = ""
