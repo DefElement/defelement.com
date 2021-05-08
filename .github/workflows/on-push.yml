@@ -82,6 +82,11 @@ jobs:
           ref: master
       - run: cp varela-r/fonts/VarelaRound-Regular.otf .local/share/fonts
         name: Install Varela Round
+      - name: Download and install Computer Modern
+        run: |
+          wget https://sourceforge.net/projects/cm-unicode/files/latest/download
+          tar -xf download
+          cp cm-unicode*/cmunti.otf .local/share/fonts
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
