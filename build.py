@@ -190,12 +190,13 @@ for e in categoriser.elements:
     element_names = []
     element_examples = []
 
-    if (not test_mode or e.test) and e.has_examples:
+    if (not test_mode or e.test) and e.has_examples and e.name == "Kong-Mulder-Veldhuizen":
         assert e.implemented("symfem")
 
         for eg in e.examples:
             cell = eg.split(",")[0]
             order = int(eg.split(",")[1])
+            print(cell, order)
             symfem_name, variant = e.get_implementation_string("symfem", cell)
 
             if variant is None:
