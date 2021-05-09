@@ -190,7 +190,7 @@ for e in categoriser.elements:
     element_names = []
     element_examples = []
 
-    if (not test_mode or e.test) and e.has_examples and e.name == "Kong-Mulder-Veldhuizen":
+    if (not test_mode or e.test) and e.has_examples:
         assert e.implemented("symfem")
 
         for eg in e.examples:
