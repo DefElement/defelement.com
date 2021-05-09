@@ -1,0 +1,28 @@
+name: Kong-Mulder-Veldhuizen
+html-name: Kong&ndash;Mulder&ndash;Veldhuizen
+short-names:
+  - KMV
+categories:
+  - scalar
+reference elements:
+  - triangle
+  - tetrahedron
+symfem:
+  triangle: KMV
+  tetrahedron: KMV
+examples:
+  - triangle,1
+  - triangle,3
+  - tetrahedron,1
+references:
+  - title: Higher-order triangular and tetrahedral finite elements with mass lumping for solving the wave equation
+    author:
+      - Chin-Joe-Kong, M. J. S.
+      - Mulder, W. A.
+      - Van Veldhuizen, M.
+    year: 1999
+    journal: Journal of Engineering Mathematics
+    volume: 35
+    pagestart: 405
+    pageend: 426
+    doi: 10.1023/A:1004420829610

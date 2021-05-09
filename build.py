@@ -196,6 +196,7 @@ for e in categoriser.elements:
         for eg in e.examples:
             cell = eg.split(",")[0]
             order = int(eg.split(",")[1])
+            print(cell, order)
             symfem_name, variant = e.get_implementation_string("symfem", cell)
 
             if variant is None:
