@@ -582,7 +582,7 @@ def plot_basis_functions(element):
         ps = []
         for dofn, function in enumerate(element.get_basis_functions()):
             p = Plot(dim=element.domain_dim + 1, padding=30,
-                     id=f"element-{element.name}-{element.order}-{dofn}",
+                     id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
                      desc=f"Basis function in a {element.name} space")
 
             if len(element.dofs) > 0:
@@ -643,14 +643,16 @@ def plot_basis_functions(element):
         for dofn, function in enumerate(element.get_basis_functions()):
             if element.range_dim == 1:
                 assert element.domain_dim <= 2
-                p = Plot(dim=element.domain_dim + 1, padding=30,
-                         id=f"element-{element.name}-{element.order}-{dofn}",
-                         desc=f"Basis function in a {element.name} space")
+                p = Plot(
+                    dim=element.domain_dim + 1, padding=30,
+                    id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                    desc=f"Basis function in a {element.name} space")
             else:
                 assert element.range_dim == element.domain_dim
-                p = Plot(dim=element.domain_dim, padding=30,
-                         id=f"element-{element.name}-{element.order}-{dofn}",
-                         desc=f"Basis function in a {element.name} space")
+                p = Plot(
+                    dim=element.domain_dim, padding=30,
+                    id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                    desc=f"Basis function in a {element.name} space")
 
             if len(element.dofs) > 0:
                 dof = element.dofs[dofn]
