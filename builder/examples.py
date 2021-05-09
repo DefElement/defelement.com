@@ -50,6 +50,10 @@ def describe_dof(element, d):
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
         return desc
+    if isinstance(d, functionals.WeightedPointEvaluation):
+        desc = f"v\\mapsto {d.weight}"
+        desc += " v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        return desc
     elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
