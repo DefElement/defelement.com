@@ -51,7 +51,7 @@ def describe_dof(element, d):
         desc += "\\end{array}\\right)"
         return desc
     if isinstance(d, functionals.WeightedPointEvaluation):
-        desc = f"v\\mapsto {d.weight}"
+        desc = f"v\\mapsto " + to_tex(d.weight)
         desc += " v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc
     elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
