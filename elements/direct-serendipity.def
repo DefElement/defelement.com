@@ -1,0 +1,20 @@
+name: direct serendipity
+html-name: direct serendipity
+min-order: 1
+categories:
+  - scalar
+reference elements:
+  - quadrilateral
+symfem: direct serendipity
+examples:
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
+references:
+  - title: Direct serendipity and mixed finite elements on convex quadrilaterals
+    author:
+      - Arbogast, T.
+      - Tao, Z.
+    year: 2018
+    arxiv: 1809.02192
+test: 1

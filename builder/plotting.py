@@ -2,6 +2,7 @@ from . import settings
 from datetime import datetime
 import os
 from cairosvg import svg2png
+from symfem.core.finite_element import CiarletElement, DirectElement
 from symfem.core.calculus import grad
 from symfem.core.vectors import vdot, vsub
 from symfem.core.symbolic import subs, x
@@ -585,25 +586,30 @@ def plot_basis_functions(element):
                      id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
                      desc=f"Basis function in a {element.name} space")
 
-            if len(element.dofs) > 0:
-                dof = element.dofs[dofn]
+            dof_entity = (-1, -1)
+            if isinstance(element, CiarletElement):
+                if len(element.dofs) > 0:
+                    dof = element.dofs[dofn]
+                    dof_entity = dof.entity
+            elif isinstance(element, DirectElement):
+                dof_entity = element._basis_entities[dofn]
 
-                if dof.entity[0] >= 2:
-                    if dof.entity[0] == 2:
-                        faces = [dof.entity[1]]
-                    else:
-                        faces = [i for i, _ in enumerate(element.reference.faces)]
-                    for f in faces:
-                        vertices = [apply_scale(element.reference.vertices[i])
-                                    for i in element.reference.faces[f]]
-                        if len(vertices) == 4:
-                            vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
-                        p.add_fill(vertices, color=COLORS["light blue"])
+            if dof_entity[0] >= 2:
+                if dof_entity[0] == 2:
+                    faces = [dof_entity[1]]
+                else:
+                    faces = [i for i, _ in enumerate(element.reference.faces)]
+                for f in faces:
+                    vertices = [apply_scale(element.reference.vertices[i])
+                                for i in element.reference.faces[f]]
+                    if len(vertices) == 4:
+                        vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                    p.add_fill(vertices, color=COLORS["light blue"])
 
             for en, edge in enumerate(element.reference.edges):
                 v1 = apply_scale(element.reference.vertices[edge[0]])
                 v2 = apply_scale(element.reference.vertices[edge[1]])
-                if len(element.dofs) > 0 and dof.entity[0] == 1 and dof.entity[1] == en:
+                if dof_entity[0] == 1 and dof_entity[1] == en:
                     p.add_line(v1, v2, color=COLORS["blue"])
                 else:
                     p.add_line(v1, v2, color=COLORS["gray"])
@@ -623,7 +629,7 @@ def plot_basis_functions(element):
                                  apply_scale(tuple(pts[j]) + (evals[j] / scale, )),
                                  width="2px", color=COLORS["orange"])
 
-            if len(element.dofs) > 0:
+            if isinstance(element, CiarletElement) and len(element.dofs) > 0:
                 if dof.dof_direction() is not None:
                     p.add_arrow(apply_scale(dof.dof_point()),
                                 apply_scale([i + j / 4 for i, j in zip(dof.dof_point(),
@@ -653,26 +659,30 @@ def plot_basis_functions(element):
                     dim=element.domain_dim, padding=30,
                     id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
                     desc=f"Basis function in a {element.name} space")
+            dof_entity = (-1, -1)
+            if isinstance(element, CiarletElement):
+                if len(element.dofs) > 0:
+                    dof = element.dofs[dofn]
+                    dof_entity = dof.entity
+            elif isinstance(element, DirectElement):
+                dof_entity = element._basis_entities[dofn]
 
-            if len(element.dofs) > 0:
-                dof = element.dofs[dofn]
-
-                if dof.entity[0] >= 2:
-                    if dof.entity[0] == 2:
-                        faces = [dof.entity[1]]
-                    else:
-                        faces = [i for i, _ in enumerate(element.reference.faces)]
-                    for f in faces:
-                        vertices = [apply_scale(element.reference.vertices[i])
-                                    for i in element.reference.faces[f]]
-                        if len(vertices) == 4:
-                            vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
-                        p.add_fill(vertices, color=COLORS["light blue"])
+            if dof_entity[0] >= 2:
+                if dof_entity[0] == 2:
+                    faces = [dof_entity[1]]
+                else:
+                    faces = [i for i, _ in enumerate(element.reference.faces)]
+                for f in faces:
+                    vertices = [apply_scale(element.reference.vertices[i])
+                                for i in element.reference.faces[f]]
+                    if len(vertices) == 4:
+                        vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                    p.add_fill(vertices, color=COLORS["light blue"])
 
             for en, edge in enumerate(element.reference.edges):
                 v1 = apply_scale(element.reference.vertices[edge[0]])
                 v2 = apply_scale(element.reference.vertices[edge[1]])
-                if len(element.dofs) > 0 and dof.entity[0] == 1 and dof.entity[1] == en:
+                if dof_entity[0] == 1 and dof_entity[1] == en:
                     p.add_line(v1, v2, color=COLORS["blue"])
                 else:
                     p.add_line(v1, v2, color=COLORS["gray"])
@@ -700,7 +710,7 @@ def plot_basis_functions(element):
                                 apply_scale([i + j / (2.5 * scale) for i, j in zip(pt, v)]),
                                 color=COLORS["orange"], width=f"{wid}px")
 
-            if len(element.dofs) > 0:
+            if isinstance(element, CiarletElement) and len(element.dofs) > 0:
                 if dof.dof_direction() is not None:
                     p.add_arrow(apply_scale(dof.dof_point()),
                                 apply_scale([i + j / 4 for i, j in zip(dof.dof_point(),
