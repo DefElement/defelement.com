@@ -3,6 +3,7 @@ from . import plotting
 import sympy
 from symfem.core import functionals
 from symfem.core.symbolic import PiecewiseFunction
+from symfem.core.finite_element import CiarletElement, DirectElement
 
 
 def to_tex(f, tfrac=False):
@@ -190,18 +191,18 @@ def markup_example(element):
     eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
     eg += " The following numbering of the subentities of the reference is used:</li>\n"
     eg += "<center>" + plotting.plot_reference(element.reference).img_html() + "</center>\n"
-    # Polynomial set
-    if element.reference.name != "dual polygon":
+    if isinstance(element, CiarletElement) and element.reference.name != "dual polygon":
+        # Polynomial set
         eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
         eg += ", ".join(["\\(" + to_tex(i) + "\\)" for i in element.get_polynomial_basis()])
         eg += "</li>\n"
-    # Dual basis
-    if element.reference.name != "dual polygon":
+
+        # Dual basis
         eg += f"<li>\\({symbols.dual_basis}=\\{{{symbols.functional}_0,"
         eg += f"...,{symbols.functional}_{{{len(element.dofs) - 1}}}\\}}\\)</li>\n"
 
     # Basis functions
-    if element.reference.name == "dual polygon":
+    if not isinstance(element, CiarletElement) or element.reference.name == "dual polygon":
         eg += "<li>Basis functions:</li>"
     else:
         eg += "<li>Functionals and basis functions:</li>"
@@ -213,20 +214,29 @@ def markup_example(element):
         eg += "<div class='basisf'><div style='display:inline-block'>"
         eg += plots[dof_i].img_html()
         eg += "</div>"
-        if len(element.dofs) > 0:
+        eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
+        if isinstance(element, CiarletElement) and len(element.dofs) > 0:
             dof = element.dofs[dof_i]
-            eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
             eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
             eg += describe_dof(element, dof) + "\\)<br /><br />"
-            if element.range_dim == 1:
-                eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
-            elif element.range_shape is None or len(element.range_shape) == 1:
-                eg += f"\\(\\displaystyle {symbols.vector_basis_function}_{{{dof_i}}} = "
-            else:
-                eg += f"\\(\\displaystyle {symbols.matrix_basis_function}_{{{dof_i}}} = "
-            eg += to_tex(func) + "\\)<br /><br />"
+        if element.range_dim == 1:
+            eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
+        elif element.range_shape is None or len(element.range_shape) == 1:
+            eg += f"\\(\\displaystyle {symbols.vector_basis_function}_{{{dof_i}}} = "
+        else:
+            eg += f"\\(\\displaystyle {symbols.matrix_basis_function}_{{{dof_i}}} = "
+        eg += to_tex(func) + "\\)"
+        if isinstance(element, CiarletElement):
+            if len(element.dofs) > 0:
+                eg += "<br /><br />"
+                eg += "This DOF is associated with "
+                eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+                eg += " of the reference element.</div>"
+        elif isinstance(element, DirectElement):
+            eg += "<br /><br />"
             eg += "This DOF is associated with "
-            eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+            eg += ["vertex", "edge", "face", "volume"][element._basis_entities[dof_i][0]]
+            eg += f" {element._basis_entities[dof_i][1]}"
             eg += " of the reference element.</div>"
         eg += "</div>"
 
