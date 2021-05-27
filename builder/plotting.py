@@ -260,11 +260,10 @@ class Plot:
                 out += f"r='10px' fill='white' stroke='{i['color']}' "
                 out += "stroke-width='2px' />"
                 out += f"<text x='{float(offset[0] + i['position'][0])}' "
-                out += "style=\"font-family:'Varela Round',sans"
-                if i["number"] >= 10:
-                    out += ";font-size:x-small"
-                out += "\" "
                 out += f"y='{float(offset[1] + self.height - i['position'][1])}' "
+                out += "font-family=\"'Varela Round',sans\" "
+                if i["number"] >= 10:
+                    out += "font-size='10' "
                 out += "text-anchor='middle' dominant-baseline='middle'"
                 out += f" fill='{i['color']}'>{i['number']}</text>"
             else:
