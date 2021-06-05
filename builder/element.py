@@ -380,13 +380,13 @@ class Element:
         params = {}
         if "=" in out:
             sp = out.split("=")
-            e_name = " ".join(sp[0].split(" ")[:-1])
+            out = " ".join(sp[0].split(" ")[:-1])
             for i, j in zip(sp[:-1], sp[1:]):
                 i = i.split(" ")[-1]
                 j = " ".join(j.split(" ")[:-1])
                 params[i] = j
 
-        return e_name, params
+        return out, params
 
         if " variant=" in out:
             return out.split(" variant=")
