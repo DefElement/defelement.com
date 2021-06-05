@@ -123,7 +123,7 @@ for e in categoriser.elements:
     # Implementations
     libraries = [
         ("symfem", "Symfem", "https://github.com/mscroggs/symfem", "pip3 install symfem"),
-        ("basix", "Basix", "https://github.com/fenics/basix", None)
+        ("basix", "Basix", "https://github.com/fenics/basix", None),
         ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL")
     ]
     for codename, libname, url, pip in libraries:
