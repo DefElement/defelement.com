@@ -157,15 +157,22 @@ jobs:
         name: Install Basix dependencies
       - run: |
           cd basix-src
-          ls
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DXTENSOR_ENABLE_ASSERT=ON -B build-dir -S .
           cmake --build build-dir
           sudo cmake --install build-dir
           sudo pip3 install ./python/
         name: Install Basix
 
+      - name: Clone UFL
+        uses: actions/checkout@v2
+        with:
+          path: ./ufl-src
+          repository: FEniCS/ufl
+          ref: main
       - name: Install UFL
-        run: sudo pip3 install ufl
+        run: |
+          cd ufl-src
+          sudo python3 setup.py install
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
