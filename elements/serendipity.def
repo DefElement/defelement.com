@@ -35,6 +35,7 @@ polynomial set:
   hexahedron: poly[k] && serendipity[k]
 symfem: serendipity
 basix: Serendipity
+ufl: S
 examples:
   - interval,1
   - interval,2

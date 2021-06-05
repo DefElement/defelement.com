@@ -372,9 +372,23 @@ class Element:
     def get_implementation_string(self, lib, reference):
         assert self.implemented(lib)
         if isinstance(self.data[lib], dict):
+            if reference not in self.data[lib]:
+                return None, {}
             out = self.data[lib][reference]
         else:
             out = self.data[lib]
+        params = {}
+        if "=" in out:
+            sp = out.split("=")
+            out = " ".join(sp[0].split(" ")[:-1])
+            sp[-1] += " "
+            for i, j in zip(sp[:-1], sp[1:]):
+                i = i.split(" ")[-1]
+                j = " ".join(j.split(" ")[:-1])
+                params[i] = j
+
+        return out, params
+
         if " variant=" in out:
             return out.split(" variant=")
         return out, None

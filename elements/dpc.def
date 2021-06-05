@@ -26,6 +26,7 @@ polynomial set:
   hexahedron: poly[k]
 symfem: discontinuous Lagrange
 basix: DPC
+ufl: DPC
 examples:
   - interval,1
   - interval,2

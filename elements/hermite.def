@@ -25,6 +25,7 @@ dofs:
     - point evaluations of derivatives in coordinate directions
   faces: point evaluations at midpoints
 symfem: Hermite
+ufl: Hermite
 examples:
   - interval,3
   - triangle,3

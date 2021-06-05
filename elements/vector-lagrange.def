@@ -21,6 +21,7 @@ polynomial set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
 symfem: vector Lagrange
+ufl: Lagrange type=VectorElement
 examples:
   - triangle,1
   - triangle,2

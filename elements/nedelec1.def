@@ -29,6 +29,7 @@ dofs:
   volumes: integral moments with (vector-lagrange,k-3)
 symfem: N1curl
 basix: Nedelec 1st kind H(curl)
+ufl: N1curl
 examples:
   - triangle,1
   - triangle,2

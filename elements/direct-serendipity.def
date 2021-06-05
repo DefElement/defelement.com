@@ -6,6 +6,7 @@ categories:
 reference elements:
   - quadrilateral
 symfem: direct serendipity
+ufl: Sdirect
 examples:
   - quadrilateral,1
   - quadrilateral,2

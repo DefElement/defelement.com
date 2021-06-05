@@ -17,6 +17,7 @@ dofs:
     - integral moments of three components with (lagrange,k-3)
     - integral moments of tensor dot product with (arnold-winther-extras,k-4)
 symfem: AW
+ufl: AWc
 examples:
   - triangle,3
   - triangle,4
