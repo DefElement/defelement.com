@@ -179,7 +179,7 @@ jobs:
         with:
           path: ./bempp-src
           repository: bempp/bempp-cl
-          ref: main
+          ref: master
       - name: Install Bempp-cl
         run: |
           cd bempp-src
