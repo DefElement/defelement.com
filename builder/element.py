@@ -381,6 +381,7 @@ class Element:
         if "=" in out:
             sp = out.split("=")
             out = " ".join(sp[0].split(" ")[:-1])
+            sp[-1] += " "
             for i, j in zip(sp[:-1], sp[1:]):
                 i = i.split(" ")[-1]
                 j = " ".join(j.split(" ")[:-1])
