@@ -18,6 +18,7 @@ dofs:
     - point evaluations of components of Jacobian
   edges: integral moments of normal derivatives with (lagrange,0)
 symfem: Bell
+ufl: Bell
 examples:
   - triangle,5
 references:

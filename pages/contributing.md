@@ -89,6 +89,12 @@ symfem:
   quadrilateral: Q
   hexahedron: Q
 basix: Lagrange
+ufl:
+  interval: Lagrange
+  triangle: Lagrange
+  tetrahedron: Lagrange
+  quadrilateral: Q
+  hexahedron: Q
 examples:
   - interval,1
   - interval,2
@@ -122,6 +128,7 @@ The entries in this yaml file are:
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>
 <tr><td>`symfem`</td><td></td><td>The string used to define this element in [Symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
 <tr><td>`basix`</td><td></td><td>The string used to define this element in [Basix](https://github.com/fenics/basix)'s `create_element` function.</td></tr>
+<tr><td>`UFL`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 <tr><td>`test`</td><td></td><td>If included, this element's examples will be included when the test version of the website is built. If not, the examples will be skipped to speed up the test build.</td></tr>
 </table>

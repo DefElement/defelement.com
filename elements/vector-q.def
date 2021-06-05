@@ -26,6 +26,7 @@ polynomial set:
   quadrilateral: qoly[k]^d
   hexahedron: qoly[k]^d
 symfem: vector Q
+ufl: Q type=VectorElement
 examples:
   - quadrilateral,1
   - quadrilateral,2

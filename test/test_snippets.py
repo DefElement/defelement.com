@@ -12,7 +12,7 @@ elements = [e.name for e in c.elements]
 
 
 @pytest.mark.parametrize("element", elements)
-@pytest.mark.parametrize("library", ["symfem", "basix"])
+@pytest.mark.parametrize("library", ["symfem", "basix", "ufl"])
 def test_snippets(element, library):
     e = c.get_element(element)
 
@@ -22,7 +22,6 @@ def test_snippets(element, library):
     code = e.make_implementation_examples(library)
     lines = code.split("\n")
     for i, j in enumerate(lines):
-        print(j)
         exec("\n".join(lines[:i+1]))
 
     exec(code)

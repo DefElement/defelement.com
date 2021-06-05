@@ -20,6 +20,7 @@ polynomial set:
   quadrilateral: poly[k]^d
   hexahedron: poly[k]^d
 symfem: vector discontinuous Lagrange
+ufl: DPC type=VectorElement
 examples:
   - quadrilateral,1
   - quadrilateral,2

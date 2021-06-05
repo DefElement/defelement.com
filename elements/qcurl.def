@@ -29,6 +29,9 @@ polynomial set:
   quadrilateral: qoly[k-1]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
   hexahedron: qoly[k]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
 symfem: Qcurl
+ufl:
+  quadrilateral: RTCE
+  hexahedron: NCE
 examples:
   - quadrilateral,1
   - quadrilateral,2

@@ -28,6 +28,8 @@ dofs:
       - normal integral moments with (lagrange,1)
       - integral moments with (nedelec1,1)
 symfem: MTW
+ufl:
+  triangle: MTW
 examples:
   - triangle,3
   - tetrahedron,3

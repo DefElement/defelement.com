@@ -28,6 +28,7 @@ dofs:
   cell: integral moments with (vector-lagrange,k-2)
 symfem: N1div
 basix: Raviart-Thomas
+ufl: RT
 examples:
   - triangle,1
   - triangle,2

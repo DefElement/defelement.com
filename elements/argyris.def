@@ -18,6 +18,7 @@ dofs:
     - point evaluations of components of Jacobian
   edges: point evaluations of normal derivatives at midpoints
 symfem: Argyris
+ufl: Argyris
 examples:
   - triangle,5
 references:

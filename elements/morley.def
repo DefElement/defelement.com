@@ -15,6 +15,7 @@ dofs:
   vertices: point evaluations
   edges: point evaluations of normal derivatives at midpoints
 symfem: Morley
+ufl: Morley
 examples:
   - triangle,2
 references:

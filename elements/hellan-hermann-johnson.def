@@ -15,6 +15,7 @@ dofs:
   edges: integral moments of inner products of normal to edge with (lagrange,k)
   faces: point evaluations of tensor products with symmetric matrices whose entries are in (lagrange,k-1)
 symfem: HHJ
+ufl: HHJ
 examples:
   - triangle,1
   - triangle,2

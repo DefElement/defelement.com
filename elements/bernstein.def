@@ -25,6 +25,7 @@ polynomial set:
   triangle: poly[k]
   tetrahedron: poly[k]
 symfem: Bernstein
+ufl: Bernstein
 examples:
   - interval,1
   - interval,2

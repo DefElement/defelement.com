@@ -80,6 +80,12 @@ symfem:
   quadrilateral: Q
   hexahedron: Q
 basix: Lagrange
+ufl:
+  interval: Lagrange
+  triangle: Lagrange
+  tetrahedron: Lagrange
+  quadrilateral: Q
+  hexahedron: Q
 examples:
   - interval,1
   - interval,2
