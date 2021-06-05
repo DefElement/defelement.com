@@ -164,6 +164,9 @@ jobs:
           sudo pip3 install ./python/
         name: Install Basix
 
+      - name: Install UFL
+        run: sudo pip3 install ufl
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
