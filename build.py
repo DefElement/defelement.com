@@ -198,12 +198,12 @@ for e in categoriser.elements:
             cell = eg.split(",")[0]
             order = int(eg.split(",")[1])
             print(cell, order)
-            symfem_name, variant = e.get_implementation_string("symfem", cell)
+            symfem_name, params = e.get_implementation_string("symfem", cell)
 
-            if variant is None:
-                element = create_element(cell, symfem_name, order)
+            if "variant" in params:
+                element = create_element(cell, symfem_name, order, params["variant"])
             else:
-                element = create_element(cell, symfem_name, order, variant)
+                element = create_element(cell, symfem_name, order)
 
             example = markup_example(element)
 
