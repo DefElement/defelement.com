@@ -30,6 +30,8 @@ dofs:
 symfem: N1curl
 basix: Nedelec 1st kind H(curl)
 ufl: N1curl
+bempp:
+  triangle: SNC orders=0
 examples:
   - triangle,1
   - triangle,2

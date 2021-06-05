@@ -53,3 +53,24 @@ def ufl_example(element):
                 out += "element = ufl.FiniteElement("
             out += f"\"{ufl_name}\", \"{ref}\", {ord})"
     return out
+
+
+def bempp_example(element):
+    out = "import bempp.api"
+    out += "\n"
+    out += "grid = bempp.api.shapes.sphere(h=0.5)"
+    for e in element.examples:
+        ref, ord = e.split(",")
+        ord = int(ord)
+
+        bempp_name, params = element.get_implementation_string("bempp", ref)
+        if bempp_name is None:
+            continue
+        orders = [int(i) for i in params["orders"].split(",")]
+
+        if ord in orders:
+            out += "\n\n"
+            out += f"# Create {element.name} order {ord}\n"
+            out += "element = bempp.api.function_space(grid, "
+            out += f"\"{bempp_name}\", {ord})"
+    return out
