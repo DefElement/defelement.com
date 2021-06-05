@@ -141,9 +141,9 @@ $$\left({{symbols.mapping}}^\text{curl}{{symbols.vector_basis_function}}\right)(
 $$\left({{symbols.mapping}}^\text{div}{{symbols.vector_basis_function}}\right)(\boldsymbol{x})
 :=\frac1{\det {{symbols.jacobian}}}{{symbols.jacobian}}{{symbols.vector_basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x}))$$
 The covariant Piola mapping preserves the tangential component of basis functions on edges and facets,
-and are typically used to map H(div) elements.
-The contravariant Piola mapping preserves the normal component of basis functions on facets,
 and are typically used to map H(curl) elements.
+The contravariant Piola mapping preserves the normal component of basis functions on facets,
+and are typically used to map H(div) elements.
 
 ### Matrix-valued basis functions
 For matrix-valued basis functions, \({{symbols.matrix_basis_function}}\), the
