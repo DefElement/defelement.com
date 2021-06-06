@@ -1,7 +1,10 @@
 name: Morley-Wang-Xu
 html-name: Morley&ndash;Wang&ndash;Xu
 min-order: 1
-max-order: d
+max-order:
+  interval: 1
+  triangle: 2
+  tetrahedron: 3
 categories:
   - scalar
 ndofs:
