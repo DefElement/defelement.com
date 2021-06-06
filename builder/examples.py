@@ -231,13 +231,14 @@ def markup_example(element):
                 eg += "<br /><br />"
                 eg += "This DOF is associated with "
                 eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
-                eg += " of the reference element.</div>"
+                eg += " of the reference element."
         elif isinstance(element, DirectElement):
             eg += "<br /><br />"
             eg += "This DOF is associated with "
             eg += ["vertex", "edge", "face", "volume"][element._basis_entities[dof_i][0]]
             eg += f" {element._basis_entities[dof_i][1]}"
-            eg += " of the reference element.</div>"
+            eg += " of the reference element."
+        eg += "</div>"
         eg += "</div>"
 
     return eg
