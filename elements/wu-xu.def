@@ -12,11 +12,11 @@ categories:
   - scalar
 ndofs:
   interval:
-    formula: 3
+    formula: 4
   triangle:
-    formula: 10
+    formula: 12
   tetrahedron:
-    formula: 35
+    formula: 38
 reference elements:
   - interval
   - triangle
