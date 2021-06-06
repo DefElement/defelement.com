@@ -124,7 +124,8 @@ for e in categoriser.elements:
     libraries = [
         ("symfem", "Symfem", "https://github.com/mscroggs/symfem", "pip3 install symfem"),
         ("basix", "Basix", "https://github.com/fenics/basix", None),
-        ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL")
+        ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL"),
+        ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", None)
     ]
     for codename, libname, url, pip in libraries:
         if e.implemented(codename):
@@ -134,10 +135,12 @@ for e in categoriser.elements:
 
                 info += "<br />"
 
-                info += f"<a id='show_{codename}_link' href='javascript:show_{codename}_eg()'"
+                info += f"<a class='show_eg_link' id='show_{codename}_link' "
+                info += f"href='javascript:show_{codename}_eg()'"
                 info += " style='display:block'>"
                 info += f"&darr; Show {libname} examples &darr;</a>"
-                info += f"<a id='hide_{codename}_link' href='javascript:hide_{codename}_eg()'"
+                info += f"<a class='hide_eg_link' id='hide_{codename}_link' "
+                info += f"href='javascript:hide_{codename}_eg()'"
                 info += " style='display:none'>"
                 info += f"&uarr; Hide {libname} examples &uarr;</a>"
                 info += f"<div id='{codename}_eg' style='display:none'>"

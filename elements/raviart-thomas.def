@@ -29,6 +29,8 @@ dofs:
 symfem: N1div
 basix: Raviart-Thomas
 ufl: RT
+bempp:
+  triangle: RWG orders=0
 examples:
   - triangle,1
   - triangle,2
