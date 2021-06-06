@@ -32,6 +32,9 @@ ndofs:
   hexahedron:
     formula: (k+1)^3
     oeis: A000578
+  prism:
+    formula: (k+1)^2(k+2)/2
+    oeis: A002411
 entity-ndofs:
   vertices:
     formula: 1
@@ -53,6 +56,9 @@ entity-ndofs:
     hexahedron:
       formula: (k-1)^3
       oeis: A000578
+    prism:
+      formula: (k-1)^2k/2
+      oeis: A002411
 min-order: 1
 categories:
   - scalar
@@ -62,6 +68,7 @@ reference elements:
   - tetrahedron
   - quadrilateral
   - hexahedron
+  - prism
 dofs:
   vertices: point evaluations
   edges: point evaluations
@@ -73,12 +80,14 @@ polynomial set:
   tetrahedron: poly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
+  prism: <k>[\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|\max(p_1+p_2,p_3)\leqslant k\right\}]
 symfem:
   interval: Lagrange
   triangle: Lagrange
   tetrahedron: Lagrange
   quadrilateral: Q
   hexahedron: Q
+  prism: Lagrange
 basix: Lagrange
 ufl:
   interval: Lagrange
@@ -98,4 +107,10 @@ examples:
   - quadrilateral,1
   - quadrilateral,2
   - quadrilateral,3
+  - tetrahedron,1
+  - tetrahedron,2
+  - hexahedron,1
+  - hexahedron,2
+  - prism,1
+  - prism,2
 test: 1
