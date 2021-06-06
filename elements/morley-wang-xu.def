@@ -1,0 +1,49 @@
+name: Morley-Wang-Xu
+html-name: Morley&ndash;Wang@ndash;Xu
+min-order: 1
+max-order: d
+categories:
+  - scalar
+ndofs:
+  interval:
+    formula: k+1
+    oeis: A000027
+  triangle:
+    formula: (k+1)(k+2)/2
+    oeis: A000217
+  tetrahedron:
+    formula: (k+1)(k+2)(k+3)/6
+    oeis: A000292
+reference elements:
+  - interval
+  - triangle
+  - teterahedron
+polynomial set:
+  interval: poly[k]
+  triangle: poly[k]
+  tetrahedron: poly[k]
+dofs:
+  vertices: point evaluations
+  edges: integrals of normal derivatives
+  faces: integrals of normal derivatives
+  volumes: integrals of normal derivatives
+symfem: MWX
+examples:
+  - interval,1
+  - triangle,1
+  - triangle,2
+  - tetrahedron,1
+  - tetrahedron,2
+  - tetrahedron,3
+references:
+  - title: Minimal finite element spaces for 2m-th-order partial differential equations in Rn
+    author:
+      - Wang, M.
+      - Wu, J.
+    year: 2013
+    journal: Mathematics of computation
+    volume: 82
+    issue: 281
+    pagestart: 25
+    pageend: 43
+    doi: 10.1090/S0025-5718-2012-02611-1
