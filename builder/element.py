@@ -148,7 +148,7 @@ class Element:
             return self.data["reference elements"]
 
     def alternative_names(self, include_bracketed=True, include_exterior=True, link=True,
-                          strip_cell_name=False):
+                          strip_cell_name=False, cell=None):
         if "alt-names" not in self.data:
             return []
         if include_bracketed:
@@ -156,6 +156,9 @@ class Element:
                    for i in self.data["alt-names"]]
         else:
             out = [i for i in self.data["alt-names"] if i[0] != "(" or i[-1] != ")"]
+
+        if cell is not None:
+            out = [i for i in out if " (" not in i or cell in i]
 
         if strip_cell_name:
             out = [i.split(" (")[0] for i in out]

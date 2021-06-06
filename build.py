@@ -405,7 +405,7 @@ content = "<h1>Reference elements</h1>\n"
 for c in categoriser.references:
     refels = []
     for e in categoriser.elements_by_reference(c):
-        for name in [e.html_name] + e.alternative_names(False, False, False, True):
+        for name in [e.html_name] + e.alternative_names(False, False, False, True, c):
             refels.append((name.lower(),
                            f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
 
