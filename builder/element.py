@@ -400,7 +400,7 @@ class Element:
             s = f"\"{s}\""
             if "variant" in params:
                 s += ", variant=\"{params['variant']}\""
-            return f"<code>\"{s}\"</code>"
+            return f"<code>{s}</code>"
 
         i_dict = {}
         for i, j in self.data[lib].items():
@@ -411,7 +411,7 @@ class Element:
             if s not in i_dict:
                 i_dict[s] = []
             i_dict[s].append(i)
-        return "<br />".join([f"<code>\"{i}\"</code> ({', '.join(j)})"
+        return "<br />".join([f"<code>{i}</code> ({', '.join(j)})"
                               for i, j in i_dict.items()])
 
     def make_implementation_examples(self, lib):
