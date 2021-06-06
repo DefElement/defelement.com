@@ -183,6 +183,7 @@ jobs:
       - name: Install Bempp-cl
         run: |
           cd bempp-src
+          sudo pip3 install numba
           sudo python3 setup.py install
 
       - run: sudo pip3 install -r requirements.txt
