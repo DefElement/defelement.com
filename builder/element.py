@@ -396,14 +396,22 @@ class Element:
     def list_of_implementation_strings(self, lib):
         assert self.implemented(lib)
         if isinstance(self.data[lib], str):
-            return f"<code>\"{self.data[lib]}\"</code>"
+            s, params = self.get_implementation_string(lib, None)
+            s = f"\"{s}\""
+            if "variant" in params:
+                s += ", variant=\"{params['variant']}\""
+            return f"<code>{s}</code>"
 
         i_dict = {}
         for i, j in self.data[lib].items():
-            if j not in i_dict:
-                i_dict[j] = []
-            i_dict[j].append(i)
-        return "<br />".join([f"<code>\"{i}\"</code> ({', '.join(j)})"
+            s, params = self.get_implementation_string(lib, i)
+            s = f"\"{s}\""
+            if "variant" in params:
+                s += ", variant=\"{params['variant']}\""
+            if s not in i_dict:
+                i_dict[s] = []
+            i_dict[s].append(i)
+        return "<br />".join([f"<code>{i}</code> ({', '.join(j)})"
                               for i, j in i_dict.items()])
 
     def make_implementation_examples(self, lib):

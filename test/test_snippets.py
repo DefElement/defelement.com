@@ -12,7 +12,7 @@ elements = [e.name for e in c.elements]
 
 
 @pytest.mark.parametrize("element", elements)
-@pytest.mark.parametrize("library", ["symfem", "basix", "ufl"])
+@pytest.mark.parametrize("library", ["symfem", "basix", "ufl", "bempp"])
 def test_snippets(element, library):
     e = c.get_element(element)
 

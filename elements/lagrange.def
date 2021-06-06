@@ -86,6 +86,8 @@ ufl:
   tetrahedron: Lagrange
   quadrilateral: Q
   hexahedron: Q
+bempp:
+  triangle: P orders=1
 examples:
   - interval,1
   - interval,2
