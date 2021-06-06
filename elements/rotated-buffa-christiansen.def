@@ -13,8 +13,7 @@ categories:
 reference elements:
   - dual polygon
 symfem: RBC
-bempp:
-  triangle: RBC orders=0
+bempp: RBC orders=0
 examples:
   - dual polygon(4),1
   - dual polygon(5),1

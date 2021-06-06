@@ -14,8 +14,7 @@ categories:
 reference elements:
   - dual polygon
 symfem: dual
-bempp:
-  triangle: DUAL orders=0,1
+bempp: DUAL orders=0,1
 examples:
   - dual polygon(6),0
   - dual polygon(4),1
