@@ -58,7 +58,7 @@ def ufl_example(element):
 def bempp_example(element):
     out = "import bempp.api"
     out += "\n"
-    out += "grid = bempp.api.shapes.sphere(h=0.5)"
+    out += "grid = bempp.api.shapes.regular_sphere(1)"
     for e in element.examples:
         ref, ord = e.split(",")
         ord = int(ord)
