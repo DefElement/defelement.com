@@ -1,5 +1,5 @@
 name: Morley-Wang-Xu
-html-name: Morley&ndash;Wang@ndash;Xu
+html-name: Morley&ndash;Wang&ndash;Xu
 min-order: 1
 max-order: d
 categories:
@@ -17,7 +17,7 @@ ndofs:
 reference elements:
   - interval
   - triangle
-  - teterahedron
+  - tetrahedron
 polynomial set:
   interval: poly[k]
   triangle: poly[k]
@@ -39,7 +39,7 @@ references:
   - title: Minimal finite element spaces for 2m-th-order partial differential equations in Rn
     author:
       - Wang, M.
-      - Wu, J.
+      - Xu, J.
     year: 2013
     journal: Mathematics of computation
     volume: 82
