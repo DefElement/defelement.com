@@ -14,7 +14,7 @@ alt-names:
   - Galerkin
   - DGT
   - Hdiv trace
-  - Q (quadrilaterals and hexahedra)
+  - Q (quadrilateral and hexahedron)
 notes:
   - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
 short-names:
