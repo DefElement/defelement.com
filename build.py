@@ -140,7 +140,7 @@ for e in categoriser.elements:
                 info += " style='display:block'>"
                 info += f"&darr; Show {libname} examples &darr;</a>"
                 info += f"<a class='hide_eg_link' id='hide_{codename}_link' "
-                into += f"href='javascript:hide_{codename}_eg()'"
+                info += f"href='javascript:hide_{codename}_eg()'"
                 info += " style='display:none'>"
                 info += f"&uarr; Hide {libname} examples &uarr;</a>"
                 info += f"<div id='{codename}_eg' style='display:none'>"
