@@ -1,0 +1,48 @@
+name: Wu-Xu
+html-name: Wu&ndash;Xu
+min-order:
+  interval: 2
+  triangle: 3
+  tetrahedron: 4
+max-order:
+  interval: 2
+  triangle: 3
+  tetrahedron: 4
+categories:
+  - scalar
+ndofs:
+  interval:
+    formula: 4
+  triangle:
+    formula: 12
+  tetrahedron:
+    formula: 38
+reference elements:
+  - interval
+  - triangle
+  - tetrahedron
+polynomial set:
+  interval: poly[k-1] && <k>[\left\{x(1-x)p\middle|p\in\right{{poly[k-1]}}\setminus\{1\}\}]
+  triangle: poly[k-1] && <k>[\left\{xy(1-x-y)p\middle|p\in\right{{poly[k-1]}}\setminus\{1\}]
+  tetrahedron: poly[k-1] && <k>[\left\{xyz(1-x-y-z)p\middle|p\in\right{{poly[k-1]}}\setminus\{1\}]
+dofs:
+  vertices: point evaluations
+  edges: integrals of normal derivatives
+  faces: integrals of normal derivatives
+  volumes: integrals of normal derivatives
+symfem: Wu-Xu
+examples:
+  - interval,2
+  - triangle,3
+  - tetrahedron,4
+references:
+  - title: Nonconforming finite element spaces for 2mth order partial differential equations on Rn simplical grids when m=n+1
+    author:
+      - Wu, S.
+      - Xu, J.
+    year: 2019
+    journal: Mathematics of computation
+    volume: 88
+    pagestart: 531
+    pageend: 551
+    doi: 10.1090/mcom/3361
