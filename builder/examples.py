@@ -138,6 +138,26 @@ def describe_dof(element, d):
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "v"
         return desc
+    elif isinstance(d, functionals.IntegralOfDirectionalMultiderivative):
+        entity = symbols.entity(d.entity_dim())
+        entity_n = get_entity_number(element, d)
+        desc = "\\mathbf{V}\\mapsto"
+        desc += "\\displaystyle"
+        if d.scale != 1:
+            desc += to_tex(d.scale)
+        desc += f"\\int_{{{entity}_{{{entity_n}}}}}"
+        for order, dir in zip(d.orders, d.directions):
+            if order > 0:
+                desc += "\\frac{\\partial"
+                if order > 1:
+                    desc += f"^{{{order}}}"
+                desc += "}{"
+                desc += "\partial" + to_tex(dir)
+                if order > 1:
+                    desc += f"^{{{order}}}"
+                desc += "}"
+        desc += "v"
+        return desc
     elif isinstance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
             entity = symbols.reference
