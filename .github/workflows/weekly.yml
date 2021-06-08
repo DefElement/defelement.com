@@ -45,6 +45,29 @@ jobs:
           sudo pip3 install ./python/
         name: Install Basix
 
+      - name: Clone UFL
+        uses: actions/checkout@v2
+        with:
+          path: ./ufl-src
+          repository: FEniCS/ufl
+          ref: main
+      - name: Install UFL
+        run: |
+          cd ufl-src
+          sudo python3 setup.py install
+
+      - name: Clone Bempp-cl
+        uses: actions/checkout@v2
+        with:
+          path: ./bempp-src
+          repository: bempp/bempp-cl
+          ref: master
+      - name: Install Bempp-cl
+        run: |
+          cd bempp-src
+          sudo pip3 install numpy scipy numba meshio>=4.0.16
+          sudo python3 setup.py install
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
