@@ -152,7 +152,7 @@ def describe_dof(element, d):
                 if order > 1:
                     desc += f"^{{{order}}}"
                 desc += "}{"
-                desc += "\partial" + to_tex(dir)
+                desc += "\\partial" + to_tex(dir)
                 if order > 1:
                     desc += f"^{{{order}}}"
                 desc += "}"
