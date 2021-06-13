@@ -58,5 +58,5 @@ make the changes yourself, and open a pull request. You can find more informatio
 an element to DefElement [here](contributing.md).
 
 The functional information and examples on the element pages are generated using
-[symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
-Before adding an element to DefElement, it should first be implemented in symfem.
+[Symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
+Before adding an element to DefElement, it should first be implemented in Symfem.
