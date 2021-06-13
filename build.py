@@ -11,7 +11,7 @@ from builder.html import make_html_page
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
                     default=None, help="Destination of HTML files.")
-parser.add_argument('--test', action="store_true",
+parser.add_argument('--test', metavar="test", default=None,
                     help="Builds a version of the website with fewer elements.")
 
 args = parser.parse_args()
@@ -22,7 +22,10 @@ if args.destination is not None:
     settings.htmlindices_path = os.path.join(settings.html_path, "lists")
     settings.htmlfamilies_path = os.path.join(settings.html_path, "families")
 
-test_mode = args.test
+if args.test is None:
+    test_elements = None
+else:
+    test_elements = args.test.split(",")
 
 # Prepare paths
 if os.path.isdir(settings.html_path):
@@ -194,7 +197,7 @@ for e in categoriser.elements:
     element_names = []
     element_examples = []
 
-    if (not test_mode or e.test) and e.has_examples:
+    if (test_elements is None or e.name in test_elements) and e.has_examples:
         assert e.implemented("symfem")
 
         for eg in e.examples:

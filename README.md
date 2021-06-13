@@ -21,9 +21,11 @@ The html files for the website can be built by running:
 python build.py
 ```
 
-A smaller version of the website (that will be faster to build) can be built by running:
+A version of the website where only some elements are plotted can be built by using the
+`--test` input arg. For example, the following can be run to build the website with only
+plots for Lagrange and Raviart-Thomas:
 
 ```bash
-python build.py --test
+python build.py --test Lagrange,Raviart-Thomas
 ```
 

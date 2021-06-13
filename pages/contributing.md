@@ -1,8 +1,19 @@
 # Contributing to DefElement
+
+## Suggesting additions and corrections
+If you find an error or inaccuracy in a DefElement entry, please open
+[an issue on GitHub](https://github.com/mscroggs/defelement.com/issues).
+You can also open an issue to suggest a new element that should be added to the database.
+
+## Contributing directly
 You can contribute to DefElement by forking the [DefElement GitHub repo](https://github.com/mscroggs/defelement.com),
 making changes, then opening a pull request.
 
-## Defining an element
+The functional information and examples on the element pages are generated using
+[Symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
+Before adding an element to DefElement, it should first be implemented in Symfem.
+
+### Defining an element
 Elements in the DefElement database are defined using a yaml file in the `elements/` folder.
 The full file for a Lagrange element is:
 
@@ -122,7 +133,6 @@ examples:
   - hexahedron,2
   - prism,1
   - prism,2
-test: 1
 ```
 
 The entries in this yaml file are:
@@ -148,5 +158,4 @@ The entries in this yaml file are:
 <tr><td>`ufl`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
 <tr><td>`bempp`</td><td></td><td>The string used to define this element in [Bempp](https://github.com/bempp/bempp-cl).</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
-<tr><td>`test`</td><td></td><td>If included, this element's examples will be included when the test version of the website is built. If not, the examples will be skipped to speed up the test build.</td></tr>
 </table>

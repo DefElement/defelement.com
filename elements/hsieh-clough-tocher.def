@@ -17,7 +17,6 @@ reference elements:
 symfem: HCT
 examples:
   - triangle,3
-test: 1
 references:
   - title: Interpolation error estimates for the reduced Hsieh-Clough-Tocher triangle
     author: Ciarlet, P. G.
