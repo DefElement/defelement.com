@@ -56,7 +56,7 @@ ndofs:
     formula: (k+1)^2(k+2)/2
     oeis: A002411
   pyramid:
-    formula: k(k+1)(2k+1)/6
+    formula: (k+1)(k+2)(2k+3)/6
     oeis: A000330
 entity-ndofs:
   vertices:
@@ -83,7 +83,7 @@ entity-ndofs:
       formula: (k-1)^2k/2
       oeis: A002411
     pyramid:
-      formula: k(k-1)(2k-1)/6
+      formula: k(k+1)(2k+1)/6
       oeis: A000330
 min-order: 1
 categories:
