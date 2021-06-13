@@ -19,7 +19,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: main
+          ref: pyramid-lagrange
       - run: |
           cd symfem-src
           sudo pip3 install .
@@ -43,7 +43,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: main
+          ref: pyramid-lagrange
       - run: |
           cd symfem-src
           sudo pip3 install .
@@ -85,7 +85,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: main
+          ref: pyramid-lagrange
       - run: |
           cd symfem-src
           sudo pip3 install .
@@ -139,7 +139,7 @@ jobs:
         with:
           path: ./symfem-src
           repository: mscroggs/symfem
-          ref: main
+          ref: pyramid-lagrange
       - run: |
           cd symfem-src
           sudo pip3 install .

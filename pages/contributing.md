@@ -55,6 +55,9 @@ ndofs:
   prism:
     formula: (k+1)^2(k+2)/2
     oeis: A002411
+  prism:
+    formula: k(k+1)(2k+1)/6
+    oeis: A000330
 entity-ndofs:
   vertices:
     formula: 1
@@ -89,6 +92,7 @@ reference elements:
   - quadrilateral
   - hexahedron
   - prism
+  - pyramid
 dofs:
   vertices: point evaluations
   edges: point evaluations
@@ -100,7 +104,8 @@ polynomial set:
   tetrahedron: poly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
-  prism: <k>[\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|\max(p_1+p_2,p_3)\leqslant k\right\}]
+  prism: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|\max(p_1+p_2,p_3)\leqslant k\right\}]
+  pyramid: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|p_3\leqslant k-1,p_1+p_3\leqslant k,p_2+p_3\leqslant k\right\}] && <k>[\operatorname{span}\left\{x_3^k\right\}]
 symfem:
   interval: Lagrange
   triangle: Lagrange
@@ -108,6 +113,7 @@ symfem:
   quadrilateral: Q
   hexahedron: Q
   prism: Lagrange
+  pyramid: Lagrange
 basix: Lagrange
 ufl:
   interval: Lagrange
@@ -133,6 +139,8 @@ examples:
   - hexahedron,2
   - prism,1
   - prism,2
+  - pyramid,1
+  - pyramid,2
 ```
 
 The entries in this yaml file are:
