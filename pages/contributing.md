@@ -122,7 +122,6 @@ examples:
   - hexahedron,2
   - prism,1
   - prism,2
-test: 1
 ```
 
 The entries in this yaml file are:
