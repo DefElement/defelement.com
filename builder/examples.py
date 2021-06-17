@@ -1,9 +1,9 @@
 from . import symbols
 from . import plotting
 import sympy
-from symfem.core import functionals
-from symfem.core.symbolic import PiecewiseFunction
-from symfem.core.finite_element import CiarletElement, DirectElement
+from symfem import functionals
+from symfem.symbolic import PiecewiseFunction
+from symfem.finite_element import CiarletElement, DirectElement
 
 
 def to_tex(f, tfrac=False):
@@ -34,7 +34,7 @@ def get_entity_number(element, dof):
         entities = element.reference.edges
     elif dof.entity_dim() == 2:
         entities = element.reference.faces
-    elif dof.entity_dim() == 2:
+    elif dof.entity_dim() == 3:
         entities = element.reference.volumes
     return str(entities.index(
         tuple(element.reference.vertices.index(i)

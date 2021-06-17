@@ -67,7 +67,7 @@ jobs:
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_test_html --test Buffa-Christiansen,direct\ serendipity,dual\ polynomial,Hellan-Herrmann-Johnson,Hsieh-Clough-Tocher,Lagrange,Nedelec\ \(first\ kind\),Raviart-Thomas,Regge,serendipity,Taylor-Hood,vector\ bubble\ enriched\ Lagrange
+      - run: python3 build.py ../_test_html --test buffa-christiansen,direct-serendipity,dual,hellan-herrmann-johnson,hsieh-clough-tocher,lagrange,nedelec1,raviart-thomas,regge,serendipity,taylor-hood,vector-bubble-enriched-Lagrange
         name: Build website HTML
 
   build-website:

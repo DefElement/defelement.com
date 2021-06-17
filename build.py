@@ -197,7 +197,7 @@ for e in categoriser.elements:
     element_names = []
     element_examples = []
 
-    if (test_elements is None or e.name in test_elements) and e.has_examples:
+    if (test_elements is None or e.filename in test_elements) and e.has_examples:
         assert e.implemented("symfem")
 
         for eg in e.examples:
