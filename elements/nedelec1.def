@@ -1,15 +1,23 @@
 name: Nedelec (first kind)
 html-name: N&eacute;d&eacute;lec (first kind)
 alt-names:
-  - Whitney
+  - Whitney (triangle,tetrahedron)
+  - (N&eacute;d&eacute;lec)
+  - Q H(curl) (quadrilateral,hexahedron)
+  - Raviart&ndash;Thomas cubical H(curl) (quadrilateral)
+  - N&eacute;d&eacute;lec cubical H(curl) (hexahedron)
+short-names:
+  - N1curl
+  - NC
+  - RTce (quadrilateral)
+  - Nce (hexahedron)
 min-order: 1
 categories:
   - vector
   - Hcurl
-short-names:
-  - N1curl
-  - NC
-exterior-calculus: P-,1,simplex
+exterior-calculus:
+  - P-,1,simplex
+  - Q-,1,tp
 ndofs:
   triangle:
     formula: k(k+2)
@@ -17,26 +25,62 @@ ndofs:
   tetrahedron:
     formula: k(k+2)(k+3)/2
     oeis: A005564
+  quadrilateral:
+    formula: 2k(k+1)
+    oeis: A046092
+  hexahedron:
+    formula: 3k(k+1)^2
+    oeis: A059986
+  prism:
+    formula: 3k(k+2)(k+1)/2
 reference elements:
   - triangle
   - tetrahedron
+  - quadrilateral
+  - hexahedron
+  - prism
 polynomial set:
   triangle: poly[k-1]^d && <k>[\left\{\boldsymbol{p}\in{{tpoly[k]^d}}\middle|\boldsymbol{p}({{x}})\cdot {{x}}=0\right\}]
   tetrahedron: poly[k-1]^d && <k>[\left\{\boldsymbol{p}\in{{tpoly[k]^d}}\middle|\boldsymbol{p}({{x}})\cdot {{x}}=0\right\}]
+  quadrilateral: qoly[k-1]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
+  hexahedron: qoly[k]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]
 dofs:
   edges: tangent integral moments with (lagrange,k-1)
-  faces: integral moments with (vector-lagrange,k-2)
-  volumes: integral moments with (vector-lagrange,k-3)
-symfem: N1curl
-basix: Nedelec 1st kind H(curl)
-ufl: N1curl
+  faces:
+    triangle: integral moments with (vector-lagrange,k-2)
+    quadrilateral: integral moments with (nedelec1,k-2)
+  volumes:
+    tetrahedron: integral moments with (vector-lagrange,k-3)
+    hexahedron: integral moments with (nedelec1,k-3)
+symfem:
+  triangle: N1curl
+  tetrahedron: N1curl
+  quadrilateral: Qcurl
+  hexahedron: Qcurl
+  prism: Ncurl
+basix:
+  triangle: Nedelec 1st kind H(curl)
+  tetrahedron: Nedelec 1st kind H(curl)
+  quadrilateral: Nedelec 1st kind H(curl)
+  hexahedron: Nedelec 1st kind H(curl)
+ufl:
+  triangle: N1curl
+  tetrahedron: N1curl
+  quadrilateral: RTCE
+  hexahedron: NCE
 bempp:
   triangle: SNC orders=0
 examples:
   - triangle,1
   - triangle,2
+  - quadrilateral,1
+  - quadrilateral,2
   - tetrahedron,1
   - tetrahedron,2
+  - hexahedron,1
+  - hexahedron,2
+  - prism,1
+  - prism,2
 references:
   - title: Mixed finite elements in \(\mathbb{R}^3\)
     author: N&eacute;d&eacute;lec, J. C.

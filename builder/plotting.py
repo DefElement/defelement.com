@@ -2,11 +2,11 @@ from . import settings
 from datetime import datetime
 import os
 from cairosvg import svg2png
-from symfem.core.finite_element import CiarletElement, DirectElement
-from symfem.core.calculus import grad
-from symfem.core.vectors import vdot, vsub
-from symfem.core.symbolic import subs, x
-from symfem.core.symbolic import PiecewiseFunction
+from symfem.finite_element import CiarletElement, DirectElement
+from symfem.calculus import grad
+from symfem.vectors import vdot, vsub
+from symfem.symbolic import subs, x
+from symfem.symbolic import PiecewiseFunction
 
 COLORS = {"orange": "#FF8800", "blue": "#44AAFF", "green": "#55FF00",
           "purple": "#DD2299", "light blue": "#BBEEFF",
@@ -474,6 +474,13 @@ def make_lattice(element, n, offset=False, pairs=False):
         else:
             points = [(i / (n - 1), j / (n - 1), k / (n - 1))
                       for i in range(n) for j in range(n) for k in range(n)]
+    elif ref.name == "prism":
+        if offset:
+            points = [((i + 0.5) / (n + 1), (j + 0.5) / (n + 1), (k + 0.5) / (n + 1))
+                      for i in range(n + 1) for j in range(n + 1 - i) for k in range(n + 1)]
+        else:
+            points = [(i / (n - 1), j / (n - 1), k / (n - 1))
+                      for i in range(n) for j in range(n - i) for k in range(n + 1)]
     else:
         raise ValueError("Unknown cell type.")
 

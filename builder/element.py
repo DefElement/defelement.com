@@ -282,7 +282,11 @@ class Element:
                 ("On the interior of the reference element", "cell"),
             ]:
                 if j in data:
-                    dof_data.append(f"{i}{post}: {dofs_on_entity(j, data[j])}")
+                    if isinstance(data[j], dict):
+                        for shape, sub_data in data[j].items():
+                            dof_data.append(f"{i} ({shape}){post}: {dofs_on_entity(j, sub_data)}")
+                    else:
+                        dof_data.append(f"{i}{post}: {dofs_on_entity(j, data[j])}")
             return "<br />\n".join(dof_data)
 
         return make_dof_d(self.data["dofs"])
