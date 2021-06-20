@@ -48,10 +48,10 @@ dofs:
   edges: tangent integral moments with (lagrange,k-1)
   faces:
     triangle: integral moments with (vector-lagrange,k-2)
-    quadrilateral: integral moments with (nedelec1,k-2)
+    quadrilateral: integral moments with (qdiv,k-2)
   volumes:
     tetrahedron: integral moments with (vector-lagrange,k-3)
-    hexahedron: integral moments with (nedelec1,k-3)
+    hexahedron: integral moments with (qdiv,k-3)
 symfem:
   triangle: N1curl
   tetrahedron: N1curl
