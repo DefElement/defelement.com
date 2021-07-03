@@ -539,12 +539,9 @@ def plot_reference(ref):
             p.add_line(v1, v2)
 
         for i, e in enumerate(ref.sub_entities(d)):
-            if d == 0:
-                p.add_dof_number(apply_scale(e), i, ENTITY_COLORS[d])
-            else:
-                pos = apply_scale(
-                    [sum(k) / len(k) for k in zip(*[ref.vertices[j] for j in e])])
-                p.add_dof_number(pos, i, ENTITY_COLORS[d])
+            pos = apply_scale(
+                [sum(k) / len(k) for k in zip(*[ref.vertices[j] for j in e])])
+            p.add_dof_number(pos, i, ENTITY_COLORS[d])
 
         p.set_origin(x=p.width + p.padding)
 
