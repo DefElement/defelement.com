@@ -28,7 +28,7 @@ polynomial set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
-symfem: Q variant=lobatto
+symfem: Lagrange variant=lobatto
 examples:
   - interval,1
   - interval,2
