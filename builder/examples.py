@@ -2,8 +2,10 @@ from . import symbols
 from . import plotting
 import sympy
 from symfem import functionals
-from symfem.symbolic import PiecewiseFunction
+from symfem.symbolic import PiecewiseFunction, t
 from symfem.finite_element import CiarletElement, DirectElement
+
+defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
 
 
 def to_tex(f, tfrac=False):
@@ -23,6 +25,10 @@ def to_tex(f, tfrac=False):
     out = sympy.latex(sympy.simplify(sympy.expand(f)))
     out = out.replace("\\left[", "\\left(")
     out = out.replace("\\right]", "\\right)")
+
+    for i, j in zip(t, defelement_t):
+        out = out.replace(sympy.latex(i), j)
+
     if tfrac:
         return out.replace("\\frac", "\\tfrac")
     else:
@@ -41,42 +47,102 @@ def get_entity_number(element, dof):
               for i in dof.reference.vertices)))
 
 
+def entity_name(dim):
+    return ["vertex", "edge", "face", "volume"][dim]
+
+
+def nth(n):
+    if n % 10 == 1 and n != 11:
+        return f"{n}st"
+    if n % 10 == 2 and n != 12:
+        return f"{n}nd"
+    return f"{n}th"
+
+
+def define_symbol(symbol):
+    for dim in range(4):
+        for i in range(12):
+            if symbol == f"{symbols.entity(dim)}_{{{i}}}":
+                return f"\\({symbol}\\) is the {nth(i)} {entity_name(dim)}"
+
+    for i in range(12):
+        if symbol == f"\\hat{{\\boldsymbol{{n}}}}_{{{i}}}":
+            return f"\\({symbol}\\) is the normal to facet {i}"
+
+    for i in range(12):
+        if symbol == f"\\hat{{\\boldsymbol{{t}}}}_{{{i}}}":
+            return f"\\({symbol}\\) is the tangent to edge {i}"
+
+    if symbol == "R":
+        return f"\\({symbol}\\) is the reference element"
+
+    if symbol[:5] == "param":
+        for dim in range(4):
+            for i in range(12):
+                if symbol[5:] in [f"{symbols.entity(dim)}_{{{i}}}", f"R({dim})"]:
+                    if symbol[5] == f"R({dim})":
+                        ref = "R"
+                    else:
+                        ref = symbol[5:]
+                    assert dim > 0
+                    if dim == 1:
+                        return (f"\\({defelement_t[0]}\\)"
+                                f" is a parametrisation of \\({ref}\\)")
+                    else:
+                        return (f"\\(({','.join(defelement_t[:dim])})\\)"
+                                f" is a parametrisation of \\({ref}\\)")
+
+    raise ValueError(f"Unrecognised symbol: {symbol}")
+
+
 def describe_dof(element, d):
+    desc, symb = _describe_dof(element, d)
+    for i in defelement_t:
+        if i in desc:
+            if symb[0] == "R":
+                symb.append(f"paramR({element.reference.tdim})")
+            else:
+                symb.append("param" + symb[0])
+            break
+    return desc, symb
+
+
+def _describe_dof(element, d):
     if isinstance(d, functionals.PointEvaluation):
-        return "v\\mapsto v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        return "v\\mapsto v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")", []
     elif isinstance(d, functionals.DotPointEvaluation):
         desc = "\\boldsymbol{v}\\mapsto"
         desc += "\\boldsymbol{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
-        return desc
+        return desc, []
     if isinstance(d, functionals.WeightedPointEvaluation):
         desc = f"v\\mapsto " + to_tex(d.weight)
         desc += " v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
-        return desc
+        return desc, []
     elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         entity_n = get_entity_number(element, d)
         desc += "\\cdot\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
-        return desc
+        return desc, ["\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
     elif isinstance(d, functionals.PointDirectionalDerivativeEvaluation):
         if element.reference.tdim == 1:
             desc = "v\\mapsto "
             desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
-            return desc
+            return desc, []
         desc = "v\\mapsto"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
-        return desc
+        return desc, []
     elif isinstance(d, functionals.DerivativePointEvaluation):
         if element.reference.tdim == 1:
             desc = "v\\mapsto "
             desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
-            return desc
+            return desc, []
         desc = "v\\mapsto"
         desc += "\\frac{\\partial"
         if sum(d.derivative) > 1:
@@ -89,14 +155,14 @@ def describe_dof(element, d):
                     desc += f"^{{{i}}}"
         desc += "}"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
-        return desc
+        return desc, []
     elif isinstance(d, functionals.PointComponentSecondDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\frac{\\partial^2v}{"
         for c in d.component:
             desc += "\\partial " + "xyz"[c]
         desc += "}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
-        return desc
+        return desc, []
     elif isinstance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
@@ -106,7 +172,7 @@ def describe_dof(element, d):
         if d.f != 1:
             desc += "(" + to_tex(d.f) + ")"
         desc += "\\hat{\\boldsymbol{t}}" + f"_{{{entity_n}}}"
-        return desc
+        return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{t}}" + f"_{{{entity_n}}}"]
     elif isinstance(d, functionals.NormalIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
@@ -116,7 +182,7 @@ def describe_dof(element, d):
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
-        return desc
+        return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
     elif isinstance(d, functionals.NormalInnerProductIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
@@ -128,7 +194,7 @@ def describe_dof(element, d):
         desc += "\\hat{\\boldsymbol{n}}^t" + f"_{{{entity_n}}}"
         desc += "\\mathbf{V}"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
-        return desc
+        return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
     elif isinstance(d, functionals.IntegralAgainst):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
@@ -137,7 +203,7 @@ def describe_dof(element, d):
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "v"
-        return desc
+        return desc, [f"{entity}_{{{entity_n}}}"]
     elif isinstance(d, functionals.IntegralOfDirectionalMultiderivative):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
@@ -157,7 +223,7 @@ def describe_dof(element, d):
                     desc += f"^{{{order}}}"
                 desc += "}"
         desc += "v"
-        return desc
+        return desc, [f"{entity}_{{{entity_n}}}"]
     elif isinstance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
             entity = symbols.reference
@@ -189,7 +255,7 @@ def describe_dof(element, d):
             if d.f != 1:
                 desc += "(" + to_tex(d.f) + ")"
             desc += "v"
-        return desc
+        return desc, [f"{entity}"]
     elif isinstance(d, functionals.PointInnerProduct):
         desc = "\\mathbf{V}\\mapsto"
         desc += "\\left(\\begin{array}{c}"
@@ -199,7 +265,7 @@ def describe_dof(element, d):
         desc += "\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.rvec])
         desc += "\\end{array}\\right)"
-        return desc
+        return desc, []
     else:
         raise ValueError(f"Unknown functional: {d.__class__}")
 
@@ -238,7 +304,16 @@ def markup_example(element):
         if isinstance(element, CiarletElement) and len(element.dofs) > 0:
             dof = element.dofs[dof_i]
             eg += f"\\(\\displaystyle {symbols.functional}_{{{dof_i}}}:"
-            eg += describe_dof(element, dof) + "\\)<br /><br />"
+            dof_tex, symbols_used = describe_dof(element, dof)
+            symbols_used += []
+            eg += dof_tex + "\\)"
+            if len(symbols_used) > 0:
+                symbols_used = [define_symbol(i) for i in symbols_used]
+                eg += "<br />where " + "; ".join(symbols_used[:-1])
+                if len(symbols_used) > 1:
+                    eg += "; and "
+                eg += symbols_used[-1] + "."
+            eg += "<br /><br />"
         if element.range_dim == 1:
             eg += f"\\(\\displaystyle {symbols.basis_function}_{{{dof_i}}} = "
         elif element.range_shape is None or len(element.range_shape) == 1:
@@ -250,12 +325,12 @@ def markup_example(element):
             if len(element.dofs) > 0:
                 eg += "<br /><br />"
                 eg += "This DOF is associated with "
-                eg += ["vertex", "edge", "face", "volume"][dof.entity[0]] + f" {dof.entity[1]}"
+                eg += entity_name(dof.entity[0]) + f" {dof.entity[1]}"
                 eg += " of the reference element."
         elif isinstance(element, DirectElement):
             eg += "<br /><br />"
             eg += "This DOF is associated with "
-            eg += ["vertex", "edge", "face", "volume"][element._basis_entities[dof_i][0]]
+            eg += entity_name(element._basis_entities[dof_i][0])
             eg += f" {element._basis_entities[dof_i][1]}"
             eg += " of the reference element."
         eg += "</div>"
