@@ -309,9 +309,9 @@ def markup_example(element):
             eg += dof_tex + "\\)"
             if len(symbols_used) > 0:
                 symbols_used = [define_symbol(i) for i in symbols_used]
-                eg += "<br />where " + "; ".join(symbols_used[:-1])
+                eg += "<br />where " + ";<br />".join(symbols_used[:-1])
                 if len(symbols_used) > 1:
-                    eg += "; and "
+                    eg += ";<br />and "
                 eg += symbols_used[-1] + "."
             eg += "<br /><br />"
         if element.range_dim == 1:
