@@ -1,31 +1,28 @@
-name: Crouzeix-Raviart
-html-name: Crouzeix&ndash;Raviart
+name: conforming Crouzeix-Raviart
+html-name: conforming Crouzeix&ndash;Raviart
 min-order: 1
-max-order: 1
-alt-names:
-  - non-conforming Crouzeix&ndash;Raviart
 short-names:
-  - CR
+  - conforming CR
 categories:
   - scalar
 ndofs:
   triangle:
-    formula: 3
-  tetrahedron:
-    formula: 4
+    formula: k(k+5)/2
 reference elements:
   - triangle
-  - tetrahedron
 polynomial set:
-  triangle: poly[k]
-  tetrahedron: poly[k]
+  triangle: poly[k] && <k>[\left\{x^iy^{k-i}(x+y)\middle|i=1,...,k-1\right\}]
 dofs:
-  facets: point evaluation at midpoint
-symfem: Crouzeix-Raviart
-basix: Crouzeix-Raviart
-ufl: Crouzeix-Raviart
+  vertices: points evaluation
+  edges: point evaluations
+  faces: point evaluations
+symfem: conforming Crouzeix-Raviart
 examples:
   - triangle,1
+  - triangle,2
+  - triangle,3
+  - triangle,4
+  - triangle,5
 references:
   - title: Conforming and nonconforming finite element methods for solving the stationary Stokes equations
     author:
