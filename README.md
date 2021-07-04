@@ -23,9 +23,11 @@ python build.py
 
 A version of the website where only some elements are plotted can be built by using the
 `--test` input arg. For example, the following can be run to build the website with only
-plots for Lagrange and Raviart-Thomas:
+plots for Lagrange and Raviart-Thomas (`lagrange` and `raviart-thomas` are
+the filenames of the `.def` files in the `elements` folder that define these
+elements):
 
 ```bash
-python build.py --test Lagrange,Raviart-Thomas
+python build.py --test lagrange,raviart-thomas
 ```
 
