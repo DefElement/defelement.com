@@ -13,7 +13,9 @@ reference elements:
 polynomial set:
   triangle: poly[k] && <k>[\left\{x^iy^{k-i}(x+y)\middle|i=1,...,k-1\right\}]
 dofs:
-  facets: point evaluation at midpoint
+  vertices: points evaluation
+  edges: point evaluations
+  faces: point evaluations
 symfem: conforming Crouzeix-Raviart
 examples:
   - triangle,1
