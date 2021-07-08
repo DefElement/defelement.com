@@ -19,7 +19,7 @@ examples:
   - dual polygon(5),1
   - dual polygon(6),1
 notes:
-  - These elements are defined on the barycentric dual grid.
+  - These elements are defined on the [barycentric dual grid](barycentric-dual-grid.md).
   - These elements are defined as a linear combination of [N&eacute;d&eacute;lec first kind](element::nedelec1) basis functions on the fine grid.
 references:
   - author:

@@ -374,8 +374,11 @@ class Plot:
                 f.write(tikz)
 
             svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png")
+            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}-large.png",
+                    scale=3.0)
             img_page = f"<h1>{cap_first(self.desc)}</h1>\n"
-            img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
+            img_page += f"<center><a href='/img/{self.id}-large.png'>"
+            img_page += f"<img src='/img/{self.id}.png'></a></center>\n"
 
             img_page += ("<p>"
                          "This image can be used under a "
@@ -387,7 +390,7 @@ class Plot:
                          "/citing.html'>cite DefElement</a>."
                          "</p>")
             img_page += "<ul>"
-            img_page += f"<li><a href='/img/{self.id}.png'>Download PNG</a></li>"
+            img_page += f"<li><a href='/img/{self.id}-large.png'>Download PNG</a></li>"
             img_page += f"<li><a href='/img/{self.id}.svg'>Download SVG</a></li>"
             img_page += f"<li><a href='/img/{self.id}.tex'>Download TikZ</a></li>"
             img_page += "</ul>"
@@ -488,7 +491,6 @@ def make_lattice(element, n, offset=False, pairs=False):
         return points
 
     assert not offset
-    ref = element.reference
 
     if ref.tdim == 1:
         pairlist = [(i, i+1) for i, j in enumerate(points[:-1])]
@@ -529,7 +531,12 @@ def get_apply_scale(ref):
 def plot_reference(ref):
     apply_scale = get_apply_scale(ref)
 
-    p = Plot(id=f"ref-{ref.name}", desc=f"{ref.name} reference element")
+    if ref.name == "dual polygon":
+        ref_id = f"dual-polygon-{ref.number_of_triangles}"
+    else:
+        ref_id = ref.name
+
+    p = Plot(id=f"ref-{ref_id}", desc=f"{ref.name} reference element")
     p.add_axes(ref.tdim)
 
     for d in range(ref.tdim + 1):
@@ -578,6 +585,11 @@ def plot_basis_functions(element):
     else:
         points = make_lattice(element, 6, offset=True)
 
+    if element.reference.name == "dual polygon":
+        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+    else:
+        ref_id = element.reference.name
+
     f = element.get_basis_functions()[0]
     if element.range_dim == 1 and isinstance(f, PiecewiseFunction):
         scale = 1  # max(max(_norm(j) for j in i) for i in tab)
@@ -586,7 +598,7 @@ def plot_basis_functions(element):
         ps = []
         for dofn, function in enumerate(element.get_basis_functions()):
             p = Plot(dim=element.domain_dim + 1, padding=30,
-                     id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                     id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                      desc=f"Basis function in a {element.name} space")
 
             dof_entity = (-1, -1)
@@ -654,13 +666,13 @@ def plot_basis_functions(element):
                 assert element.domain_dim <= 2
                 p = Plot(
                     dim=element.domain_dim + 1, padding=30,
-                    id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                    id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                     desc=f"Basis function in a {element.name} space")
             else:
                 assert element.range_dim == element.domain_dim
                 p = Plot(
                     dim=element.domain_dim, padding=30,
-                    id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                    id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                     desc=f"Basis function in a {element.name} space")
             dof_entity = (-1, -1)
             if isinstance(element, CiarletElement):
@@ -722,3 +734,35 @@ def plot_basis_functions(element):
                 p.add_dof_number(apply_scale(dof.dof_point()), dofn, color=COLORS["purple"])
             ps.append(p)
         return ps
+
+
+def _parse_point(points, n):
+    point = points[n].strip()
+    if point == "cycle":
+        assert n > 0
+        return _parse_point(points, 0)
+    assert point[0] == "(" and point[-1] == ")"
+
+    x, y = point[1:-1].split(",")
+    return float(x), float(y)
+
+
+def plot_img(filename):
+    p = Plot(id=f"img-{filename}")
+    with open(os.path.join(settings.img_path, f"{filename}.img")) as f:
+        for line in f:
+            line = line.split("#")[0]
+            line = line.strip()
+            color = "black"
+            if line.startswith("["):
+                color, line = line[1:].split("]", 1)
+                line = line.strip()
+            if color in COLORS:
+                color = COLORS[color]
+
+            points = line.split("--")
+            for i in range(len(points) - 1):
+                p1 = _parse_point(points, i)
+                p2 = _parse_point(points, i + 1)
+                p.add_line(p1, p2, color=color, width="2px")
+    return p

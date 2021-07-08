@@ -64,6 +64,8 @@ def markup(content):
                  plot_single_element, out)
     out = re.sub(r"{{reference::([^}]+)}}", plot_reference, out)
 
+    out = re.sub(r"{{img::([^}]+)}}", plot_img, out)
+
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
 
     if len(page_references) > 0:
@@ -78,6 +80,7 @@ def markup(content):
 
 def insert_links(txt):
     txt = re.sub(r"\(element::([^\)]+)\)", r"(/elements/\1.html)", txt)
+    txt = re.sub(r"\(reference::([^\)]+)\)", r"(/lists/references/\1.html)", txt)
     txt = txt.replace("(index::all)", "(/elements/index.html)")
     txt = txt.replace("(index::families)", "(/families/index.html)")
     txt = re.sub(r"\(index::([^\)]+)::([^\)]+)\)", r"(/lists/\1/\2.html)", txt)
@@ -110,6 +113,11 @@ def plot_single_element(matches):
 def plot_reference(matches):
     e = symfem.create_reference(matches[1])
     return f"<center>{plotting.plot_reference(e).img_html()}</center>"
+
+
+def plot_img(matches):
+    e = matches[1]
+    return f"<center>{plotting.plot_img(e).img_html()}</center>"
 
 
 def add_citation(matches):
