@@ -746,6 +746,7 @@ def _parse_point(points, n):
     x, y = point[1:-1].split(",")
     return float(x), float(y)
 
+
 def plot_img(filename):
     p = Plot(id=f"img-{filename}")
     with open(os.path.join(settings.img_path, f"{filename}.img")) as f:
