@@ -374,7 +374,7 @@ class Plot:
                 f.write(tikz)
 
             svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png")
-            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}-large.png"
+            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}-large.png",
                     scale=3.0)
             img_page = f"<h1>{cap_first(self.desc)}</h1>\n"
             img_page += f"<center><a href='/img/{self.id}-large.png'>"
