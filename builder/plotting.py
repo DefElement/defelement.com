@@ -491,7 +491,6 @@ def make_lattice(element, n, offset=False, pairs=False):
         return points
 
     assert not offset
-    ref = element.reference
 
     if ref.tdim == 1:
         pairlist = [(i, i+1) for i, j in enumerate(points[:-1])]
@@ -532,7 +531,12 @@ def get_apply_scale(ref):
 def plot_reference(ref):
     apply_scale = get_apply_scale(ref)
 
-    p = Plot(id=f"ref-{ref.name}", desc=f"{ref.name} reference element")
+    if ref.name == "dual polygon":
+        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+    else:
+        ref_id = ref.name
+
+    p = Plot(id=f"ref-{ref_id}", desc=f"{ref.name} reference element")
     p.add_axes(ref.tdim)
 
     for d in range(ref.tdim + 1):
@@ -581,6 +585,11 @@ def plot_basis_functions(element):
     else:
         points = make_lattice(element, 6, offset=True)
 
+    if element.reference.name == "dual polygon":
+        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+    else:
+        ref_id = element.reference.name
+
     f = element.get_basis_functions()[0]
     if element.range_dim == 1 and isinstance(f, PiecewiseFunction):
         scale = 1  # max(max(_norm(j) for j in i) for i in tab)
@@ -588,10 +597,6 @@ def plot_basis_functions(element):
 
         ps = []
         for dofn, function in enumerate(element.get_basis_functions()):
-            if element.reference.name == "dual polygon":
-                ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
-            else:
-                ref_id = element.reference.name
             p = Plot(dim=element.domain_dim + 1, padding=30,
                      id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                      desc=f"Basis function in a {element.name} space")
@@ -661,13 +666,13 @@ def plot_basis_functions(element):
                 assert element.domain_dim <= 2
                 p = Plot(
                     dim=element.domain_dim + 1, padding=30,
-                    id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                    id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                     desc=f"Basis function in a {element.name} space")
             else:
                 assert element.range_dim == element.domain_dim
                 p = Plot(
                     dim=element.domain_dim, padding=30,
-                    id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                    id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                     desc=f"Basis function in a {element.name} space")
             dof_entity = (-1, -1)
             if isinstance(element, CiarletElement):
