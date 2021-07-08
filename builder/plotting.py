@@ -374,8 +374,11 @@ class Plot:
                 f.write(tikz)
 
             svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}.png")
+            svg2png(bytestring=svg, write_to=f"{settings.htmlimg_path}/{self.id}-large.png"
+                    scale=3.0)
             img_page = f"<h1>{cap_first(self.desc)}</h1>\n"
-            img_page += f"<center><img src='/img/{self.id}.png'></center>\n"
+            img_page += f"<center><a href='/img/{self.id}-large.png'>"
+            img_page += f"<img src='/img/{self.id}.png'></a></center>\n"
 
             img_page += ("<p>"
                          "This image can be used under a "
@@ -387,7 +390,7 @@ class Plot:
                          "/citing.html'>cite DefElement</a>."
                          "</p>")
             img_page += "<ul>"
-            img_page += f"<li><a href='/img/{self.id}.png'>Download PNG</a></li>"
+            img_page += f"<li><a href='/img/{self.id}-large.png'>Download PNG</a></li>"
             img_page += f"<li><a href='/img/{self.id}.svg'>Download SVG</a></li>"
             img_page += f"<li><a href='/img/{self.id}.tex'>Download TikZ</a></li>"
             img_page += "</ul>"
