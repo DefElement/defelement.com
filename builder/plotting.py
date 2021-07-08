@@ -734,3 +734,34 @@ def plot_basis_functions(element):
                 p.add_dof_number(apply_scale(dof.dof_point()), dofn, color=COLORS["purple"])
             ps.append(p)
         return ps
+
+
+def _parse_point(points, n):
+    point = points[n].strip()
+    if point == "cycle":
+        assert n > 0
+        return _parse_point(points, 0)
+    assert point[0] == "(" and point[-1] == ")"
+
+    x, y = point[1:-1].split(",")
+    return float(x), float(y)
+
+def plot_img(filename):
+    p = Plot(id=f"img-{filename}")
+    with open(os.path.join(settings.img_path, f"{filename}.img")) as f:
+        for line in f:
+            line = line.split("#")[0]
+            line = line.strip()
+            color = "black"
+            if line.startswith("["):
+                color, line = line[1:].split("]", 1)
+                line = line.strip()
+            if color in COLORS:
+                color = COLORS[color]
+
+            points = line.split("--")
+            for i in range(len(points) - 1):
+                p1 = _parse_point(points, i)
+                p2 = _parse_point(points, i + 1)
+                p.add_line(p1, p2, color=color, width="2px")
+    return p

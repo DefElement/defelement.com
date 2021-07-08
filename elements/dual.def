@@ -21,7 +21,7 @@ examples:
   - dual polygon(5),1
   - dual polygon(6),1
 notes:
-  - These elements are defined on the barycentric dual grid.
+  - These elements are defined on the [barycentric dual grid](barycentric-dual-grid.md).
   - These elements are defined as a linear combination of [Lagrange](element::lagrange) basis functions on the fine grid.
 references:
   - author:

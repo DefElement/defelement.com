@@ -6,6 +6,7 @@ template_path = _os.path.join(dir_path, "templates")
 files_path = _os.path.join(dir_path, "files")
 pages_path = _os.path.join(dir_path, "pages")
 data_path = _os.path.join(dir_path, "data")
+img_path = _os.path.join(dir_path, "img")
 
 html_path = _os.path.join(dir_path, "_html")
 htmlelement_path = _os.path.join(html_path, "elements")
