@@ -588,8 +588,12 @@ def plot_basis_functions(element):
 
         ps = []
         for dofn, function in enumerate(element.get_basis_functions()):
+            if element.reference.name == "dual polygon":
+                ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+            else:
+                ref_id = element.reference.name
             p = Plot(dim=element.domain_dim + 1, padding=30,
-                     id=f"element-{element.name}-{element.reference.name}-{element.order}-{dofn}",
+                     id=f"element-{element.name}-{ref_id}-{element.order}-{dofn}",
                      desc=f"Basis function in a {element.name} space")
 
             dof_entity = (-1, -1)
