@@ -532,7 +532,7 @@ def plot_reference(ref):
     apply_scale = get_apply_scale(ref)
 
     if ref.name == "dual polygon":
-        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+        ref_id = f"dual-polygon-{ref.number_of_triangles}"
     else:
         ref_id = ref.name
 
