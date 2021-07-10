@@ -258,6 +258,14 @@ def _describe_dof(element, d):
                 desc += "}"
         desc += "v"
         return desc, [f"{entity}_{{{entity_n}}}"]
+    elif _is_exact_instance(d, functionals.VecIntegralMoment):
+        desc = "\\boldsymbol{v}\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += "\\boldsymbol{v}\\cdot"
+        desc += to_tex(d.dot_with)
+        return desc, [f"{entity}_{{{entity_n}}}"]
     elif _is_exact_instance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
             entity = symbols.reference
