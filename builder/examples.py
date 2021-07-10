@@ -205,7 +205,17 @@ def _describe_dof(element, d):
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "\\nabla\\cdot\\boldsymbol{v}"
-        desc += f"_{{{entity_n}}}"
+        return desc, [f"{entity}_{{{entity_n}}}"]
+    elif _is_exact_instance(d, functionals.InnerProductIntegralMoment):
+        entity = symbols.entity(d.entity_dim())
+        entity_n = get_entity_number(element, d)
+        desc = "\\boldsymbol{V}\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += to_tex(d.inner_with_left) + symbols.transpose
+        desc += "\\boldsymbol{V}"
+        desc += to_tex(d.inner_with_right)
         return desc, [f"{entity}_{{{entity_n}}}"]
     elif _is_exact_instance(d, functionals.NormalInnerProductIntegralMoment):
         entity = symbols.entity(d.entity_dim())
@@ -215,7 +225,7 @@ def _describe_dof(element, d):
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
         desc += f"|{{{entity}_{{{entity_n}}}}}|"
-        desc += "\\hat{\\boldsymbol{n}}^t" + f"_{{{entity_n}}}"
+        desc += "\\hat{\\boldsymbol{n}}" + symbols.transpose + f"_{{{entity_n}}}"
         desc += "\\mathbf{V}"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
@@ -284,7 +294,7 @@ def _describe_dof(element, d):
         desc = "\\mathbf{V}\\mapsto"
         desc += "\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.lvec])
-        desc += "\\end{array}\\right)^t"
+        desc += "\\end{array}\\right)" + symbols.transpose
         desc += "\\mathbf{V}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.rvec])

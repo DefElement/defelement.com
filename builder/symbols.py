@@ -8,6 +8,7 @@ matrix_basis_function = "\\mathbf{\\Phi}"
 jacobian = "\\mathbf{J}"
 mapping = "\\mathcal{F}"
 geometry_map = "F"
+transpose = "^{\\text{t}}"
 
 
 def entity(dim):
