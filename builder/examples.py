@@ -187,6 +187,16 @@ def _describe_dof(element, d):
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
+    elif _is_exact_instance(d, functionals.NormalDerivativeIntegralMoment):
+        entity = symbols.entity(d.entity_dim())
+        entity_n = get_entity_number(element, d)
+        desc = "v\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += "\\frac{\partial v}"
+        desc += "{\\partial\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}" + "}"
+        return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
     elif _is_exact_instance(d, functionals.DivergenceIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
