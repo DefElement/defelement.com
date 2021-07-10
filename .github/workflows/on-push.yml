@@ -191,5 +191,5 @@ jobs:
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 -m pytest -n4 test/test_polynomial_sets.py
+      - run: python3 -m pytest -n4 test
         name: Run tests with pytest
