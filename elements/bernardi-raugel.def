@@ -8,7 +8,9 @@ ndofs:
   triangle:
     formula: 9
   tetrahedron:
-    formula: 16
+    formula:
+    - k=1: 16
+    - k=2: 37
 categories:
   - vector
   - Hdiv
@@ -16,15 +18,23 @@ reference elements:
   - triangle
   - tetrahedron
 polynomial set:
-  triangle: poly[k-1]^d && <k>[\left\{\left(\begin{array}{v}xy\\xy\end{array}\right),\left(\begin{array}{v}y(x+y)\\0\end{array}\right),\left(\begin{array}{v}0\\x(x+y)\end{array}\right)\right\}]
-  tetrahedron: poly[k-1]^d && <k>[\left\{\left(\begin{array}{v}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{v}yz(x+y+z)\\0\\0\end{array}\right),\left(\begin{array}{v}0\\xz(x+y+z)\\0\end{array}\right)\right),\left(\begin{array}{v}0\\0\\xy(x+y+z)\end{array}\right)\right)\right\}]
+  triangle: poly[k]^d && <k>[\left\{\left(\begin{array}{c}xy\\xy\end{array}\right),\left(\begin{array}{c}y(1-x-y)\\0\end{array}\right),\left(\begin{array}{c}0\\x(1-x-y)\end{array}\right)\right\}]
+  tetrahedron, \(k=1\): poly[k]^d && <k>[\left\{\left(\begin{array}{c}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{c}yz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xy(1-x-y-z)\end{array}\right)\right\}]
+  tetrahedron, \(k=2\): poly[k]^d && <k>[\left\{\left(\begin{array}{c}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{c}yz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xy(1-x-y-z)\end{array}\right),\left(\begin{array}{c}xyz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xyz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xyz(1-x-y-z)\end{array}\right)\right\}]
 dofs:
-  vertices: point evaluations in $d$ directions
-  facets: normal integral moments with (lagrange,k-1)
+  edges: (if \(k>1\)) point evaluations in tangential directions at midpoints
+  facets:
+    - point evaluations in normal directions at vertices 
+    - normal integral moments with (lagrange,k-1)
+    - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
+  cells:
+    - integral moments of the divergence with the coordinate variables
+    
 symfem: Bernardi-Raugel
 examples:
   - triangle,1
   - tetrahedron,1
+  - tetrahedron,2
 references:
   - title: Analysis of some finite elements for the Stokes problem
     author:

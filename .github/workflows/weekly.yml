@@ -68,6 +68,9 @@ jobs:
           sudo pip3 install numpy scipy numba meshio>=4.0.16
           sudo python3 setup.py install
 
+      - name: Install LaTeΧ
+        run: sudo apt-get install -y texlive-latex-base
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
