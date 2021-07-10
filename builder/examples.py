@@ -194,7 +194,7 @@ def _describe_dof(element, d):
         desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
         if d.f != 1:
             desc += "(" + to_tex(d.f, True) + ")"
-        desc += "\\frac{\partial v}"
+        desc += "\\frac{\\partial v}"
         desc += "{\\partial\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}" + "}"
         return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
     elif _is_exact_instance(d, functionals.DivergenceIntegralMoment):
