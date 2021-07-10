@@ -281,7 +281,6 @@ def _describe_dof(element, d):
         desc += "\\end{array}\\right)"
         return desc, []
     else:
-        from IPython import embed; embed()
         raise ValueError(f"Unknown functional: {d.__class__}")
 
 
