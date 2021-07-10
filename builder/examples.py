@@ -107,27 +107,31 @@ def describe_dof(element, d):
     return desc, symb
 
 
+def _is_exact_instance(object, _class):
+    return type(object) == _class
+
+
 def _describe_dof(element, d):
-    if isinstance(d, functionals.PointEvaluation):
+    if _is_exact_instance(d, functionals.PointEvaluation):
         return "v\\mapsto v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")", []
-    elif isinstance(d, functionals.DotPointEvaluation):
+    elif _is_exact_instance(d, functionals.DotPointEvaluation):
         desc = "\\boldsymbol{v}\\mapsto"
         desc += "\\boldsymbol{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         desc += "\\cdot\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
         return desc, []
-    if isinstance(d, functionals.WeightedPointEvaluation):
+    if _is_exact_instance(d, functionals.WeightedPointEvaluation):
         desc = f"v\\mapsto " + to_tex(d.weight)
         desc += " v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc, []
-    elif isinstance(d, functionals.PointNormalDerivativeEvaluation):
+    elif _is_exact_instance(d, functionals.PointNormalDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         entity_n = get_entity_number(element, d)
         desc += "\\cdot\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc, ["\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
-    elif isinstance(d, functionals.PointDirectionalDerivativeEvaluation):
+    elif _is_exact_instance(d, functionals.PointDirectionalDerivativeEvaluation):
         if element.reference.tdim == 1:
             desc = "v\\mapsto "
             desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
@@ -138,7 +142,7 @@ def _describe_dof(element, d):
         desc += "\\\\".join([to_tex(i) for i in d.dof_direction()])
         desc += "\\end{array}\\right)"
         return desc, []
-    elif isinstance(d, functionals.DerivativePointEvaluation):
+    elif _is_exact_instance(d, functionals.DerivativePointEvaluation):
         if element.reference.tdim == 1:
             desc = "v\\mapsto "
             desc += "v'(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
@@ -156,14 +160,14 @@ def _describe_dof(element, d):
         desc += "}"
         desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc, []
-    elif isinstance(d, functionals.PointComponentSecondDerivativeEvaluation):
+    elif _is_exact_instance(d, functionals.PointComponentSecondDerivativeEvaluation):
         desc = "v\\mapsto"
         desc += "\\frac{\\partial^2v}{"
         for c in d.component:
             desc += "\\partial " + "xyz"[c]
         desc += "}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc, []
-    elif isinstance(d, functionals.TangentIntegralMoment):
+    elif _is_exact_instance(d, functionals.TangentIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
         desc = "\\boldsymbol{v}\\mapsto"
@@ -173,7 +177,7 @@ def _describe_dof(element, d):
             desc += "(" + to_tex(d.f) + ")"
         desc += "\\hat{\\boldsymbol{t}}" + f"_{{{entity_n}}}"
         return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{t}}" + f"_{{{entity_n}}}"]
-    elif isinstance(d, functionals.NormalIntegralMoment):
+    elif _is_exact_instance(d, functionals.NormalIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
         desc = "\\boldsymbol{v}\\mapsto"
@@ -183,7 +187,17 @@ def _describe_dof(element, d):
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
-    elif isinstance(d, functionals.NormalInnerProductIntegralMoment):
+    elif _is_exact_instance(d, functionals.DivergenceIntegralMoment):
+        entity = symbols.entity(d.entity_dim())
+        entity_n = get_entity_number(element, d)
+        desc = "\\boldsymbol{v}\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}_{{{entity_n}}}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += "\\nabla\\cdot\\boldsymbol{v}"
+        desc += f"_{{{entity_n}}}"
+        return desc, [f"{entity}_{{{entity_n}}}"]
+    elif _is_exact_instance(d, functionals.NormalInnerProductIntegralMoment):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
         desc = "\\mathbf{V}\\mapsto"
@@ -195,7 +209,7 @@ def _describe_dof(element, d):
         desc += "\\mathbf{V}"
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc, [f"{entity}_{{{entity_n}}}", "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
-    elif isinstance(d, functionals.IntegralAgainst):
+    elif _is_exact_instance(d, functionals.IntegralAgainst):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
         desc = "\\mathbf{V}\\mapsto"
@@ -204,7 +218,7 @@ def _describe_dof(element, d):
             desc += "(" + to_tex(d.f, True) + ")"
         desc += "v"
         return desc, [f"{entity}_{{{entity_n}}}"]
-    elif isinstance(d, functionals.IntegralOfDirectionalMultiderivative):
+    elif _is_exact_instance(d, functionals.IntegralOfDirectionalMultiderivative):
         entity = symbols.entity(d.entity_dim())
         entity_n = get_entity_number(element, d)
         desc = "\\mathbf{V}\\mapsto"
@@ -224,7 +238,7 @@ def _describe_dof(element, d):
                 desc += "}"
         desc += "v"
         return desc, [f"{entity}_{{{entity_n}}}"]
-    elif isinstance(d, functionals.IntegralMoment):
+    elif _is_exact_instance(d, functionals.IntegralMoment):
         if d.entity_dim() == element.reference.tdim:
             entity = symbols.reference
         else:
@@ -256,7 +270,7 @@ def _describe_dof(element, d):
                 desc += "(" + to_tex(d.f) + ")"
             desc += "v"
         return desc, [f"{entity}"]
-    elif isinstance(d, functionals.PointInnerProduct):
+    elif _is_exact_instance(d, functionals.PointInnerProduct):
         desc = "\\mathbf{V}\\mapsto"
         desc += "\\left(\\begin{array}{c}"
         desc += "\\\\".join([to_tex(i) for i in d.lvec])
@@ -267,6 +281,7 @@ def _describe_dof(element, d):
         desc += "\\end{array}\\right)"
         return desc, []
     else:
+        from IPython import embed; embed()
         raise ValueError(f"Unknown functional: {d.__class__}")
 
 

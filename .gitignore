@@ -6,3 +6,5 @@ _html/*
 .*.swp
 
 *.xcf
+
+_temp.*

@@ -619,7 +619,10 @@ def plot_basis_functions(element):
                                 for i in element.reference.faces[f]]
                     if len(vertices) == 4:
                         vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                    _zadd = p._zadd
+                    p._zadd = 5000
                     p.add_fill(vertices, color=COLORS["light blue"])
+                    p._zadd = _zadd
 
             for en, edge in enumerate(element.reference.edges):
                 v1 = apply_scale(element.reference.vertices[edge[0]])
@@ -692,7 +695,10 @@ def plot_basis_functions(element):
                                 for i in element.reference.faces[f]]
                     if len(vertices) == 4:
                         vertices = [vertices[0], vertices[1], vertices[3], vertices[2]]
+                    _zadd = p._zadd
+                    p._zadd = 5000
                     p.add_fill(vertices, color=COLORS["light blue"])
+                    p._zadd = _zadd
 
             for en, edge in enumerate(element.reference.edges):
                 v1 = apply_scale(element.reference.vertices[edge[0]])

@@ -22,9 +22,9 @@ reference elements:
   - triangle
   - tetrahedron
 polynomial set:
-  interval: poly[k-1] && <k>[\left\{x(1-x)p\middle|p\in\right{{poly[k-1]}}\setminus\{1\}\}]
-  triangle: poly[k-1] && <k>[\left\{xy(1-x-y)p\middle|p\in\right{{poly[k-1]}}\setminus\{1\}]
-  tetrahedron: poly[k-1] && <k>[\left\{xyz(1-x-y-z)p\middle|p\in\right{{poly[k-1]}}\setminus\{1\}]
+  interval: poly[k-1] && <k>[\left\{x(1-x)p\middle|p\in{{poly[k-1]}}\setminus\{1\}\right\}]
+  triangle: poly[k-1] && <k>[\left\{xy(1-x-y)p\middle|p\in{{poly[k-1]}}\setminus\{1\}\right\}]
+  tetrahedron: poly[k-1] && <k>[\left\{xyz(1-x-y-z)p\middle|p\in{{poly[k-1]}}\setminus\{1\}\right\}]
 dofs:
   vertices: point evaluations
   edges: integrals of normal derivatives
