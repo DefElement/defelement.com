@@ -1,0 +1,20 @@
+name: transition
+html-name: transition
+notes:
+  - This element is used to bridge the gap between [Lagrange](element::lagrange) elements of different orders
+min-order: 1
+categories:
+  - scalar
+reference elements:
+  - triangle
+  - tetrahedron
+dofs:
+  vertices: point evaluations
+  edges: point evaluations
+  faces: point evaluations
+  volumes: point evaluations
+symfem: transition
+examples:
+  - triangle,1 {edge_orders=[2,1,1]}
+  - triangle,1 {edge_orders=[3,2,1]}
+  - triangle,3 {edge_orders=[1,1,1]}

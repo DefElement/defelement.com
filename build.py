@@ -7,6 +7,7 @@ from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
+from builder.snippets import parse_example
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
@@ -201,20 +202,23 @@ for e in categoriser.elements:
         assert e.implemented("symfem")
 
         for eg in e.examples:
-            cell = eg.split(",")[0]
-            order = int(eg.split(",")[1])
+            cell, order, kwargs = parse_example(eg)
             print(cell, order)
             symfem_name, params = e.get_implementation_string("symfem", cell)
 
             if "variant" in params:
-                element = create_element(cell, symfem_name, order, params["variant"])
+                element = create_element(cell, symfem_name, order, variant=params["variant"],
+                                         **kwargs)
             else:
-                element = create_element(cell, symfem_name, order)
+                element = create_element(cell, symfem_name, order, **kwargs)
 
             example = markup_example(element)
 
             if len(example) > 0:
-                element_names.append(f"{cell}<br />order {order}")
+                name = f"{cell}<br />order {order}"
+                for i, j in kwargs.items():
+                    name += f"<br />{i}={j}"
+                element_names.append(name)
                 element_examples.append(example)
 
     if len(element_names) > 0:

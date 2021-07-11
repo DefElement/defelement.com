@@ -1,7 +1,35 @@
+import re
+
+
+def _parse_value(v):
+    v = v.strip()
+    if v[0] == "[" and v[-1] == "]":
+        return [_parse_value(i) for i in v[1:-1].split(";")]
+    if re.match(r"[0-9]+$", v):
+        return int(v)
+    return v
+
+
+def parse_example(e):
+    if " {" in e:
+        e, rest = e.split(" {")
+        rest = rest.split("}")[0]
+        while re.search(r"\[([^\]]*),", rest):
+            rest = re.sub(r"\[([^\]]*),", r"[\1;", rest)
+        kwargs = {}
+        for i in rest.split(","):
+            key, value = i.split("=")
+            kwargs[key] = _parse_value(value)
+    else:
+        kwargs = {}
+    ref, order = e.split(",")
+    return ref, int(order), kwargs
+
+
 def symfem_example(element):
     out = "import symfem"
     for e in element.examples:
-        ref, ord = e.split(",")
+        ref, ord, kwargs = parse_example(e)
         ord = int(ord)
 
         symfem_name, params = element.get_implementation_string("symfem", ref)
@@ -14,16 +42,23 @@ def symfem_example(element):
             else:
                 out += f"element = symfem.create_element(\"{ref}\","
             if "variant" in params:
-                out += f" \"{symfem_name}\", {ord}, \"{params['variant']}\")"
+                out += f" \"{symfem_name}\", {ord}, variant=\"{params['variant']}\""
             else:
-                out += f" \"{symfem_name}\", {ord})"
+                out += f" \"{symfem_name}\", {ord}"
+            for i, j in kwargs.items():
+                if isinstance(j, str):
+                    out += f", {i}=\"{j}\""
+                else:
+                    out += f", {i}={j}"
+            out += ")"
     return out
 
 
 def basix_example(element):
     out = "import basix"
     for e in element.examples:
-        ref, ord = e.split(",")
+        ref, ord, kwargs = parse_example(e)
+        assert len(kwargs) == 0
         ord = int(ord)
 
         basix_name, params = element.get_implementation_string("basix", ref)
@@ -39,7 +74,8 @@ def basix_example(element):
 def ufl_example(element):
     out = "import ufl"
     for e in element.examples:
-        ref, ord = e.split(",")
+        ref, ord, kwargs = parse_example(e)
+        assert len(kwargs) == 0
         ord = int(ord)
 
         ufl_name, params = element.get_implementation_string("ufl", ref)
@@ -60,7 +96,8 @@ def bempp_example(element):
     out += "\n"
     out += "grid = bempp.api.shapes.regular_sphere(1)"
     for e in element.examples:
-        ref, ord = e.split(",")
+        ref, ord, kwargs = parse_example(e)
+        assert len(kwargs) == 0
         ord = int(ord)
 
         bempp_name, params = element.get_implementation_string("bempp", ref)
