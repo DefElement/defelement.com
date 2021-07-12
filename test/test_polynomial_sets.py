@@ -35,5 +35,5 @@ def test_latex(file, cellname):
                     f.write("\\[\n" + k[4:-1] + "\n\\]")
                     f.write("\\end{document}")
                 if os.system(f"pdflatex -halt-on-error {filename}.tex > /dev/null") != 0:
-                    assert os.system("pdflatex -halt-on-error _temp.tex") == 0
+                    assert os.system(f"pdflatex -halt-on-error {filename}.tex") == 0
                 os.system(f"rm {filename}.*")
