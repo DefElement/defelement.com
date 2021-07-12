@@ -7,4 +7,5 @@ _html/*
 
 *.xcf
 
-_temp.*
+_temp*
+*.log
