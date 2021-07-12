@@ -14,7 +14,7 @@ def symfem_example(element):
             else:
                 out += f"element = symfem.create_element(\"{ref}\","
             if "variant" in params:
-                out += f" \"{symfem_name}\", {ord}, \"{params['variant']}\")"
+                out += f" \"{symfem_name}\", {ord}, variant=\"{params['variant']}\")"
             else:
                 out += f" \"{symfem_name}\", {ord})"
     return out
