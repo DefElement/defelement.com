@@ -2,6 +2,7 @@ import hashlib
 import os
 import pytest
 import yaml
+from random import random
 
 element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
 
@@ -25,7 +26,7 @@ def test_latex(file, cellname):
         for k in j.split("&&"):
             k = k.strip()
             if k.startswith("<k>"):
-                filename = "_temp" + hashlib.sha224(k.encode()).hexdigest()
+                filename = "_temp_" + hashlib.sha224(f"{random()}".encode()).hexdigest()
                 with open(f"{filename}.tex", "w") as f:
                     f.write("\\documentclass{article}\n\n")
                     f.write("\\usepackage{amsmath}\n")
