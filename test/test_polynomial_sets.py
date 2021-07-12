@@ -1,6 +1,8 @@
+import hashlib
 import os
 import pytest
 import yaml
+from random import random
 
 element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
 
@@ -24,7 +26,8 @@ def test_latex(file, cellname):
         for k in j.split("&&"):
             k = k.strip()
             if k.startswith("<k>"):
-                with open("_temp.tex", "w") as f:
+                filename = "_temp_" + hashlib.sha224(f"{random()}".encode()).hexdigest()
+                with open(f"{filename}.tex", "w") as f:
                     f.write("\\documentclass{article}\n\n")
                     f.write("\\usepackage{amsmath}\n")
                     f.write("\\usepackage{amssymb}\n")
@@ -32,5 +35,6 @@ def test_latex(file, cellname):
                     f.write("\n\\begin{document}\n")
                     f.write("\\[\n" + k[4:-1] + "\n\\]")
                     f.write("\\end{document}")
-                if os.system("pdflatex -halt-on-error _temp.tex > /dev/null") != 0:
-                    assert os.system("pdflatex -halt-on-error _temp.tex") == 0
+                if os.system(f"pdflatex -halt-on-error {filename}.tex > /dev/null") != 0:
+                    assert os.system(f"pdflatex -halt-on-error {filename}.tex") == 0
+                os.system(f"rm {filename}.*")
