@@ -125,7 +125,7 @@ def test_sequence(file, cellname):
             signal.alarm(25)
             if "variant=" in symfem_name:
                 elementname, variant = symfem_name.split(" variant=")
-                term = len(symfem.create_element(cellname, elementname, k, variant).dofs)
+                term = len(symfem.create_element(cellname, elementname, k, variant=variant).dofs)
             else:
                 term = len(symfem.create_element(cellname, symfem_name, k).dofs)
             seq[k] = term
@@ -184,7 +184,7 @@ def test_entity_sequences(file, cellname):
             signal.alarm(25)
             if "variant=" in symfem_name:
                 elementname, variant = symfem_name.split(" variant=")
-                e = symfem.create_element(cellname, elementname, k, variant)
+                e = symfem.create_element(cellname, elementname, k, variant=variant)
             else:
                 e = symfem.create_element(cellname, symfem_name, k)
             for d, e_name in zip(range(e.reference.tdim),
