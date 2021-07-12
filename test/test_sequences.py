@@ -131,6 +131,8 @@ def test_sequence(file, cellname):
             seq[k] = term
         except NotImplementedError:
             pass
+        except ValueError:
+            pass
         except TimeOutTheTest:
             break
 
