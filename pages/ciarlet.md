@@ -102,7 +102,8 @@ The basis functions of this space are:
 ## Mapping finite elements
 In order to maintain desired properties when mapping finite elements from a reference
 element to an actual mesh, an appropriate mapping must be defined.
-<ref title="Efficient assembly of H(div) and H(curl) conforming finite elements" author="Rognes, M. E. and Kirby, R. C. and Logg, A." journal="SIAM Journal on Scientific Computing" volume="31" number="6", pagestart="4130" pageend="4151" year="2009" doi="10.1137/08073901X">
+<ref title="Efficient assembly of H(div) and H(curl) conforming finite elements" author="Rognes, M. E. and Kirby, R. C. and Logg, A." journal="SIAM Journal on Scientific Computing" volume="31" number="6" pagestart="4130" pageend="4151" year="2009" doi="10.1137/08073901X">
+<ref title="Quadrilateral H(div) Finite Elements" author="Arnold, D. A. and Boffi, D. and Falk, R. S." journal="SIAM Journal on Numerical Analysis" volume="42" number="6" pagestart="2429" pageend="2451" year="2005" doi="10.1137/S0036142903431924">
 (For elements with a mixture of functional types, a more complex approach is required.
 <ref author="Kirby, R. C." title="A general approach to transforming finite elements" journal="The SMAI journal of computational mathematics" pagestart="197" pageend="224" volume="4" year="2018" doi="10.5802/smai-jcm.33">)
 
