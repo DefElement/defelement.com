@@ -1,0 +1,46 @@
+name: Guzman-Neilan
+html-name: Guzm&aacute;n&ndash;Neilan
+min-order: 1
+max-order: 1
+short-names:
+  - BR
+ndofs:
+  triangle:
+    formula: 11
+  tetrahedron:
+    formula:
+    - k=1: 19
+    - k=2: 49
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - triangle
+  - tetrahedron
+dofs:
+  edges: (if \(k>1\)) point evaluations in tangential directions at midpoints
+  facets:
+    - point evaluations in normal directions at vertices 
+    - normal integral moments with (lagrange,k-1)
+    - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
+  cells:
+    - point evaluations at the midpoint
+notes:
+  - This element is a modification of the (element::bernardi-raugel)[Bernardi&ndash;Raugel] element with the facet bubbles modified to be divergence free.
+symfem: Guzman-Neilan
+examples:
+  - triangle,1
+  - tetrahedron,1
+  - tetrahedron,2
+references:
+  - title: Inf-sup stable finite elements on barycentric refinements producing divergence-free approximations in arbitrary dimensions
+    author:
+      - Guzm&aacute;n, J.
+      - Neilan, M.
+    pagestart: 2826
+    pageend: 2844
+    journal: SIAM Journal on Numerical Analysis
+    volume: 56
+    number: 5
+    year: 2018
+    doi: 10.1137/17M1153467
