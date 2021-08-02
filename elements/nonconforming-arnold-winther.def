@@ -1,0 +1,33 @@
+name: nonconforming Arnold-Winther
+html-name: nonconforming Arnold&ndash;Winther
+min-order: 2
+max-order: 2
+categories:
+  - matrix
+reference elements:
+  - triangle
+ndofs:
+  triangle:
+    formula: 15
+polynomial set:
+  triangle: <k-1>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and for every edge }\hat{\mathbf{n}}_i^t\mathbf{M}\hat{\mathbf{n}}_i\text{ is linear }\right\}]
+dofs:
+  edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,1)
+  faces:
+    - integral moments of three components with (lagrange,0)
+symfem: nonconforming AW
+ufl: AWnc
+examples:
+  - triangle,2
+references:
+  - title: Nonconforming mixed elements for elasticity
+    author:
+      - Arnold, D. N.
+      - Winther, R.
+    year: 2003
+    journal: Numerische Mathematik
+    pagestart: 295
+    pageend: 307
+    volume: 13
+    issue: 3
+    doi: 10.1142/S0218202503002507

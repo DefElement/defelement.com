@@ -1,5 +1,7 @@
 name: Arnold-Winther
 html-name: Arnold&ndash;Winther
+alt-names:
+  - conforming Arnold&ndash;Winther
 min-order: 3
 categories:
   - matrix
