@@ -109,7 +109,7 @@ jobs:
 
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_html
+      - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }}
         name: Build website HTML
       - run: |
           cd ../_html

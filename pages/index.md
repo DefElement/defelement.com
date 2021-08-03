@@ -32,6 +32,7 @@ You can:
 <li>[view the elements by category](index::categories)</li>
 <li>[view the elements by reference element](index::references)</li>
 <li>[view the elements by family](index::families)</li>
+<li>[view recently added/updated elements](index::recent)</li>
 </ul>
 
 ## The finite element method

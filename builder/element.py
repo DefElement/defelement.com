@@ -1,7 +1,10 @@
 import os
+import warnings
 import yaml
+from github import Github
 from .polyset import make_poly_set, make_extra_info
 from . import snippets
+from . import settings
 
 
 def make_dof_data(ndofs):
@@ -48,6 +51,16 @@ class Categoriser:
         self.references = {}
         self.categories = {}
 
+    def recently_added(self, n):
+        if self.elements[0].created is None:
+            return self.elements[:n]
+        return sorted(self.elements, key=lambda e: e.created)[:-n-1:-1]
+
+    def recently_updated(self, n):
+        if self.elements[0].modified is None:
+            return self.elements[:n]
+        return sorted(self.elements, key=lambda e: e.modified)[:-n-1:-1]
+
     def load_categories(self, folder):
         with open(folder) as f:
             for line in f:
@@ -70,6 +83,16 @@ class Categoriser:
                 fname = file[:-4]
 
                 self.add_element(Element(data, fname))
+
+        if settings.github_token is None:
+            warnings.warn("Building without GitHub token. Timestamps will not be obtained.")
+        else:
+            g = Github(settings.github_token)
+            repo = g.get_repo("mscroggs/defelement.com")
+            for e in self.elements:
+                commits = repo.get_commits(path=f"elements/{e.filename}.def")
+                e.created = commits.get_page(-1)[-1].commit.committer.date
+                e.modified = commits.get_page(0)[0].commit.committer.date
 
     def add_exterior_family(self, e, name, fname):
         i, j, k = e.split(",")
@@ -125,6 +148,8 @@ class Element:
         self.data = data
         self.filename = fname
         self._c = None
+        self.created = None
+        self.modified = None
 
     def min_order(self, ref):
         if "min-order" not in self.data:
