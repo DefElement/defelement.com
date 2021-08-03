@@ -1,3 +1,10 @@
+The code used to generate and test the DefElement website:
+  - The contents of builder/
+  - The contents of templates/
+  - The contents of test/
+  - The file build.py
+is released under an MIT license:
+
 MIT License
 
 Copyright (c) 2020 Matthew Scroggs
