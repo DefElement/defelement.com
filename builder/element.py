@@ -52,9 +52,13 @@ class Categoriser:
         self.categories = {}
 
     def recently_added(self, n):
+        if self.elements[0].created is None:
+            return self.elements[:n]
         return sorted(self.elements, key=lambda e: e.created)[:-n-1:-1]
 
     def recently_updated(self, n):
+        if self.elements[0].modified is None:
+            return self.elements[:n]
         return sorted(self.elements, key=lambda e: e.modified)[:-n-1:-1]
 
     def load_categories(self, folder):
