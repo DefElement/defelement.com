@@ -1,3 +1,4 @@
 symfem
 sympy
 cairosvg
+PyGithub

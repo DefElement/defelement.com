@@ -14,6 +14,8 @@ parser.add_argument('destination', metavar='destination', nargs="?",
                     default=None, help="Destination of HTML files.")
 parser.add_argument('--test', metavar="test", default=None,
                     help="Builds a version of the website with fewer elements.")
+parser.add_argument('--github-token', metavar="github_token", default=None,
+                    help="Provide a GitHub token to get update timestamps.")
 
 args = parser.parse_args()
 if args.destination is not None:
@@ -22,6 +24,9 @@ if args.destination is not None:
     settings.htmlimg_path = os.path.join(settings.html_path, "img")
     settings.htmlindices_path = os.path.join(settings.html_path, "lists")
     settings.htmlfamilies_path = os.path.join(settings.html_path, "families")
+
+if args.github_token is not None:
+    settings.github_token = args.github_token
 
 if args.test is None:
     test_elements = None
@@ -260,6 +265,15 @@ for e in categoriser.elements:
                 f.write(make_bibtex(f"{fname}-{i}", r))
         content += "</ul>"
 
+    # Write created and updated dates
+    if e.created is not None:
+        content += "<h2>DefElement stats</h2>\n"
+        content += "<table class='element-info'>"
+        content += f"<tr><td>Element&nbsp;added</td><td>{e.created.strftime('%d %B %Y')}</td></tr>"
+        content += "<tr><td>Element&nbsp;last&nbsp;updated</td>"
+        content += f"<td>{e.modified.strftime('%d %B %Y')}</td></tr>"
+        content += "</table>"
+
     # Write file
     with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
         f.write(make_html_page(content, e.html_name))
@@ -380,6 +394,29 @@ with open(os.path.join(settings.htmlelement_path, "index.html"), "w") as f:
 with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
+# Recently updated elements
+content = "<h1>Recent elements</h1>\n"
+content += "<h2>Recently added elements</h2>\n"
+content += "<ul>\n"
+for e in categoriser.recently_added(10):
+    content += f"<li><a href='/elements/{e.html_filename}'>{e.html_name}</a>"
+    if e.created is not None:
+        content += f" ({e.created.strftime('%d %B %Y')})"
+    content += "</li>\n"
+content += "</ul>\n"
+
+content += "<h2>Recently updated elements</h2>\n"
+content += "<ul>\n"
+for e in categoriser.recently_updated(10):
+    content += f"<li><a href='/elements/{e.html_filename}'>{e.html_name}</a>"
+    if e.modified is not None:
+        content += f" ({e.modified.strftime('%d %B %Y')})"
+    content += "</li>\n"
+content += "</ul>\n"
+
+with open(os.path.join(settings.htmlindices_path, "recent.html"), "w") as f:
+    f.write(make_html_page(content))
+
 # Category index
 os.mkdir(os.path.join(settings.htmlindices_path, "categories"))
 content = "<h1>Categories</h1>\n"
@@ -470,6 +507,7 @@ with open(os.path.join(settings.htmlfamilies_path, "index.html"), "w") as f:
 content = "<h1>Lists of elements</h1>\n<ul>\n"
 content += "<li><a href='/lists/categories'>Finite elements by category</a></li>\n"
 content += "<li><a href='/lists/references'>Finite elements by reference element</a></li>\n"
+content += "<li><a href='/lists/recent.html'>Recently added/updated finite elements</a></li>\n"
 content += "</ul>"
 with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))

@@ -13,3 +13,5 @@ htmlelement_path = _os.path.join(html_path, "elements")
 htmlimg_path = _os.path.join(html_path, "img")
 htmlindices_path = _os.path.join(html_path, "lists")
 htmlfamilies_path = _os.path.join(html_path, "families")
+
+github_token = None

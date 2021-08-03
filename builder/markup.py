@@ -83,6 +83,7 @@ def insert_links(txt):
     txt = re.sub(r"\(reference::([^\)]+)\)", r"(/lists/references/\1.html)", txt)
     txt = txt.replace("(index::all)", "(/elements/index.html)")
     txt = txt.replace("(index::families)", "(/families/index.html)")
+    txt = txt.replace("(index::recent)", "(/lists/recent.html)")
     txt = re.sub(r"\(index::([^\)]+)::([^\)]+)\)", r"(/lists/\1/\2.html)", txt)
     txt = re.sub(r"\(index::([^\)]+)\)", r"(/lists/\1)", txt)
     txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)

@@ -92,9 +92,9 @@ The functionals that define an order 1 [N&eacute;d&eacute;lec (second kind) spac
 on a triangle <ref author="N&eacute;d&eacute;lec, J. C." title="A new family of mixed finite elements in \(\mathbb{R}^3\)" journal="Numerische Mathematik" volume="50" issue="1" year="1986" doi="10.1007/BF01389668" pagestart=57 pageend=81>
 are tangential integral moments with order 1 Lagrange spaces on the edges of the triangle.
 For example, the two functionals on the edge \(e_0\) of the triangle between \((1,0)\) and \((0,1)\) are
-\[{{symbols.functional}}_0:\boldsymbol{v}\to\int_{e_0}\boldsymbol{v}\cdot\left(\begin{array}{c}-\frac1{\sqrt2}\\\frac1{\sqrt{2}}\end{array}\right)(1-t_0),\]
-\[{{symbols.functional}}_1:\boldsymbol{v}\to\int_{e_0}\boldsymbol{v}\cdot\left(\begin{array}{c}-\frac1{\sqrt2}\\\frac1{\sqrt{2}}\end{array}\right)t_0,\]
-where \(t_0\) varies from 0 (at \((1,0)\)) to 1 (at \((0,1)\)) along \(e_0\).
+\[{{symbols.functional}}_0:\boldsymbol{v}\to\int_{e_0}\boldsymbol{v}\cdot\left(\begin{array}{c}-\frac1{\sqrt2}\\\frac1{\sqrt{2}}\end{array}\right)(1-s_0),\]
+\[{{symbols.functional}}_1:\boldsymbol{v}\to\int_{e_0}\boldsymbol{v}\cdot\left(\begin{array}{c}-\frac1{\sqrt2}\\\frac1{\sqrt{2}}\end{array}\right)s_0,\]
+where \(s_0\) varies from 0 (at \((1,0)\)) to 1 (at \((0,1)\)) along \(e_0\).
 
 The basis functions of this space are:
 {{plot::triangle,N2curl,1}}
