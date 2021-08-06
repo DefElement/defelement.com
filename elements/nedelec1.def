@@ -59,10 +59,10 @@ symfem:
   hexahedron: Qcurl
   prism: Ncurl
 basix:
-  triangle: Nedelec 1st kind H(curl)
-  tetrahedron: Nedelec 1st kind H(curl)
-  quadrilateral: Nedelec 1st kind H(curl)
-  hexahedron: Nedelec 1st kind H(curl)
+  triangle: N1E
+  tetrahedron: N1E
+  quadrilateral: N1E
+  hexahedron: N1E
 ufl:
   triangle: N1curl
   tetrahedron: N1curl

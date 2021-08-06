@@ -29,7 +29,7 @@ dofs:
   volumes: integral moments with (raviart-thomas,k-2)
 symfem: N2curl
 ufl: N2curl
-basix: Nedelec 2nd kind H(curl)
+basix: N2E
 examples:
   - triangle,1
   - triangle,2
