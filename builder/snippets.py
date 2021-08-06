@@ -67,7 +67,7 @@ def basix_example(element):
             out += "\n\n"
             out += f"# Create {element.name} order {ord} on a {ref}\n"
             out += "element = basix.create_element("
-            out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}
+            out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
             if "lattice" in params:
                 out += f", basix.LatticeType.{params['lattice']}"
             out += ")"
