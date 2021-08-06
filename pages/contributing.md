@@ -117,7 +117,7 @@ symfem:
   hexahedron: Q
   prism: Lagrange
   pyramid: Lagrange
-basix: Lagrange lattice=equispaced
+basix: P lattice=equispaced
 ufl:
   interval: Lagrange
   triangle: Lagrange
