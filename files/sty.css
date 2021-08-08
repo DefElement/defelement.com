@@ -46,9 +46,11 @@ p {text-align:justify}
 .head a {text-decoration:none}
 
 .egdetail {display:none}
-.egdetail.current {display:block; border:2px solid black; overflow-x:scroll;padding-bottom:10px;overflow-y:clip}
+.egdetail.current {display:block; border:2px solid black; overflow-x:scroll;padding-bottom:10px;
+                   overflow-y:clip}
 
-a.eglink {margin-right:10px;display:inline-block;padding:5px;border:2px solid #AAAAAA;color:#AAAAAA; border-bottom:none;border-radius:10px 10px 0px 0px;text-decoration:none;text-align:center}
+a.eglink {margin-right:10px;display:inline-block;padding:5px;border:2px solid #AAAAAA;color:#AAAAAA;
+          border-bottom:none;border-radius:10px 10px 0px 0px;text-decoration:none;text-align:center}
 a.eglink.current {border:2px solid black;color:black; border-bottom:none}
 a.eglink.current:hover,
 a.eglink.current {color:black}
@@ -67,7 +69,8 @@ li {margin-bottom:10px;margin-top:10px}
 a.refid, a.refid:visited, a.refid:link, a.refid:active, a.refid:hover {color:black}
 a.refid:target {font-weight:bold; color:#FF8800}
 
-table.bordered, table.bordered tr, table.bordered td {border:1px solid #AAAAAA;border-collapse:collapse}
+table.bordered, table.bordered tr, table.bordered td
+    {border:1px solid #AAAAAA;border-collapse:collapse}
 table.bordered td {padding:2px 6px;text-align:center}
 table.bordered thead {font-weight:bold;font-size:80%}
 
@@ -100,3 +103,4 @@ p.pcode {margin-left:50px;margin-right:50px;font-family:monospace;white-space:no
 table.families tr td {text-align:center; border-top:2px solid black; font-size:small; padding:5px}
 table.families tr:first-of-type td {border-top:none; font-size:unset;}
 table.families {border-collapse:collapse;}
+table.families tr td:nth-of-type(2) {border-right: 2px dashed black;}
