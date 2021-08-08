@@ -105,7 +105,7 @@ class Categoriser:
         i, j, k = e.split(",")
         if i not in self.exterior_families:
             warnings.warn(f"Family not included in familes data: {i}")
-            self.exterior_families[i] = {}
+            self.exterior_families[i] = {"elements": {}}
         if k not in self.exterior_families[i]["elements"]:
             self.exterior_families[i]["elements"][k] = {}
         self.exterior_families[i]["elements"][k][j] = (name, fname)
