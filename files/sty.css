@@ -27,6 +27,8 @@ a, a:link, a:active, a:visited
 .footer a:hover,
 a:hover {color:#FF8800}
 
+a.nou, a.nou:link, a.nou:active, a.nou:visited, a.nou:hover {text-decoration:none}
+
 .content {max-width:740px;margin:auto;padding:10px;background-color:rgba(255,255,255,0.9)}
 
 .title {text-align:center;font-size:35px}

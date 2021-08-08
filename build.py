@@ -8,6 +8,7 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
+from builder.families import arnold_logg_name, cockburn_foo_name
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
@@ -62,6 +63,7 @@ for file in os.listdir(settings.pages_path):
 categoriser = Categoriser()
 categoriser.load_categories(os.path.join(settings.data_path, "categories"))
 categoriser.load_references(os.path.join(settings.data_path, "references"))
+categoriser.load_families(os.path.join(settings.data_path, "families"))
 
 # Load elements from .def files
 categoriser.load_folder(settings.element_path)
@@ -474,7 +476,8 @@ with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w")
 content = "<h1>De Rham families</h1>\n"
 content += "<table class='families'>\n"
 content += "<tr>"
-content += "<td>&nbsp;</td>"
+content += "<td><small>Arnold&ndash;Logg name</small></td>"
+content += "<td><small>Cockburn&ndash;Foo name</small></td>"
 content += "<td>\\(H^k\\)</td>"
 content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
 content += "<td>\\(H^{k-1}(\\textbf{curl})\\)</td>"
@@ -483,12 +486,19 @@ content += "<td>\\(H^{k-1}(\\text{div})\\)</td>"
 content += "<td>\\(\\xrightarrow{\\nabla\\cdot}\\)</td>"
 content += "<td>\\(H^{k-1}\\)</td>"
 content += "</tr>\n"
-for fname, family in categoriser.exterior_families.items():
-    tex_name = f"\\mathcal{{{fname[0]}}}"
-    if len(fname) > 1:
-        tex_name += f"^{fname[1]}"
-    tex_name += "_k\\Lambda"
-    sub_content = f"<h1>The \\({tex_name}^r\\) family</h1>"
+for fname, data in categoriser.exterior_families.items():
+    family = data["elements"]
+
+    if "arnold-logg" in data:
+        sub_content = "<h1>The \\("
+        sub_content += arnold_logg_name(data['arnold-logg'])
+        sub_content += "\\) family</h1>"
+    elif "cockburn-foo" in data:
+        sub_content = "<h1>The \\("
+        sub_content += cockburn_foo_name(data['cockburn-foo'])
+        sub_content += "\\) family</h1>"
+    else:
+        raise ValueError(f"No name found for family: {fname}")
 
     assert len([i for i in ["simplex", "tp"] if i in family]) == 1
 
@@ -496,22 +506,31 @@ for fname, family in categoriser.exterior_families.items():
     for cell in ["simplex", "tp"]:
         if cell in family:
             content += "<tr>"
-            content += f"<td><a href='/families/{fname}.html'>\\({tex_name}^r("
-            if cell == "simplex":
-                content += "\\Delta"
+            if "arnold-logg" in data:
+                content += f"<td><a href='/families/{fname}.html'>\\("
+                content += arnold_logg_name(data['arnold-logg'], cell=cell)
+                content += "\\)</td>"
             else:
-                content += "\\square"
-            content += f"_d)\\)</a></td>"
+                content += "<td>&nbsp;</td>"
+            if "cockburn-foo" in data:
+                content += f"<td><a href='/families/{fname}.html'>\\("
+                content += cockburn_foo_name(data['cockburn-foo'], cell=cell)
+                content += "\\)</td>"
+            else:
+                content += "<td>&nbsp;</td>"
             for order in ["0", "1", "d-1", "d"]:
                 if order in family[cell]:
                     sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"
                     sub_content += " style='text-decoration:none'>"
-                    sub_content += f"\\({tex_name}^{{{order}}}("
-                    if cell == "simplex":
-                        sub_content += "\\Delta"
-                    else:
-                        sub_content += "\\square"
-                    sub_content += f"_d)\\) ({family[cell][order][0]})</a></li>"
+                    names = []
+                    if "arnold-logg" in data:
+                        names.append("\\(" + arnold_logg_name(data['arnold-logg'],
+                                                              order, cell) + "\\)")
+                    if "cockburn-foo" in data:
+                        names.append("\\(" + cockburn_foo_name(data['cockburn-foo'],
+                                                               order, cell) + "\\)")
+                    sub_content += " / ".join(names)
+                    sub_content += f" ({family[cell][order][0]})</a></li>"
                     content += f"<td><a href='/elements/{family[cell][order][1]}'"
                     content += " style='text-decoration:none'>"
                     content += f"{family[cell][order][0]}</a></td>"
