@@ -474,6 +474,8 @@ with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w")
 
 # Families
 content = "<h1>De Rham families</h1>\n"
+content += "<p>You can find some information about how these familes are defined "
+content += "<a href='/de-rham.html'>here</a></p>"
 content += "<table class='families'>\n"
 content += "<tr>"
 content += "<td><small>Arnold&ndash;Logg name</small></td>"
