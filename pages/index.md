@@ -31,7 +31,7 @@ You can:
 <li>[view the full alphabetical list of elements](index::all)</li>
 <li>[view the elements by category](index::categories)</li>
 <li>[view the elements by reference element](index::references)</li>
-<li>[view the elements by family](index::families)</li>
+<li>[view the elements by de Rham family](index::families)</li>
 <li>[view recently added/updated elements](index::recent)</li>
 </ul>
 

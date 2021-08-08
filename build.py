@@ -471,8 +471,18 @@ with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w")
     f.write(make_html_page(content))
 
 # Families
-content = "<h1>Families</h1>\n"
-content += "<ul>\n"
+content = "<h1>De Rham families</h1>\n"
+content += "<table class='families'>\n"
+content += "<tr>"
+content += "<td>&nbsp;</td>"
+content += "<td>\\(H^k\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
+content += "<td>\\(H^{k-1}(\\textbf{curl})\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla\\times}\\)</td>"
+content += "<td>\\(H^{k-1}(\\text{div})\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla\\cdot}\\)</td>"
+content += "<td>\\(H^{k-1}\\)</td>"
+content += "</tr>\n"
 for fname, family in categoriser.exterior_families.items():
     tex_name = f"\\mathcal{{{fname[0]}}}"
     if len(fname) > 1:
@@ -480,9 +490,18 @@ for fname, family in categoriser.exterior_families.items():
     tex_name += "_k\\Lambda"
     sub_content = f"<h1>The \\({tex_name}^r\\) family</h1>"
 
+    assert len([i for i in ["simplex", "tp"] if i in family]) == 1
+
     sub_content += "<ul>"
     for cell in ["simplex", "tp"]:
         if cell in family:
+            content += "<tr>"
+            content += f"<td><a href='/families/{fname}.html'>\\({tex_name}^r("
+            if cell == "simplex":
+                content += "\\Delta"
+            else:
+                content += "\\square"
+            content += f"_d)\\)</a></td>"
             for order in ["0", "1", "d-1", "d"]:
                 if order in family[cell]:
                     sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"
@@ -493,13 +512,20 @@ for fname, family in categoriser.exterior_families.items():
                     else:
                         sub_content += "\\square"
                     sub_content += f"_d)\\) ({family[cell][order][0]})</a></li>"
-    sub_content += "</ul>"
+                    content += f"<td><a href='/elements/{family[cell][order][1]}'"
+                    content += " style='text-decoration:none'>"
+                    content += f"{family[cell][order][0]}</a></td>"
+                else:
+                    content += "<td>&nbsp;</td>"
+                if order != "d":
+                    content += "<td>&nbsp;</td>"
+            content += "</tr>"
+        sub_content += "</ul>"
 
     with open(os.path.join(settings.htmlfamilies_path, f"{fname}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
-    content += f"<li><a href='/families/{fname}.html'>\\({tex_name}^r\\)</a></li>\n"
-content += "</ul>"
+content += "</table>"
 with open(os.path.join(settings.htmlfamilies_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
