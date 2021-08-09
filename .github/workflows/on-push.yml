@@ -150,7 +150,7 @@ jobs:
         with:
           path: ./basix-src
           repository: FEniCS/basix
-          ref: mscroggs/lagrange_gll
+          ref: main
       - run: |
           sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev ninja-build
           sudo pip3 install pybind11
