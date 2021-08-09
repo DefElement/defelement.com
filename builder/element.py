@@ -433,17 +433,27 @@ class Element:
         assert self.implemented(lib)
         if isinstance(self.data[lib], str):
             s, params = self.get_implementation_string(lib, None)
-            s = f"\"{s}\""
-            if "variant" in params:
-                s += ", variant=\"{params['variant']}\""
+            if lib == "basix":
+                s = f"basix.ElementFamily.{s}"
+                if "lattice" in params:
+                    s += ", ..., basix.LatticeType.{params['lattice']}"
+            else:
+                s = f"\"{s}\""
+                if "variant" in params:
+                    s += ", variant=\"{params['variant']}\""
             return f"<code>{s}</code>"
 
         i_dict = {}
         for i, j in self.data[lib].items():
             s, params = self.get_implementation_string(lib, i)
-            s = f"\"{s}\""
-            if "variant" in params:
-                s += ", variant=\"{params['variant']}\""
+            if lib == "basix":
+                s = f"basix.ElementFamily.{s}"
+                if "lattice" in params:
+                    s += ", ..., basix.LatticeType.{params['lattice']}"
+            else:
+                s = f"\"{s}\""
+                if "variant" in params:
+                    s += ", variant=\"{params['variant']}\""
             if s not in i_dict:
                 i_dict[s] = []
             i_dict[s].append(i)

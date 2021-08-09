@@ -179,7 +179,7 @@ for e in categoriser.elements:
                 info += "}\n"
                 info += "</script>"
 
-                implementations.append((f"{libname} string", info))
+            implementations.append((f"{libname}", info))
 
     # Categories
     cats = e.categories()
