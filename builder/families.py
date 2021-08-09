@@ -21,7 +21,7 @@ def cockburn_foo_name(family, r="r", cell=None, degree="k"):
     out += f"S_{{{family},{degree}}}"
     if cell is not None:
         if cell == "simplex":
-            out += "^\\Delta"
+            out += "^\\unicode{0x25FA}"
         elif cell == "tp":
             out += "^\\square"
         else:
