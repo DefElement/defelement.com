@@ -1,0 +1,12 @@
+P:
+  arnold-logg: P
+  cockburn-foo: 1
+P-:
+  arnold-logg: P-
+  cockburn-foo: 2
+Q-:
+  arnold-logg: Q-
+  cockburn-foo: 4
+S:
+  arnold-logg: S
+  cockburn-foo: 1

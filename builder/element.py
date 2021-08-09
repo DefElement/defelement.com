@@ -3,6 +3,7 @@ import warnings
 import yaml
 from github import Github
 from .polyset import make_poly_set, make_extra_info
+from .families import arnold_logg_name, cockburn_foo_name
 from . import snippets
 from . import settings
 
@@ -61,15 +62,21 @@ class Categoriser:
             return self.elements[:n]
         return sorted(self.elements, key=lambda e: e.modified)[:-n-1:-1]
 
-    def load_categories(self, folder):
-        with open(folder) as f:
+    def load_categories(self, file):
+        with open(file) as f:
             for line in f:
                 if line.strip() != "":
                     a, b = line.split(":", 1)
                     self.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
 
-    def load_references(self, folder):
-        with open(folder) as f:
+    def load_families(self, file):
+        with open(file) as f:
+            self.exterior_families = yaml.load(f, Loader=yaml.FullLoader)
+        for i in self.exterior_families:
+            self.exterior_families[i]["elements"] = {}
+
+    def load_references(self, file):
+        with open(file) as f:
             for line in f:
                 if line.strip() != "":
                     self.add_reference(line.strip(), f"{line.strip()}.html")
@@ -97,10 +104,11 @@ class Categoriser:
     def add_exterior_family(self, e, name, fname):
         i, j, k = e.split(",")
         if i not in self.exterior_families:
-            self.exterior_families[i] = {}
-        if k not in self.exterior_families[i]:
-            self.exterior_families[i][k] = {}
-        self.exterior_families[i][k][j] = (name, fname)
+            warnings.warn(f"Family not included in familes data: {i}")
+            self.exterior_families[i] = {"elements": {}}
+        if k not in self.exterior_families[i]["elements"]:
+            self.exterior_families[i]["elements"][k] = {}
+        self.exterior_families[i]["elements"][k][j] = (name, fname)
 
     def add_reference(self, e, fname):
         self.references[e] = fname
@@ -212,23 +220,19 @@ class Element:
         if not isinstance(ec, (list, tuple)):
             ec = [ec]
         for e in ec:
+            names = []
             i, j, k = e.split(",")
+            data = self._c.exterior_families[i]
+            for key, f in [("arnold-logg", arnold_logg_name),
+                           ("cockburn-foo", cockburn_foo_name)]:
+                if key in data:
+                    names.append("\\(" + f(data[key], j, k) + "\\)")
             if link:
-                name = f"<a href='/families/{i}.html'>"
-            name += f"\\(\\mathcal{{{i[0]}}}"
-            if len(i) > 1:
-                name += f"^{i[1]}"
-            name += f"_k\\Lambda^{{{j}}}("
-            if k == "simplex":
-                name += "\\Delta"
-            else:
-                assert k == "tp"
-                name += "\\square"
-            name += "_d)"
-            name += "\\)"
+                entry = f"<a class='nou' href='/families/{i}.html'>"
+            entry += " / ".join(names)
             if link:
-                name += "</a>"
-            out.append(name)
+                entry += "</a>"
+            out.append(entry)
         return out
 
     def order_range(self):

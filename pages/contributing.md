@@ -36,6 +36,9 @@ exterior-calculus:
   - P-,0,simplex
   - P,0,simplex
   - Q-,0,tp
+  - P-,d,simplex
+  - P,d,simplex
+  - Q-,d,tp
 ndofs:
   interval:
     formula: k+1
