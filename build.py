@@ -491,16 +491,14 @@ content += "</tr>\n"
 for fname, data in categoriser.exterior_families.items():
     family = data["elements"]
 
+    names = []
     if "arnold-logg" in data:
-        sub_content = "<h1>The \\("
-        sub_content += arnold_logg_name(data['arnold-logg'])
-        sub_content += "\\) family</h1>"
-    elif "cockburn-foo" in data:
-        sub_content = "<h1>The \\("
-        sub_content += cockburn_foo_name(data['cockburn-foo'])
-        sub_content += "\\) family</h1>"
-    else:
+        names.append("\\(" + arnold_logg_name(data['arnold-logg']) + "\\)")
+    if "cockburn-foo" in data:
+        names.append("\\(" + cockburn_foo_name(data['cockburn-foo']) + "\\)")
+    if len(names) == 0:
         raise ValueError(f"No name found for family: {fname}")
+    sub_content = "<h1>The " + " / ".join(names) + " family</h1>"
 
     assert len([i for i in ["simplex", "tp"] if i in family]) == 1
 
