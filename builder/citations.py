@@ -37,6 +37,8 @@ def markup_citation(r):
     out += "."
     if "doi" in r:
         out += f" [DOI:&nbsp;<a href='https://doi.org/{r['doi']}'>{r['doi']}</a>]"
+    if "url" in r:
+        out += f" [<a href='{r['url']}'>{r['url'].split('://')[1]}</a>]"
     return out
 
 
