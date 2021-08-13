@@ -158,7 +158,7 @@ def _describe_dof(element, d):
                 if i > 1:
                     desc += f"^{{{i}}}"
         desc += "}"
-        desc += "\\nabla{v}(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
+        desc += "v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc, []
     elif _is_exact_instance(d, functionals.PointComponentSecondDerivativeEvaluation):
         desc = "v\\mapsto"
