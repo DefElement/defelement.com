@@ -205,6 +205,50 @@ class Element:
             return []
         return self.data["short-names"]
 
+    def cockburn_foo_names(self, link=True):
+        if "exterior-calculus" not in self.data:
+            return []
+
+        out = []
+        ec = self.data["exterior-calculus"]
+        if not isinstance(ec, (list, tuple)):
+            ec = [ec]
+        for e in ec:
+            names = []
+            i, j, k = e.split(",")
+            data = self._c.exterior_families[i]
+            if "cockburn-foo" in data:
+                names.append("\\(" + cockburn_foo_name(data["cockburn-foo"], j, k) + "\\)")
+            if link:
+                entry = f"<a class='nou' href='/families/{i}.html'>"
+            entry += " / ".join(names)
+            if link:
+                entry += "</a>"
+            out.append(entry)
+        return out
+
+    def arnold_logg_names(self, link=True):
+        if "exterior-calculus" not in self.data:
+            return []
+
+        out = []
+        ec = self.data["exterior-calculus"]
+        if not isinstance(ec, (list, tuple)):
+            ec = [ec]
+        for e in ec:
+            names = []
+            i, j, k = e.split(",")
+            data = self._c.exterior_families[i]
+            if "arnold-logg" in data:
+                names.append("\\(" + arnold_logg_name(data["arnold-logg"], j, k) + "\\)")
+            if link:
+                entry = f"<a class='nou' href='/families/{i}.html'>"
+            entry += " / ".join(names)
+            if link:
+                entry += "</a>"
+            out.append(entry)
+        return out
+
     def exterior_calculus_names(self, link=True, math=True):
         if "exterior-calculus" not in self.data:
             return []

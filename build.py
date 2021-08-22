@@ -8,7 +8,8 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
-from builder.families import arnold_logg_name, cockburn_foo_name
+from builder.families import (arnold_logg_name, cockburn_foo_name,
+                              arnold_logg_reference, cockburn_foo_reference)
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
@@ -81,9 +82,15 @@ for e in categoriser.elements:
     content += "</a></small></p>"
 
     # Alternative names
-    alt_names = e.alternative_names()
+    alt_names = e.alternative_names(include_exterior=False)
     if len(alt_names) > 0:
         element_data.append(("Alternative names", ", ".join(alt_names)))
+    al_names = e.arnold_logg_names()
+    if len(al_names) > 0:
+        element_data.append(("Exterior calculus names", ", ".join(al_names)))
+    cf_names = e.cockburn_foo_names()
+    if len(cf_names) > 0:
+        element_data.append(("Cockburn&ndash;Foo names", ", ".join(cf_names)))
 
     # Short names
     short_names = e.short_names()
@@ -257,6 +264,10 @@ for e in categoriser.elements:
 
     # Write references section
     refs = e.references()
+    if len(al_names) > 0:
+        refs.append(arnold_logg_reference)
+    if len(cf_names) > 0:
+        refs.append(cockburn_foo_reference)
     if len(refs) > 0:
         content += "<h2>References</h2>\n"
         content += "<ul class='citations'>\n"
