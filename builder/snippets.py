@@ -71,10 +71,11 @@ def basix_example(element):
             if "lattice" in params:
                 out += f", basix.LatticeType.{params['lattice']}"
             if "discontinuous" in params:
-                if params["discontinuous"]:
-                    out += ", true"
+                if params["discontinuous"] == "True":
+                    out += ", True"
                 else:
-                    out += ", false"
+                    assert params["discontinuous"] == "False"
+                    out += ", False"
             out += ")"
     return out
 
