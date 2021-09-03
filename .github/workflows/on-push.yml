@@ -134,57 +134,23 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
 
-      - name: Clone Symfem
-        uses: actions/checkout@v2
-        with:
-          path: ./symfem-src
-          repository: mscroggs/symfem
-          ref: main
-      - run: |
-          cd symfem-src
-          sudo pip3 install .
-        name: Install Symfem
+      - name: Install Symfem
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
-      - name: Clone Basix
-        uses: actions/checkout@v2
-        with:
-          path: ./basix-src
-          repository: FEniCS/basix
-          ref: main
-      - run: |
-          sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev ninja-build
+      - name: Install Basix
+        run: |
+          sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev
           sudo pip3 install pybind11
-        name: Install Basix dependencies
-      - run: |
-          cd basix-src
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DXTENSOR_ENABLE_ASSERT=ON -B build-dir -S .
-          cmake --build build-dir
-          sudo cmake --install build-dir
-          sudo pip3 install ./python/
-        name: Install Basix
+          sudo pip3 install git+https://github.com/FEniCS/basix.git
 
-      - name: Clone UFL
-        uses: actions/checkout@v2
-        with:
-          path: ./ufl-src
-          repository: FEniCS/ufl
-          ref: main
       - name: Install UFL
         run: |
-          cd ufl-src
-          sudo python3 setup.py install
+          sudo pip3 install git+https://github.com/FEniCS/ufl.git
 
-      - name: Clone Bempp-cl
-        uses: actions/checkout@v2
-        with:
-          path: ./bempp-src
-          repository: bempp/bempp-cl
-          ref: master
       - name: Install Bempp-cl
         run: |
-          cd bempp-src
           sudo pip3 install numpy==1.20 scipy numba meshio>=4.0.16
-          sudo python3 setup.py install
+          sudo pip3 install git+https://github.com/bempp/bempp-cl.git
 
       - name: Install LaTeΧ
         run: sudo apt-get install -y texlive-latex-base
