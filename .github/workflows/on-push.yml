@@ -14,16 +14,8 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
       - uses: actions/checkout@v2
-      - name: Clone Symfem
-        uses: actions/checkout@v2
-        with:
-          path: ./symfem-src
-          repository: mscroggs/symfem
-          ref: main
-      - run: |
-          cd symfem-src
-          sudo pip3 install .
-        name: Install Symfem
+      - name: Install Symfem
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m flake8 builder
@@ -38,16 +30,8 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
-      - name: Clone Symfem
-        uses: actions/checkout@v2
-        with:
-          path: ./symfem-src
-          repository: mscroggs/symfem
-          ref: main
-      - run: |
-          cd symfem-src
-          sudo pip3 install .
-        name: Install Symfem
+      - name: Install Symfem
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -80,16 +64,8 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
-      - name: Clone Symfem
-        uses: actions/checkout@v2
-        with:
-          path: ./symfem-src
-          repository: mscroggs/symfem
-          ref: main
-      - run: |
-          cd symfem-src
-          sudo pip3 install .
-        name: Install Symfem
+      - name: Install Symfem
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
