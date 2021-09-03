@@ -19,8 +19,8 @@ polynomial set:
   interval: poly[k]^d
   quadrilateral: poly[k]^d
   hexahedron: poly[k]^d
-symfem: vector discontinuous Lagrange
-ufl: DPC type=VectorElement
+symfem: vector dPc
+ufl: DPC type=VectorElement discontinuous=true
 examples:
   - quadrilateral,1
   - quadrilateral,2

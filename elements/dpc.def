@@ -24,8 +24,8 @@ polynomial set:
   interval: poly[k]
   quadrilateral: poly[k]
   hexahedron: poly[k]
-symfem: discontinuous Lagrange
-basix: DPC
+symfem: dPc
+basix: DPC discontinuous=True
 ufl: DPC
 examples:
   - interval,1

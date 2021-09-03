@@ -70,6 +70,12 @@ def basix_example(element):
             out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
             if "lattice" in params:
                 out += f", basix.LatticeType.{params['lattice']}"
+            if "discontinuous" in params:
+                if params["discontinuous"] == "True":
+                    out += ", True"
+                else:
+                    assert params["discontinuous"] == "False"
+                    out += ", False"
             out += ")"
     return out
 

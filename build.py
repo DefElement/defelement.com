@@ -141,9 +141,9 @@ for e in categoriser.elements:
     # Implementations
     libraries = [
         ("symfem", "Symfem", "https://github.com/mscroggs/symfem", "pip3 install symfem"),
-        ("basix", "Basix", "https://github.com/fenics/basix", None),
+        ("basix", "Basix", "https://github.com/fenics/basix", "pip3 install git+https://github.com/fenics/basix.git"),
         ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL"),
-        ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", None)
+        ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", "pip3 install bempp-cl")
     ]
     for codename, libname, url, pip in libraries:
         if e.implemented(codename):
