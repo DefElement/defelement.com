@@ -162,13 +162,15 @@ The entries in this yaml file are:
 <tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
 <tr><td>`entity-ndofs`</td><td></td><td>The number of DOFs the element has per subentity type and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
+<td><td>`min-order`</td><td>The minimum order of the element</td></tr>
+<td><td>`max-order`</td><td>The maximum order of the element</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
 <tr><td>`reference&nbsp;elements`</td><td>Yes</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`polynomial&nbsp;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>
 <tr><td>`symfem`</td><td></td><td>The string used to define this element in [Symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
-<tr><td>`basix`</td><td></td><td>The string used to define this element in [Basix](https://github.com/fenics/basix)'s `create_element` function.</td></tr>
+<tr><td>`basix`</td><td></td><td>The name of the enum item used to define this element in [Basix](https://github.com/fenics/basix)'s `create_element` function.</td></tr>
 <tr><td>`ufl`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
 <tr><td>`bempp`</td><td></td><td>The string used to define this element in [Bempp](https://github.com/bempp/bempp-cl).</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
