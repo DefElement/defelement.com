@@ -10,3 +10,5 @@ Q-:
 S:
   arnold-logg: S
   cockburn-foo: 1
+S2:
+  cockburn-foo: 2

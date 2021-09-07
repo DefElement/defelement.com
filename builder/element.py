@@ -215,12 +215,17 @@ class Element:
             ec = [ec]
         for e in ec:
             names = []
-            i, j, k = e.split(",")
-            data = self._c.exterior_families[i]
+            e_s = e.split(",")
+            if len(e_s) == 3:
+                fam, ext, cell = e_s
+                k = "k"
+            else:
+                fam, ext, cell, k = e_s
+            data = self._c.exterior_families[fam]
             if "cockburn-foo" in data:
-                names.append("\\(" + cockburn_foo_name(data["cockburn-foo"], j, k) + "\\)")
+                names.append("\\(" + cockburn_foo_name(data["cockburn-foo"], ext, cell, k) + "\\)")
             if link:
-                entry = f"<a class='nou' href='/families/{i}.html'>"
+                entry = f"<a class='nou' href='/families/{fam}.html'>"
             entry += " / ".join(names)
             if link:
                 entry += "</a>"
@@ -237,12 +242,17 @@ class Element:
             ec = [ec]
         for e in ec:
             names = []
-            i, j, k = e.split(",")
-            data = self._c.exterior_families[i]
+            e_s = e.split(",")
+            if len(e_s) == 3:
+                fam, ext, cell = e_s
+                k = "k"
+            else:
+                fam, ext, cell, k = e_s
+            data = self._c.exterior_families[fam]
             if "arnold-logg" in data:
-                names.append("\\(" + arnold_logg_name(data["arnold-logg"], j, k) + "\\)")
+                names.append("\\(" + arnold_logg_name(data["arnold-logg"], ext, cell, k) + "\\)")
             if link:
-                entry = f"<a class='nou' href='/families/{i}.html'>"
+                entry = f"<a class='nou' href='/families/{fam}.html'>"
             entry += " / ".join(names)
             if link:
                 entry += "</a>"
