@@ -3,7 +3,7 @@ import warnings
 import yaml
 from github import Github
 from .polyset import make_poly_set, make_extra_info
-from .families import arnold_logg_name, cockburn_foo_name
+from .families import arnold_logg_name, cockburn_fu_name
 from . import snippets
 from . import settings
 
@@ -205,7 +205,7 @@ class Element:
             return []
         return self.data["short-names"]
 
-    def cockburn_foo_names(self, link=True):
+    def cockburn_fu_names(self, link=True):
         if "exterior-calculus" not in self.data:
             return []
 
@@ -217,8 +217,8 @@ class Element:
             names = []
             i, j, k = e.split(",")
             data = self._c.exterior_families[i]
-            if "cockburn-foo" in data:
-                names.append("\\(" + cockburn_foo_name(data["cockburn-foo"], j, k) + "\\)")
+            if "cockburn-fu" in data:
+                names.append("\\(" + cockburn_fu_name(data["cockburn-fu"], j, k) + "\\)")
             if link:
                 entry = f"<a class='nou' href='/families/{i}.html'>"
             entry += " / ".join(names)
@@ -268,7 +268,7 @@ class Element:
             i, j, k = e.split(",")
             data = self._c.exterior_families[i]
             for key, f in [("arnold-logg", arnold_logg_name),
-                           ("cockburn-foo", cockburn_foo_name)]:
+                           ("cockburn-fu", cockburn_fu_name)]:
                 if key in data:
                     names.append("\\(" + f(data[key], j, k) + "\\)")
             if link:
