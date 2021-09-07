@@ -1,14 +1,14 @@
 P:
   arnold-logg: P
-  cockburn-foo: 1
+  cockburn-fu: 1
 P-:
   arnold-logg: P-
-  cockburn-foo: 2
+  cockburn-fu: 2
 Q-:
   arnold-logg: Q-
-  cockburn-foo: 4
+  cockburn-fu: 4
 S:
   arnold-logg: S
-  cockburn-foo: 1
+  cockburn-fu: 1
 S2:
-  cockburn-foo: 2
+  cockburn-fu: 2

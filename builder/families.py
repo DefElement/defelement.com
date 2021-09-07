@@ -14,7 +14,7 @@ def arnold_logg_name(family, r="r", cell=None, degree="k"):
     return out
 
 
-def cockburn_foo_name(family, r="r", cell=None, degree="k"):
+def cockburn_fu_name(family, r="r", cell=None, degree="k"):
     out = ""
     if r != "r":
         out += "\\left["
@@ -41,9 +41,9 @@ arnold_logg_reference = {
     "url": "https://sinews.siam.org/Details-Page/periodic-table-of-the-finite-elements"
 }
 
-cockburn_foo_reference = {
+cockburn_fu_reference = {
     "title": "A systematic construction of finite element commuting exact sequences",
-    "author": "Cockburn, B. and Foo, G.",
+    "author": "Cockburn, B. and Fu, G.",
     "journal": "SIAM journal on numerical analysis",
     "volume": "55",
     "number": "4",

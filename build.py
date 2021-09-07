@@ -8,8 +8,8 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
-from builder.families import (arnold_logg_name, cockburn_foo_name,
-                              arnold_logg_reference, cockburn_foo_reference)
+from builder.families import (arnold_logg_name, cockburn_fu_name,
+                              arnold_logg_reference, cockburn_fu_reference)
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
@@ -88,9 +88,9 @@ for e in categoriser.elements:
     al_names = e.arnold_logg_names()
     if len(al_names) > 0:
         element_data.append(("Exterior calculus names", ", ".join(al_names)))
-    cf_names = e.cockburn_foo_names()
+    cf_names = e.cockburn_fu_names()
     if len(cf_names) > 0:
-        element_data.append(("Cockburn&ndash;Foo names", ", ".join(cf_names)))
+        element_data.append(("Cockburn&ndash;fu names", ", ".join(cf_names)))
 
     # Short names
     short_names = e.short_names()
@@ -267,7 +267,7 @@ for e in categoriser.elements:
     if len(al_names) > 0:
         refs.append(arnold_logg_reference)
     if len(cf_names) > 0:
-        refs.append(cockburn_foo_reference)
+        refs.append(cockburn_fu_reference)
     if len(refs) > 0:
         content += "<h2>References</h2>\n"
         content += "<ul class='citations'>\n"
@@ -490,7 +490,7 @@ content += "<a href='/de-rham.html'>here</a></p>"
 content += "<table class='families'>\n"
 content += "<tr>"
 content += "<td><small>Arnold&ndash;Logg name</small></td>"
-content += "<td><small>Cockburn&ndash;Foo name</small></td>"
+content += "<td><small>Cockburn&ndash;Fu name</small></td>"
 content += "<td>\\(H^k\\)</td>"
 content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
 content += "<td>\\(H^{k-1}(\\textbf{curl})\\)</td>"
@@ -505,8 +505,8 @@ for fname, data in categoriser.exterior_families.items():
     names = []
     if "arnold-logg" in data:
         names.append("\\(" + arnold_logg_name(data['arnold-logg']) + "\\)")
-    if "cockburn-foo" in data:
-        names.append("\\(" + cockburn_foo_name(data['cockburn-foo']) + "\\)")
+    if "cockburn-fu" in data:
+        names.append("\\(" + cockburn_fu_name(data['cockburn-fu']) + "\\)")
     if len(names) == 0:
         raise ValueError(f"No name found for family: {fname}")
     sub_content = "<h1>The " + " / ".join(names) + " family</h1>"
@@ -523,9 +523,9 @@ for fname, data in categoriser.exterior_families.items():
                 content += "\\)</td>"
             else:
                 content += "<td>&nbsp;</td>"
-            if "cockburn-foo" in data:
+            if "cockburn-fu" in data:
                 content += f"<td><a href='/families/{fname}.html'>\\("
-                content += cockburn_foo_name(data['cockburn-foo'], cell=cell)
+                content += cockburn_fu_name(data['cockburn-fu'], cell=cell)
                 content += "\\)</td>"
             else:
                 content += "<td>&nbsp;</td>"
@@ -537,8 +537,8 @@ for fname, data in categoriser.exterior_families.items():
                     if "arnold-logg" in data:
                         names.append("\\(" + arnold_logg_name(data['arnold-logg'],
                                                               order, cell) + "\\)")
-                    if "cockburn-foo" in data:
-                        names.append("\\(" + cockburn_foo_name(data['cockburn-foo'],
+                    if "cockburn-fu" in data:
+                        names.append("\\(" + cockburn_fu_name(data['cockburn-fu'],
                                                                order, cell) + "\\)")
                     sub_content += " / ".join(names)
                     sub_content += f" ({family[cell][order][0]})</a></li>"
