@@ -68,8 +68,8 @@ def basix_example(element):
             out += f"# Create {element.name} order {ord} on a {ref}\n"
             out += "element = basix.create_element("
             out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
-            if "lattice" in params:
-                out += f", basix.LatticeType.{params['lattice']}"
+            if "lagrange_variant" in params:
+                out += ", basix.LagrangeVariant.{params['lagrange_variant']}"
             if "discontinuous" in params:
                 if params["discontinuous"] == "True":
                     out += ", True"

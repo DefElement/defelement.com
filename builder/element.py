@@ -479,8 +479,8 @@ class Element:
             s, params = self.get_implementation_string(lib, None)
             if lib == "basix":
                 s = f"basix.ElementFamily.{s}"
-                if "lattice" in params:
-                    s += ", ..., basix.LatticeType.{params['lattice']}"
+                if "lagrange_variant" in params:
+                    s += ", ..., basix.LagrangeVariant.{params['lagrange_variant']}"
             else:
                 s = f"\"{s}\""
                 if "variant" in params:
@@ -492,8 +492,8 @@ class Element:
             s, params = self.get_implementation_string(lib, i)
             if lib == "basix":
                 s = f"basix.ElementFamily.{s}"
-                if "lattice" in params:
-                    s += ", ..., basix.LatticeType.{params['lattice']}"
+                if "lagrange_variant" in params:
+                    s += ", ..., basix.LagrangeVariant.{params['lagrange_variant']}"
             else:
                 s = f"\"{s}\""
                 if "variant" in params:
