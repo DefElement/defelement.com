@@ -4,7 +4,7 @@ short-names:
   - S
 exterior-calculus:
   - S,0,tp
-  - S-,1,tp,k-d
+  - S-,0,tp,k-d
 min-order: 1
 categories:
   - scalar
