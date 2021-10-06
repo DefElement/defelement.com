@@ -28,7 +28,7 @@ polynomial set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
-basix: P lattice=gll
+basix: P lagrange_variant=gll_warped
 symfem: Lagrange variant=lobatto
 examples:
   - interval,1
