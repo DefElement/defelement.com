@@ -98,8 +98,12 @@ class Categoriser:
             repo = g.get_repo("mscroggs/defelement.com")
             for e in self.elements:
                 commits = repo.get_commits(path=f"elements/{e.filename}.def")
-                e.created = commits.get_page(-1)[-1].commit.committer.date
-                e.modified = commits.get_page(0)[0].commit.committer.date
+                try:
+                    e.created = commits.get_page(-1)[-1].commit.committer.date
+                    e.modified = commits.get_page(0)[0].commit.committer.date
+                except IndexError:
+                    e.created = "1970-01-01"
+                    e.modified = "1970-01-01"
 
     def add_exterior_family(self, e, name, fname):
         if len(e.split(",")) == 3:
