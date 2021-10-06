@@ -102,7 +102,10 @@ class Categoriser:
                 e.modified = commits.get_page(0)[0].commit.committer.date
 
     def add_exterior_family(self, e, name, fname):
-        i, j, k = e.split(",")
+        if len(e.split(",")) == 3:
+            i, j, k = e.split(",")
+        else:
+            i, j, k, _ = e.split(",")
         if i not in self.exterior_families:
             warnings.warn(f"Family not included in familes data: {i}")
             self.exterior_families[i] = {"elements": {}}
@@ -329,21 +332,25 @@ class Element:
                 return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
             if "integral moment" in dofs:
                 mom_type, space_info = dofs.split(" with ")
-                space, order = space_info.split("(")[1].split(")")[0].split(",")
-                space = space.strip()
-                order = order.strip()
-                space_link = "*ERROR*"
-                if space == "arnold-winther-extras":
-                    out = mom_type
-                    out += " with \\(\\frac{\\partial}{\\partial(x, y)}x^2y^2(1-x-y)^2f\\)"
-                    out += f" for each order \\({order}\\) polynomial "
-                    out += f"\\(f\\) in an order \\({order}\\)"
-                    out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
-                    return out
-                if space == "bernstein-polynomials":
-                    return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
-                space_link = self._c.get_space_name(space)
-                return f"{mom_type} with an order \\({order}\\) {space_link} space"
+                if space_info.startswith("("):
+                    space, order = space_info[1:-1].split(",")
+                    space = space.strip()
+                    order = order.strip()
+                    space_link = "*ERROR*"
+                    if space == "arnold-winther-extras":
+                        out = mom_type
+                        out += " with \\(\\frac{\\partial}{\\partial(x, y)}x^2y^2(1-x-y)^2f\\)"
+                        out += f" for each order \\({order}\\) polynomial "
+                        out += f"\\(f\\) in an order \\({order}\\)"
+                        out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
+                        return out
+                    if space == "bernstein-polynomials":
+                        return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
+                    space_link = self._c.get_space_name(space)
+                    return f"{mom_type} with an order \\({order}\\) {space_link} space"
+                elif space_info.startswith("{"):
+                    functions = space_info[1:-1]
+                    return f"{mom_type} with \\(\\left\\{{{functions}\\right\\}}\\)"
             return dofs
 
         def make_dof_d(data, post=""):
