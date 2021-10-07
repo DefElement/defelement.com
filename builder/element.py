@@ -1,6 +1,7 @@
 import os
 import warnings
 import yaml
+from datetime import datetime
 from github import Github
 from .polyset import make_poly_set, make_extra_info
 from .families import arnold_logg_name, cockburn_fu_name
@@ -98,11 +99,18 @@ class Categoriser:
             repo = g.get_repo("mscroggs/defelement.com")
             for e in self.elements:
                 commits = repo.get_commits(path=f"elements/{e.filename}.def")
-                e.created = commits.get_page(-1)[-1].commit.committer.date
-                e.modified = commits.get_page(0)[0].commit.committer.date
+                try:
+                    e.created = commits.get_page(-1)[-1].commit.committer.date
+                    e.modified = commits.get_page(0)[0].commit.committer.date
+                except IndexError:
+                    e.created = datetime.now()
+                    e.modified = datetime.now()
 
     def add_exterior_family(self, e, name, fname):
-        i, j, k = e.split(",")
+        if len(e.split(",")) == 3:
+            i, j, k = e.split(",")
+        else:
+            i, j, k, _ = e.split(",")
         if i not in self.exterior_families:
             warnings.warn(f"Family not included in familes data: {i}")
             self.exterior_families[i] = {"elements": {}}
@@ -215,12 +223,17 @@ class Element:
             ec = [ec]
         for e in ec:
             names = []
-            i, j, k = e.split(",")
-            data = self._c.exterior_families[i]
+            e_s = e.split(",")
+            if len(e_s) == 3:
+                fam, ext, cell = e_s
+                k = "k"
+            else:
+                fam, ext, cell, k = e_s
+            data = self._c.exterior_families[fam]
             if "cockburn-fu" in data:
-                names.append("\\(" + cockburn_fu_name(data["cockburn-fu"], j, k) + "\\)")
+                names.append("\\(" + cockburn_fu_name(data["cockburn-fu"], ext, cell, k) + "\\)")
             if link:
-                entry = f"<a class='nou' href='/families/{i}.html'>"
+                entry = f"<a class='nou' href='/families/{fam}.html'>"
             entry += " / ".join(names)
             if link:
                 entry += "</a>"
@@ -237,12 +250,17 @@ class Element:
             ec = [ec]
         for e in ec:
             names = []
-            i, j, k = e.split(",")
-            data = self._c.exterior_families[i]
+            e_s = e.split(",")
+            if len(e_s) == 3:
+                fam, ext, cell = e_s
+                k = "k"
+            else:
+                fam, ext, cell, k = e_s
+            data = self._c.exterior_families[fam]
             if "arnold-logg" in data:
-                names.append("\\(" + arnold_logg_name(data["arnold-logg"], j, k) + "\\)")
+                names.append("\\(" + arnold_logg_name(data["arnold-logg"], ext, cell, k) + "\\)")
             if link:
-                entry = f"<a class='nou' href='/families/{i}.html'>"
+                entry = f"<a class='nou' href='/families/{fam}.html'>"
             entry += " / ".join(names)
             if link:
                 entry += "</a>"
@@ -319,21 +337,25 @@ class Element:
                 return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
             if "integral moment" in dofs:
                 mom_type, space_info = dofs.split(" with ")
-                space, order = space_info.split("(")[1].split(")")[0].split(",")
-                space = space.strip()
-                order = order.strip()
-                space_link = "*ERROR*"
-                if space == "arnold-winther-extras":
-                    out = mom_type
-                    out += " with \\(\\frac{\\partial}{\\partial(x, y)}x^2y^2(1-x-y)^2f\\)"
-                    out += f" for each order \\({order}\\) polynomial "
-                    out += f"\\(f\\) in an order \\({order}\\)"
-                    out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
-                    return out
-                if space == "bernstein-polynomials":
-                    return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
-                space_link = self._c.get_space_name(space)
-                return f"{mom_type} with an order \\({order}\\) {space_link} space"
+                if space_info.startswith("("):
+                    space, order = space_info[1:-1].split(",")
+                    space = space.strip()
+                    order = order.strip()
+                    space_link = "*ERROR*"
+                    if space == "arnold-winther-extras":
+                        out = mom_type
+                        out += " with \\(\\frac{\\partial}{\\partial(x, y)}x^2y^2(1-x-y)^2f\\)"
+                        out += f" for each order \\({order}\\) polynomial "
+                        out += f"\\(f\\) in an order \\({order}\\)"
+                        out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
+                        return out
+                    if space == "bernstein-polynomials":
+                        return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
+                    space_link = self._c.get_space_name(space)
+                    return f"{mom_type} with an order \\({order}\\) {space_link} space"
+                elif space_info.startswith("{"):
+                    functions = space_info[1:-1]
+                    return f"{mom_type} with \\(\\left\\{{{functions}\\right\\}}\\)"
             return dofs
 
         def make_dof_d(data, post=""):

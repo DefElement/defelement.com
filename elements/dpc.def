@@ -2,6 +2,7 @@ name: dPc
 html-name: dPc
 exterior-calculus:
   - S,d,tp
+  - S-,d,tp
 ndofs:
   interval:
     formula: k+1
