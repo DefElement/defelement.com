@@ -1,6 +1,7 @@
 import os
 import warnings
 import yaml
+from datetime import datetime
 from github import Github
 from .polyset import make_poly_set, make_extra_info
 from .families import arnold_logg_name, cockburn_fu_name
@@ -102,8 +103,8 @@ class Categoriser:
                     e.created = commits.get_page(-1)[-1].commit.committer.date
                     e.modified = commits.get_page(0)[0].commit.committer.date
                 except IndexError:
-                    e.created = "1970-01-01"
-                    e.modified = "1970-01-01"
+                    e.created = datetime.now()
+                    e.modified = datetime.now()
 
     def add_exterior_family(self, e, name, fname):
         if len(e.split(",")) == 3:
