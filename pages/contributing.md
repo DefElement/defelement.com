@@ -176,3 +176,10 @@ The entries in this yaml file are:
 <tr><td>`bempp`</td><td></td><td>The string used to define this element in [Bempp](https://github.com/bempp/bempp-cl).</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 </table>
+
+## Adding yourself to the contributors
+Once you have contributed to DefElement, you should add your name and some information about
+yourself to the [contributors page](contributors.md). To do this, you should add info about
+yourself to the file `data/contributors`. If you wish to include a picture of yourself, add
+a square-shaped image to the `pictures/` folder.
+

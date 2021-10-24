@@ -61,3 +61,5 @@ an element to DefElement [here](contributing.md).
 The functional information and examples on the element pages are generated using
 [Symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
 Before adding an element to DefElement, it should first be implemented in Symfem.
+
+A list of everyone who has contributed to DefElement can be found [here](contributors.md).

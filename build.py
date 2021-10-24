@@ -43,6 +43,7 @@ os.mkdir(settings.htmlelement_path)
 os.mkdir(settings.htmlindices_path)
 os.mkdir(settings.htmlfamilies_path)
 os.mkdir(settings.htmlimg_path)
+os.system(f"cp -r {settings.dir_path}/people {settings.htmlimg_path}")
 os.mkdir(os.path.join(settings.htmlelement_path, "bibtex"))
 
 os.system(f"cp -r {settings.files_path}/* {settings.html_path}")

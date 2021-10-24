@@ -1,0 +1,6 @@
+- name: "Matthew Scroggs"
+  img: m-scroggs.jpg
+  twitter: mscroggs
+  github: mscroggs
+  website: https://mscroggs.co.uk
+  desc: "Matthew is a Postdoctoral Research Associate at the University of Cambridge who works on finite and boundary element methods. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the open-source boundary element software [Bempp](https://github.com/bempp)."
