@@ -141,7 +141,8 @@ for e in categoriser.elements:
     # Implementations
     libraries = [
         ("symfem", "Symfem", "https://github.com/mscroggs/symfem", "pip3 install symfem"),
-        ("basix", "Basix", "https://github.com/fenics/basix", "pip3 install git+https://github.com/fenics/basix.git"),
+        ("basix", "Basix", "https://github.com/fenics/basix",
+         "pip3 install git+https://github.com/fenics/basix.git"),
         ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL"),
         ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", "pip3 install bempp-cl")
     ]
@@ -489,7 +490,7 @@ content += "<p>You can find some information about how these familes are defined
 content += "<a href='/de-rham.html'>here</a></p>"
 content += "<table class='families'>\n"
 content += "<tr>"
-content += "<td><small>Arnold&ndash;Logg name</small></td>"
+content += "<td><small>Exterior calculus name</small></td>"
 content += "<td><small>Cockburn&ndash;Fu name</small></td>"
 content += "<td>\\(H^k\\)</td>"
 content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
@@ -539,7 +540,7 @@ for fname, data in categoriser.exterior_families.items():
                                                               order, cell) + "\\)")
                     if "cockburn-fu" in data:
                         names.append("\\(" + cockburn_fu_name(data['cockburn-fu'],
-                                                               order, cell) + "\\)")
+                                                              order, cell) + "\\)")
                     sub_content += " / ".join(names)
                     sub_content += f" ({family[cell][order][0]})</a></li>"
                     content += f"<td><a href='/elements/{family[cell][order][1]}'"

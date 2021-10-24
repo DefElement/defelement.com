@@ -1,5 +1,6 @@
 import hashlib
 import os
+import re
 import pytest
 import yaml
 from random import random
@@ -26,6 +27,8 @@ def test_latex(file, cellname):
         for k in j.split("&&"):
             k = k.strip()
             if k.startswith("<k>"):
+                k = re.sub(r"\@def\@([^\@]+)\@([^\@]+)\@", "", k)
+                k = re.sub(r"\@defmath\@([^\@]+)\@([^\@]+)\@", "", k)
                 filename = "_temp_" + hashlib.sha224(f"{random()}".encode()).hexdigest()
                 with open(f"{filename}.tex", "w") as f:
                     f.write("\\documentclass{article}\n\n")
