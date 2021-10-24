@@ -17,7 +17,7 @@ dofs:
   edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,k-2)
   faces:
     - integral moments of three components with (lagrange,k-3)
-    - integral moments of tensor dot product with (arnold-winther-extras,k-4)
+    - integral moments of tensor dot product with "\(\frac{\partial}{\partial(x, y)}x^2y^2(1-x-y)^2f\) for each order \(k-4\) polynomial \(f\) in an order \(k-4\) [Lagrange](element::lagrange) space"
 symfem: AW
 ufl: AWc
 examples:

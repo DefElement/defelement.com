@@ -6,29 +6,49 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/pol
     poly_sets = yaml.load(f, Loader=yaml.FullLoader)
 
 named = {}
+defs = {}
 
 
 def make_name(i):
     return f"\\mathcal{{Z}}^{{({i})}}"
 
 
+def replace_def(matches):
+    global defs
+    defs[matches[1]] = matches[2]
+    return ""
+
+
+def replace_defmath(matches):
+    global defs
+    defs[matches[1]] = f"\\({matches[2]}\\)"
+    return ""
+
+
 def make_poly_set(p):
     global named
+    global defs
     if "&&" in p:
         return " \\oplus ".join([make_poly_set(i.strip()) for i in p.split("&&")])
     p = p.strip()
     if re.match(r"^\<([^\]]+)\>\[(.+)\]$", p):
         order = re.match(r"^\<([^\]]+)\>\[(.+)\]$", p)[1]
         the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]$", p)[2]
+        defs = {}
+        the_set_out = re.sub(r"\@def\@([^\@]+)\@([^\@]+)\@", replace_def, the_set)
+        the_set_out = re.sub(r"\@defmath\@([^\@]+)\@([^\@]+)\@", replace_defmath, the_set_out)
         if the_set not in named:
-            named[the_set] = make_name(len(named))
-        return f"{named[the_set]}_{{{order}}}"
+            named[the_set] = (make_name(len(named)), the_set_out, defs)
+        return f"{named[the_set][0]}_{{{order}}}"
     if re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p):
         order = re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p)[1]
         the_set = re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p)[2]
+        defs = {}
+        the_set_out = re.sub(r"\@def\@([^\@]+)\@([^\@]+)\@", replace_def, the_set)
+        the_set_out = re.sub(r"\@defmath\@([^\@]+)\@([^\@]+)\@", replace_defmath, the_set_out)
         if the_set not in named:
-            named[the_set] = make_name(len(named))
-        return f"\\left({named[the_set]}_{{{order}}}\\right)^d"
+            named[the_set] = (make_name(len(named)), the_set_out, defs)
+        return f"\\left({named[the_set][0]}_{{{order}}}\\right)^d"
     for i, (j, k) in poly_sets.items():
         if re.match(rf"^{i}\[([^\]]+)\]$", p):
             order = re.match(rf"^{i}\[([^\]]+)\]$", p)[1]
@@ -54,7 +74,14 @@ def make_extra_info(p):
         if re.match(r"^\<([^\]]+)\>\[(.+)\](?:\^d)?$", a):
             the_set = re.match(r"^\<([^\]]+)\>\[(.+)\](?:\^d)?$", a)[2]
             if named[the_set] not in done:
-                out.append(f"\\({named[the_set]}_k={insert_terms(the_set)}\\)")
+                def_txt = ""
+                if len(named[the_set][2]) > 0:
+                    def_txt = "<br />where<ul>"
+                    def_txt += "\n".join([f"<li>\\({i}\\) is {j}</li>"
+                                          for i, j in named[the_set][2].items()])
+                    def_txt += "</ul>"
+                out.append(
+                    f"\\({named[the_set][0]}_k={insert_terms(named[the_set][1])}\\){def_txt}")
                 done.append(named[the_set])
             for i, (j, k) in poly_sets.items():
                 if f"{{{{{i}[" in a and i not in done:

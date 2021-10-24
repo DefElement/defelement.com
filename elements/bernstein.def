@@ -19,7 +19,7 @@ reference elements:
   - triangle
   - tetrahedron
 dofs:
-  cell: integral moments with (bernstein-polynomials,k)
+  cell: integral moments with "order \(k\) Bernstein polynomials"
 polynomial set:
   interval: poly[k]
   triangle: poly[k]
