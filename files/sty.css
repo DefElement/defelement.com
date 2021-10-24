@@ -104,3 +104,8 @@ table.families tr td {text-align:center; border-top:2px solid black; font-size:s
 table.families tr:first-of-type td {border-top:none; font-size:unset;}
 table.families {border-collapse:collapse;}
 table.families tr td:nth-of-type(2) {border-right: 2px dashed black;}
+
+img.person {float:right;width:200px;margin-left:20px;border-radius: 50%;margin-top:30px}
+
+ul.person-info {list-style-type:none;padding:0}
+ul.person-info li {float:left; margin:0px 10px}

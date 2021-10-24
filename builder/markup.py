@@ -1,10 +1,13 @@
+import os
 import shlex
 import symfem
 import re
+import yaml
 from datetime import datetime
 from .citations import markup_citation
 from . import symbols
 from . import plotting
+from . import settings
 
 page_references = []
 
@@ -13,12 +16,42 @@ def cap_first(txt):
     return txt[:1].upper() + txt[1:]
 
 
+def list_contributors():
+    with open(os.path.join(settings.data_path, "contributors")) as f:
+        people = yaml.load(f, Loader=yaml.FullLoader)
+    out = ""
+    for info in people:
+        if "img" in info:
+            out += f"<img src='/img/people/{info['img']}' class='person'>"
+        out += f"<h2>{info['name']}</h2>"
+        if "desc" in info:
+            out += f"<p>{markup(info['desc'])}</p>"
+        out += f"<ul class='person-info'>"
+        if "website" in info:
+            website_name = info["website"].split("//")[1].strip("/")
+            out += (f"<li><a href='{info['website']}'>"
+                    "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
+                    f"&nbsp;{website_name}</a></li>")
+        if "twitter" in info:
+            out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
+                    "<i class='fa fa-twitter' aria-hidden='true'></i>"
+                    f"&nbsp;@{info['twitter']}</a></li>")
+        if "github" in info:
+            out += (f"<li><a href='https://github.com/{info['github']}'>"
+                    "<i class='fa fa-github' aria-hidden='true'></i>"
+                    f"&nbsp;{info['github']}</a></li>")
+        out += f"</ul>"
+        out += f"<br style='clear:both' />"
+    return out
+
+
 def markup(content):
     global page_references
     out = ""
     popen = False
     code = False
     is_python = False
+
     for line in content.split("\n"):
         if line.startswith("#"):
             if popen:
@@ -55,9 +88,11 @@ def markup(content):
             else:
                 out += line
                 out += " "
+
     page_references = []
 
     out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
+
     out = insert_links(out)
     out = re.sub(r"{{plot::([^,]+),([^,]+),([0-9]+)}}", plot_element, out)
     out = re.sub(r"{{plot::([^,]+),([^,]+),([0-9]+)::([0-9]+)}}",
@@ -67,6 +102,9 @@ def markup(content):
     out = re.sub(r"{{img::([^}]+)}}", plot_img, out)
 
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
+
+    if "{{list contributors}}" in out:
+        out = out.replace("{{list contributors}}", list_contributors())
 
     if len(page_references) > 0:
         out += "<h2>References</h2>"
