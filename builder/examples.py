@@ -230,14 +230,24 @@ def _describe_dof(element, d):
         desc += "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"
         return desc, [entity, "\\hat{\\boldsymbol{n}}" + f"_{{{entity_n}}}"]
     elif _is_exact_instance(d, functionals.IntegralAgainst):
-        entity = get_entity(element, d)
-        entity_n = get_entity_number(element, d)
-        desc = "\\mathbf{V}\\mapsto"
-        desc += f"\\displaystyle\\int_{{{entity}}}"
-        if d.f != 1:
-            desc += "(" + to_tex(d.f, True) + ")"
-        desc += "v"
-        return desc, [entity]
+        if element.range_dim == 1:
+            entity = get_entity(element, d)
+            entity_n = get_entity_number(element, d)
+            desc = "\\mathbf{v}\\mapsto"
+            desc += f"\\displaystyle\\int_{{{entity}}}"
+            if d.f != 1:
+                desc += "(" + to_tex(d.f, True) + ")"
+            desc += "v"
+            return desc, [entity]
+        else:
+            assert element.range_shape is None
+            entity = get_entity(element, d)
+            entity_n = get_entity_number(element, d)
+            desc = "\\mathbf{v}\\mapsto"
+            desc += f"\\displaystyle\\int_{{{entity}}}"
+            desc += to_tex(d.f, True) + "\\cdot"
+            desc += "\\mathbf{v}"
+            return desc, [entity]
     elif _is_exact_instance(d, functionals.IntegralOfDirectionalMultiderivative):
         entity = get_entity(element, d)
         entity_n = get_entity_number(element, d)

@@ -1,0 +1,45 @@
+name: Tiniest tensor H(div)
+html-name: Tiniest tensor H(div)
+alt-names:
+  - TNT H(div)
+exterior-calculus:
+  - TNT,d-1,tp
+ndofs:
+  quadrilateral:
+    formula: 2k(k+1) + 3
+  hexahedron:
+    formula: 3k(k+1)^2 + 7
+min-order: 1
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - quadrilateral
+  - hexahedron
+dofs:
+  facets: normal integral moments with (lagrange,k)
+  cells:
+    - integral moments with "\(\nabla f\) for each \(f\) in an order \(k\) [Lagrange](element::lagrange) space"
+    - integral moments with "\(\nabla\times\boldsymbol{f}\) for each \(\boldsymbol{f}\) in an order \(k\) [vector Lagrange](element::vector-lagrange) space such that the tangential trace of \(\boldsymbol{f}\) on the facets of the cell is 0"
+polynomial set:
+  quadrilateral: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\end{array}\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\end{array}\right)\right\}] @defmath@\tilde{B}_k@(\tilde{P}_{k+2}-\tilde{P}_k)/(4k+6)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
+  hexahedron: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\tilde{P}_{k}(z)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\tilde{P}_{k}(z),\tilde{P}_{k}(x)\tilde{P}_{k}(y)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\tilde{P}_{k}(0),\tilde{P}_{k}(x)\tilde{P}_{k}(y)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\tilde{P}_{k}(z)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\tilde{P}_{k}(z),\tilde{P}_{k}(x)\tilde{P}_{k}(0)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\tilde{P}_{k}(0),\tilde{P}_{k}(x)\tilde{P}_{k}(0)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\tilde{P}_{k}(z)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\tilde{P}_{k}(z),\tilde{P}_{k}(0)\tilde{P}_{k}(y)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\tilde{P}_{k}(0)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\tilde{P}_{k}(0),\tilde{P}_{k}(0)\tilde{P}_{k}(y)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(0)\tilde{P}_{k}(z)\\\tilde{P}_k(0)\tilde{B}_{k+1}(0)\tilde{P}_{k}(z),\tilde{P}_{k}(0)\tilde{P}_{k}(0)\tilde{B}_{k+1}(z)\end{array}\right),\right\} @defmath@\tilde{B}_k@(\tilde{P}_{k+2}-\tilde{P}_k)/(4k+6)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
+symfem:
+  quadrilateral: TNTdiv
+  hexahedron: TNTdiv
+examples:
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
+  - hexahedron,1
+references:
+  - title: Commuting diagrams for the TNT elements on cubes
+    author:
+      - Cockburn, B.
+      - Qiu, W.
+    year: 2014
+    journal: Mathematics of Computation
+    volume: 83
+    pagestart: 603
+    pageend: 633
+    doi: 10.1090/S0025-5718-2013-02729-9 
