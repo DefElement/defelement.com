@@ -5,6 +5,7 @@ from datetime import datetime
 from github import Github
 from .polyset import make_poly_set, make_extra_info
 from .families import arnold_logg_name, cockburn_fu_name
+from .markup import insert_links
 from . import snippets
 from . import settings
 
@@ -232,12 +233,12 @@ class Element:
             data = self._c.exterior_families[fam]
             if "cockburn-fu" in data:
                 names.append("\\(" + cockburn_fu_name(data["cockburn-fu"], ext, cell, k) + "\\)")
-            if link:
-                entry = f"<a class='nou' href='/families/{fam}.html'>"
-            entry += " / ".join(names)
-            if link:
-                entry += "</a>"
-            out.append(entry)
+                if link:
+                    entry = f"<a class='nou' href='/families/{fam}.html'>"
+                entry += " / ".join(names)
+                if link:
+                    entry += "</a>"
+                out.append(entry)
         return out
 
     def arnold_logg_names(self, link=True):
@@ -259,12 +260,12 @@ class Element:
             data = self._c.exterior_families[fam]
             if "arnold-logg" in data:
                 names.append("\\(" + arnold_logg_name(data["arnold-logg"], ext, cell, k) + "\\)")
-            if link:
-                entry = f"<a class='nou' href='/families/{fam}.html'>"
-            entry += " / ".join(names)
-            if link:
-                entry += "</a>"
-            out.append(entry)
+                if link:
+                    entry = f"<a class='nou' href='/families/{fam}.html'>"
+                entry += " / ".join(names)
+                if link:
+                    entry += "</a>"
+                out.append(entry)
         return out
 
     def exterior_calculus_names(self, link=True, math=True):
@@ -337,25 +338,19 @@ class Element:
                 return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
             if "integral moment" in dofs:
                 mom_type, space_info = dofs.split(" with ")
-                if space_info.startswith("("):
-                    space, order = space_info[1:-1].split(",")
-                    space = space.strip()
-                    order = order.strip()
-                    space_link = "*ERROR*"
-                    if space == "arnold-winther-extras":
-                        out = mom_type
-                        out += " with \\(\\frac{\\partial}{\\partial(x, y)}x^2y^2(1-x-y)^2f\\)"
-                        out += f" for each order \\({order}\\) polynomial "
-                        out += f"\\(f\\) in an order \\({order}\\)"
-                        out += " <a href='/elements/lagrange.html'>Lagrange</a> space"
-                        return out
-                    if space == "bernstein-polynomials":
-                        return f"{mom_type} with order \\({order}\\) Bernstein polynomials"
-                    space_link = self._c.get_space_name(space)
-                    return f"{mom_type} with an order \\({order}\\) {space_link} space"
-                elif space_info.startswith("{"):
-                    functions = space_info[1:-1]
-                    return f"{mom_type} with \\(\\left\\{{{functions}\\right\\}}\\)"
+                space_info = space_info.strip()
+                if space_info.startswith("{") and space_info.endswith("}"):
+                    return f"{mom_type} with \\(\\left\\{{{space_info[1:-1]}\\right\\}}\\)"
+                if space_info.startswith('"') and space_info.endswith('"'):
+                    return f"{mom_type} with {insert_links(space_info[1:-1])}"
+
+                assert space_info.startswith("(") and space_info.endswith(")")
+                space_info = space_info[1:-1]
+                space, order = space_info.split(",")
+                space = space.strip()
+                order = order.strip()
+                space_link = self._c.get_space_name(space)
+                return f"{mom_type} with an order \\({order}\\) {space_link} space"
             return dofs
 
         def make_dof_d(data, post=""):
