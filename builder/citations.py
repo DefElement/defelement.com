@@ -68,7 +68,7 @@ def make_bibtex(id, r):
                 out += wrap_caps(html_to_tex(r[j]))
             else:
                 out += " and ".join([wrap_caps(html_to_tex(k)) for k in r[j]])
-            out += "}\n"
+            out += "},\n"
 
     # Fields with caps that need wrapping
     for i, j in [("TITLE", "title"), ("BOOKTITLE", "booktitle")]:
