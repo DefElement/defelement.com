@@ -275,9 +275,9 @@ for e in categoriser.elements:
         content += "<ul class='citations'>\n"
         for i, r in enumerate(refs):
             content += f"<li>{markup_citation(r)}"
-            content += f" [<a href='/elements/bibtex/{fname}-{i}.bib'>BibTeX</a>]</li>\n"
-            with open(os.path.join(settings.htmlelement_path, f"bibtex/{fname}-{i}.bib"), "w") as f:
-                f.write(make_bibtex(f"{fname}-{i}", r))
+            content += f" [<a href='/elements/bibtex/{e.filename}-{i}.bib'>BibTeX</a>]</li>\n"
+            with open(os.path.join(settings.htmlelement_path, f"bibtex/{e.filename}-{i}.bib"), "w") as f:
+                f.write(make_bibtex(f"{e.filename}-{i}", r))
         content += "</ul>"
 
     # Write created and updated dates
