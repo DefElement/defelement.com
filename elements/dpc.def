@@ -26,7 +26,7 @@ polynomial set:
   quadrilateral: poly[k]
   hexahedron: poly[k]
 symfem: dPc
-basix: dpc discontinuous=True
+basix: DPC discontinuous=True
 ufl: DPC
 examples:
   - interval,1

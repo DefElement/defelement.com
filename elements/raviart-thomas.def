@@ -28,7 +28,7 @@ dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (vector-lagrange,k-2)
 symfem: N1div
-basix: rt
+basix: RT
 ufl: RT
 bempp:
   triangle: RWG orders=0
