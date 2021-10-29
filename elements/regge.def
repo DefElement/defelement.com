@@ -21,7 +21,7 @@ dofs:
   faces: point evaluations of inner products with direction of edges
   volumes: point evaluations of inner products with direction of edges
 symfem: Regge
-basix: Regge
+basix: regge
 ufl: Regge
 examples:
   - triangle,1

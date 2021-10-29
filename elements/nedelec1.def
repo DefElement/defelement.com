@@ -59,10 +59,10 @@ symfem:
   hexahedron: Qcurl
   prism: Ncurl
 basix:
-  triangle: N1E
-  tetrahedron: N1E
-  quadrilateral: N1E
-  hexahedron: N1E
+  triangle: n1e
+  tetrahedron: n1e
+  quadrilateral: n1e
+  hexahedron: n1e
 ufl:
   triangle: N1curl
   tetrahedron: N1curl

@@ -22,7 +22,7 @@ polynomial set:
 dofs:
   facets: point evaluation at midpoint
 symfem: Crouzeix-Raviart
-basix: CR
+basix: cr
 ufl: Crouzeix-Raviart
 examples:
   - triangle,1
