@@ -145,8 +145,9 @@ for e in categoriser.elements:
         ("basix", "Basix", "https://github.com/fenics/basix",
          "pip3 install git+https://github.com/fenics/basix.git"),
         ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL"),
-        ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", "pip3 install bempp-cl")
+        ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", "pip3 install bempp-cl"),
     ]
+    libraries.sort(key=lambda i: i[0])
     for codename, libname, url, pip in libraries:
         if e.implemented(codename):
             info = e.list_of_implementation_strings(codename)
