@@ -19,7 +19,7 @@ body {padding:0px;margin:0px; margin-bottom:100px}
 .footer {background-image:url("/mesh-blue.png")}
 .head, .body, .footer {width:100%;}
 
-.footer {position:fixed;bottom:0;font-size:11px;font-family:monospace;
+.footer {position:fixed;bottom:0;font-size:14px;font-family:monospace;
          text-align:center}
 .footer,
 a, a:link, a:active, a:visited
@@ -29,7 +29,8 @@ a:hover {color:#FF8800}
 
 a.nou, a.nou:link, a.nou:active, a.nou:visited, a.nou:hover {text-decoration:none}
 
-.content {max-width:740px;margin:auto;padding:10px;background-color:rgba(255,255,255,0.9)}
+.content {max-width:740px;margin:auto;padding:35px 10px;background-color:rgba(255,255,255,0.9)}
+.footer .content {padding:10px}
 
 .title {text-align:center;font-size:35px}
 .tagline {text-align:center;font-size:25px;color:#44AAFF}
