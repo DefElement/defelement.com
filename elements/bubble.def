@@ -27,7 +27,7 @@ polynomial set:
   triangle: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
   tetrahedron: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
 symfem: bubble
-basix: Bubble
+basix: bubble
 ufl: Bubble
 examples:
   - interval,2
