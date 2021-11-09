@@ -15,7 +15,7 @@ polynomial set:
   triangle: poly[k]
 dofs:
   facets: point evaluation at two points (but only one point on one of the edges)
-  cells: point evaluation at midpoint
+  cell: point evaluation at midpoint
 symfem: Fortin-Soulie
 examples:
   - triangle,2

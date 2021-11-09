@@ -18,7 +18,7 @@ reference elements:
   - hexahedron
 dofs:
   facets: normal integral moments with (lagrange,k)
-  cells:
+  cell:
     - integral moments with "\(\nabla f\) for each \(f\) in an order \(k\) [Lagrange](element::lagrange) space"
     - integral moments with "\(\nabla\times\boldsymbol{f}\) for each \(\boldsymbol{f}\) in an order \(k\) [vector Lagrange](element::vector-lagrange) space such that the tangential trace of \(\boldsymbol{f}\) on the facets of the cell is 0"
 polynomial set:
