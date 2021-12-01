@@ -1,0 +1,36 @@
+name: Arnold-Boffi-Falk
+html-name: Arnold&ndash;Boffi&ndash;Falk
+short-names:
+  - ABF
+min-order: 0
+categories:
+  - vector
+  - Hdiv
+reference elements:
+  - quadrilateral
+polynomial set:
+  triangle: <k>[\left\{\left(\begin{array}{c}x^py^q\\0\end{array}\right)\middle|p\leqslant k+2,p\leqslant k\right\}] && <k>[\left\{\left(\begin{array}{c}0\\x^py^q\end{array}\right)\middle|p\leqslant k,p\leqslant k+2\right\}]
+dofs:
+  edges: normal integral moments with (lagrange,k)
+  faces:
+    - integral moments with (nedelec1,k)
+    - integral moments of the divergence with "\(x^{k+1}y^q\) for q=0,1,...,k"
+    - integral moments of the divergence with "\(x^qy^{k+1}\) for q=0,1,...,k"
+symfem: ABF
+examples:
+  - quadrilateral,0
+  - quadrilateral,1
+  - quadrilateral,2
+references:
+  - title: Quadrilateral H(div) Finite Elements
+    author:
+      - Arnold, D. N.
+      - Boffi, D.
+      - Falk, R. S.
+    year: 2005
+    journal: SIAM Journal on Numerical Analysis
+    pagestart: 2429
+    pageend: 2451
+    volume: 42
+    issue: 5
+    doi: 10.1137/S0036142903431924

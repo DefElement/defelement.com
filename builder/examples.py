@@ -248,6 +248,16 @@ def _describe_dof(element, d):
             desc += to_tex(d.f, True) + "\\cdot"
             desc += "\\mathbf{v}"
             return desc, [entity]
+    elif _is_exact_instance(d, functionals.IntegralOfDivergenceAgainst):
+        assert element.range_dim == element.reference.tdim
+        entity = get_entity(element, d)
+        entity_n = get_entity_number(element, d)
+        desc = "\\mathbf{v}\\mapsto"
+        desc += f"\\displaystyle\\int_{{{entity}}}"
+        if d.f != 1:
+            desc += "(" + to_tex(d.f, True) + ")"
+        desc += "\\nabla\\cdot\\mathbf{v}"
+        return desc, [entity]
     elif _is_exact_instance(d, functionals.IntegralOfDirectionalMultiderivative):
         entity = get_entity(element, d)
         entity_n = get_entity_number(element, d)
