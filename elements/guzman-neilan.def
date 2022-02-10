@@ -26,7 +26,7 @@ dofs:
   cell:
     - point evaluations at the midpoint
 notes:
-  - This element is a modification of the (element::bernardi-raugel)[Bernardi&ndash;Raugel] element with the facet bubbles modified to be divergence free.
+  - This element is a modification of the [Bernardi&ndash;Raugel](element::bernardi-raugel) element with the facet bubbles modified to be divergence free.
 symfem: Guzman-Neilan
 examples:
   - triangle,1
