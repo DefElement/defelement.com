@@ -23,8 +23,8 @@ notes:
   - These elements are defined as a linear combination of [N&eacute;d&eacute;lec first kind](element::nedelec1) basis functions on the fine grid.
 references:
   - author:
-    - Buffa, A.
-    - Christiansen, S. H.
+    - Buffa, Annalisa
+    - Christiansen, Snorre H.
     title: A dual finite element complex on the barycentric refinement
     journal: Mathematics of Computation
     volume: 76

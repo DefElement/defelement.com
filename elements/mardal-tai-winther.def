@@ -36,9 +36,9 @@ examples:
 references:
   - title: A Robust Finite Element Method for Darcy&ndash;Stokes Flow
     author:
-      - Mardal, K. A.
-      - Tai, X.-C.
-      - Winther, R.
+      - Mardal, Kent-Andre
+      - Tai, Xue-Cheng
+      - Winther, Ragner
     year: 2002
     journal: SIAM Journal on Numerical Analysis
     volume: 40
@@ -48,8 +48,8 @@ references:
     doi: 10.1137/S0036142901383910
   - title: A discrete de Rham complex with enhanced smoothness
     author:
-      - Tai, X.-C.
-      - Winther, R.
+      - Tai, Xue-Cheng
+      - Winther, Ragner
     year: 2006
     journal: Calcolo
     volume: 43

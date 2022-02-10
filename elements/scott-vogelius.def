@@ -18,8 +18,8 @@ notes:
 min-order: 1
 references:
   - author:
-      - Scott, L. R.
-      - Vogelius, M.
+      - Scott, L. Ridgway
+      - Vogelius, Michael
     title: Norm estimates for a maximal right inverse of the divergence operator in spaces of piecewise polynomials
     journal: "ESAIM: Mathematical Modelling and Numerical Analysis - Mod&eacute;lisation Math&eacute;matique et Analyse Num&eacute;rique"
     pagestart: 111
@@ -27,7 +27,7 @@ references:
     volume: 19
     number: 1
     year: 1985
-  - author: Zhang, S.
+  - author: Zhang, Shangyou
     journal: Mathematics of Computation
     number: 250
     pagestart: 543

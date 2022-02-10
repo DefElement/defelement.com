@@ -41,19 +41,19 @@ references:
   - type: incollection
     title: A mixed finite element method for 2nd order elliptic problems
     author:
-      - Raviart, P.-A.
-      - Thomas, J.-M.
+      - Raviart, Pierre-Arnaud
+      - Thomas, Jean-Marie
     booktitle: Mathematical aspects of finite element methods
     editor:
-      - Galligani, I.
-      - Magenes, E.
+      - Galligani, Ilio
+      - Magenes, Enrico
     pagestart: 292
     pageend: 315
     series: Lecture Notes in Mathematics
     volume: 606
     year: 1977
   - title: Mixed finite elements in \(\mathbb{R}^3\)
-    author: N&eacute;d&eacute;lec, J. C.
+    author: N&eacute;d&eacute;lec, Jean-Claude
     year: 1980
     journal: Numerische Mathematik
     volume: 35
@@ -63,9 +63,9 @@ references:
     doi: 10.1007/BF01396415
   - title: Electromagnetic scattering by surfaces of arbitrary shape
     author:
-      - Rao, S.
-      - Wilton, D.
-      - Glisson, A.
+      - Rao, S. S. M.
+      - Wilton, Donald R.
+      - Glisson, Allen W.
     journal: IEEE transactions on antennas and propagation
     volume: 30
     year: 1982

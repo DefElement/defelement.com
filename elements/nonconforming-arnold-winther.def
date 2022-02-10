@@ -22,8 +22,8 @@ examples:
 references:
   - title: Nonconforming mixed elements for elasticity
     author:
-      - Arnold, D. N.
-      - Winther, R.
+      - Arnold, Douglas N.
+      - Winther, Ragnar
     year: 2003
     journal: Numerische Mathematik
     pagestart: 295

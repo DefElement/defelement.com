@@ -38,15 +38,15 @@ references:
   - type: incollection
     title: Common and unusual finite elements
     author:
-      - Kirby, R. C.
-      - Logg, A.
-      - Rognes, M. E.
-      - Terrel, A. R.
+      - Kirby, Robert C.
+      - Logg, Anders
+      - Rognes, Marie E.
+      - Terrel, Andy R.
     booktitle: Automated solution of differential equations by the finite element method
     editor:
-      - Logg, A.
-      - Mardal, K. A.
-      - Wells, G. N.
+      - Logg, Anders
+      - Mardal, Kent-Andre
+      - Wells, Garth N.
     year: 2012
     pagestart: 95
     pageend: 119

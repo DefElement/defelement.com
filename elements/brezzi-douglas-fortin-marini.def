@@ -43,10 +43,10 @@ examples:
   - hexahedron,2
 references:
   - author:
-      - Brezzi, F.
-      - Douglas, J.
-      - Fortin, M.
-      - Marini, L. D.
+      - Brezzi, Franco
+      - Douglas, Jim
+      - Fortin, Michel
+      - Marini, L. Donatella
     title: Efficient rectangular mixed finite elements in two and three space variables
     doi: 10.1051/m2an/1987210405811
     journal: "ESAIM: Mathematical Modelling and Numerical Analysis"

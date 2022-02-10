@@ -24,9 +24,9 @@ examples:
 references:
   - title: Quadrilateral H(div) Finite Elements
     author:
-      - Arnold, D. N.
-      - Boffi, D.
-      - Falk, R. S.
+      - Arnold, Douglas N.
+      - Boffi, Daniele
+      - Falk, Richard S.
     year: 2005
     journal: SIAM Journal on Numerical Analysis
     pagestart: 2429

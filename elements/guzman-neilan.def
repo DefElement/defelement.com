@@ -35,8 +35,8 @@ examples:
 references:
   - title: Inf-sup stable finite elements on barycentric refinements producing divergence-free approximations in arbitrary dimensions
     author:
-      - Guzm&aacute;n, J.
-      - Neilan, M.
+      - Guzm&aacute;n, Johnny
+      - Neilan, Michael
     pagestart: 2826
     pageend: 2844
     journal: SIAM Journal on Numerical Analysis

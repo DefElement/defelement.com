@@ -34,9 +34,9 @@ examples:
 references:
   - title: Two families of mixed finite elements for second order elliptic problems
     author:
-      - Brezzi, F.
-      - Douglas, J.
-      - Marini, L. D.
+      - Brezzi, Franco
+      - Douglas, Jim
+      - Marini, L. Donatella
     journal: Numerische Mathematik
     volume: 47
     number: 2

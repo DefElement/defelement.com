@@ -16,7 +16,7 @@ examples:
   - triangle,3
 references:
   - title: Interpolation error estimates for the reduced Hsieh-Clough-Tocher triangle
-    author: Ciarlet, P. G.
+    author: Ciarlet, Philippe G.
     journal: Mathematics of Computation
     volume: 32
     year: 1978

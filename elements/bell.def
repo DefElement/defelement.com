@@ -23,7 +23,7 @@ examples:
   - triangle,5
 references:
   - title: A refined triangular plate bending finite element
-    author: Bell, K.
+    author: Bell, Kolbein
     year: 1969
     journal: International Journal for Numerical Methods in Engineering
     volume: 1

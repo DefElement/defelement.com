@@ -14,9 +14,9 @@ min-order: 1
 max-order: 1
 references:
   - author:
-    - Arnold, D. N.
-    - Brezzi, F.
-    - Fortin, M.
+    - Arnold, Douglas N.
+    - Brezzi, Franco
+    - Fortin, Michel
     year: 1984
     title: A stable finite element for the stokes equations
     journal: CALCOLO

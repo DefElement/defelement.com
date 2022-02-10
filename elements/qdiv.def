@@ -38,7 +38,7 @@ examples:
   - hexahedron,2
 references:
   - title: Mixed finite elements in \(\mathbb{R}^3\)
-    author: N&eacute;d&eacute;lec, J. C.
+    author: N&eacute;d&eacute;lec, Jean-Claude
     year: 1980
     journal: Numerische Mathematik
     volume: 35

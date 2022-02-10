@@ -26,8 +26,8 @@ examples:
 references:
   - title: Conforming and nonconforming finite element methods for solving the stationary Stokes equations
     author:
-      - Crouzeix, M.
-      - Raviart, P.
+      - Crouzeix, Michel
+      - Raviart, Pierre-Arnaud
     year: 1973
     journal: Revue Fran&ccedil;aise d'Automatique, Informatique et Recherche Op&eacute;rationnelle
     volume: 3

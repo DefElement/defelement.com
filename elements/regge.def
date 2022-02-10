@@ -28,7 +28,7 @@ examples:
   - triangle,2
 references:
   - title: General relativity without coordinates
-    author: Regge, T.
+    author: Regge, Tullio
     journal: Il Nuovo Cimento
     volume: 19
     issue: 3
@@ -37,7 +37,7 @@ references:
     year: 1961
     doi: 10.1007/BF02733251
   - title: On the linearization of Regge calculus
-    author: Christiansen, S. H.
+    author: Christiansen, Snorre H.
     journal: Numerische Mathematik
     volume: 119
     issue: 4

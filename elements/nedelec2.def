@@ -37,7 +37,7 @@ examples:
   - tetrahedron,2
 references:
   - title: A new family of mixed finite elements in \(\mathbb{R}^3\)
-    author: N&eacute;d&eacute;lec, J. C.
+    author: N&eacute;d&eacute;lec, Jean-Claude
     year: 1986
     journal: Numerische Mathematik
     volume: 50

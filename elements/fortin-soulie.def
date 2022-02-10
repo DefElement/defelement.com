@@ -22,7 +22,7 @@ examples:
 references:
   - title: A non‐conforming piecewise quadratic finite element on triangles
     author:
-      - Fortin, M.
+      - Fortin, Michel
       - Soulie, M.
     year: 1983
     journal: International Journal for Numerical Methods in Engineering

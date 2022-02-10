@@ -38,8 +38,8 @@ examples:
 references:
   - title: Nonconforming finite element spaces for 2mth order partial differential equations on Rn simplical grids when m=n+1
     author:
-      - Wu, S.
-      - Xu, J.
+      - Wu, Shuonan
+      - Xu, Jinchao
     year: 2019
     journal: Mathematics of computation
     volume: 88
