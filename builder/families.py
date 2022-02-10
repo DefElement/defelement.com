@@ -33,7 +33,7 @@ def cockburn_fu_name(family, r="r", cell=None, degree="k"):
 
 arnold_logg_reference = {
     "title": "Periodic table of the finite elements",
-    "author": "Arnold, D. and Logg, A.",
+    "author": "Arnold, Douglas N. and Logg, Anders",
     "journal": "SIAM News",
     "year": "2014",
     "volume": "47",
@@ -43,7 +43,7 @@ arnold_logg_reference = {
 
 cockburn_fu_reference = {
     "title": "A systematic construction of finite element commuting exact sequences",
-    "author": "Cockburn, B. and Fu, G.",
+    "author": "Cockburn, Bernardo and Fu, Guosheng",
     "journal": "SIAM journal on numerical analysis",
     "volume": "55",
     "number": "4",
