@@ -70,6 +70,8 @@ def basix_example(element):
             out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
             if "lagrange_variant" in params:
                 out += f", basix.LagrangeVariant.{params['lagrange_variant']}"
+            if "dpc_variant" in params:
+                out += f", basix.DPCVariant.{params['dpc_variant']}"
             if "discontinuous" in params:
                 if params["discontinuous"] == "True":
                     out += ", True"
