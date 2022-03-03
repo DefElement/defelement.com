@@ -66,6 +66,7 @@ categoriser = Categoriser()
 categoriser.load_categories(os.path.join(settings.data_path, "categories"))
 categoriser.load_references(os.path.join(settings.data_path, "references"))
 categoriser.load_families(os.path.join(settings.data_path, "families"))
+categoriser.load_implementations(os.path.join(settings.data_path, "implementations"))
 
 # Load elements from .def files
 categoriser.load_folder(settings.element_path)
@@ -141,11 +142,8 @@ for e in categoriser.elements:
 
     # Implementations
     libraries = [
-        ("symfem", "Symfem", "https://github.com/mscroggs/symfem", "pip3 install symfem"),
-        ("basix", "Basix", "https://github.com/fenics/basix",
-         "pip3 install git+https://github.com/fenics/basix.git"),
-        ("ufl", "UFL", "https://github.com/fenics/ufl", "pip3 install UFL"),
-        ("bempp", "Bempp", "https://github.com/bempp/bempp-cl", "pip3 install bempp-cl"),
+        (i, j["name"], j["url"], j["install"])
+        for i, j in categoriser.implementations.items()
     ]
     libraries.sort(key=lambda i: i[0])
     for codename, libname, url, pip in libraries:
@@ -458,6 +456,32 @@ for c in categoriser.categories:
         f.write(make_html_page(sub_content))
 
 with open(os.path.join(settings.htmlindices_path, "categories/index.html"), "w") as f:
+    f.write(make_html_page(content))
+
+# Implementations index
+os.mkdir(os.path.join(settings.htmlindices_path, "implementations"))
+content = "<h1>Implemented elements</h1>\n"
+for c, info in categoriser.implementations.items():
+    category_pages = []
+    for e in categoriser.elements_in_implementation(c):
+        for name in [e.html_name] + e.alternative_names(False, False, False, True):
+            category_pages.append((name.lower(),
+                                   f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
+
+    category_pages.sort(key=lambda x: x[0])
+
+    content += f"<h2><a name='{c}'>Implemented in <a href='{info['url']}'>{info['name']}</a></a></h2>\n<ul>"
+    content += "".join([i[1] for i in category_pages])
+    content += "</ul>"
+
+    sub_content += f"<h1>Implemented in <a href='{info['url']}'>{info['name']}</a></h1>\n<ul>"
+    sub_content += "".join([i[1] for i in category_pages])
+    sub_content += "</ul>"
+
+    with open(os.path.join(settings.htmlindices_path, f"implementations/{c}.html"), "w") as f:
+        f.write(make_html_page(sub_content))
+
+with open(os.path.join(settings.htmlindices_path, "implementations/index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Reference elements index
