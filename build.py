@@ -488,7 +488,7 @@ for c, info in categoriser.implementations.items():
     content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
-    sub_content += f"<h1>Implemented in <a href='{info['url']}'>{info['name']}</a></h1>\n<ul>"
+    sub_content = f"<h1>Implemented in <a href='{info['url']}'>{info['name']}</a></h1>\n<ul>"
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
