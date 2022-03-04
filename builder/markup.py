@@ -26,7 +26,7 @@ def list_contributors():
         out += f"<h2>{info['name']}</h2>"
         if "desc" in info:
             out += f"<p>{markup(info['desc'])}</p>"
-        out += f"<ul class='person-info'>"
+        out += "<ul class='person-info'>"
         if "website" in info:
             website_name = info["website"].split("//")[1].strip("/")
             out += (f"<li><a href='{info['website']}'>"
@@ -40,8 +40,8 @@ def list_contributors():
             out += (f"<li><a href='https://github.com/{info['github']}'>"
                     "<i class='fa fa-github' aria-hidden='true'></i>"
                     f"&nbsp;{info['github']}</a></li>")
-        out += f"</ul>"
-        out += f"<br style='clear:both' />"
+        out += "</ul>"
+        out += "<br style='clear:both' />"
     return out
 
 

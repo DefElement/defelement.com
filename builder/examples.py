@@ -122,7 +122,7 @@ def _describe_dof(element, d):
         desc += "\\end{array}\\right)"
         return desc, []
     if _is_exact_instance(d, functionals.WeightedPointEvaluation):
-        desc = f"v\\mapsto " + to_tex(d.weight)
+        desc = "v\\mapsto " + to_tex(d.weight)
         desc += " v(" + ",".join([to_tex(i, True) for i in d.dof_point()]) + ")"
         return desc, []
     elif _is_exact_instance(d, functionals.PointNormalDerivativeEvaluation):

@@ -188,7 +188,8 @@ for e in categoriser.elements:
                 info += "}\n"
                 info += "</script>"
 
-            implementations.append((f"{libname}", info))
+            implementations.append(
+                (f"<a href='/lists/implementations/{libname}.html'>{libname}</a>", info))
 
     # Categories
     cats = e.categories()
