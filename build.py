@@ -457,7 +457,8 @@ for c in categoriser.categories:
 
     category_pages.sort(key=lambda x: x[0])
 
-    content += f"<h2><a name='{c}'>{categoriser.get_category_name(c)}</a></h2>\n<ul>"
+    content += (f"<h2><a href='/lists/categories/{c}.html'>{categoriser.get_category_name(c)}"
+                "</a></h2>\n<ul>")
     content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
@@ -483,8 +484,8 @@ for c, info in categoriser.implementations.items():
 
     category_pages.sort(key=lambda x: x[0])
 
-    content += (f"<h2><a name='{c}'>Implemented in <a href='{info['url']}'>{info['name']}"
-                "</a></a></h2>\n<ul>")
+    content += (f"<h2><a href='/lists/implementations/{c}.html'>Implemented in {info['name']}"
+                "</a></h2>\n<ul>")
     content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
@@ -510,7 +511,7 @@ for c in categoriser.references:
 
     refels.sort(key=lambda x: x[0])
 
-    content += f"<h2><a name='{c}'></a>{cap_first(c)}</h2>\n"
+    content += f"<h2><a href='/lists/references/{c}.html'></a>{cap_first(c)}</h2>\n"
     content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
     sub_content = "<h1>Finite elements on a"
