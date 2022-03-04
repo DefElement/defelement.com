@@ -10,6 +10,7 @@ from builder.html import make_html_page
 from builder.snippets import parse_example
 from builder.families import (arnold_logg_name, cockburn_fu_name,
                               arnold_logg_reference, cockburn_fu_reference)
+from builder.rss import make_rss
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
@@ -187,7 +188,8 @@ for e in categoriser.elements:
                 info += "}\n"
                 info += "</script>"
 
-            implementations.append((f"{libname}", info))
+            implementations.append(
+                (f"<a href='/lists/implementations/{libname}.html'>{libname}</a>", info))
 
     # Categories
     cats = e.categories()
@@ -410,8 +412,9 @@ with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Recently updated elements
+rss_icon = "<span style='color:#FF8800'><i class='fa-solid fa-square-rss'></i></span>"
 content = "<h1>Recent elements</h1>\n"
-content += "<h2>Recently added elements</h2>\n"
+content += f"<h2>Recently added elements <a href='/new-elements.xml'>{rss_icon}</a></h2>\n"
 content += "<ul>\n"
 for e in categoriser.recently_added(10):
     content += f"<li><a href='/elements/{e.html_filename}'>{e.html_name}</a>"
@@ -420,7 +423,7 @@ for e in categoriser.recently_added(10):
     content += "</li>\n"
 content += "</ul>\n"
 
-content += "<h2>Recently updated elements</h2>\n"
+content += f"<h2>Recently updated elements <a href='/updated-elements.xml'>{rss_icon}</a></h2>\n"
 content += "<ul>\n"
 for e in categoriser.recently_updated(10):
     content += f"<li><a href='/elements/{e.html_filename}'>{e.html_name}</a>"
@@ -431,6 +434,16 @@ content += "</ul>\n"
 
 with open(os.path.join(settings.htmlindices_path, "recent.html"), "w") as f:
     f.write(make_html_page(content))
+
+with open(os.path.join(settings.html_path, "new-elements.xml"), "w") as f:
+    f.write(make_rss(categoriser.recently_added(10), "recently added elements",
+                     "Finite elements that have recently been added to DefElement",
+                     "created"))
+
+with open(os.path.join(settings.html_path, "updated-elements.xml"), "w") as f:
+    f.write(make_rss(categoriser.recently_updated(10), "recently updated elements",
+                     "Finite element whose pages on DefElement have recently been updated",
+                     "modified"))
 
 # Category index
 os.mkdir(os.path.join(settings.htmlindices_path, "categories"))
@@ -470,11 +483,12 @@ for c, info in categoriser.implementations.items():
 
     category_pages.sort(key=lambda x: x[0])
 
-    content += f"<h2><a name='{c}'>Implemented in <a href='{info['url']}'>{info['name']}</a></a></h2>\n<ul>"
+    content += (f"<h2><a name='{c}'>Implemented in <a href='{info['url']}'>{info['name']}"
+                "</a></a></h2>\n<ul>")
     content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
-    sub_content += f"<h1>Implemented in <a href='{info['url']}'>{info['name']}</a></h1>\n<ul>"
+    sub_content = f"<h1>Implemented in <a href='{info['url']}'>{info['name']}</a></h1>\n<ul>"
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
