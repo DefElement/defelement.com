@@ -17,7 +17,9 @@ def markup_citation(r):
         out += markup_authors(r["author"])
     else:
         out += "<i>(unknown author)</i>"
-    out += f". {r['title']}"
+    if out[-1] != ".":
+        out += "."
+    out += f" {r['title']}"
     if "journal" in r:
         out += f", <em>{r['journal']}</em>"
         if "volume" in r:
