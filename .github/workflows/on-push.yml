@@ -18,7 +18,9 @@ jobs:
         run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 -m flake8 builder
+      - run: |
+          python3 -m flake8 builder
+          python3 -m flake8 build.py
         name: Flake8 checks on builder
       - run: python3 -m flake8 test
         name: Flake8 checks on tests
