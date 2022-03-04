@@ -13,7 +13,7 @@ def make_rss(elements, title, desc, date):
         out += "  <item>\n"
         out += f"    <title>{html.unescape(e.html_name)}</title>\n"
         out += f"    <link>https://www.defelement.com/elements/{e.html_filename}</link>\n"
-        out += f"    <description>{e.html_name}</description>\n"
+        out += f"    <description>{html.unescape(e.html_name)}</description>\n"
         if getattr(e, date) is not None:
             out += f"    <pubDate>{getattr(e, date).strftime('%a, %d %b %Y')}</pubDate>\n"
         out += "  </item>\n"
