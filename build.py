@@ -412,7 +412,8 @@ with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Recently updated elements
-rss_icon = "<span style='color:#FF8800'><i class='fa-solid fa-square-rss'></i></span>"
+rss_icon = ("<span style='color:#FF8800;padding-left:10px'>"
+            "<i class='fa fa-rss' aria-hidden='true'></i></span>")
 content = "<h1>Recent elements</h1>\n"
 content += f"<h2>Recently added elements <a href='/new-elements.xml'>{rss_icon}</a></h2>\n"
 content += "<ul>\n"

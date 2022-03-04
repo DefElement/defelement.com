@@ -1,3 +1,6 @@
+import html
+
+
 def make_rss(elements, title, desc, date):
     out = ("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
            "<rss version=\"2.0\">\n"
@@ -8,7 +11,7 @@ def make_rss(elements, title, desc, date):
 
     for e in elements:
         out += "  <item>\n"
-        out += f"    <title>{e.html_name}</title>\n"
+        out += f"    <title>{html.unescape(e.html_name)}</title>\n"
         out += f"    <link>https://www.defelement.com/elements/{e.html_filename}</link>\n"
         out += f"    <description>{e.html_name}</description>\n"
         if getattr(e, date) is not None:
