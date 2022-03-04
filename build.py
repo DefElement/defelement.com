@@ -412,8 +412,9 @@ with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Recently updated elements
+rss_icon = "<span style='color:#FF8800'><i class='fa-solid fa-square-rss'></i></span>"
 content = "<h1>Recent elements</h1>\n"
-content += "<h2>Recently added elements</h2>\n"
+content += f"<h2>Recently added elements <a href='/new-elements.xml'>{rss_icon}</a></h2>\n"
 content += "<ul>\n"
 for e in categoriser.recently_added(10):
     content += f"<li><a href='/elements/{e.html_filename}'>{e.html_name}</a>"
@@ -422,7 +423,7 @@ for e in categoriser.recently_added(10):
     content += "</li>\n"
 content += "</ul>\n"
 
-content += "<h2>Recently updated elements</h2>\n"
+content += f"<h2>Recently updated elements <a href='/updated-elements.xml'>{rss_icon}</a></h2>\n"
 content += "<ul>\n"
 for e in categoriser.recently_updated(10):
     content += f"<li><a href='/elements/{e.html_filename}'>{e.html_name}</a>"
