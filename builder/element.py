@@ -53,6 +53,7 @@ class Categoriser:
         self.exterior_families = {}
         self.references = {}
         self.categories = {}
+        self.implementations = {}
 
     def recently_added(self, n):
         if self.elements[0].created is None:
@@ -70,6 +71,10 @@ class Categoriser:
                 if line.strip() != "":
                     a, b = line.split(":", 1)
                     self.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
+
+    def load_implementations(self, file):
+        with open(file) as f:
+            self.implementations = yaml.load(f, Loader=yaml.FullLoader)
 
     def load_families(self, file):
         with open(file) as f:
@@ -155,6 +160,9 @@ class Categoriser:
 
     def elements_in_category(self, c):
         return [e for e in self.elements if c in e.categories(False, False)]
+
+    def elements_in_implementation(self, i):
+        return [e for e in self.elements if e.implemented(i)]
 
     def elements_by_reference(self, r):
         return [e for e in self.elements if r in e.reference_elements(False)]

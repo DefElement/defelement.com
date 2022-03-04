@@ -1,0 +1,16 @@
+symfem:
+  name: Symfem
+  url: https://github.com/mscroggs/symfem
+  install: pip3 install symfem
+basix:
+  name: Basix
+  url: https://github.com/fenics/basix
+  install: pip3 install git+https://github.com/fenics/basix.git
+ufl:
+  name: UFL
+  url: https://github.com/fenics/ufl
+  install: pip3 install UFL
+bempp:
+  name: Bempp
+  url: https://github.com/bempp/bempp-cl
+  install: pip3 install bempp-cl
