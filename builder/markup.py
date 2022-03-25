@@ -103,6 +103,7 @@ def markup(content):
 
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
 
+    out = out.replace("{{tick}}", "<i class='fa-solid fa-check' style='color:#55ff00'></i>")
     if "{{list contributors}}" in out:
         out = out.replace("{{list contributors}}", list_contributors())
 

@@ -156,8 +156,8 @@ The entries in this yaml file are:
 <thead>
 <tr><td>Name</td><td>Required</td><td>Description</td></tr>
 </thead>
-<tr><td>`name`</td><td>Yes</td><td>The name of the element (ascii).</td></tr>
-<tr><td>`html-name`</td><td>Yes</td><td>The name of the element, including HTML special characters.</td></tr>
+<tr><td>`name`</td><td>{{tick}}</td><td>The name of the element (ascii).</td></tr>
+<tr><td>`html-name`</td><td>{{tick}}</td><td>The name of the element, including HTML special characters.</td></tr>
 <tr><td>`alt-names`</td><td></td><td>Alternative (HTML) names of the element.</td></tr>
 <tr><td>`short-names`</td><td></td><td>Abbreviated names of the element.</td></tr>
 <tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
@@ -166,7 +166,7 @@ The entries in this yaml file are:
 <tr><td>`min-order`</td><td></td><td>The minimum order of the element</td></tr>
 <tr><td>`max-order`</td><td></td><td>The maximum order of the element</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
-<tr><td>`reference&nbsp;elements`</td><td>Yes</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
+<tr><td>`reference&nbsp;elements`</td><td>{{tick}}</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`polynomial&nbsp;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>
