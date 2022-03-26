@@ -498,7 +498,7 @@ class Element:
             return out.split(" variant=")
         return out, None
 
-    def list_of_implementation_strings(self, lib):
+    def list_of_implementation_strings(self, lib, joiner="<br />"):
         assert self.implemented(lib)
         if isinstance(self.data[lib], str):
             s, params = self.get_implementation_string(lib, None)
@@ -526,8 +526,11 @@ class Element:
             if s not in i_dict:
                 i_dict[s] = []
             i_dict[s].append(i)
-        return "<br />".join([f"<code>{i}</code> ({', '.join(j)})"
-                              for i, j in i_dict.items()])
+        imp_list = [f"<code>{i}</code> ({', '.join(j)})" for i, j in i_dict.items()]
+        if joiner is None:
+            return imp_list
+        else:
+            return joiner.join(imp_list)
 
     def make_implementation_examples(self, lib):
         return getattr(snippets, f"{lib}_example")(self)

@@ -23,8 +23,8 @@ html-name: Lagrange
 alt-names:
   - Polynomial
   - Galerkin
-  - DGT
-  - Hdiv trace
+  - DGT (facets)
+  - Hdiv trace (facets)
   - Q (quadrilateral and hexahedron)
 notes:
   - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.

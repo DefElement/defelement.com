@@ -479,7 +479,17 @@ content = "<h1>Implemented elements</h1>\n"
 for c, info in categoriser.implementations.items():
     category_pages = []
     for e in categoriser.elements_in_implementation(c):
-        for name in [e.html_name] + e.alternative_names(False, False, False, True):
+        names = {e.html_name}
+        refs = set()
+        for cname in categoriser.references:
+            for i_str in e.list_of_implementation_strings(c, None):
+                if "(" not in i_str or f"({cname})" in i_str:
+                    refs.add(cname)
+                    break
+        for r in refs:
+            for name in e.alternative_names(False, False, False, True, r):
+                names.add(name)
+        for name in names:
             category_pages.append((name.lower(),
                                    f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
 
