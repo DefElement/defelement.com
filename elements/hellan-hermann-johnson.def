@@ -25,4 +25,9 @@ references:
       - Arnold, Douglas N.
       - Walker, Shawn W.
     year: 2020
-    arxiv: 1909.09687
+    journal: SIAM Journal on Numberical Analysis
+    volume: 58
+    issue: 5
+    pagestart: 2829
+    pageend: 2855
+    doi: 10.1137/19M1288723
