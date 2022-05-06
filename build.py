@@ -100,8 +100,8 @@ for e in categoriser.elements:
     if len(short_names) > 0:
         element_data.append(("Abbreviated names", ", ".join(short_names)))
 
-    # Orders
-    element_data.append(("Orders", e.order_range()))
+    # Degrees
+    element_data.append(("Degrees", e.order_range()))
 
     # Reference elements
     refs = e.reference_elements()
@@ -232,7 +232,7 @@ for e in categoriser.elements:
             example = markup_example(element)
 
             if len(example) > 0:
-                name = f"{cell}<br />order {order}"
+                name = f"{cell}<br />degree {order}"
                 for i, j in kwargs.items():
                     name += f"<br />{i}={j}"
                 element_names.append(name)
