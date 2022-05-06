@@ -5,7 +5,7 @@ max-order: 1
 categories:
   - scalar
 ndofs:
-  quadrilateral
+  quadrilateral:
     formula: 4
   hexahedron:
     formula: 6
