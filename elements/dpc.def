@@ -1,5 +1,7 @@
 name: dPc
 html-name: dPc
+alt-names:
+  - discontinuous polynomial cubical
 exterior-calculus:
   - S,d,tp
   - S-,d,tp
