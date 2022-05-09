@@ -10,8 +10,8 @@ ndofs:
   hexahedron:
     formula: 6
 reference elements:
-  - triangle
-  - tetrahedron
+  - quadrilateral
+  - hexahedron
 polynomial set:
   quadrilateral: poly[k] && <k>[\operatorname{span}\left\{(x_1+x_2)(x_1-x_2)\right\}]
   hexahedron: poly[k] && <k>[\operatorname{span}\left\{(x_1+x_2)(x_1-x_2),(x_2+x_3)(x_2-x_3))\right\}]
