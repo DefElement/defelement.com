@@ -36,3 +36,25 @@ examples:
   - triangle,1
   - triangle,2
   - triangle,3
+references:
+  - title: Bernstein&ndash;B&eacute;zier finite elements of arbitrary order and optimal assembly procedures
+    author:
+    - Ainsworth, Mark
+    - Andriamaro, Gaelle
+    - Davydov, Oleg
+    journal: SIAM Journal on Scientific Computing
+    volume: 33
+    issue: 6
+    pagestart: 3087
+    pageend: 3109
+    year: 2011
+    doi: 10.1137/11082539X
+  - title: Fast simplicial finite element algorithms using Bernstein polynomials
+    author: Kirby, Robert C.
+    year: 2011
+    journal: Numerische Mathematik
+    pagestart: 631
+    pageend: 652
+    volume: 117
+    issue: 4
+    doi: 10.1007/s00211-010-0327-2
