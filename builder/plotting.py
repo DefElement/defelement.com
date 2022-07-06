@@ -4,7 +4,7 @@ import os
 from cairosvg import svg2png
 from symfem.finite_element import CiarletElement, DirectElement
 from symfem.calculus import grad
-from symfem.vectors import vdot, vsub
+from symfem.vectors import vdot, vsub, vadd
 from symfem.symbolic import subs, x
 from symfem.symbolic import PiecewiseFunction
 
@@ -410,14 +410,22 @@ def make_lattice(element, n, offset=False, pairs=False):
         if offset:
             assert not pairs
             points = []
+            assert f.tdim == 2
             for piece in f.pieces:
-                assert len(piece[0]) == 3
                 og = [float(i) for i in piece[0][0]]
                 a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
                 a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
-                points += [(og[0] + a0[0] * (i + 0.5) / (m + 1) + a1[0] * (j + 0.5) / (m + 1),
-                            og[1] + a0[1] * (i + 0.5) / (m + 1) + a1[1] * (j + 0.5) / (m + 1))
-                           for i in range(m) for j in range(m - i)]
+                if len(piece[0]) == 3:
+                    points += [(og[0] + a0[0] * (i + 0.5) / (m + 1) + a1[0] * (j + 0.5) / (m + 1),
+                                og[1] + a0[1] * (i + 0.5) / (m + 1) + a1[1] * (j + 0.5) / (m + 1))
+                               for i in range(m) for j in range(m - i)]
+                elif len(piece[0]) == 4:
+                    assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
+                    points += [(og[0] + a0[0] * (i + 0.5) / (m + 1) + a1[0] * (j + 0.5) / (m + 1),
+                                og[1] + a0[1] * (i + 0.5) / (m + 1) + a1[1] * (j + 0.5) / (m + 1))
+                               for i in range(m) for j in range(m)]
+                else:
+                    raise NotImplementedError()
             return points
         else:
             all_points = []
@@ -435,15 +443,24 @@ def make_lattice(element, n, offset=False, pairs=False):
                         pairlist += [(s, s + i - 1)]
                     s += i
             for piece in f.pieces:
-                assert len(piece[0]) == 3
                 og = [float(i) for i in piece[0][0]]
                 a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
                 a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
-                all_points.append(
-                    [(og[0] + a0[0] * i / (m - 1) + a1[0] * j / (m - 1),
-                      og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
-                     for i in range(m) for j in range(m - i)]
-                )
+                if len(piece[0]) == 3:
+                    all_points.append(
+                        [(og[0] + a0[0] * i / (m - 1) + a1[0] * j / (m - 1),
+                          og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
+                         for i in range(m) for j in range(m - i)]
+                    )
+                elif len(piece[0]) == 4:
+                    assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
+                    all_points.append(
+                        [(og[0] + a0[0] * i / (m - 1) + a1[0] * j / (m - 1),
+                          og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
+                         for i in range(m) for j in range(m)]
+                    )
+                else:
+                    raise NotImplementedError()
             return all_points, [pairlist for p in all_points]
 
     if ref.name == "interval":
