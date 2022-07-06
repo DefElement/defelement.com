@@ -1,0 +1,37 @@
+name: P1-iso-P2
+html-name: P1-iso-P2
+alt-names:
+  - P2-iso-P1
+  - iso-P2 P1
+ndofs:
+  triangle:
+    formula: 6
+  quadrilateral:
+    formula: 9
+entity-ndofs:
+  vertices:
+    formula: 1
+  edges:
+    formula: 1
+  faces:
+    triangle:
+      formula: 0
+    quadrilateral:
+      formula: 1
+min-order: 1
+max-order: 1
+categories:
+  - scalar
+reference elements:
+  - triangle
+  - quadrilateral
+dofs:
+  vertices: point evaluations
+  edges: point evaluations
+  faces: point evaluations
+symfem:
+  triangle: P1-iso-P2
+  quadrilateral: P1-iso-P2
+examples:
+  - triangle,1
+  - quadrilateral,1
