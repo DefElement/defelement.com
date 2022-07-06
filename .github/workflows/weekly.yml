@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@p2-iso-p1
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
       - name: Install Basix
         run: |
