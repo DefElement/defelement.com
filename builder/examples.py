@@ -12,18 +12,24 @@ def to_tex(f, tfrac=False):
         return "\\left(\\begin{array}{c}" + "\\\\".join(
             ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
     if isinstance(f, PiecewiseFunction):
-        assert f.tdim == 2
         out = "\\begin{cases}\n"
         joiner = ""
         for points, func in f.pieces:
             out += joiner
             joiner = "\\\\"
             out += to_tex(func, True)
-            if len(points) == 3:
-                out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
-            else:
+            if f.tdim == 2:
+                if len(points) == 3:
+                    out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
+                elif len(points) == 4:
+                    out += f"&\\text{{in }}\\operatorname{{Quadrilateral}}({points})"
+                else:
+                    raise ValueError("Unsupported cell type")
+            elif f.tdim == 3:
                 assert len(points) == 4
-                out += f"&\\text{{in }}\\operatorname{{Quadrilateral}}({points})"
+                out += f"&\\text{{in }}\\operatorname{{Tetrahedron}}({points})"
+            else:
+                raise ValueError(f"Unsupported tdim: {f.tdim}")
         out += "\\end{cases}"
         return out
     out = sympy.latex(sympy.simplify(sympy.expand(f)))
