@@ -12,13 +12,18 @@ def to_tex(f, tfrac=False):
         return "\\left(\\begin{array}{c}" + "\\\\".join(
             ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
     if isinstance(f, PiecewiseFunction):
+        assert f.tdim == 2
         out = "\\begin{cases}\n"
         joiner = ""
         for points, func in f.pieces:
             out += joiner
             joiner = "\\\\"
             out += to_tex(func, True)
-            out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
+            if len(points) == 3:
+                out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
+            else:
+                assert len(points) == 4
+                out += f"&\\text{{in }}\\operatorname{{Quadrilateral}}({points})"
         out += "\\end{cases}"
         return out
     out = sympy.latex(sympy.simplify(sympy.expand(f)))

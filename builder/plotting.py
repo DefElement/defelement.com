@@ -428,20 +428,32 @@ def make_lattice(element, n, offset=False, pairs=False):
                     raise NotImplementedError()
             return points
         else:
-            all_points = []
-            pairlist = []
+            tri_pairlist = []
             s = 0
             for j in range(m-1, 0, -1):
-                pairlist += [(i, i+1) for i in range(s, s+j)]
+                tri_pairlist += [(i, i+1) for i in range(s, s+j)]
                 s += j + 1
             for k in range(m + 1):
                 s = k
                 for i in range(m, k, -1):
                     if i != k + 1:
-                        pairlist += [(s, s + i)]
+                        tri_pairlist += [(s, s + i)]
                     if k != 0:
-                        pairlist += [(s, s + i - 1)]
+                        tri_pairlist += [(s, s + i - 1)]
                     s += i
+            quad_pairlist = []
+            for i in range(m):
+                for j in range(m):
+                    node = i * m + j
+                    if j != m - 1:
+                        quad_pairlist += [(node, node + 1)]
+                    if i != m - 1:
+                        quad_pairlist += [(node, node + m)]
+                        if j != 0:
+                            quad_pairlist += [(node, node + m - 1)]
+
+            all_points = []
+            pairlists = []
             for piece in f.pieces:
                 og = [float(i) for i in piece[0][0]]
                 a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
@@ -452,6 +464,7 @@ def make_lattice(element, n, offset=False, pairs=False):
                           og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
                          for i in range(m) for j in range(m - i)]
                     )
+                    pairlists.append(tri_pairlist)
                 elif len(piece[0]) == 4:
                     assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
                     all_points.append(
@@ -459,9 +472,10 @@ def make_lattice(element, n, offset=False, pairs=False):
                           og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
                          for i in range(m) for j in range(m)]
                     )
+                    pairlists.append(quad_pairlist)
                 else:
                     raise NotImplementedError()
-            return all_points, [pairlist for p in all_points]
+            return all_points, pairlists
 
     if ref.name == "interval":
         if offset:
