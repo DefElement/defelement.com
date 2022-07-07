@@ -35,3 +35,14 @@ symfem:
 examples:
   - triangle,1
   - quadrilateral,1
+references:
+  - author:
+    - Bercovier, Michel
+    - Pironneau, Olivier
+    title: Error estimates for finite element method solution of the Stokes problem in the primitive variables
+    journal: Numerische Mathematik
+    year: 1979
+    volume: 33
+    pagestart: 211
+    pageend: 224
+    doi: 10.1007/BF01399555
