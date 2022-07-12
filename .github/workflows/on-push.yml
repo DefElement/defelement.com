@@ -127,7 +127,7 @@ jobs:
 
       - name: Install Bempp-cl
         run: |
-          sudo pip3 install numpy==1.20 scipy numba meshio>=4.0.16
+          sudo pip3 install numpy scipy numba meshio>=4.0.16
           sudo pip3 install git+https://github.com/bempp/bempp-cl.git
 
       - name: Install LaTeΧ
