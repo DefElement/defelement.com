@@ -113,7 +113,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install requirements
-        run: sudo pip3 install numpy>=1.21 scipy numba>=0.55.2 meshio>=4.0.16
+        run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
 
       - name: Install Symfem
         run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@less-isinstance
