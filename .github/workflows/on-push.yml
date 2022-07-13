@@ -15,7 +15,7 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@less-isinstance
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: |
@@ -33,7 +33,7 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@less-isinstance
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -67,7 +67,7 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@less-isinstance
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -116,7 +116,7 @@ jobs:
         run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
 
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@less-isinstance
+        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
       - name: Install Basix
         run: |
