@@ -17,7 +17,7 @@ def test_snippets(element, library):
     e = c.get_element(element)
 
     if not e.implemented(library):
-        return
+        pytest.skip()
 
     code = e.make_implementation_examples(library)
     lines = code.split("\n")

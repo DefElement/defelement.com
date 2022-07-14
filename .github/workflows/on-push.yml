@@ -24,7 +24,7 @@ jobs:
         name: Flake8 checks on builder
       - run: python3 -m flake8 test
         name: Flake8 checks on tests
-    
+
   test-build-website:
     name: Test building of defelement.com
     runs-on: ubuntu-latest
@@ -112,6 +112,9 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
 
+      - name: Install requirements
+        run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+
       - name: Install Symfem
         run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
 
@@ -122,13 +125,10 @@ jobs:
           sudo pip3 install git+https://github.com/FEniCS/basix.git
 
       - name: Install UFL
-        run: |
-          sudo pip3 install git+https://github.com/FEniCS/ufl.git
+        run: sudo pip3 install git+https://github.com/FEniCS/ufl.git
 
       - name: Install Bempp-cl
-        run: |
-          sudo pip3 install numpy==1.20 scipy numba meshio>=4.0.16
-          sudo pip3 install git+https://github.com/bempp/bempp-cl.git
+        run: sudo pip3 install git+https://github.com/bempp/bempp-cl.git
 
       - name: Install LaTeΧ
         run: |
