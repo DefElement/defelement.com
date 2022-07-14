@@ -410,20 +410,32 @@ def make_lattice(element, n, offset=False, pairs=False):
         if offset:
             assert not pairs
             points = []
-            assert f.tdim == 2
             for piece in f.pieces:
                 og = [float(i) for i in piece[0][0]]
                 a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
                 a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
-                if len(piece[0]) == 3:
-                    points += [(og[0] + a0[0] * (i + 0.5) / (m + 1) + a1[0] * (j + 0.5) / (m + 1),
-                                og[1] + a0[1] * (i + 0.5) / (m + 1) + a1[1] * (j + 0.5) / (m + 1))
-                               for i in range(m) for j in range(m - i)]
-                elif len(piece[0]) == 4:
-                    assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
-                    points += [(og[0] + a0[0] * (i + 0.5) / (m + 1) + a1[0] * (j + 0.5) / (m + 1),
-                                og[1] + a0[1] * (i + 0.5) / (m + 1) + a1[1] * (j + 0.5) / (m + 1))
-                               for i in range(m) for j in range(m)]
+                if f.tdim == 2:
+                    if len(piece[0]) == 3:
+                        points += [tuple(
+                            og[d] + a0[d] * (i + 0.5) / (m + 1) + a1[d] * (j + 0.5) / (m + 1)
+                            for d in range(2)) for i in range(m) for j in range(m - i)]
+                    elif len(piece[0]) == 4:
+                        assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
+                        points += [tuple(
+                            og[d] + a0[d] * (i + 0.5) / (m + 1) + a1[d] * (j + 0.5) / (m + 1)
+                            for d in range(2)) for i in range(m) for j in range(m)]
+                    else:
+                        raise NotImplementedError()
+                elif f.tdim == 3:
+                    if len(piece[0]) == 4:
+                        a2 = [float(i - j) for i, j in zip(piece[0][3], piece[0][0])]
+                        points += [tuple(
+                            og[d] + (
+                                a0[d] * (i + 0.5) + a1[d] * (j + 0.5) + a2[d] * (k + 0.5)
+                            ) / (m + 1) for d in range(3)
+                        ) for i in range(m) for j in range(m - i) for k in range(m - i - j)]
+                    else:
+                        raise NotImplementedError()
                 else:
                     raise NotImplementedError()
             return points
