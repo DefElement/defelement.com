@@ -1,4 +1,6 @@
 symfem
 sympy
+numpy
 cairosvg
 PyGithub
+pyyaml
