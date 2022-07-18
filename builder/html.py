@@ -1,6 +1,6 @@
+import os
 from . import settings
 from .markup import insert_dates
-import os
 
 
 def make_html_page(content, pagetitle=None):

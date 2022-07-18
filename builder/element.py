@@ -3,11 +3,11 @@ import warnings
 import yaml
 from datetime import datetime
 from github import Github
-from .polyset import make_poly_set, make_extra_info
-from .families import arnold_logg_name, cockburn_fu_name
-from .markup import insert_links
 from . import snippets
 from . import settings
+from .families import arnold_logg_name, cockburn_fu_name
+from .markup import insert_links
+from .polyset import make_poly_set, make_extra_info
 
 
 def make_dof_data(ndofs):

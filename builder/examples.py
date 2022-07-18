@@ -1,8 +1,9 @@
+import sympy
+from symfem.finite_element import CiarletElement, DirectElement
+from symfem.piecewise_functions import PiecewiseFunction
+from symfem.symbols import t
 from . import symbols
 from . import plotting
-import sympy
-from symfem.symbolic import PiecewiseFunction, t
-from symfem.finite_element import CiarletElement, DirectElement
 
 defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
 
