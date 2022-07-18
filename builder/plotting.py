@@ -48,7 +48,7 @@ class Plot:
 
     def map_to_2d(self, point):
         if self.dim is not None:
-            point = tuple(point)
+            point = tuple(float(i) for i in point)
             while len(point) < self.dim:
                 point += (0, )
 
