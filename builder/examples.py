@@ -1,5 +1,6 @@
 import sympy
 from symfem.finite_element import CiarletElement, DirectElement
+from symfem.functions import AnyFunction
 from symfem.piecewise_functions import PiecewiseFunction
 from symfem.symbols import t
 from . import symbols
@@ -12,33 +13,15 @@ def to_tex(f, tfrac=False):
     if isinstance(f, (list, tuple)):
         return "\\left(\\begin{array}{c}" + "\\\\".join(
             ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
-    if isinstance(f, PiecewiseFunction):
-        out = "\\begin{cases}\n"
-        joiner = ""
-        for points, func in f.pieces:
-            out += joiner
-            joiner = "\\\\"
-            out += to_tex(func, True)
-            if f.tdim == 2:
-                if len(points) == 3:
-                    out += f"&\\text{{in }}\\operatorname{{Triangle}}({points})"
-                elif len(points) == 4:
-                    out += f"&\\text{{in }}\\operatorname{{Quadrilateral}}({points})"
-                else:
-                    raise ValueError("Unsupported cell type")
-            elif f.tdim == 3:
-                assert len(points) == 4
-                out += f"&\\text{{in }}\\operatorname{{Tetrahedron}}({points})"
-            else:
-                raise ValueError(f"Unsupported tdim: {f.tdim}")
-        out += "\\end{cases}"
-        return out
-    out = sympy.latex(sympy.simplify(sympy.expand(f)))
-    out = out.replace("\\left[", "\\left(")
-    out = out.replace("\\right]", "\\right)")
+    elif isinstance(f, AnyFunction):
+        out = f.as_tex()
+    else:
+        out = sympy.latex(sympy.simplify(sympy.expand(f)))
+        out = out.replace("\\left[", "\\left(")
+        out = out.replace("\\right]", "\\right)")
 
-    for i, j in zip(t, defelement_t):
-        out = out.replace(sympy.latex(i), j)
+        for i, j in zip(t, defelement_t):
+            out = out.replace(sympy.latex(i), j)
 
     if tfrac:
         return out.replace("\\frac", "\\tfrac")
