@@ -33,6 +33,11 @@ if args.github_token is not None:
 
 if args.test is None:
     test_elements = None
+elif args.test == "auto":
+    test_elements = [
+        "buffa-christiansen", "direct-serendipity", "dual", "hellan-herrmann-johnson",
+        "hsieh-clough-tocher", "lagrange", "nedelec1", "raviart-thomas", "regge",
+        "serendipity", "taylor-hood", "vector-bubble-enriched-Lagrange"]
 else:
     test_elements = args.test.split(",")
 
