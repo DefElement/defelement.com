@@ -1,12 +1,17 @@
-from . import settings
-from datetime import datetime
 import os
+import sympy
 from cairosvg import svg2png
+from datetime import datetime
 from symfem.finite_element import CiarletElement, DirectElement
-from symfem.calculus import grad
-from symfem.vectors import vdot, vsub, vadd
-from symfem.symbolic import subs, x
-from symfem.symbolic import PiecewiseFunction
+from symfem.functions import VectorFunction
+from symfem.piecewise_functions import PiecewiseFunction
+from symfem.symbols import x
+from . import settings
+
+
+def VF(vec):
+    return VectorFunction(tuple(sympy.S(i) for i in vec))
+
 
 COLORS = {"orange": "#FF8800", "blue": "#44AAFF", "green": "#55FF00",
           "purple": "#DD2299", "light blue": "#BBEEFF",
@@ -43,7 +48,7 @@ class Plot:
 
     def map_to_2d(self, point):
         if self.dim is not None:
-            point = tuple(point)
+            point = tuple(float(i) for i in point)
             while len(point) < self.dim:
                 point += (0, )
 
@@ -410,7 +415,7 @@ def make_lattice(element, n, offset=False, pairs=False):
         if offset:
             assert not pairs
             points = []
-            for piece in f.pieces:
+            for piece in f.pieces.items():
                 og = [float(i) for i in piece[0][0]]
                 a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
                 a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
@@ -420,7 +425,8 @@ def make_lattice(element, n, offset=False, pairs=False):
                             og[d] + a0[d] * (i + 0.5) / (m + 1) + a1[d] * (j + 0.5) / (m + 1)
                             for d in range(2)) for i in range(m) for j in range(m - i)]
                     elif len(piece[0]) == 4:
-                        assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
+                        assert VF(piece[0][0]) + VF(piece[0][3]) == VF(
+                            piece[0][1]) + VF(piece[0][2])
                         points += [tuple(
                             og[d] + a0[d] * (i + 0.5) / (m + 1) + a1[d] * (j + 0.5) / (m + 1)
                             for d in range(2)) for i in range(m) for j in range(m)]
@@ -466,7 +472,7 @@ def make_lattice(element, n, offset=False, pairs=False):
 
             all_points = []
             pairlists = []
-            for piece in f.pieces:
+            for piece in f.pieces.items():
                 og = [float(i) for i in piece[0][0]]
                 a0 = [float(i - j) for i, j in zip(piece[0][1], piece[0][0])]
                 a1 = [float(i - j) for i, j in zip(piece[0][2], piece[0][0])]
@@ -478,7 +484,7 @@ def make_lattice(element, n, offset=False, pairs=False):
                     )
                     pairlists.append(tri_pairlist)
                 elif len(piece[0]) == 4:
-                    assert vadd(piece[0][0], piece[0][3]) == vadd(piece[0][1], piece[0][2])
+                    assert VF(piece[0][0]) + VF(piece[0][3]) == VF(piece[0][1]) + VF(piece[0][2])
                     all_points.append(
                         [(og[0] + a0[0] * i / (m - 1) + a1[0] * j / (m - 1),
                           og[1] + a0[1] * i / (m - 1) + a1[1] * j / (m - 1))
@@ -675,15 +681,15 @@ def plot_basis_functions(element):
                 else:
                     p.add_line(v1, v2, color=COLORS["gray"])
 
-            for pts, prs, (_, f) in zip(points, pairs, function.pieces):
-                evals = [subs(f, x, p) for p in pts]
+            for pts, prs, f in zip(points, pairs, function.pieces.values()):
+                evals = [f.subs(x, p) for p in pts]
 
-                deriv = grad(f, element.domain_dim)
+                deriv = f.grad(element.domain_dim)
                 for i, j in prs:
                     d_pi = tuple(2 * a / 3 + b / 3 for a, b in zip(pts[i], pts[j]))
                     d_pj = tuple(a / 3 + 2 * b / 3 for a, b in zip(pts[i], pts[j]))
-                    di = vdot(subs(deriv, x, pts[i]), vsub(d_pi, pts[i]))
-                    dj = vdot(subs(deriv, x, pts[j]), vsub(d_pj, pts[j]))
+                    di = deriv.subs(x, pts[i]).dot(VF(d_pi) - VF(pts[i]))
+                    dj = deriv.subs(x, pts[i]).dot(VF(d_pj) - VF(pts[j]))
                     p.add_bezier(apply_scale(tuple(pts[i]) + (evals[i] / scale, )),
                                  apply_scale(d_pi + ((evals[i] + di) / scale, )),
                                  apply_scale(d_pj + ((evals[j] + dj) / scale, )),
@@ -754,12 +760,12 @@ def plot_basis_functions(element):
             evals = [i[dofn] for i in tab]
 
             if element.range_dim == 1:
-                deriv = grad(function, element.domain_dim)
+                deriv = function.grad(element.domain_dim)
                 for i, j in pairs:
                     d_pi = tuple(2 * a / 3 + b / 3 for a, b in zip(points[i], points[j]))
                     d_pj = tuple(a / 3 + 2 * b / 3 for a, b in zip(points[i], points[j]))
-                    di = vdot(subs(deriv, x, points[i]), vsub(d_pi, points[i]))
-                    dj = vdot(subs(deriv, x, points[j]), vsub(d_pj, points[j]))
+                    di = deriv.subs(x, points[i]).dot(VF(d_pi) - VF(points[i])).as_sympy()
+                    dj = deriv.subs(x, points[i]).dot(VF(d_pj) - VF(points[j])).as_sympy()
                     p.add_bezier(apply_scale(tuple(points[i]) + (evals[i] / scale, )),
                                  apply_scale(d_pi + ((evals[i] + di) / scale, )),
                                  apply_scale(d_pj + ((evals[j] + dj) / scale, )),

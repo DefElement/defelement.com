@@ -1,13 +1,13 @@
 import os
+import re
 import shlex
 import symfem
-import re
 import yaml
 from datetime import datetime
-from .citations import markup_citation
 from . import symbols
 from . import plotting
 from . import settings
+from .citations import markup_citation
 
 page_references = []
 
