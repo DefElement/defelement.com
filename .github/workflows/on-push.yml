@@ -123,7 +123,7 @@ jobs:
 
       - name: Install Basix
         run: |
-          sudo apt-get install -y libeigen3-dev libopenblas-dev liblapack-dev
+          sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
           sudo pip3 install pybind11
           sudo pip3 install git+https://github.com/FEniCS/basix.git
 

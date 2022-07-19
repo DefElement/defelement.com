@@ -1,7 +1,6 @@
 import sympy
 from symfem.finite_element import CiarletElement, DirectElement
 from symfem.functions import AnyFunction
-from symfem.piecewise_functions import PiecewiseFunction
 from symfem.symbols import t
 from . import symbols
 from . import plotting
