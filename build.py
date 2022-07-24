@@ -79,9 +79,9 @@ categoriser.load_implementations(os.path.join(settings.data_path, "implementatio
 categoriser.load_folder(settings.element_path)
 
 # Generate element pages
+start_all = datetime.now()
 for e in categoriser.elements:
     print(e.name)
-    start = datetime.now()
     content = f"<h1>{cap_first(e.html_name)}</h1>"
     element_data = []
     implementations = []
@@ -223,14 +223,12 @@ for e in categoriser.elements:
     element_examples = []
 
     if e.has_examples:
-        if test_elements is not None and e.filename not in test_elements:
-            print("    Skipping plotting of basis functions")
-        else:
+        if test_elements is None or e.filename in test_elements:
             assert e.implemented("symfem")
 
             for eg in e.examples:
+                start = datetime.now()
                 cell, order, kwargs = parse_example(eg)
-                print(cell, order)
                 symfem_name, params = e.get_implementation_string("symfem", cell)
 
                 if "variant" in params:
@@ -247,6 +245,9 @@ for e in categoriser.elements:
                         name += f"<br />{i}={j}"
                     element_names.append(name)
                     element_examples.append(example)
+
+                end = datetime.now()
+                print(f"    {cell} {order} ({(end - start).total_seconds():.2f}s)")
 
     if len(element_names) > 0:
         content += "<h2>Examples</h2>\n"
@@ -305,8 +306,8 @@ for e in categoriser.elements:
     with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
         f.write(make_html_page(content, e.html_name))
 
-    end = datetime.now()
-    print("    time taken: {(end - start).total_seconds()}")
+end_all = datetime.now()
+print(f"    {cell} {order} ({(end_all - start_all).total_seconds():.2f}s)")
 
 # Index page
 content = "<h1>Index of elements</h1>\n"
