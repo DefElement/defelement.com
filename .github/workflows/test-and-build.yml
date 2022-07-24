@@ -28,7 +28,7 @@ jobs:
             cd symfem
             pip3 install .[optional]
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: |
           python3 -m flake8 builder
@@ -72,7 +72,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_test_html --test auto
         name: Build website HTML
@@ -115,7 +115,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }}
         name: Build website HTML
@@ -146,11 +146,11 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - run: sudo pip3 install pytest-xdist
+      - run: pip3 install pytest-xdist
         name: Install dependencies
 
       - name: Install requirements
-        run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+        run: pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
 
       - name: Clone Symfem
         uses: actions/checkout@v2
@@ -168,21 +168,21 @@ jobs:
           gcc --version
           echo $CXX
           sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
-          sudo pip3 install pybind11
-          sudo pip3 install git+https://github.com/FEniCS/basix.git
+          pip3 install pybind11
+          pip3 install git+https://github.com/FEniCS/basix.git
 
       - name: Install UFL
-        run: sudo pip3 install git+https://github.com/FEniCS/ufl.git
+        run: pip3 install git+https://github.com/FEniCS/ufl.git
 
       - name: Install Bempp-cl
-        run: sudo pip3 install git+https://github.com/bempp/bempp-cl.git
+        run: pip3 install git+https://github.com/bempp/bempp-cl.git
 
       - name: Install LaTeΧ
         run: |
           sudo apt-get update
           sudo apt-get install -y texlive-latex-base
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
         name: Run tests with pytest
