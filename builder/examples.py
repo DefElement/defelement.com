@@ -57,7 +57,7 @@ def markup_example(element):
     # Reference
     eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
     eg += " The following numbering of the subentities of the reference is used:</li>\n"
-    eg += "<center>" + plotting.plot_reference(element.reference).img_html() + "</center>\n"
+    eg += "<center>" + plotting.plot_reference(element.reference) + "</center>\n"
     if isinstance(element, CiarletElement) and element.reference.name != "dual polygon":
         # Polynomial set
         eg += f"<li>\\({symbols.polyset}\\) is spanned by: "
@@ -79,7 +79,8 @@ def markup_example(element):
 
     for dof_i, func in enumerate(element.get_basis_functions()):
         eg += "<div class='basisf'><div style='display:inline-block'>"
-        eg += plots[dof_i].img_html()
+        if plots[dof_i] is not None:
+            eg += plots[dof_i]
         eg += "</div>"
         eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
         if isinstance(element, CiarletElement) and len(element.dofs) > 0:

@@ -1,3 +1,4 @@
+DESC: The dual mesh
 [black] (40, 0) -- (120, 0)
 [black] (120, 0) -- (220, 0)
 [black] (40, 0) -- (0, 68)
