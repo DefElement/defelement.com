@@ -13,6 +13,8 @@ from builder.families import (arnold_logg_name, cockburn_fu_name,
                               arnold_logg_reference, cockburn_fu_reference)
 from builder.rss import make_rss
 
+start_all = datetime.now()
+
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
                     default=None, help="Destination of HTML files.")
@@ -61,12 +63,16 @@ with open(os.path.join(settings.html_path, "CNAME"), "w") as f:
 # Make pages
 for file in os.listdir(settings.pages_path):
     if file.endswith(".md"):
+        start = datetime.now()
         fname = file[:-3]
+        print(f"{fname}.html", end="", flush=True)
         with open(os.path.join(settings.pages_path, file)) as f:
             content = markup(f.read())
 
         with open(os.path.join(settings.html_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
+        end = datetime.now()
+        print(f" (completed in {(end - start).total_seconds():.2f}s)")
 
 # Load categories and reference elements
 categoriser = Categoriser()
@@ -79,7 +85,6 @@ categoriser.load_implementations(os.path.join(settings.data_path, "implementatio
 categoriser.load_folder(settings.element_path)
 
 # Generate element pages
-start_all = datetime.now()
 for e in categoriser.elements:
     print(e.name)
     content = f"<h1>{cap_first(e.html_name)}</h1>"
@@ -229,6 +234,7 @@ for e in categoriser.elements:
             for eg in e.examples:
                 start = datetime.now()
                 cell, order, kwargs = parse_example(eg)
+                print(f"    {cell} {order}", end="", flush=True)
                 symfem_name, params = e.get_implementation_string("symfem", cell)
 
                 if "variant" in params:
@@ -247,7 +253,7 @@ for e in categoriser.elements:
                     element_examples.append(example)
 
                 end = datetime.now()
-                print(f"    {cell} {order} ({(end - start).total_seconds():.2f}s)")
+                print(f" (completed in {(end - start).total_seconds():.2f}s)")
 
     if len(element_names) > 0:
         content += "<h2>Examples</h2>\n"
@@ -305,9 +311,6 @@ for e in categoriser.elements:
     # Write file
     with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
         f.write(make_html_page(content, e.html_name))
-
-end_all = datetime.now()
-print(f"    {cell} {order} ({(end_all - start_all).total_seconds():.2f}s)")
 
 # Index page
 content = "<h1>Index of elements</h1>\n"
@@ -635,3 +638,7 @@ content += "<li><a href='/lists/recent.html'>Recently added/updated finite eleme
 content += "</ul>"
 with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
+
+end_all = datetime.now()
+print(f"Total time: {(end_all - start_all).total_seconds():.2f}s")
+
