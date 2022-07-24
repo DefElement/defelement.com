@@ -60,11 +60,10 @@ def do_the_plot(filename: str, desc: str, plot: typing.Callable,
     svg_kw = {"scale": 250, "dof_arrow_size": sympy.Rational(3, 2)}
 
     if filename not in all_plots:
-        print(filename)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.tex"), **kwargs)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.svg"), **svg_kw, **kwargs)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.png"),
-             plot_options={"png_width": 200}, **svg_kw, **kwargs)
+             plot_options={"png_width": 180}, **svg_kw, **kwargs)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}-large.png"),
              plot_options={"png_width": 800}, **svg_kw, **kwargs)
 
