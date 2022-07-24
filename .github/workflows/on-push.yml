@@ -14,8 +14,18 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: plot_tikz
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@plot_tikz
+        run: |
+            cd symfem
+            pip3 install .[optional]
+
       - run: sudo pip3 install -r requirements.txt
         name: Install requirements
       - run: |
@@ -32,8 +42,17 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: plot_tikz
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@plot_tikz
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -66,8 +85,17 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: plot_tikz
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@plot_tikz
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -118,8 +146,16 @@ jobs:
       - name: Install requirements
         run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
 
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: plot_tikz
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@plot_tikz
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - name: Install Basix
         run: |

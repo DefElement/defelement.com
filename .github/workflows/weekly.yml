@@ -19,8 +19,16 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v2
 
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: plot_tikz
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git@plot_tikz
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - name: Install Basix
         run: |
