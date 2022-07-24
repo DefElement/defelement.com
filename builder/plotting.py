@@ -1,13 +1,8 @@
 import os
 import sympy
 import typing
-from cairosvg import svg2png
 from datetime import datetime
-from symfem.finite_element import CiarletElement, DirectElement
-from symfem.functions import VectorFunction
-from symfem.piecewise_functions import PiecewiseFunction
 from symfem.plotting import Picture, colors
-from symfem.symbols import x
 from . import settings
 
 now = datetime.now()
@@ -119,7 +114,7 @@ def plot_function(element, dof_i):
 
     desc = f"Basis function in a {element.name} space"
     return do_the_plot(f"element-{element.name}-{ref_id}-{element.order}-{dof_i}", desc,
-                    element.plot_basis_function, [dof_i])
+                       element.plot_basis_function, [dof_i])
 
 
 def plot_basis_functions(element):
@@ -178,4 +173,3 @@ def plot_img(img_filename: str):
         img.save(filename, plot_options)
 
     return do_the_plot(filename, desc, actual_plot)
-
