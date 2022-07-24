@@ -137,11 +137,16 @@ jobs:
       CC: gcc-10
       CXX: g++-10
     steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+
+      - uses: actions/checkout@v2
+
       - run: |
-            sudo apt-get install -y python3-setuptools python3-pip python3-pytest
             sudo pip3 install pytest-xdist
         name: Install dependencies
-      - uses: actions/checkout@v2
 
       - name: Install requirements
         run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
