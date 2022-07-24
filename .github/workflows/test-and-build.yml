@@ -146,8 +146,7 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - run: |
-            sudo pip3 install pytest-xdist
+      - run: sudo pip3 install pytest-xdist
         name: Install dependencies
 
       - name: Install requirements
@@ -166,6 +165,8 @@ jobs:
 
       - name: Install Basix
         run: |
+          gcc --version
+          echo $CXX
           sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
           sudo pip3 install pybind11
           sudo pip3 install git+https://github.com/FEniCS/basix.git
