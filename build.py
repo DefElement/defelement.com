@@ -1,5 +1,6 @@
 import os
 import argparse
+from datetime import datetime
 from symfem import create_element
 from builder import settings
 from builder.markup import markup, insert_links, python_highlight, cap_first
@@ -80,6 +81,7 @@ categoriser.load_folder(settings.element_path)
 # Generate element pages
 for e in categoriser.elements:
     print(e.name)
+    start = datetime.now()
     content = f"<h1>{cap_first(e.html_name)}</h1>"
     element_data = []
     implementations = []
@@ -220,28 +222,31 @@ for e in categoriser.elements:
     element_names = []
     element_examples = []
 
-    if (test_elements is None or e.filename in test_elements) and e.has_examples:
-        assert e.implemented("symfem")
+    if e.has_examples:
+        if test_elements is not None and e.filename not in test_elements:
+            print("    Skipping plotting of basis functions")
+        else:
+            assert e.implemented("symfem")
 
-        for eg in e.examples:
-            cell, order, kwargs = parse_example(eg)
-            print(cell, order)
-            symfem_name, params = e.get_implementation_string("symfem", cell)
+            for eg in e.examples:
+                cell, order, kwargs = parse_example(eg)
+                print(cell, order)
+                symfem_name, params = e.get_implementation_string("symfem", cell)
 
-            if "variant" in params:
-                element = create_element(cell, symfem_name, order, variant=params["variant"],
-                                         **kwargs)
-            else:
-                element = create_element(cell, symfem_name, order, **kwargs)
+                if "variant" in params:
+                    element = create_element(cell, symfem_name, order, variant=params["variant"],
+                                             **kwargs)
+                else:
+                    element = create_element(cell, symfem_name, order, **kwargs)
 
-            example = markup_example(element)
+                example = markup_example(element)
 
-            if len(example) > 0:
-                name = f"{cell}<br />order {order}"
-                for i, j in kwargs.items():
-                    name += f"<br />{i}={j}"
-                element_names.append(name)
-                element_examples.append(example)
+                if len(example) > 0:
+                    name = f"{cell}<br />order {order}"
+                    for i, j in kwargs.items():
+                        name += f"<br />{i}={j}"
+                    element_names.append(name)
+                    element_examples.append(example)
 
     if len(element_names) > 0:
         content += "<h2>Examples</h2>\n"
@@ -299,6 +304,9 @@ for e in categoriser.elements:
     # Write file
     with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
         f.write(make_html_page(content, e.html_name))
+
+    end = datetime.now()
+    print("    time taken: {(end - start).total_seconds()}")
 
 # Index page
 content = "<h1>Index of elements</h1>\n"
