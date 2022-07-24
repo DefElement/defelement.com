@@ -641,4 +641,3 @@ with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
 
 end_all = datetime.now()
 print(f"Total time: {(end_all - start_all).total_seconds():.2f}s")
-
