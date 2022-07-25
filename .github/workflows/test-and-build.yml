@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 7 * * 1"
 
 jobs:
   style-checks:
@@ -14,9 +16,19 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
-      - run: sudo pip3 install -r requirements.txt
+        run: |
+            cd symfem
+            pip3 install .[optional]
+
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: |
           python3 -m flake8 builder
@@ -32,8 +44,17 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -51,7 +72,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_test_html --test auto
         name: Build website HTML
@@ -66,8 +87,17 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v2
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
@@ -85,7 +115,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }}
         name: Build website HTML
@@ -109,36 +139,48 @@ jobs:
       CC: gcc-10
       CXX: g++-10
     steps:
-      - run: |
-            sudo apt-get install -y python3-setuptools python3-pip python3-pytest
-            sudo pip3 install pytest-xdist
-        name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
       - uses: actions/checkout@v2
 
-      - name: Install requirements
-        run: sudo pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+      - run: pip3 install pytest-xdist
+        name: Install dependencies
 
+      - name: Install requirements
+        run: pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+
+      - name: Clone Symfem
+        uses: actions/checkout@v2
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
       - name: Install Symfem
-        run: sudo pip3 install git+https://github.com/mscroggs/symfem.git
+        run: |
+            cd symfem
+            pip3 install .[optional]
 
       - name: Install Basix
         run: |
           sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
-          sudo pip3 install pybind11
-          sudo pip3 install git+https://github.com/FEniCS/basix.git
+          pip3 install pybind11
+          pip3 install git+https://github.com/FEniCS/basix.git
 
       - name: Install UFL
-        run: sudo pip3 install git+https://github.com/FEniCS/ufl.git
+        run: pip3 install git+https://github.com/FEniCS/ufl.git
 
       - name: Install Bempp-cl
-        run: sudo pip3 install git+https://github.com/bempp/bempp-cl.git
+        run: pip3 install git+https://github.com/bempp/bempp-cl.git
 
       - name: Install LaTeΧ
         run: |
           sudo apt-get update
           sudo apt-get install -y texlive-latex-base
 
-      - run: sudo pip3 install -r requirements.txt
+      - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: python3 -m pytest -n4 test
         name: Run tests with pytest

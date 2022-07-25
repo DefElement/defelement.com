@@ -1,3 +1,4 @@
+DESC: A mesh of triangles
 [black] (40, 0) -- (120, 0)
 [black] (40, 0) -- (80, 68)
 [black] (120, 0) -- (80, 68)

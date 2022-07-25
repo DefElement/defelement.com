@@ -1,3 +1,4 @@
+DESC: A mesh of triangles with each vertex connected to the midpoint of the opposite edge
 [blue] (40, 0) -- (100.0, 34.0)
 [blue] (120, 0) -- (60.0, 34.0)
 [blue] (80, 68) -- (80.0, 0.0)

@@ -1,5 +1,6 @@
 import os
 import argparse
+from datetime import datetime
 from symfem import create_element
 from builder import settings
 from builder.markup import markup, insert_links, python_highlight, cap_first
@@ -11,6 +12,8 @@ from builder.snippets import parse_example
 from builder.families import (arnold_logg_name, cockburn_fu_name,
                               arnold_logg_reference, cockburn_fu_reference)
 from builder.rss import make_rss
+
+start_all = datetime.now()
 
 parser = argparse.ArgumentParser(description="Build defelement.com")
 parser.add_argument('destination', metavar='destination', nargs="?",
@@ -60,12 +63,16 @@ with open(os.path.join(settings.html_path, "CNAME"), "w") as f:
 # Make pages
 for file in os.listdir(settings.pages_path):
     if file.endswith(".md"):
+        start = datetime.now()
         fname = file[:-3]
+        print(f"{fname}.html", end="", flush=True)
         with open(os.path.join(settings.pages_path, file)) as f:
             content = markup(f.read())
 
         with open(os.path.join(settings.html_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
+        end = datetime.now()
+        print(f" (completed in {(end - start).total_seconds():.2f}s)")
 
 # Load categories and reference elements
 categoriser = Categoriser()
@@ -220,28 +227,33 @@ for e in categoriser.elements:
     element_names = []
     element_examples = []
 
-    if (test_elements is None or e.filename in test_elements) and e.has_examples:
-        assert e.implemented("symfem")
+    if e.has_examples:
+        if test_elements is None or e.filename in test_elements:
+            assert e.implemented("symfem")
 
-        for eg in e.examples:
-            cell, order, kwargs = parse_example(eg)
-            print(cell, order)
-            symfem_name, params = e.get_implementation_string("symfem", cell)
+            for eg in e.examples:
+                start = datetime.now()
+                cell, order, kwargs = parse_example(eg)
+                print(f"    {cell} {order}", end="", flush=True)
+                symfem_name, params = e.get_implementation_string("symfem", cell)
 
-            if "variant" in params:
-                element = create_element(cell, symfem_name, order, variant=params["variant"],
-                                         **kwargs)
-            else:
-                element = create_element(cell, symfem_name, order, **kwargs)
+                if "variant" in params:
+                    element = create_element(cell, symfem_name, order, variant=params["variant"],
+                                             **kwargs)
+                else:
+                    element = create_element(cell, symfem_name, order, **kwargs)
 
-            example = markup_example(element)
+                example = markup_example(element)
 
-            if len(example) > 0:
-                name = f"{cell}<br />order {order}"
-                for i, j in kwargs.items():
-                    name += f"<br />{i}={j}"
-                element_names.append(name)
-                element_examples.append(example)
+                if len(example) > 0:
+                    name = f"{cell}<br />order {order}"
+                    for i, j in kwargs.items():
+                        name += f"<br />{i}={j}"
+                    element_names.append(name)
+                    element_examples.append(example)
+
+                end = datetime.now()
+                print(f" (completed in {(end - start).total_seconds():.2f}s)")
 
     if len(element_names) > 0:
         content += "<h2>Examples</h2>\n"
@@ -626,3 +638,6 @@ content += "<li><a href='/lists/recent.html'>Recently added/updated finite eleme
 content += "</ul>"
 with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
+
+end_all = datetime.now()
+print(f"Total time: {(end_all - start_all).total_seconds():.2f}s")
