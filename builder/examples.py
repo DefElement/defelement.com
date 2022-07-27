@@ -52,6 +52,8 @@ def describe_dof(element, d):
 
 
 def markup_example(element):
+    eg = "<center>" + plotting.plot_dof_diagram(element) + "</center>"
+    return eg
     eg = ""
     eg += "<ul>\n"
     # Reference

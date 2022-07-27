@@ -174,3 +174,15 @@ def plot_img(img_filename: str):
         img.save(filename, plot_options)
 
     return do_the_plot(filename, desc, actual_plot)
+
+
+def plot_dof_diagram(element):
+    if element.reference.name == "dual polygon":
+        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+    else:
+        ref_id = element.reference.name
+    desc = "DOFs of "
+    desc += "an" if element.name.lower()[0] in "aieou" else "a"
+    desc += f" {element.name} element"
+    return do_the_plot(f"element-{element.name}-{ref_id}-{element.order}-dofs", desc,
+                       element.plot_dof_diagram)
