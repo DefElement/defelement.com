@@ -48,8 +48,10 @@ tex_comment = (
 all_plots = []
 
 
-def do_the_plot(filename: str, desc: str, plot: typing.Callable,
-                args: typing.List[typing.Any] = []) -> str:
+def do_the_plot(
+    filename: str, desc: str, plot: typing.Callable, png_width: int = 180,
+    args: typing.List[typing.Any] = []
+) -> str:
     global all_plots
     from .html import make_html_page
     from .markup import cap_first
@@ -63,9 +65,9 @@ def do_the_plot(filename: str, desc: str, plot: typing.Callable,
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.tex"), **kwargs)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.svg"), **svg_kw, **kwargs)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.png"),
-             plot_options={"png_width": 180}, **svg_kw, **kwargs)
+             plot_options={"png_width": png_width}, **svg_kw, **kwargs)
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}-large.png"),
-             plot_options={"png_width": 800}, **svg_kw, **kwargs)
+             plot_options={"png_width": png_width * 9 // 2}, **svg_kw, **kwargs)
 
         img_page = f"<h1>{cap_first(desc)}</h1>\n"
         img_page += f"<center><a href='/img/{filename}-large.png'>"
@@ -102,7 +104,7 @@ def plot_reference(ref):
     filename = f"ref-{ref_id}"
     desc = f"{ref.name} reference element"
 
-    return do_the_plot(filename, desc, ref.plot_entity_diagrams)
+    return do_the_plot(filename, desc, ref.plot_entity_diagrams, png_width=600)
 
 
 def plot_function(element, dof_i):
