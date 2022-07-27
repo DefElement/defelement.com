@@ -49,8 +49,8 @@ all_plots = []
 
 
 def do_the_plot(
-    filename: str, desc: str, plot: typing.Callable, png_width: int = 180,
-    args: typing.List[typing.Any] = []
+    filename: str, desc: str, plot: typing.Callable
+    args: typing.List[typing.Any] = [], png_width: int = 180,
 ) -> str:
     global all_plots
     from .html import make_html_page
