@@ -49,7 +49,7 @@ all_plots = []
 
 
 def do_the_plot(
-    filename: str, desc: str, plot: typing.Callable
+    filename: str, desc: str, plot: typing.Callable,
     args: typing.List[typing.Any] = [], png_width: int = 180,
 ) -> str:
     global all_plots
