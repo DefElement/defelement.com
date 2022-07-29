@@ -54,7 +54,8 @@ def describe_dof(element, d):
 
 def markup_example(element, html_name, element_page):
     eg = f"<h1>Degree {element.order} {html_name} on a {element.reference.name}</h1>\n"
-    eg += f"<a href='{element_page}'>&#9664; Back to {html_name} definition page</a>\n"
+    eg += f"<a href='{element_page}'><small>&#9664; Back to {html_name} definition page"
+    eg += "</a></small>\n"
     eg += "<center>" + plotting.plot_dof_diagram(element) + "</center>\n"
     eg += "In this example:\n<ul>\n"
     # Reference
