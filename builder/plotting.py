@@ -51,6 +51,7 @@ all_plots = []
 def do_the_plot(
     filename: str, desc: str, plot: typing.Callable,
     args: typing.List[typing.Any] = [], png_width: int = 180,
+    scale: int = 250
 ) -> str:
     global all_plots
     from .html import make_html_page
@@ -59,7 +60,7 @@ def do_the_plot(
     kwargs = {
         "title": desc, "desc": svg_desc,
         "svg_metadata": svg_metadata.replace("{title}", desc), "tex_comment": tex_comment}
-    svg_kw = {"scale": 250, "dof_arrow_size": sympy.Rational(3, 2)}
+    svg_kw = {"scale": scale, "dof_arrow_size": sympy.Rational(3, 2)}
 
     if filename not in all_plots:
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}.tex"), **kwargs)
@@ -104,7 +105,8 @@ def plot_reference(ref):
     filename = f"ref-{ref_id}"
     desc = f"{ref.name} reference element"
 
-    return do_the_plot(filename, desc, ref.plot_entity_diagrams, png_width=600)
+    return do_the_plot(filename, desc, ref.plot_entity_diagrams, png_width=600,
+                       scale=900)
 
 
 def plot_function(element, dof_i):
