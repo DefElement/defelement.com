@@ -54,6 +54,7 @@ os.mkdir(settings.htmlfamilies_path)
 os.mkdir(settings.htmlimg_path)
 os.system(f"cp -r {settings.dir_path}/people {settings.htmlimg_path}")
 os.mkdir(os.path.join(settings.htmlelement_path, "bibtex"))
+os.mkdir(os.path.join(settings.htmlelement_path, "examples"))
 
 os.system(f"cp -r {settings.files_path}/* {settings.html_path}")
 
@@ -224,10 +225,9 @@ for e in categoriser.elements:
         content += "</table>"
 
     # Write examples using symfem
-    element_names = []
-    element_examples = []
-
     if e.has_examples:
+        element_examples = {}
+
         if test_elements is None or e.filename in test_elements:
             assert e.implemented("symfem")
 
@@ -243,44 +243,25 @@ for e in categoriser.elements:
                 else:
                     element = create_element(cell, symfem_name, order, **kwargs)
 
-                example = markup_example(element)
+                example = markup_example(element, e.html_name, f"/elements/{e.html_filename}")
 
                 if len(example) > 0:
                     name = f"{cell}<br />order {order}"
                     for i, j in kwargs.items():
-                        name += f"<br />{i}={j}"
-                    element_names.append(name)
-                    element_examples.append(example)
+                        name += f"<br />{i}={j.replace(' ', '&nbsp;')}"
+                    element_examples[name] = example
 
                 end = datetime.now()
                 print(f" (completed in {(end - start).total_seconds():.2f}s)")
 
-    if len(element_names) > 0:
-        content += "<h2>Examples</h2>\n"
-        for i, eg in enumerate(element_names):
-            cl = "eglink"
-            if i == 0:
-                cl += " current"
-            content += f"<a class='{cl}' href='javascript:showeg({i})' id='eg{i}'>{eg}</a>"
-        for i, eg in enumerate(element_examples):
-            cl = "egdetail"
-            if i == 0:
-                cl += " current"
-            content += f"<div class='{cl}' id='egd{i}'>{eg}</div>"
-
-        content += "<script type='text/javascript'>\n"
-        content += "function showeg(i){\n"
-        content += f"    for(var j=0;j<{len(element_names)};j++){{\n"
-        content += "        if(i==j){\n"
-        content += "            document.getElementById('eg'+j).className='eglink current'\n"
-        content += "            document.getElementById('egd'+j).className='egdetail current'\n"
-        content += "        } else {\n"
-        content += "            document.getElementById('eg'+j).className='eglink'\n"
-        content += "            document.getElementById('egd'+j).className='egdetail'\n"
-        content += "        }\n"
-        content += "    }\n"
-        content += "}\n"
-        content += "</script>"
+        if len(element_examples) > 0:
+            content += "<h2>Examples</h2>\n"
+            content += "<table class='element-info'>"
+            for name, eg in element_examples.items():
+                content += (
+                    f"<tr><td>{name}</td><td><center><a href='{eg[1]}'>{eg[0]}<br />"
+                    "<small>(click to view basis functions)</small></a></center></td></tr>")
+            content += "</table>"
 
     # Write references section
     refs = e.references()

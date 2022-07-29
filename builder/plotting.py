@@ -51,7 +51,7 @@ all_plots = []
 def do_the_plot(
     filename: str, desc: str, plot: typing.Callable,
     args: typing.List[typing.Any] = [], png_width: int = 180,
-    scale: int = 250
+    scale: int = 250, link: bool = True
 ) -> str:
     global all_plots
     from .html import make_html_page
@@ -93,10 +93,13 @@ def do_the_plot(
             f.write(make_html_page(img_page))
         all_plots.append(filename)
 
-    return f"<a href='/img/{filename}.html'><img src='/img/{filename}.png'></a>"
+    if link:
+        return f"<a href='/img/{filename}.html'><img src='/img/{filename}.png'></a>"
+    else:
+        return f"<img src='/img/{filename}.png'>"
 
 
-def plot_reference(ref):
+def plot_reference(ref, link: bool = True):
     if ref.name == "dual polygon":
         ref_id = f"dual-polygon-{ref.number_of_triangles}"
     else:
@@ -105,11 +108,11 @@ def plot_reference(ref):
     filename = f"ref-{ref_id}"
     desc = f"{ref.name} reference element"
 
-    return do_the_plot(filename, desc, ref.plot_entity_diagrams, png_width=600,
-                       scale=900)
+    return do_the_plot(filename, desc, ref.plot_entity_diagrams, png_width=175 * (ref.tdim + 1),
+                       scale=300, link=link)
 
 
-def plot_function(element, dof_i):
+def plot_function(element, dof_i, link: bool = True):
     if element.reference.name == "dual polygon":
         ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
     else:
@@ -117,10 +120,10 @@ def plot_function(element, dof_i):
 
     desc = f"Basis function in a {element.name} space"
     return do_the_plot(f"element-{element.name}-{ref_id}-{element.order}-{dof_i}", desc,
-                       element.plot_basis_function, [dof_i])
+                       element.plot_basis_function, [dof_i], link=link)
 
 
-def plot_basis_functions(element):
+def plot_basis_functions(element, link: bool = True):
     if element.range_dim == 1:
         if element.domain_dim > 2:
             return [None for i in range(element.space_dim)]
@@ -128,7 +131,7 @@ def plot_basis_functions(element):
         if element.range_dim != element.domain_dim:
             return [None for i in range(element.space_dim)]
 
-    return [plot_function(element, i) for i in range(element.space_dim)]
+    return [plot_function(element, i, link=link) for i in range(element.space_dim)]
 
 
 def _parse_point(points, n):
@@ -142,7 +145,7 @@ def _parse_point(points, n):
     return float(x) / 100, float(y) / 100
 
 
-def plot_img(img_filename: str):
+def plot_img(img_filename: str, link: bool = True):
     metadata = {"DESC": ""}
     filename = f"img-{img_filename}"
     with open(os.path.join(settings.img_path, f"{img_filename}.img")) as f:
@@ -175,10 +178,10 @@ def plot_img(img_filename: str):
                         img.add_line(p1, p2, color=color, width=2)
         img.save(filename, plot_options)
 
-    return do_the_plot(filename, desc, actual_plot)
+    return do_the_plot(filename, desc, actual_plot, link=link)
 
 
-def plot_dof_diagram(element):
+def plot_dof_diagram(element, link: bool = True):
     if element.reference.name == "dual polygon":
         ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
     else:
@@ -187,4 +190,4 @@ def plot_dof_diagram(element):
     desc += "an" if element.name.lower()[0] in "aieou" else "a"
     desc += f" {element.name} element"
     return do_the_plot(f"element-{element.name}-{ref_id}-{element.order}-dofs", desc,
-                       element.plot_dof_diagram)
+                       element.plot_dof_diagram, link=link)
