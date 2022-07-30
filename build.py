@@ -248,7 +248,7 @@ for e in categoriser.elements:
                 if len(example) > 0:
                     name = f"{cell}<br />order {order}"
                     for i, j in kwargs.items():
-                        name += f"<br />{i}={j.replace(' ', '&nbsp;')}"
+                        name += f"<br />{i}={str(j).replace(' ', '&nbsp;')}"
                     element_examples[name] = example
 
                 end = datetime.now()
