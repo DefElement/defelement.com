@@ -1,9 +1,10 @@
+import os
 import sympy
 from symfem.finite_element import CiarletElement, DirectElement
 from symfem.functions import AnyFunction
 from symfem.symbols import t
-from . import symbols
-from . import plotting
+from .html import make_html_page
+from . import settings, symbols, plotting
 
 defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
 
@@ -51,9 +52,12 @@ def describe_dof(element, d):
     return desc, symb
 
 
-def markup_example(element):
-    eg = ""
-    eg += "<ul>\n"
+def markup_example(element, html_name, element_page):
+    eg = f"<h1>Degree {element.order} {html_name} on a {element.reference.name}</h1>\n"
+    eg += f"<a href='{element_page}'><small>&#9664; Back to {html_name} definition page"
+    eg += "</a></small>\n"
+    eg += "<center>" + plotting.plot_dof_diagram(element) + "</center>\n"
+    eg += "In this example:\n<ul>\n"
     # Reference
     eg += f"<li>\\({symbols.reference}\\) is the reference {element.reference.name}."
     eg += " The following numbering of the subentities of the reference is used:</li>\n"
@@ -116,4 +120,13 @@ def markup_example(element):
         eg += "</div>"
         eg += "</div>"
 
-    return eg
+    if element.reference.name == "dual polygon":
+        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
+    else:
+        ref_id = element.reference.name
+    fname = f"{ref_id}-{element.name}-{element.order}.html"
+
+    with open(os.path.join(os.path.join(settings.htmlelement_path, "examples", fname)), "w") as f:
+        f.write(make_html_page(eg))
+
+    return plotting.plot_dof_diagram(element, link=False), f"/elements/examples/{fname}"
