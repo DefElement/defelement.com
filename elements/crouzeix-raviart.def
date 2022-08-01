@@ -16,6 +16,8 @@ ndofs:
 reference elements:
   - triangle
   - tetrahedron
+mapping: identity
+continuity: L2
 polynomial set:
   triangle: poly[k]
   tetrahedron: poly[k]

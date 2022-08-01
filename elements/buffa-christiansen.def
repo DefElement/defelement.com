@@ -14,6 +14,8 @@ reference elements:
   - dual polygon
 symfem: BC
 bempp: BC orders=0
+mapping: contravariant Piola
+continuity: H(div)
 examples:
   - dual polygon(4),1
   - dual polygon(5),1

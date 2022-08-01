@@ -85,6 +85,16 @@ categoriser.load_implementations(os.path.join(settings.data_path, "implementatio
 # Load elements from .def files
 categoriser.load_folder(settings.element_path)
 
+cdescs = {
+    "L2": "Discontinuous.",
+    "H1": "Function values are continuous.",
+    "H2": "Function values and derivatives are continuous.",
+    "H3": "Function values and first and second derivatives are continuous.",
+    "H(div)": "Components normal to facets are continuous",
+    "H(curl)": "Components tandential to facets are continuous",
+    "H(div div)": "Inner products with normals to facets are continuous",
+    "H(curl curl)": "Inner products with tangents to facets are continuous"}
+
 # Generate element pages
 for e in categoriser.elements:
     print(e.name)
@@ -147,6 +157,20 @@ for e in categoriser.elements:
     ndofs = e.entity_dof_counts()
     if len(ndofs) > 0:
         element_data.append(("Number of DOFs<breakable>on subentities", ndofs))
+
+    # Mapping
+    mapping = e.mapping()
+    if mapping is not None:
+        element_data.append(("Mapping", mapping))
+
+    # Continuity
+    continuity = e.continuity()
+    if continuity is not None:
+        if isinstance(continuity, dict):
+            element_data.append(("continuity", "<br />".join([
+                f"{cdescs[c]} ({n})" for n, c in continuity.items()])))
+        else:
+            element_data.append(("continuity", cdescs[continuity]))
 
     # Notes
     notes = e.notes

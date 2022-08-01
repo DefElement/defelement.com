@@ -17,12 +17,16 @@ ndofs:
   tetrahedron:
     formula: (k+1)(k+2)(k+3)/2
     oeis: A027480
+continuity: H(div)
+mapping: contravariant Piola
 polynomial set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
 dofs:
   facets: normal integral moments with (lagrange,k)
   cell: integral moments with (nedelec1,k-1)
+mapping: contravariant Piola
+continuity: H(div)
 symfem: N2div
 basix: BDM
 ufl: BDM

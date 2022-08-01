@@ -18,6 +18,8 @@ reference elements:
   - interval
   - triangle
   - tetrahedron
+continuity: H1
+mapping: identity
 dofs:
   cell:
     - integral over cell

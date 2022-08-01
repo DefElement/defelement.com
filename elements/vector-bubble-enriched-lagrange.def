@@ -8,6 +8,8 @@ categories:
   - vector
 reference elements:
   - triangle
+continuity: H1
+mapping: identity
 dofs:
   vertices: point evaluations in coordinate directions
   edges: point evaluations in coordinate directions

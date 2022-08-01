@@ -17,6 +17,8 @@ dofs:
     - point evaluations of derivatives in coordinate directions
     - point evaluations of components of Jacobian
   edges: point evaluations of normal derivatives at midpoints
+mapping: identity
+continuity: H3
 symfem: Argyris
 ufl: Argyris
 examples:

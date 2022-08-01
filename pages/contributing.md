@@ -40,7 +40,9 @@ exterior-calculus:
   - P,d,simplex
   - Q-,d,tp
   - TNT,d,tp
-ndofs:
+continuity: H1
+mapping: identity
+dofs:
   interval:
     formula: k+1
     oeis: A000027
@@ -162,6 +164,8 @@ The entries in this yaml file are:
 <tr><td>`short-names`</td><td></td><td>Abbreviated names of the element.</td></tr>
 <tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
+<tr><td>`continuity`</td><td></td><td>The Sobolev space the element lives in.</td></tr>
+<tr><td>`mapping`</td><td></td><td>The mapping used to push/pull values foward/back from/to the reference element.</td></tr>
 <tr><td>`entity-ndofs`</td><td></td><td>The number of DOFs the element has per subentity type and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
 <tr><td>`min-order`</td><td></td><td>The minimum order of the element</td></tr>
 <tr><td>`max-order`</td><td></td><td>The maximum order of the element</td></tr>

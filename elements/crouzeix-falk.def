@@ -13,6 +13,8 @@ reference elements:
   - triangle
 polynomial set:
   triangle: poly[k]
+mapping: identity
+continuity: L2
 dofs:
   facets: point evaluation at two points (but only one point on one of the edges)
   cell: point evaluation at midpoint

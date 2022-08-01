@@ -25,6 +25,8 @@ dofs:
     - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
   cell:
     - point evaluations at the midpoint
+mapping: contravariant Piola
+continuity: H(div)
 notes:
   - This element is a modification of the [Bernardi&ndash;Raugel](element::bernardi-raugel) element with the facet bubbles modified to be divergence free.
 symfem: Guzman-Neilan

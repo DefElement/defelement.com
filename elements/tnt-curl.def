@@ -13,6 +13,8 @@ min-order: 1
 categories:
   - vector
   - Hcurl
+continuity: H(curl)
+mapping: covariant Piola
 reference elements:
   - quadrilateral
   - hexahedron

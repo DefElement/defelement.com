@@ -21,6 +21,8 @@ ndofs:
   hexahedron:
     formula: 3k^2(k+1)
     oeis: A270205
+continuity: H(div)
+mapping: contravariant Piola
 dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (nedelec1,k-1)

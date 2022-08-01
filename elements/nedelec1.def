@@ -18,6 +18,8 @@ categories:
 exterior-calculus:
   - P-,1,simplex
   - Q-,1,tp
+continuity: H(curl)
+mapping: covariant Piola
 ndofs:
   triangle:
     formula: k(k+2)

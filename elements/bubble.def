@@ -26,6 +26,8 @@ polynomial set:
   interval: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
   triangle: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
   tetrahedron: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
+mapping: identity
+continuity: H1
 symfem: bubble
 basix: bubble
 ufl: Bubble

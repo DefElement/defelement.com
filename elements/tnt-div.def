@@ -16,6 +16,8 @@ categories:
 reference elements:
   - quadrilateral
   - hexahedron
+continuity: H(div)
+mapping: contravariant Piola
 dofs:
   facets: normal integral moments with (lagrange,k)
   cell:

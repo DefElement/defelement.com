@@ -17,6 +17,8 @@ dofs:
     - integral moments of the divergence with "\(x^{k+1}y^q\) for q=0,1,...,k"
     - integral moments of the divergence with "\(x^qy^{k+1}\) for q=0,1,...,k"
 symfem: ABF
+mapping: contravariant Piola
+continuity: H(div)
 examples:
   - quadrilateral,0
   - quadrilateral,1

@@ -17,6 +17,8 @@ dofs:
     - point evaluations of derivatives in coordinate directions
     - point evaluations of components of Jacobian
   edges: integral moments of normal derivatives with (lagrange,0)
+mapping: identity
+continuity: H3
 symfem: Bell
 ufl: Bell
 examples:

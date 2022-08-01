@@ -19,6 +19,8 @@ polynomial set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]
+mapping: identity
+continuity: H2
 dofs:
   vertices:
     - point evaluations

@@ -22,6 +22,8 @@ dofs:
   edges: point evaluations at Gauss&ndash;Legendre points
   faces: point evaluations at Gauss&ndash;Legendre points
   volumes: point evaluations at Gauss&ndash;Legendre points
+mapping: identity
+continuity: H1
 polynomial set:
   interval: qoly[k]
   quadrilateral: qoly[k]

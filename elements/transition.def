@@ -8,6 +8,8 @@ categories:
 reference elements:
   - triangle
   - tetrahedron
+continuity: H1
+mapping: identity
 dofs:
   vertices: point evaluations
   edges: point evaluations
