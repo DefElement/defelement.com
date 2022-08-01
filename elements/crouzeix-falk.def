@@ -16,7 +16,7 @@ polynomial set:
 mapping: identity
 continuity: L2
 dofs:
-  facets: point evaluation at two points (but only one point on one of the edges)
+  facets: point evaluation at three points
   cell: point evaluation at midpoint
 symfem: Crouzeix-Falk
 examples:
