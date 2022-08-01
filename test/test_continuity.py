@@ -1,12 +1,6 @@
 import os
 import pytest
-import re
-import signal
-import symfem
-import urllib.request
 import yaml
-import warnings
-
 
 element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
 
