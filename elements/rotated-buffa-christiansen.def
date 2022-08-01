@@ -14,6 +14,8 @@ reference elements:
   - dual polygon
 symfem: RBC
 bempp: RBC orders=0
+continuity: H(curl)
+mapping: covariant Piola
 examples:
   - dual polygon(4),1
   - dual polygon(5),1

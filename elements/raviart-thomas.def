@@ -18,6 +18,8 @@ ndofs:
 categories:
   - vector
   - Hdiv
+continuity: H(div)
+mapping: contravariant Piola
 reference elements:
   - triangle
   - tetrahedron

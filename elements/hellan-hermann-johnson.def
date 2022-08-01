@@ -14,6 +14,8 @@ polynomial set:
 dofs:
   edges: integral moments of inner products of normal to edge with (lagrange,k)
   faces: point evaluations of tensor products with symmetric matrices whose entries are in (lagrange,k-1)
+continuity: H(div div)
+mapping: double contravariant Piola
 symfem: HHJ
 ufl: HHJ
 examples:

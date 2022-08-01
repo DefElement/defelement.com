@@ -20,6 +20,8 @@ ndofs:
 reference elements:
   - triangle
   - tetrahedron
+continuity: H(curl)
+mapping: covariant Piola
 polynomial set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d

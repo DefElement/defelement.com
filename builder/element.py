@@ -222,6 +222,16 @@ class Element:
             return []
         return self.data["short-names"]
 
+    def mapping(self):
+        if "mapping" not in self.data:
+            return None
+        return self.data["mapping"]
+
+    def continuity(self):
+        if "continuity" not in self.data:
+            return None
+        return self.data["continuity"]
+
     def cockburn_fu_names(self, link=True):
         if "exterior-calculus" not in self.data:
             return []

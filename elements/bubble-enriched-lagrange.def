@@ -12,6 +12,8 @@ dofs:
   vertices: point evaluations
   edges: point evaluations
   faces: point evaluations
+mapping: identity
+continuity: H1
 polynomial set:
   triangle: poly[k] && <k+2>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
 symfem: bubble enriched Lagrange

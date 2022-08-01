@@ -14,6 +14,8 @@ categories:
 reference elements:
   - quadrilateral
   - hexahedron
+continuity: H(div)
+mapping: contravariant Piola
 ndofs:
   quadrilateral:
     formula: k^2+3k+4

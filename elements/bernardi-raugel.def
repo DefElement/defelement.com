@@ -28,6 +28,8 @@ dofs:
     - normal integral moments with (lagrange,k-1)
     - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
   cell: integral moments of the divergence with (vector-lagrange,0)
+mapping: contravariant Piola
+continuity: H(div)
 symfem: Bernardi-Raugel
 examples:
   - triangle,1

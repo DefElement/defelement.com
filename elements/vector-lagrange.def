@@ -12,6 +12,8 @@ ndofs:
   tetrahedron:
     formula: (k+1)(k+2)(k+3)/2
     oeis: A027480
+continuity: H1
+mapping: identity
 dofs:
   vertices: point evaluations in coordinate directions
   edges: point evaluations in coordinate directions

@@ -14,6 +14,8 @@ polynomial set:
 dofs:
   vertices: point evaluations
   edges: point evaluations of normal derivatives at midpoints
+mapping: identity
+continuity: H1
 symfem: Morley
 ufl: Morley
 examples:

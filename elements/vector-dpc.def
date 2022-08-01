@@ -9,6 +9,8 @@ ndofs:
     oeis: A027480
 categories:
   - scalar
+continuity: L2
+mapping: identity
 reference elements:
   - interval
   - quadrilateral

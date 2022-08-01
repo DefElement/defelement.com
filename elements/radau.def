@@ -17,6 +17,8 @@ ndofs:
   hexahedron:
     formula: (k+1)^3
     oeis: A000578
+continuity: H1
+mapping: identity
 dofs:
   vertices: point evaluations
   edges: point evaluations at Radau points

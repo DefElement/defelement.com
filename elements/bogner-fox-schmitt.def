@@ -15,7 +15,10 @@ dofs:
   vertices:
     - point evaluations
     - point evaluations of derivatives in coordinate directions
+    - point evaluation of mixed second derivative
 symfem: BFS
+mapping: identity
+continuity: H2
 examples:
   - quadrilateral,3
 references:

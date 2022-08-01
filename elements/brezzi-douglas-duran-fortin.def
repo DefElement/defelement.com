@@ -16,6 +16,8 @@ polynomial set:
 dofs:
   facets: normal integral moments with (lagrange,k)
   cell: integral moments with (vector-lagrange,k-2)
+mapping: contravariant Piola
+continuity: H(div)
 symfem: BDDF
 min-order: 1
 examples:

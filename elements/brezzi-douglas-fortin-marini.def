@@ -30,6 +30,8 @@ polynomial set:
 dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (vector-lagrange,k-2)
+mapping: contravariant Piola
+continuity: H(div)
 symfem: BDFM
 ufl:
   triangle: BDFM
