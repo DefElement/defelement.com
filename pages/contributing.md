@@ -40,7 +40,9 @@ exterior-calculus:
   - P,d,simplex
   - Q-,d,tp
   - TNT,d,tp
-continuity: H1
+continuity:
+  n=0: L2
+  n>0: H1
 mapping: identity
 dofs:
   interval:
