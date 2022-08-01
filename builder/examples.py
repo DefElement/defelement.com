@@ -125,6 +125,8 @@ def markup_example(element, html_name, element_page):
     else:
         ref_id = element.reference.name
     fname = f"{ref_id}-{element.name}-{element.order}.html"
+    for s in " ()":
+        fname = fname.replace(s, "-")
 
     with open(os.path.join(os.path.join(settings.htmlelement_path, "examples", fname)), "w") as f:
         f.write(make_html_page(eg))
