@@ -44,7 +44,7 @@ continuity:
   n=0: L2
   n>0: H1
 mapping: identity
-dofs:
+ndofs:
   interval:
     formula: k+1
     oeis: A000027
