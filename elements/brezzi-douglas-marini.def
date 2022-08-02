@@ -7,7 +7,7 @@ exterior-calculus: P,d-1,simplex
 categories:
   - vector
   - Hdiv
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 ndofs:
@@ -19,7 +19,7 @@ ndofs:
     oeis: A027480
 continuity: H(div)
 mapping: contravariant Piola
-polynomial set:
+polynomial-set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
 dofs:

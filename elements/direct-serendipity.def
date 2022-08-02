@@ -3,7 +3,7 @@ html-name: direct serendipity
 min-order: 1
 categories:
   - scalar
-reference elements:
+reference-elements:
   - quadrilateral
 symfem: direct serendipity
 ufl: Sdirect

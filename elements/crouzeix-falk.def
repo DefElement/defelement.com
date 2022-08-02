@@ -9,9 +9,9 @@ categories:
 ndofs:
   triangle:
     formula: 10
-reference elements:
+reference-elements:
   - triangle
-polynomial set:
+polynomial-set:
   triangle: poly[k]
 mapping: identity
 continuity: L2

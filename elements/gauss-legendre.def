@@ -3,7 +3,7 @@ html-name: Gauss&ndash;Legendre
 categories:
   - scalar
 min-order: 0
-reference elements:
+reference-elements:
   - interval
   - quadrilateral
   - hexahedron
@@ -24,7 +24,7 @@ dofs:
   volumes: point evaluations at Gauss&ndash;Legendre points
 mapping: identity
 continuity: H1
-polynomial set:
+polynomial-set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]

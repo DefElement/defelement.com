@@ -10,7 +10,7 @@ max-order: 1
 categories:
   - vector
   - Hcurl
-reference elements:
+reference-elements:
   - dual polygon
 symfem: RBC
 bempp: RBC orders=0

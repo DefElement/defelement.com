@@ -3,7 +3,7 @@ html-name: Radau
 categories:
   - scalar
 min-order: 1
-reference elements:
+reference-elements:
   - interval
   - quadrilateral
   - hexahedron
@@ -24,7 +24,7 @@ dofs:
   edges: point evaluations at Radau points
   faces: point evaluations at Radau points
   volumes: point evaluations at Radau points
-polynomial set:
+polynomial-set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]

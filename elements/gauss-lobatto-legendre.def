@@ -5,7 +5,7 @@ short-names:
 categories:
   - scalar
 min-order: 1
-reference elements:
+reference-elements:
   - interval
   - quadrilateral
   - hexahedron
@@ -24,7 +24,7 @@ dofs:
   edges: point evaluations at GLL points
   faces: point evaluations at GLL points
   volumes: point evaluations at GLL points
-polynomial set:
+polynomial-set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]

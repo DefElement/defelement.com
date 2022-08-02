@@ -20,10 +20,10 @@ categories:
   - Hdiv
 continuity: H(div)
 mapping: contravariant Piola
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
-polynomial set:
+polynomial-set:
   triangle: poly[k-1]^d && <k>[\left\{\left(\begin{array}{c}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
   tetrahedron: poly[k-1]^d && <k>[\left\{\left(\begin{array}{c}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
 dofs:

@@ -11,13 +11,13 @@ categories:
   - scalar
 continuity: L2
 mapping: identity
-reference elements:
+reference-elements:
   - interval
   - quadrilateral
   - hexahedron
 dofs:
   cell: point evaluations
-polynomial set:
+polynomial-set:
   interval: poly[k]^d
   quadrilateral: poly[k]^d
   hexahedron: poly[k]^d

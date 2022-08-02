@@ -16,13 +16,13 @@ ndofs:
     oeis: A000292
 categories:
   - scalar
-reference elements:
+reference-elements:
   - interval
   - triangle
   - tetrahedron
 dofs:
   cell: point evaluations
-polynomial set:
+polynomial-set:
   interval: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
   triangle: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
   tetrahedron: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]

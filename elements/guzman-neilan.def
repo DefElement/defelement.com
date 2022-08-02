@@ -14,7 +14,7 @@ ndofs:
 categories:
   - vector
   - Hdiv
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 dofs:

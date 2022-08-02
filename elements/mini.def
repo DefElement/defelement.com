@@ -5,7 +5,7 @@ ndofs:
     formula: (k+1)(3k+4)/2
 categories:
   - mixed
-reference elements:
+reference-elements:
   - triangle
 mixed:
   - vector-bubble-enriched-lagrange(1)

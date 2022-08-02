@@ -7,9 +7,9 @@ categories:
 ndofs:
   triangle:
     formula: 21
-reference elements:
+reference-elements:
   - triangle
-polynomial set:
+polynomial-set:
   triangle: poly[k]
 dofs:
   vertices:

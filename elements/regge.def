@@ -3,7 +3,7 @@ html-name: Regge
 min-order: 1
 categories:
   - matrix
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 ndofs:
@@ -13,7 +13,7 @@ ndofs:
   tetrahedron:
     formula: (k+1)(k+2)(k+3)
     oeis: A007531
-polynomial set:
+polynomial-set:
   triangle: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]
   tetrahedron: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}]
 dofs:

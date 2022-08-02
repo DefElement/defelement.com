@@ -14,7 +14,7 @@ ndofs:
     oeis: A000292
 categories:
   - scalar
-reference elements:
+reference-elements:
   - interval
   - triangle
   - tetrahedron
@@ -24,7 +24,7 @@ dofs:
   cell:
     - integral over cell
     - point evaluations at midpoint of derivatives up to order \(k\)
-polynomial set:
+polynomial-set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]

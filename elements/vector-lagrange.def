@@ -2,7 +2,7 @@ name: vector Lagrange
 html-name: vector Lagrange
 categories:
   - vector
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 ndofs:
@@ -19,7 +19,7 @@ dofs:
   edges: point evaluations in coordinate directions
   faces: point evaluations in coordinate directions
   volumes: point evaluations in coordinate directions
-polynomial set:
+polynomial-set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
 symfem: vector Lagrange

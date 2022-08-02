@@ -7,9 +7,9 @@ categories:
 ndofs:
   quadrilateral:
     formula: 16
-reference elements:
+reference-elements:
   - quadrilateral
-polynomial set:
+polynomial-set:
   quadrilateral: qoly[k]
 dofs:
   vertices:

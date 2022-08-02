@@ -8,7 +8,7 @@ exterior-calculus:
 min-order: 1
 categories:
   - scalar
-reference elements:
+reference-elements:
   - interval
   - quadrilateral
   - hexahedron
@@ -33,7 +33,7 @@ dofs:
   edges: integral moments with (dpc,k-2)
   faces: integral moments with (dpc,k-4)
   volumes: integral moments with (dpc,k-6)
-polynomial set:
+polynomial-set:
   interval: poly[k] && serendipity[k]
   quadrilateral: poly[k] && serendipity[k]
   hexahedron: poly[k] && serendipity[k]

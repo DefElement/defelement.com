@@ -8,9 +8,9 @@ categories:
 ndofs:
   triangle:
     formula: k(k+5)/2
-reference elements:
+reference-elements:
   - triangle
-polynomial set:
+polynomial-set:
   triangle: poly[k] && <k>[\left\{x^iy^{k-i}(x+y)\middle|i=1,...,k-1\right\}]
 mapping: identity
 continuity: L2

@@ -9,7 +9,7 @@ ndofs:
     formula: (k+1)(k+2)(4k+9)/6
 categories:
   - mixed
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 mixed:

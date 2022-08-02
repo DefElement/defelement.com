@@ -6,12 +6,12 @@ short-names:
 categories:
   - vector
   - Hdiv
-reference elements:
+reference-elements:
   - hexahedron
 ndofs:
   hexahedron:
     formula: (k+1)(k^2+5k+12)/2
-polynomial set:
+polynomial-set:
   hexahedron: poly[k]^d && <k>[\operatorname{span}\left\{\nabla\times(0,0,x^{k+1}y), \nabla\times(0,xz^{k+1},0), \nabla\times(y^{k+1}z,0,0)\right\}] && <k>[\left\{\nabla\times(0,0,xy^{i+1}z^{k-i}), \nabla\times(0,x^{i+1}y^{k-i}z,0), \nabla\times(x^{k-i}yz^{i+1},0,0)\middle|i=1,...,k\right\}]
 dofs:
   facets: normal integral moments with (lagrange,k)

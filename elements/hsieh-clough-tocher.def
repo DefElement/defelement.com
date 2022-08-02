@@ -12,7 +12,7 @@ ndofs:
     formula: 12
 categories:
   - scalar
-reference elements:
+reference-elements:
   - triangle
 symfem: HCT
 examples:

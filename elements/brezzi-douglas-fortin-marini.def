@@ -6,7 +6,7 @@ short-names:
 categories:
   - vector
   - Hdiv
-reference elements:
+reference-elements:
   - triangle
   - quadrilateral
   - tetrahedron
@@ -22,7 +22,7 @@ ndofs:
   hexahedron:
     formula: k(k+1)(k+5)/2
 min-order: 1
-polynomial set:
+polynomial-set:
   triangle: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
   quadrilateral: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
   tetrahedron: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]

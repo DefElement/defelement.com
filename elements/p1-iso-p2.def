@@ -24,7 +24,7 @@ min-order: 1
 max-order: 1
 categories:
   - scalar
-reference elements:
+reference-elements:
   - triangle
   - quadrilateral
 dofs:

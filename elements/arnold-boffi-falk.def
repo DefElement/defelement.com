@@ -6,9 +6,9 @@ min-order: 0
 categories:
   - vector
   - Hdiv
-reference elements:
+reference-elements:
   - quadrilateral
-polynomial set:
+polynomial-set:
   triangle: <k>[\left\{\left(\begin{array}{c}x^py^q\\0\end{array}\right)\middle|p\leqslant k+2,q\leqslant k\right\}] && <k>[\left\{\left(\begin{array}{c}0\\x^py^q\end{array}\right)\middle|p\leqslant k,q\leqslant k+2\right\}]
 dofs:
   edges: normal integral moments with (lagrange,k)

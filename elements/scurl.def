@@ -11,7 +11,7 @@ min-order: 1
 categories:
   - vector
   - Hcurl
-reference elements:
+reference-elements:
   - quadrilateral
   - hexahedron
 continuity: H(curl)
@@ -28,7 +28,7 @@ dofs:
   edges: tangent integral moments with (dpc,k)
   faces: integral moments with (vector-dpc,k-2)
   volumes: integral moments with (vector-dpc,k-4)
-polynomial set:
+polynomial-set:
   quadrilateral: poly[k]^d && <k>[\operatorname{span}\left\{\left(\begin{array}{c}(k+1)x^ky\\-x^{k+1}\end{array}\right),\left(\begin{array}{c}y^{k+1}\\-(k+1)xy^k\end{array}\right)\right\}]
   hexahedron: poly[k]^d && apoly[k-1] && <k>[\left\{\nabla p\middle|p\in{{serendipity[k+1]}}\right\}]
 symfem: Scurl

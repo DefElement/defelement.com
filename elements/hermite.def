@@ -11,11 +11,11 @@ ndofs:
     formula: 10
   tetrahedron:
     formula: 20
-reference elements:
+reference-elements:
   - interval
   - triangle
   - tetrahedron
-polynomial set:
+polynomial-set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]
