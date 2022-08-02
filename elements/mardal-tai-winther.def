@@ -28,7 +28,7 @@ dofs:
       - normal integral moments with (lagrange,1)
       - integral moments with (nedelec1,1)
 mapping: contravariant Piola
-continuity: H(div)
+sobolev: H(div)
 symfem: MTW
 ufl:
   triangle: MTW

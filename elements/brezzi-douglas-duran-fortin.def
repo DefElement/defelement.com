@@ -17,7 +17,7 @@ dofs:
   facets: normal integral moments with (lagrange,k)
   cell: integral moments with (vector-lagrange,k-2)
 mapping: contravariant Piola
-continuity: H(div)
+sobolev: H(div)
 symfem: BDDF
 min-order: 1
 examples:

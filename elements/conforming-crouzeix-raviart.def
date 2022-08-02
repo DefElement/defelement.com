@@ -13,7 +13,7 @@ reference-elements:
 polynomial-set:
   triangle: poly[k] && <k>[\left\{x^iy^{k-i}(x+y)\middle|i=1,...,k-1\right\}]
 mapping: identity
-continuity: L2
+sobolev: L2
 dofs:
   vertices: points evaluation
   edges: point evaluations

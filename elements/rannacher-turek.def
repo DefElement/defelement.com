@@ -17,7 +17,7 @@ polynomial-set:
   hexahedron: poly[k] && <k>[\operatorname{span}\left\{(x_1+x_2)(x_1-x_2),(x_2+x_3)(x_2-x_3))\right\}]
 dofs:
   facets: point evaluation at midpoint
-continuity: L2
+sobolev: L2
 mapping: identity
 symfem: Rannacher-Turek
 examples:

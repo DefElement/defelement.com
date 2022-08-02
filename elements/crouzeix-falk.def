@@ -14,7 +14,7 @@ reference-elements:
 polynomial-set:
   triangle: poly[k]
 mapping: identity
-continuity: L2
+sobolev: L2
 dofs:
   facets: point evaluation at three points
   cell: point evaluation at midpoint

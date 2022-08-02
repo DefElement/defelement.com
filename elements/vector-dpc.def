@@ -9,7 +9,7 @@ ndofs:
     oeis: A027480
 categories:
   - scalar
-continuity: L2
+sobolev: L2
 mapping: identity
 reference-elements:
   - interval

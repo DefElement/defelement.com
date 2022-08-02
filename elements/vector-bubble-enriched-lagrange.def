@@ -8,7 +8,7 @@ categories:
   - vector
 reference-elements:
   - triangle
-continuity: H1
+sobolev: H1
 mapping: identity
 dofs:
   vertices: point evaluations in coordinate directions

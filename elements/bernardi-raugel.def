@@ -29,7 +29,7 @@ dofs:
     - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
   cell: integral moments of the divergence with (vector-lagrange,0)
 mapping: contravariant Piola
-continuity: H(div)
+sobolev: H(div)
 symfem: Bernardi-Raugel
 examples:
   - triangle,1

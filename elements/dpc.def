@@ -16,7 +16,7 @@ ndofs:
     formula: (k+1)(k+2)(k+3)/6
     oeis: A000292
 mapping: identity
-continuity: L2
+sobolev: L2
 categories:
   - scalar
 reference-elements:

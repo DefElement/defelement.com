@@ -37,7 +37,7 @@ The entries in this yaml file are:
 <tr><td>`polynomial-set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`mixed`</td><td></td><td>If this element is a mixed element, the subelements that it contains.</td></tr>
 <tr><td>`mapping`</td><td></td><td>The mapping used to push/pull values foward/back from/to the reference element.</td></tr>
-<tr><td>`continuity`</td><td></td><td>The Sobolev space the element lives in.</td></tr>
+<tr><td>`sobolev`</td><td></td><td>The Sobolev space the element lives in.</td></tr>
 <tr><td>`min-order`</td><td></td><td>The minimum order of the element</td></tr>
 <tr><td>`max-order`</td><td></td><td>The maximum order of the element</td></tr>
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>

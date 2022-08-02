@@ -12,7 +12,7 @@ ndofs:
 min-order: 1
 categories:
   - scalar
-continuity: H1
+sobolev: H1
 mapping: identity
 reference-elements:
   - quadrilateral

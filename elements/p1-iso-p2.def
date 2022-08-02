@@ -18,7 +18,7 @@ entity-ndofs:
       formula: 0
     quadrilateral:
       formula: 1
-continuity: H1
+sobolev: H1
 mapping: identity
 min-order: 1
 max-order: 1

@@ -20,7 +20,7 @@ dofs:
   edges: point evaluations of inner products with direction of edge
   faces: point evaluations of inner products with direction of edges
   volumes: point evaluations of inner products with direction of edges
-continuity: H(curl curl)
+sobolev: H(curl curl)
 mapping: double covariant Piola
 symfem: Regge
 basix: Regge

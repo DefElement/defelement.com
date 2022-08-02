@@ -17,7 +17,7 @@ reference-elements:
   - triangle
   - tetrahedron
 mapping: identity
-continuity: L2
+sobolev: L2
 polynomial-set:
   triangle: poly[k]
   tetrahedron: poly[k]

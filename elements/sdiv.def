@@ -14,7 +14,7 @@ categories:
 reference-elements:
   - quadrilateral
   - hexahedron
-continuity: H(div)
+sobolev: H(div)
 mapping: contravariant Piola
 ndofs:
   quadrilateral:

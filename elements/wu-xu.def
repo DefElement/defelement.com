@@ -26,7 +26,7 @@ polynomial-set:
   triangle: poly[k-1] && <k>[\left\{xy(1-x-y)p\middle|p\in{{poly[k-1]}}\setminus\{1\}\right\}]
   tetrahedron: poly[k-1] && <k>[\left\{xyz(1-x-y-z)p\middle|p\in{{poly[k-1]}}\setminus\{1\}\right\}]
 mapping: identity
-continuity: H1
+sobolev: H1
 dofs:
   vertices: point evaluations
   edges: integrals of normal derivatives

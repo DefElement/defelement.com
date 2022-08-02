@@ -18,7 +18,7 @@ ndofs:
 categories:
   - vector
   - Hdiv
-continuity: H(div)
+sobolev: H(div)
 mapping: contravariant Piola
 reference-elements:
   - triangle

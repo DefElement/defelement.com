@@ -29,7 +29,7 @@ polynomial-set:
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
 mapping: identity
-continuity: H1
+sobolev: H1
 basix: P lagrange_variant=gll_warped
 symfem: Lagrange variant=lobatto
 examples:

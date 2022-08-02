@@ -28,7 +28,7 @@ polynomial-set:
   triangle: poly[k]
   tetrahedron: poly[k]
 mapping: identity
-continuity: H1
+sobolev: H1
 symfem: Bernstein
 ufl: Bernstein
 examples:

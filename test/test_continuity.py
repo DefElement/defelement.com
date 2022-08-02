@@ -19,11 +19,11 @@ def test_sequence(file, cellname):
 
     if "mapping" not in data:
         pytest.skip()
-    if "continuity" not in data:
+    if "sobolev" not in data:
         pytest.skip()
 
     m = data["mapping"]
-    c = data["continuity"]
+    c = data["sobolev"]
     if isinstance(c, dict):
         c = list(c.values())
     else:
