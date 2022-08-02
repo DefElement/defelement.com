@@ -168,7 +168,7 @@ for e in categoriser.elements:
     if sobolev is not None:
         if isinstance(sobolev, dict):
             element_data.append(("continuity", "<br />".join([
-                f"{cdescs[c]} (\({n}\))" for n, c in sobolev.items()])))
+                f"{cdescs[c]} (\\({n}\\))" for n, c in sobolev.items()])))
         else:
             element_data.append(("continuity", cdescs[sobolev]))
 
