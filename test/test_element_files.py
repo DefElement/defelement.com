@@ -16,7 +16,7 @@ def parse_contributing_page():
 
     docs = {"req": [], "opt": [], "all": []}
     for line in table.split("\n"):
-        name = line.split("`")[1]
+        name = line.split("`")[1].replace("&#8209;", "-")
         docs["all"].append(name)
         if "{{tick}}" in line:
             docs["req"].append(name)

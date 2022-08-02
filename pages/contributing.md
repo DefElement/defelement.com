@@ -26,20 +26,20 @@ The entries in this yaml file are:
 <tr><td>Name</td><td>Required</td><td>Description</td></tr>
 </thead>
 <tr><td>`name`</td><td>{{tick}}</td><td>The name of the element (ascii).</td></tr>
-<tr><td>`html-name`</td><td>{{tick}}</td><td>The name of the element, including HTML special characters.</td></tr>
-<tr><td>`reference-elements`</td><td>{{tick}}</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
-<tr><td>`alt-names`</td><td></td><td>Alternative (HTML) names of the element.</td></tr>
-<tr><td>`short-names`</td><td></td><td>Abbreviated names of the element.</td></tr>
-<tr><td>`exterior-calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
+<tr><td>`html&#8209;name`</td><td>{{tick}}</td><td>The name of the element, including HTML special characters.</td></tr>
+<tr><td>`reference&#8209;elements`</td><td>{{tick}}</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
+<tr><td>`alt&#8209;names`</td><td></td><td>Alternative (HTML) names of the element.</td></tr>
+<tr><td>`short&#8209;names`</td><td></td><td>Abbreviated names of the element.</td></tr>
+<tr><td>`exterior&#8209;calculus`</td><td></td><td>The family name and exerior derivatuve order.</td></tr>
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
-<tr><td>`entity-ndofs`</td><td></td><td>The number of DOFs the element has per subentity type and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
-<tr><td>`polynomial-set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
+<tr><td>`entity&#8209;ndofs`</td><td></td><td>The number of DOFs the element has per subentity type and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
+<tr><td>`polynomial&#8209;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/mscroggs/defelement.com/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`mixed`</td><td></td><td>If this element is a mixed element, the subelements that it contains.</td></tr>
 <tr><td>`mapping`</td><td></td><td>The mapping used to push/pull values foward/back from/to the reference element.</td></tr>
 <tr><td>`sobolev`</td><td></td><td>The Sobolev space the element lives in.</td></tr>
-<tr><td>`min-order`</td><td></td><td>The minimum order of the element</td></tr>
-<tr><td>`max-order`</td><td></td><td>The maximum order of the element</td></tr>
+<tr><td>`min&#8209;order`</td><td></td><td>The minimum order of the element</td></tr>
+<tr><td>`max&#8209;order`</td><td></td><td>The maximum order of the element</td></tr>
 <tr><td>`examples`</td><td></td><td>Reference elements and orders to be included in the examples section of the entry.</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 <tr><td>`references`</td><td></td><td>References to where the element is defined.</td></tr>
