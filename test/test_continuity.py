@@ -9,7 +9,7 @@ for i in os.listdir(element_path):
     if i.endswith(".def"):
         with open(os.path.join(element_path, i)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
-        inputs += [(i, c) for c in data["reference elements"]]
+        inputs += [(i, c) for c in data["reference-elements"]]
 
 
 @pytest.mark.parametrize("file, cellname", inputs)
