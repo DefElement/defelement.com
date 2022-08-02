@@ -227,10 +227,10 @@ class Element:
             return None
         return self.data["mapping"]
 
-    def continuity(self):
-        if "continuity" not in self.data:
+    def sobolev(self):
+        if "sobolev" not in self.data:
             return None
-        return self.data["continuity"]
+        return self.data["sobolev"]
 
     def cockburn_fu_names(self, link=True):
         if "exterior-calculus" not in self.data:

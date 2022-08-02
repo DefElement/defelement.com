@@ -20,9 +20,7 @@ exterior-calculus:
   - P,d,simplex
   - Q-,d,tp
   - TNT,d,tp
-sobolev:
-  n=0: L2
-  n>0: H1
+sobolev: H1
 mapping: identity
 ndofs:
   interval:
