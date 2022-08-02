@@ -15,10 +15,6 @@ Before adding an element to DefElement, it should first be implemented in Symfem
 
 ### Defining an element
 Elements in the DefElement database are defined using a yaml file in the `elements/` folder.
-The full file for a Lagrange element is:
-
-{{code-include::elements/lagrange.def}}
-
 The entries in this yaml file are:
 
 <table class='bordered align-left'>
