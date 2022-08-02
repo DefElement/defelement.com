@@ -164,13 +164,13 @@ for e in categoriser.elements:
         element_data.append(("Mapping", mapping))
 
     # Continuity
-    continuity = e.continuity()
-    if continuity is not None:
-        if isinstance(continuity, dict):
+    sobolev = e.sobolev()
+    if sobolev is not None:
+        if isinstance(sobolev, dict):
             element_data.append(("continuity", "<br />".join([
-                f"{cdescs[c]} ({n})" for n, c in continuity.items()])))
+                f"{cdescs[c]} (\\({n}\\))" for n, c in sobolev.items()])))
         else:
-            element_data.append(("continuity", cdescs[continuity]))
+            element_data.append(("continuity", cdescs[sobolev]))
 
     # Notes
     notes = e.notes

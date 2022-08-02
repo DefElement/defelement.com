@@ -18,7 +18,7 @@ categories:
 exterior-calculus:
   - P-,1,simplex
   - Q-,1,tp
-continuity: H(curl)
+sobolev: H(curl)
 mapping: covariant Piola
 ndofs:
   triangle:
@@ -35,13 +35,13 @@ ndofs:
     oeis: A059986
   prism:
     formula: 3k(k+2)(k+1)/2
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
   - quadrilateral
   - hexahedron
   - prism
-polynomial set:
+polynomial-set:
   triangle: poly[k-1]^d && <k>[\left\{\boldsymbol{p}\in{{tpoly[k]^d}}\middle|\boldsymbol{p}({{x}})\cdot {{x}}=0\right\}]
   tetrahedron: poly[k-1]^d && <k>[\left\{\boldsymbol{p}\in{{tpoly[k]^d}}\middle|\boldsymbol{p}({{x}})\cdot {{x}}=0\right\}]
   quadrilateral: qoly[k-1]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_i\in{{qoly[k]}}\text{ for }i=1,\dots,d\right\}]

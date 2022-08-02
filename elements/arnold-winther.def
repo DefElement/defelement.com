@@ -5,12 +5,12 @@ alt-names:
 min-order: 3
 categories:
   - matrix
-reference elements:
+reference-elements:
   - triangle
 ndofs:
   triangle:
     formula: (3k^2+5k+6)/2
-polynomial set:
+polynomial-set:
   triangle: <k-1>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\right\}] && <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and }\operatorname{div}\mathbf{M}=0\right\}]
 dofs:
   vertices: point evaluations of three components

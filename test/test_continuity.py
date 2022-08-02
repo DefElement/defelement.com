@@ -9,7 +9,7 @@ for i in os.listdir(element_path):
     if i.endswith(".def"):
         with open(os.path.join(element_path, i)) as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
-        inputs += [(i, c) for c in data["reference elements"]]
+        inputs += [(i, c) for c in data["reference-elements"]]
 
 
 @pytest.mark.parametrize("file, cellname", inputs)
@@ -19,11 +19,11 @@ def test_sequence(file, cellname):
 
     if "mapping" not in data:
         pytest.skip()
-    if "continuity" not in data:
+    if "sobolev" not in data:
         pytest.skip()
 
     m = data["mapping"]
-    c = data["continuity"]
+    c = data["sobolev"]
     if isinstance(c, dict):
         c = list(c.values())
     else:

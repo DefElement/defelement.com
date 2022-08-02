@@ -11,7 +11,7 @@ min-order: 1
 categories:
   - vector
   - Hdiv
-reference elements:
+reference-elements:
   - quadrilateral
   - hexahedron
 ndofs:
@@ -21,12 +21,12 @@ ndofs:
   hexahedron:
     formula: 3k^2(k+1)
     oeis: A270205
-continuity: H(div)
+sobolev: H(div)
 mapping: contravariant Piola
 dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (nedelec1,k-1)
-polynomial set:
+polynomial-set:
   quadrilateral: qoly[k-1]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_j\in\begin{cases}{{tqoly[k+1]}}&i=j\\{{tqoly[k]}}&i\not=j\end{cases}\text{ for }i,j=1,\dots,d\right\}]
   hexahedron: qoly[k]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_j\in\begin{cases}{{tqoly[k+1]}}&i=j\\{{tqoly[k]}}&i\not=j\end{cases}\text{ for }i,j=1,\dots,d\right\}]
 symfem: Qdiv

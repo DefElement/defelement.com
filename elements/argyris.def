@@ -7,9 +7,9 @@ categories:
 ndofs:
   triangle:
     formula: 21
-reference elements:
+reference-elements:
   - triangle
-polynomial set:
+polynomial-set:
   triangle: poly[k]
 dofs:
   vertices:
@@ -18,7 +18,7 @@ dofs:
     - point evaluations of components of Jacobian
   edges: point evaluations of normal derivatives at midpoints
 mapping: identity
-continuity: H3
+sobolev: H3
 symfem: Argyris
 ufl: Argyris
 examples:

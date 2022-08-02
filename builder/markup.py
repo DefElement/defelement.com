@@ -94,6 +94,7 @@ def markup(content):
     out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
 
     out = insert_links(out)
+    out = re.sub(r"{{code-include::([^}]+)}}", code_include, out)
     out = re.sub(r"{{plot::([^,]+),([^,]+),([0-9]+)}}", plot_element, out)
     out = re.sub(r"{{plot::([^,]+),([^,]+),([0-9]+)::([0-9]+)}}",
                  plot_single_element, out)
@@ -128,6 +129,14 @@ def insert_links(txt):
     txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)
     txt = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", txt)
     return txt
+
+
+def code_include(matches):
+    out = "<p class='pcode'>"
+    with open(os.path.join(settings.dir_path, matches[1])) as f:
+        out += "<br />".join(line.replace(" ", "&nbsp;") for line in f)
+    out += "</p>"
+    return out
 
 
 def plot_element(matches):

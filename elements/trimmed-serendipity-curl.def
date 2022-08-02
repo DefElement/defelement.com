@@ -6,7 +6,7 @@ min-order: 1
 categories:
   - vector
   - Hcurl
-reference elements:
+reference-elements:
   - quadrilateral
   - hexahedron
 dofs:
@@ -14,11 +14,11 @@ dofs:
   faces:
     - integral moments with (vector-dpc,k-3)
     - integral moments with {\nabla(p)\middle|p\text{ is an order \(k-1\) monomial}}
-polynomial set:
+polynomial-set:
   quadrilateral: poly[k-1]^d && <k>[\operatorname{span}\left\{\left(\begin{array}{c}y\\-x\end{array}\right)p\middle|p\in{{tpoly[k-1]}}\right\}] && <k>[\operatorname{span}\left\{\left(\begin{array}{c}y^k\\kxy^{k-1}\end{array}\right),\left(\begin{array}{c}kx^{k-1}y\\x^k\end{array}\right)\right\}]
   hexahedron: poly[k-1]^d && <k>[\operatorname{span}\left\{\boldsymbol{x}\times p\middle|p\in{{tpoly[k-1]}}\right\}] && <k>[\operatorname{span}\left\{\nabla p\middle|p\in\{xyz^k,xy^kz,x^kyz\}\cup\{xy^az^{k-a}|a=0,1,...,k\}\cup\{x^ayz^{k-a}|a=0,1,...,k\}\cup\{x^ay^{k-a}z|a=0,1,...,k\}\right\}] && <k>[\operatorname{span}\left\{\left(\left(\begin{array}{c}-y\\x\\0\end{array}\right)xy^az^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}] && <k>[\operatorname{span}\left\{\left(\left(\begin{array}{c}-z\\0\\x\end{array}\right)yx^az^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}] && <k>[\operatorname{span}\left\{\left(\left(\begin{array}{c}-y\\x\\0\end{array}\right)zx^ay^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}]
 symfem: TScurl
-continuity: H(curl)
+sobolev: H(curl)
 mapping: covariant Piola
 examples:
   - quadrilateral,1

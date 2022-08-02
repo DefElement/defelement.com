@@ -7,9 +7,9 @@ categories:
 ndofs:
   quadrilateral:
     formula: 16
-reference elements:
+reference-elements:
   - quadrilateral
-polynomial set:
+polynomial-set:
   quadrilateral: qoly[k]
 dofs:
   vertices:
@@ -18,7 +18,7 @@ dofs:
     - point evaluation of mixed second derivative
 symfem: BFS
 mapping: identity
-continuity: H2
+sobolev: H2
 examples:
   - quadrilateral,3
 references:

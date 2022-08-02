@@ -14,7 +14,7 @@ ndofs:
     oeis: A000292
 categories:
   - scalar
-reference elements:
+reference-elements:
   - interval
   - triangle
   - tetrahedron
@@ -23,12 +23,12 @@ dofs:
   edges: evaluation of Bernstein coefficients
   faces: evaluation of Bernstein coefficients
   volumes: evaluation of Bernstein coefficients
-polynomial set:
+polynomial-set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]
 mapping: identity
-continuity: H1
+sobolev: H1
 symfem: Bernstein
 ufl: Bernstein
 examples:

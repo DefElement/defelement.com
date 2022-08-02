@@ -9,7 +9,7 @@ ndofs:
     formula: 9
 categories:
   - scalar
-reference elements:
+reference-elements:
   - triangle
 symfem: rHCT
 examples:

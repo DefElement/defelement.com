@@ -4,7 +4,7 @@ short-names:
   - KMV
 categories:
   - scalar
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 symfem: KMV

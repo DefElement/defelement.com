@@ -16,16 +16,16 @@ ndofs:
     formula: (k+1)(k+2)(k+3)/6
     oeis: A000292
 mapping: identity
-continuity: L2
+sobolev: L2
 categories:
   - scalar
-reference elements:
+reference-elements:
   - interval
   - quadrilateral
   - hexahedron
 dofs:
   cell: point evaluations
-polynomial set:
+polynomial-set:
   interval: poly[k]
   quadrilateral: poly[k]
   hexahedron: poly[k]

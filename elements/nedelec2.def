@@ -17,12 +17,12 @@ ndofs:
   tetrahedron:
     formula: (k+1)(k+2)(k+3)/2
     oeis: A027480
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
-continuity: H(curl)
+sobolev: H(curl)
 mapping: covariant Piola
-polynomial set:
+polynomial-set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
 dofs:

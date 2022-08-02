@@ -13,12 +13,12 @@ ndofs:
     formula: 3
   tetrahedron:
     formula: 4
-reference elements:
+reference-elements:
   - triangle
   - tetrahedron
 mapping: identity
-continuity: L2
-polynomial set:
+sobolev: L2
+polynomial-set:
   triangle: poly[k]
   tetrahedron: poly[k]
 dofs:

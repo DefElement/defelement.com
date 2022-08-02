@@ -11,11 +11,11 @@ min-order: 0
 max-order: 1
 categories:
   - scalar
-reference elements:
+reference-elements:
   - dual polygon
 symfem: dual
 mapping: identity
-continuity:
+sobolev:
   n=0: L2
   n=1: H1
 bempp: DUAL orders=0,1

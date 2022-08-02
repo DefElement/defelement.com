@@ -3,12 +3,12 @@ html-name: direct serendipity
 min-order: 1
 categories:
   - scalar
-reference elements:
+reference-elements:
   - quadrilateral
 symfem: direct serendipity
 ufl: Sdirect
 mapping: identity
-continuity: H1
+sobolev: H1
 examples:
   - quadrilateral,1
   - quadrilateral,2

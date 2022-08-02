@@ -20,9 +20,7 @@ exterior-calculus:
   - P,d,simplex
   - Q-,d,tp
   - TNT,d,tp
-continuity:
-  n=0: L2
-  n>0: H1
+sobolev: H1
 mapping: identity
 ndofs:
   interval:
@@ -76,7 +74,7 @@ entity-ndofs:
 min-order: 1
 categories:
   - scalar
-reference elements:
+reference-elements:
   - interval
   - triangle
   - tetrahedron
@@ -89,7 +87,7 @@ dofs:
   edges: point evaluations
   faces: point evaluations
   volumes: point evaluations
-polynomial set:
+polynomial-set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]

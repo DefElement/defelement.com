@@ -193,9 +193,9 @@ class Element:
     def reference_elements(self, link=True):
         if link:
             return [f"<a href='/lists/references/{e}.html'>{e}</a>"
-                    for e in self.data["reference elements"]]
+                    for e in self.data["reference-elements"]]
         else:
-            return self.data["reference elements"]
+            return self.data["reference-elements"]
 
     def alternative_names(self, include_bracketed=True, include_exterior=True, link=True,
                           strip_cell_name=False, cell=None):
@@ -227,10 +227,10 @@ class Element:
             return None
         return self.data["mapping"]
 
-    def continuity(self):
-        if "continuity" not in self.data:
+    def sobolev(self):
+        if "sobolev" not in self.data:
             return None
-        return self.data["continuity"]
+        return self.data["sobolev"]
 
     def cockburn_fu_names(self, link=True):
         if "exterior-calculus" not in self.data:
@@ -401,16 +401,16 @@ class Element:
 
     def make_polynomial_set_html(self):
         # TODO: move some of this to polynomial file
-        if "polynomial set" not in self.data:
+        if "polynomial-set" not in self.data:
             return []
         psets = {}
-        for i, j in self.data["polynomial set"].items():
+        for i, j in self.data["polynomial-set"].items():
             if j not in psets:
                 psets[j] = []
             psets[j].append(i)
         if (
-            "reference elements" in self.data and len(psets) == 1
-            and len(list(psets.values())[0]) == len(self.data["reference elements"])
+            "reference-elements" in self.data and len(psets) == 1
+            and len(list(psets.values())[0]) == len(self.data["reference-elements"])
         ):
             out = f"\\({make_poly_set(list(psets.keys())[0])}\\)<br />"
         else:

@@ -4,7 +4,7 @@ categories:
   - vector
 alt-names:
   - (vector Lagrange)
-reference elements:
+reference-elements:
   - quadrilateral
   - hexahedron
 ndofs:
@@ -18,13 +18,13 @@ ndofs:
     formula: 3(k+1)^3
     oeis: A117642
 mapping: identity
-continuity: H1
+sobolev: H1
 dofs:
   vertices: point evaluations in coordinate directions
   edges: point evaluations in coordinate directions
   faces: point evaluations in coordinate directions
   volumes: point evaluations in coordinate directions
-polynomial set:
+polynomial-set:
   quadrilateral: qoly[k]^d
   hexahedron: qoly[k]^d
 symfem: vector Q

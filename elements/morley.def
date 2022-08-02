@@ -7,15 +7,15 @@ categories:
 ndofs:
   triangle:
     formula: 6
-reference elements:
+reference-elements:
   - triangle
-polynomial set:
+polynomial-set:
   triangle: poly[k]
 dofs:
   vertices: point evaluations
   edges: point evaluations of normal derivatives at midpoints
 mapping: identity
-continuity: H1
+sobolev: H1
 symfem: Morley
 ufl: Morley
 examples:
