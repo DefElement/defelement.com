@@ -57,6 +57,8 @@ def do_the_plot(
     from .html import make_html_page
     from .markup import cap_first
 
+    filename = filename.replace(" ", "-")
+
     kwargs = {
         "title": desc, "desc": svg_desc,
         "svg_metadata": svg_metadata.replace("{title}", desc), "tex_comment": tex_comment}
