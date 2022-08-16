@@ -12,6 +12,7 @@ ndofs:
     formula: 12
 categories:
   - scalar
+  - macro
 reference-elements:
   - triangle
 symfem: HCT
