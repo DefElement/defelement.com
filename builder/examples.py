@@ -52,7 +52,7 @@ def describe_dof(element, d):
     return desc, symb
 
 
-def markup_example(element, html_name, element_page):
+def markup_example(element, html_name, element_page, fname):
     eg = f"<h1>Degree {element.order} {html_name} on a {element.reference.name}</h1>\n"
     eg += f"<a href='{element_page}'><small>&#9664; Back to {html_name} definition page"
     eg += "</a></small>\n"
@@ -120,15 +120,7 @@ def markup_example(element, html_name, element_page):
         eg += "</div>"
         eg += "</div>"
 
-    if element.reference.name == "dual polygon":
-        ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
-    else:
-        ref_id = element.reference.name
-    fname = f"{ref_id}-{element.name}-{element.order}.html"
-    for s in " ()":
-        fname = fname.replace(s, "-")
-
     with open(os.path.join(os.path.join(settings.htmlelement_path, "examples", fname)), "w") as f:
         f.write(make_html_page(eg))
 
-    return plotting.plot_dof_diagram(element, link=False), f"/elements/examples/{fname}"
+    return f"/elements/examples/{fname}"
