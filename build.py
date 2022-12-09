@@ -325,7 +325,7 @@ for e in categoriser.elements:
         f.write(make_html_page(content, e.html_name))
 
 
-def build_examples(egs):
+def build_examples(egs, process=""):
     for eg in egs:
         start = datetime.now()
 
@@ -336,7 +336,7 @@ def build_examples(egs):
             eg['filename'])
 
         end = datetime.now()
-        print(f"    {eg['args'][0]} {eg['args'][1]} {eg['args'][2]}"
+        print(f"  {process}{eg['args'][0]} {eg['args'][1]} {eg['args'][2]}"
               f" (completed in {(end - start).total_seconds():.2f}s)", flush=True)
 
 
@@ -354,7 +354,7 @@ else:
     for i in range(p):
         process = multiprocessing.Process(
             target=build_examples,
-            args=(all_examples[n_egs * i // p: n_egs * (i + 1) // p], )
+            args=(all_examples[n_egs * i // p: n_egs * (i + 1) // p], f"[{i}] ")
         )
         jobs.append(process)
 
