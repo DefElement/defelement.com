@@ -337,7 +337,7 @@ def build_examples(egs):
 
         end = datetime.now()
         print(f"    {eg['args'][0]} {eg['args'][1]} {eg['args'][2]}"
-              f" (completed in {(end - start).total_seconds():.2f}s)")
+              f" (completed in {(end - start).total_seconds():.2f}s)", flush=True)
 
 
 # Make example pages
