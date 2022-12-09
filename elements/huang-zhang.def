@@ -22,7 +22,7 @@ dofs:
   facets:
     - normal integral moments with (lagrange,k-1)
     - tangent integral moments with (lagrange,k-2)
-  cell: integral moments with "\(\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k-1\}, j\in\{0,1,...,k-2\}\right\}\)\cup\(\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k-2\}, j\in\{0,1,...,k-1\}\right\}\)"
+  cell: integral moments with "\(\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k-1\}, j\in\{0,1,...,k-2\}\right\}\cup\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k-2\}, j\in\{0,1,...,k-1\}\right\}\)"
 symfem: HZ
 examples:
   - quadrilateral,2
