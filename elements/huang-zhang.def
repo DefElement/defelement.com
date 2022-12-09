@@ -1,0 +1,50 @@
+name: Huang-Zhang
+html-name: Huang&ndash;Zhang
+min-order: 2
+alt-names:
+  - \(Q_{k+1,k}\times Q_{k,k+1}\)
+short-names:
+  - HZ
+ndofs:
+  quadrilateral:
+    formula: 2(k+1)(k+2)
+    oeis: A046092
+categories:
+  - vector
+  - Hdiv
+sobolev: H(div)
+mapping: contravariant Piola
+reference-elements:
+  - quadrilateral
+polynomial-set:
+  quadrilateral:
+<k>[\operatorname{span}\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k+1\}, j\in\{0,1,...,k\}\right\}] && <k>[\operatorname{span}\left\{\left(\begin{array}{c}0\\x^iy^j\end{array}\right)\middle|i\in\{0,1,...,k\}, j\in\{0,1,...,k+1\}\right\}]
+dofs:
+  facets:
+    - normal integral moments with (lagrange,k-1)
+    - tangent integral moments with (lagrange,k-2)
+  cell: integral moments with "\(\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k-1\}, j\in\{0,1,...,k-2\}\right\}\)\cup\(\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k-2\}, j\in\{0,1,...,k-1\}\right\}\)"
+symfem: HZ
+examples:
+  - quadrilateral,2
+  - quadrilateral,3
+references:
+    title: A family of \(Q_{k+1,k}\times Q+{k,k+1}\) divergence-free finite elements on rectangular grids
+    author: Zhang, Shangyou
+    year: 2009
+    journal: SIAM journal on numerical analysis
+    volume: 47
+    issue: 3
+    pagestart: 2090
+    pageend: 2107
+    doi: 10.1137/080728949
+  - title: A lowest order divergence-free finite element on rectangular grids
+    author:
+      - Huang, Yunqing
+      - Zhang, Shangyou
+    year: 2011
+    journal: Frontiers of mathematics in China
+    volume: 6
+    pagestart: 253
+    pageend: 270
+    doi: 10.1007/s11464-011-0094-0
