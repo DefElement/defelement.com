@@ -15,3 +15,5 @@ htmlindices_path = _os.path.join(html_path, "lists")
 htmlfamilies_path = _os.path.join(html_path, "families")
 
 github_token = None
+
+processes = 1

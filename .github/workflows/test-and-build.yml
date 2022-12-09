@@ -15,10 +15,10 @@ jobs:
     steps:
       - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
         name: Install dependencies
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Clone Symfem
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ./symfem
           repository: mscroggs/symfem
@@ -43,10 +43,10 @@ jobs:
     steps:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Clone Symfem
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ./symfem
           repository: mscroggs/symfem
@@ -59,7 +59,7 @@ jobs:
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
       - name: Clone Varela Round
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ./varela-r
           repository: avrahamcornfeld/Varela-Round-Hebrew
@@ -74,7 +74,7 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_test_html --test auto
+      - run: python3 build.py ../_test_html --test auto --processes 4
         name: Build website HTML
 
   build-website:
@@ -86,10 +86,10 @@ jobs:
     steps:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Clone Symfem
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ./symfem
           repository: mscroggs/symfem
@@ -102,7 +102,7 @@ jobs:
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
       - name: Clone Varela Round
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ./varela-r
           repository: avrahamcornfeld/Varela-Round-Hebrew
@@ -117,7 +117,7 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }}
+      - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
       - run: |
           cd ../_html
@@ -140,11 +140,11 @@ jobs:
       CXX: g++-10
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - run: pip3 install pytest-xdist
         name: Install dependencies
@@ -153,7 +153,7 @@ jobs:
         run: pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
 
       - name: Clone Symfem
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ./symfem
           repository: mscroggs/symfem

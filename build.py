@@ -2,7 +2,7 @@ import os
 import argparse
 from datetime import datetime
 from symfem import create_element
-from builder import settings
+from builder import plotting, settings
 from builder.markup import markup, insert_links, python_highlight, cap_first
 from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
@@ -22,6 +22,9 @@ parser.add_argument('--test', metavar="test", default=None,
                     help="Builds a version of the website with fewer elements.")
 parser.add_argument('--github-token', metavar="github_token", default=None,
                     help="Provide a GitHub token to get update timestamps.")
+parser.add_argument('--processes', metavar="processes", default=None,
+                    help="The number of processes to run the building of examples on.")
+
 
 args = parser.parse_args()
 if args.destination is not None:
@@ -30,6 +33,9 @@ if args.destination is not None:
     settings.htmlimg_path = os.path.join(settings.html_path, "img")
     settings.htmlindices_path = os.path.join(settings.html_path, "lists")
     settings.htmlfamilies_path = os.path.join(settings.html_path, "families")
+
+if args.processes is not None:
+    settings.processes = int(args.processes)
 
 if args.github_token is not None:
     settings.github_token = args.github_token
@@ -96,6 +102,7 @@ cdescs = {
     "H(curl curl)": "Inner products with tangents to facets are continuous"}
 
 # Generate element pages
+all_examples = []
 for e in categoriser.elements:
     print(e.name)
     content = f"<h1>{cap_first(e.html_name)}</h1>"
@@ -250,40 +257,40 @@ for e in categoriser.elements:
 
     # Write examples using symfem
     if e.has_examples:
-        element_examples = {}
+        element_examples = []
 
         if test_elements is None or e.filename in test_elements:
             assert e.implemented("symfem")
 
             for eg in e.examples:
-                start = datetime.now()
                 cell, order, kwargs = parse_example(eg)
-                print(f"    {cell} {order}", end="", flush=True)
                 symfem_name, params = e.get_implementation_string("symfem", cell)
 
+                fname = f"{cell}-{symfem_name}-{order}.html"
+                for s in " ()":
+                    fname = fname.replace(s, "-")
+
+                name = f"{cell}<br />order {order}"
+                for i, j in kwargs.items():
+                    name += f"<br />{i}={str(j).replace(' ', '&nbsp;')}"
+
+                eginfo = {
+                    "name": name, "args": [cell, symfem_name, order], "kwargs": kwargs,
+                    "html_name": e.html_name, "element_filename": e.html_filename,
+                    "filename": fname, "url": f"/elements/examples/{fname}"}
                 if "variant" in params:
-                    element = create_element(cell, symfem_name, order, variant=params["variant"],
-                                             **kwargs)
-                else:
-                    element = create_element(cell, symfem_name, order, **kwargs)
-
-                example = markup_example(element, e.html_name, f"/elements/{e.html_filename}")
-
-                if len(example) > 0:
-                    name = f"{cell}<br />order {order}"
-                    for i, j in kwargs.items():
-                        name += f"<br />{i}={str(j).replace(' ', '&nbsp;')}"
-                    element_examples[name] = example
-
-                end = datetime.now()
-                print(f" (completed in {(end - start).total_seconds():.2f}s)")
+                    eginfo["kwargs"]["variant"] = params["variant"]
+                all_examples.append(eginfo)
+                element_examples.append(eginfo)
 
         if len(element_examples) > 0:
             content += "<h2>Examples</h2>\n"
             content += "<table class='element-info'>"
-            for name, eg in element_examples.items():
+            for eg in element_examples:
+                element = create_element(*eg['args'], **eg['kwargs'])
                 content += (
-                    f"<tr><td>{name}</td><td><center><a href='{eg[1]}'>{eg[0]}<br />"
+                    f"<tr><td>{eg['name']}</td><td><center><a href='{eg['url']}'>"
+                    f"{plotting.plot_dof_diagram(element, link=False)}"
                     "<small>(click to view basis functions)</small></a></center></td></tr>")
             content += "</table>"
 
@@ -316,6 +323,46 @@ for e in categoriser.elements:
     # Write file
     with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
         f.write(make_html_page(content, e.html_name))
+
+
+def build_examples(egs, process=""):
+    for eg in egs:
+        start = datetime.now()
+
+        element = create_element(*eg['args'], **eg['kwargs'])
+
+        markup_example(
+            element, eg['html_name'], f"/elements/{eg['element_filename']}",
+            eg['filename'])
+
+        end = datetime.now()
+        print(f"  {process}{eg['args'][0]} {eg['args'][1]} {eg['args'][2]}"
+              f" (completed in {(end - start).total_seconds():.2f}s)", flush=True)
+
+
+# Make example pages
+print("Making examples")
+if settings.processes == 1:
+    build_examples(all_examples)
+else:
+    import multiprocessing
+
+    p = settings.processes
+    n_egs = len(all_examples)
+
+    jobs = []
+    for i in range(p):
+        process = multiprocessing.Process(
+            target=build_examples,
+            args=(all_examples[n_egs * i // p: n_egs * (i + 1) // p], f"[{i}] ")
+        )
+        jobs.append(process)
+
+    for j in jobs:
+        j.start()
+
+    for j in jobs:
+        j.join()
 
 # Index page
 content = "<h1>Index of elements</h1>\n"

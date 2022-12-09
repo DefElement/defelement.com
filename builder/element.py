@@ -112,6 +112,8 @@ class Categoriser:
                     e.created = datetime.now()
                     e.modified = datetime.now()
 
+        self.elements.sort(key=lambda x: x.name.lower())
+
     def add_exterior_family(self, e, name, fname):
         if len(e.split(",")) == 3:
             i, j, k = e.split(",")
