@@ -7,7 +7,7 @@ short-names:
   - HZ
 ndofs:
   quadrilateral:
-    formula: 2(k+1)(k+2)
+    formula: 2k(k+1)
     oeis: A046092
 categories:
   - vector
