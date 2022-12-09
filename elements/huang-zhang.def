@@ -28,7 +28,7 @@ examples:
   - quadrilateral,2
   - quadrilateral,3
 references:
-    title: A family of \(Q_{k+1,k}\times Q+{k,k+1}\) divergence-free finite elements on rectangular grids
+  - title: A family of \(Q_{k+1,k}\times Q+{k,k+1}\) divergence-free finite elements on rectangular grids
     author: Zhang, Shangyou
     year: 2009
     journal: SIAM journal on numerical analysis
