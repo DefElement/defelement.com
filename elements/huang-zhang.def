@@ -17,8 +17,7 @@ mapping: contravariant Piola
 reference-elements:
   - quadrilateral
 polynomial-set:
-  quadrilateral:
-<k>[\operatorname{span}\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k+1\}, j\in\{0,1,...,k\}\right\}] && <k>[\operatorname{span}\left\{\left(\begin{array}{c}0\\x^iy^j\end{array}\right)\middle|i\in\{0,1,...,k\}, j\in\{0,1,...,k+1\}\right\}]
+  quadrilateral: <k>[\operatorname{span}\left\{\left(\begin{array}{c}x^iy^j\\0\end{array}\right)\middle|i\in\{0,1,...,k+1\}, j\in\{0,1,...,k\}\right\}] && <k>[\operatorname{span}\left\{\left(\begin{array}{c}0\\x^iy^j\end{array}\right)\middle|i\in\{0,1,...,k\}, j\in\{0,1,...,k+1\}\right\}]
 dofs:
   facets:
     - normal integral moments with (lagrange,k-1)
