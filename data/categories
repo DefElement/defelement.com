@@ -4,3 +4,4 @@ matrix: Matrix-valued elements
 Hcurl: H(curl) conforming elements
 Hdiv: H(div) conforming elements
 mixed: Mixed elements
+macro: Macro elements
