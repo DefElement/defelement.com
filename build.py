@@ -287,7 +287,7 @@ for e in categoriser.elements:
             content += "<h2>Examples</h2>\n"
             content += "<table class='element-info'>"
             for eg in element_examples:
-                element = create_element(*eg['args'], *eg['kwargs'])
+                element = create_element(*eg['args'], **eg['kwargs'])
                 content += (
                     f"<tr><td>{eg['name']}</td><td><center><a href='{eg['url']}'>"
                     f"{plotting.plot_dof_diagram(element, link=False)}"
