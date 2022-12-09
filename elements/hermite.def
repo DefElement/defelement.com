@@ -28,6 +28,7 @@ dofs:
   faces: point evaluations at midpoints
 symfem: Hermite
 ufl: Hermite
+basix: Hermite
 examples:
   - interval,3
   - triangle,3
