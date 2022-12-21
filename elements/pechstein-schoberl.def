@@ -1,0 +1,27 @@
+name: Pechstein-Schoberl
+html-name: Pechstein&ndash;Sch&ouml;berl
+alt-names:
+  - Tangential-displacement normal-normal-stress
+short-names:
+  - TDNNS
+categories:
+  - mixed
+reference-elements:
+  - triangle
+  - tetrahedron
+mixed:
+  - nedelec2(k)
+  - lagrange(k+1)
+  - hellan-hermann-johnson(k)
+min-order: 1
+references:
+  - author:
+      - Pechstein, Astrid S.
+      - Sch&ouml;berl, Joachim
+    title: The TDNNS method for Reissner&ndash;Mildlin plates
+    journal: Numerische Mathematik
+    pagestart: 713
+    pageend: 740
+    volume: 137
+    year: 2017
+    doi: 10.1007/s00211-017-0883-9
