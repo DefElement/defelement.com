@@ -8,6 +8,8 @@ The content of the DefElement website itself (including that in `elements/`, `fi
 is released under a
 [Creative Commons Attribution 4.0 International (CC BY 4.0) license](LICENSE-CC.txt).
 
+The examples included in DefElement are generated using [Symfem](https://github.com/mscroggs/symfem).
+
 ## Building the website
 Before building the website, you must install the required Python dependencies:
 
