@@ -1,4 +1,5 @@
 name: enriched Galerkin
+html-name: enriched Galerkin
 notes:
   - This is a continuous (element::lagrange) element enriched with a discontinuous piecewise constant element.
 short-names:
