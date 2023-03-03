@@ -46,7 +46,7 @@ elif args.test == "auto":
     test_elements = [
         "buffa-christiansen", "direct-serendipity", "dual", "hellan-herrmann-johnson",
         "hsieh-clough-tocher", "lagrange", "nedelec1", "raviart-thomas", "regge",
-        "serendipity", "taylor-hood", "vector-bubble-enriched-Lagrange"]
+        "serendipity", "taylor-hood", "vector-bubble-enriched-Lagrange", "enriched-galerkin"]
 else:
     test_elements = args.test.split(",")
 

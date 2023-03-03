@@ -1,0 +1,51 @@
+name: enriched Galerkin
+notes:
+  - This is a continuous (element::lagrange) element enriched with a discontinuous piecewise constant element.
+short-names:
+  - EG
+sobolev: L2
+mapping: identity
+ndofs:
+  interval:
+    formula: k+2
+    oeis: A000027
+  triangle:
+    formula: (k+1)(k+2)/2 + 1
+  tetrahedron:
+    formula: (k+1)(k+2)(k+3)/6 + 1
+  quadrilateral:
+    formula: (k+1)^2 + 1
+  hexahedron:
+    formula: (k+1)^3 + 1
+  prism:
+    formula: (k+1)^2(k+2)/2 + 1
+  pyramid:
+    formula: (k+1)(k+2)(2k+3)/6 + 1
+min-order: 1
+categories:
+  - scalar
+reference-elements:
+  - interval
+  - triangle
+  - tetrahedron
+  - quadrilateral
+  - hexahedron
+  - prism
+  - pyramid
+symfem:
+  interval: EG
+  triangle: EG
+  tetrahedron: EG
+  quadrilateral: EG
+  hexahedron: EG
+examples:
+  - interval,1
+  - interval,2
+  - triangle,1
+  - triangle,2
+  - quadrilateral,1
+  - quadrilateral,2
+  - tetrahedron,1
+  - tetrahedron,2
+  - hexahedron,1
+  - hexahedron,2
