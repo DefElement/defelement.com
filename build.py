@@ -291,7 +291,7 @@ for e in categoriser.elements:
                 content += (
                     f"<tr><td>{eg['name']}</td><td><center><a href='{eg['url']}'>"
                     f"{plotting.plot_dof_diagram(element, link=False)}"
-                    "<small>(click to view basis functions)</small></a></center></td></tr>")
+                    "<br /><small>(click to view basis functions)</small></a></center></td></tr>")
             content += "</table>"
 
     # Write references section
