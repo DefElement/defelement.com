@@ -49,3 +49,15 @@ examples:
   - tetrahedron,2
   - hexahedron,1
   - hexahedron,2
+references:
+  - title: A locally conservative finite element method based on piecewise constant enrichment of the continuous Galerkin method
+    author:
+      - Sun, Shuyu
+      - Liu, Jiangguo
+    year: 2009
+    journal: SIAM Journal on Scientific Computing
+    volume: 31
+    issue: 4
+    pagestart: 2528
+    pageend: 2548
+    doi: 10.1137/080722953
