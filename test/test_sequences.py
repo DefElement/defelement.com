@@ -125,9 +125,9 @@ def test_sequence(file, cellname):
             signal.alarm(25)
             if "variant=" in symfem_name:
                 elementname, variant = symfem_name.split(" variant=")
-                term = len(symfem.create_element(cellname, elementname, k, variant=variant).dofs)
+                term = symfem.create_element(cellname, elementname, k, variant=variant).space_dim
             else:
-                term = len(symfem.create_element(cellname, symfem_name, k).dofs)
+                term = symfem.create_element(cellname, symfem_name, k).space_dim
             seq[k] = term
         except NotImplementedError:
             pass

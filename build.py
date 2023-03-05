@@ -46,7 +46,7 @@ elif args.test == "auto":
     test_elements = [
         "buffa-christiansen", "direct-serendipity", "dual", "hellan-herrmann-johnson",
         "hsieh-clough-tocher", "lagrange", "nedelec1", "raviart-thomas", "regge",
-        "serendipity", "taylor-hood", "vector-bubble-enriched-Lagrange"]
+        "serendipity", "taylor-hood", "vector-bubble-enriched-Lagrange", "enriched-galerkin"]
 else:
     test_elements = args.test.split(",")
 
@@ -291,7 +291,7 @@ for e in categoriser.elements:
                 content += (
                     f"<tr><td>{eg['name']}</td><td><center><a href='{eg['url']}'>"
                     f"{plotting.plot_dof_diagram(element, link=False)}"
-                    "<small>(click to view basis functions)</small></a></center></td></tr>")
+                    "<br /><small>(click to view basis functions)</small></a></center></td></tr>")
             content += "</table>"
 
     # Write references section

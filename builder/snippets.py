@@ -69,15 +69,15 @@ def basix_example(element):
             out += "element = basix.create_element("
             out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
             if "lagrange_variant" in params:
-                out += f", basix.LagrangeVariant.{params['lagrange_variant']}"
+                out += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
             if "dpc_variant" in params:
-                out += f", basix.DPCVariant.{params['dpc_variant']}"
+                out += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
             if "discontinuous" in params:
                 if params["discontinuous"] == "True":
-                    out += ", True"
+                    out += ", discontinuous=True"
                 else:
                     assert params["discontinuous"] == "False"
-                    out += ", False"
+                    out += ", discontinuous=False"
             out += ")"
     return out
 
