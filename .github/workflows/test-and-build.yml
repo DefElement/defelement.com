@@ -22,7 +22,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: 203
+          ref: main
       - name: Install Symfem
         run: |
             cd symfem
@@ -50,7 +50,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: 203
+          ref: main
       - name: Install Symfem
         run: |
             cd symfem
@@ -93,7 +93,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: 203
+          ref: main
       - name: Install Symfem
         run: |
             cd symfem
@@ -157,7 +157,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: 203
+          ref: main
       - name: Install Symfem
         run: |
             cd symfem
