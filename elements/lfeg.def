@@ -1,0 +1,53 @@
+name: enriched vector Galerkin
+html-name: enriched vector Galerkin
+notes:
+  - This is a continuous [vector Lagrange](element::vector-lagrange) element enriched with a single discontinuous function.
+alt-names:
+  - locking-free enriched Galerkin
+short-names:
+  - LFEG
+sobolev: L2
+ndofs:
+  triangle:
+    formula: (k+1)(k+2) + 1
+  tetrahedron:
+    formula: (k+1)(k+2)(k+3)/2 + 1
+  quadrilateral:
+    formula: 2(k+1)^2 + 1
+  hexahedron:
+    formula: 3(k+1)^3 + 1
+min-order: 1
+categories:
+  - vector
+reference-elements:
+  - triangle
+  - tetrahedron
+  - quadrilateral
+  - hexahedron
+symfem:
+  triangle: LFEG
+  tetrahedron: LFEG
+  quadrilateral: LFEG
+  hexahedron: LFEG
+examples:
+  - triangle,1
+  - triangle,2
+  - quadrilateral,1
+  - quadrilateral,2
+  - tetrahedron,1
+  - tetrahedron,2
+  - hexahedron,1
+  - hexahedron,2
+references:
+  - title: An enriched Galerkin method for the Stokes equations
+    author:
+      - Yi, Son-Young
+      - Hu, Xiaozhe
+      - Lee, Sanghyun
+      - Adler, James H.
+    year: 2022
+    journal: Computers & Mathematics with Applications
+    volume: 120
+    pagestart: 115
+    pageend: 131
+    doi: 10.1016/j.camwa.2022.06.018
