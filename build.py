@@ -619,7 +619,7 @@ for cell in categoriser.references.keys():
         content += f"<h2>{cell[0].upper()}{cell[1:]}</h2>"
         content += plotting.plot_reference(symfem.create_reference(cell))
 
-with open(os.path.join(settings.htmlindices_path, "reference_numbering.html"), "w") as f:
+with open(os.path.join(settings.html_path, "reference_numbering.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Families
