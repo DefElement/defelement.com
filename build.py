@@ -1,5 +1,6 @@
 import os
 import argparse
+import symfem
 from datetime import datetime
 from symfem import create_element
 from builder import plotting, settings
@@ -604,6 +605,21 @@ for c in categoriser.references:
         f.write(make_html_page(sub_content))
 
 with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w") as f:
+    f.write(make_html_page(content))
+
+# Page shoeing numbering of references
+content = "<h1>Reference cell numbering</h1>"
+content += "<p>This page illustrates the entity numbering used for each reference cell.</p>"
+for cell in categoriser.references.keys():
+    if cell == "dual polygon":
+        for i in [4, 5, 6]:
+            content += f"<h2>Dual polygon ({i})</h2>"
+            content += plotting.plot_reference(symfem.create_reference(f"dual polygon({i})"))
+    else:
+        content += f"<h2>{cell[0].upper()}{cell[1:]}</h2>"
+        content += plotting.plot_reference(symfem.create_reference(cell))
+
+with open(os.path.join(settings.htmlindices_path, "reference_numbering.html"), "w") as f:
     f.write(make_html_page(content))
 
 # Families
