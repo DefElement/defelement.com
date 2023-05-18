@@ -20,7 +20,7 @@ polynomial-set:
   triangle: poly[k]
   tetrahedron: poly[k]
 mapping: identity
-sobolev: H2
+sobolev: H1
 dofs:
   vertices:
     - point evaluations
