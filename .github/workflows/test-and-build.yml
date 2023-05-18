@@ -74,7 +74,7 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_test_html --test auto --processes 4
+      - run: python3 build.py _test_html --test auto --processes 4
         name: Build website HTML
 
   build-website:
@@ -118,7 +118,7 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }} --processes 4
+      - run: python3 build.py _html --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
 
   build-and-push-website:
@@ -164,7 +164,7 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }} --processes 4
+      - run: python3 build.py _html --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
 
       # Push to GitHub Pages
