@@ -80,6 +80,7 @@ jobs:
   build-website:
     name: Build defelement.com
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
     needs:
       - test-build-website
       - run-tests
@@ -119,18 +120,62 @@ jobs:
         name: Install requirements
       - run: python3 build.py ../_html --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
-      - run: |
-          cd ../_html
-          git config --global user.email "symfem@mscroggs.co.uk"
-          git config --global user.name "Finite Element Bot"
-          git init
-          git checkout -b gh-pages
-          git add .
-          git commit -m "Build HTML website"
-          git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
-          git push -u origin gh-pages --force
-        name: Push website to gh-pages branch
-        if: github.ref == 'refs/heads/main'
+
+  build-and-push-website:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+    - build-website
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - run: sudo apt-get install -y python3-setuptools python3-pip
+        name: Install dependencies
+      - uses: actions/checkout@v3
+
+      - name: Clone Symfem
+        uses: actions/checkout@v3
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
+      - name: Install Symfem
+        run: |
+            cd symfem
+            pip3 install .[optional]
+
+      - run: mkdir -p ~/.local/share/fonts
+        name: Make font folder
+      - name: Clone Varela Round
+        uses: actions/checkout@v3
+        with:
+          path: ./varela-r
+          repository: avrahamcornfeld/Varela-Round-Hebrew
+          ref: master
+      - run: cp varela-r/fonts/VarelaRound-Regular.otf ~/.local/share/fonts/
+        name: Install Varela Round
+      - name: Download and install Computer Modern
+        run: |
+          wget https://downloads.sourceforge.net/project/cm-unicode/cm-unicode/0.7.0/cm-unicode-0.7.0-otf.tar.xz
+          tar -xf cm-unicode-0.7.0-otf.tar.xz
+          cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
+
+      - run: pip3 install -r requirements.txt
+        name: Install requirements
+
+      # Push to GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '_html'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
 
   run-tests:
     name: Run tests
