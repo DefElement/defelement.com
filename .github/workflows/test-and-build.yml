@@ -122,6 +122,7 @@ jobs:
         name: Build website HTML
 
   build-and-push-website:
+    name: Build and deploy defelement.com
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
