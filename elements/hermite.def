@@ -21,6 +21,8 @@ polynomial-set:
   tetrahedron: poly[k]
 mapping: identity
 sobolev: H1
+notes:
+  - The derivatives of the basis functions are continuous between cells at the vertices of the element
 dofs:
   vertices:
     - point evaluations
