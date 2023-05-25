@@ -5,7 +5,8 @@ from datetime import datetime
 from github import Github
 from . import snippets
 from . import settings
-from .families import arnold_logg_name, cockburn_fu_name
+from .families import (arnold_logg_name, cockburn_fu_name,
+                       arnold_logg_reference, cockburn_fu_reference)
 from .markup import insert_links
 from .polyset import make_poly_set, make_extra_info
 
@@ -522,9 +523,25 @@ class Element:
             return [f"{cnames[c]}" for c in self.data["categories"]]
 
     def references(self):
-        if "references" not in self.data:
-            return []
-        return self.data["references"]
+        references = self.data["references"] if "references" in self.data else []
+
+        if "complexes" in self.data:
+            for key, families in self.data["complexes"].items():
+                if not isinstance(families, (list, tuple)):
+                    families = [families]
+                for e in families:
+                    e_s = e.split(",")
+                    if len(e_s) == 3:
+                        fam, ext, cell = e_s
+                        k = "k"
+                    else:
+                        fam, ext, cell, k = e_s
+                    data = self._c.families[key][fam]
+                    if "arnold-logg" in data and arnold_logg_reference not in references:
+                        references.append(arnold_logg_reference)
+                    if "cockburn-fu" in data and cockburn_fu_reference not in references:
+                        references.append(cockburn_fu_reference)
+        return references
 
     @property
     def test(self):

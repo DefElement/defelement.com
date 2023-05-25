@@ -10,8 +10,7 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
-from builder.families import (arnold_logg_name, cockburn_fu_name,
-                              arnold_logg_reference, cockburn_fu_reference)
+from builder.families import arnold_logg_name, cockburn_fu_name
 from builder.rss import make_rss
 
 start_all = datetime.now()
@@ -294,10 +293,6 @@ for e in categoriser.elements:
 
     # Write references section
     refs = e.references()
-    #if len(al_names) > 0:
-    #    refs.append(arnold_logg_reference)
-    #if len(cf_names) > 0:
-    #    refs.append(cockburn_fu_reference)
     if len(refs) > 0:
         content += "<h2>References</h2>\n"
         content += "<ul class='citations'>\n"
@@ -620,9 +615,10 @@ with open(os.path.join(settings.html_path, "reference_numbering.html"), "w") as 
     f.write(make_html_page(content))
 
 # Families
-content = "<h1>De Rham families</h1>\n"
+content = "<h1>Complex families</h1>\n"
 content += "<p>You can find some information about how these familes are defined "
 content += "<a href='/de-rham.html'>here</a></p>"
+content += "<h2>De Rham complex in 3D</h2>\n"
 content += "<table class='families'>\n"
 content += "<tr>"
 content += "<td><small>Name(s)</small></td>"
@@ -638,9 +634,9 @@ for fname, data in categoriser.families["de-rham"].items():
     family = data["elements"]
     names = []
     if "arnold-logg" in data:
-        names.append("\\(" + arnold_logg_name(data['arnold-logg']) + "\\)")
+        names.append("\\(" + arnold_logg_name(data['arnold-logg'], dim=3) + "\\)")
     if "cockburn-fu" in data:
-        names.append("\\(" + cockburn_fu_name(data['cockburn-fu']) + "\\)")
+        names.append("\\(" + cockburn_fu_name(data['cockburn-fu'], dim=3) + "\\)")
     if len(names) == 0:
         raise ValueError(f"No name found for family: {fname}")
     sub_content = "<h1>The " + " / ".join(names) + " family</h1>"
@@ -651,18 +647,18 @@ for fname, data in categoriser.families["de-rham"].items():
     for cell in ["simplex", "tp"]:
         if cell in family:
             content += "<tr>"
+            linked_names = []
             if "arnold-logg" in data:
-                content += f"<td><a href='/families/{fname}.html'>\\("
-                content += arnold_logg_name(data['arnold-logg'], cell=cell)
-                content += "\\)</td>"
-            else:
-                content += "<td>&nbsp;</td>"
+                linked_names.append(
+                    f"<a href='/families/{fname}.html'>"
+                    "\\(" + arnold_logg_name(data['arnold-logg'], cell=cell) + "\\)"
+                    "</a>")
             if "cockburn-fu" in data:
-                content += f"<td><a href='/families/{fname}.html'>\\("
-                content += cockburn_fu_name(data['cockburn-fu'], cell=cell)
-                content += "\\)</td>"
-            else:
-                content += "<td>&nbsp;</td>"
+                linked_names.append(
+                    f"<a href='/families/{fname}.html'>"
+                    "\\(" + cockburn_fu_name(data['cockburn-fu'], cell=cell) + "\\)"
+                    "</a>")
+            content += "<td>" + ", ".join(linked_names) + "</td>"
             for order in ["0", "1", "d-1", "d"]:
                 if order in family[cell]:
                     sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"

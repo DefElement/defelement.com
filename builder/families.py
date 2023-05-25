@@ -1,4 +1,4 @@
-def arnold_logg_name(family, r="r", cell=None, degree="k"):
+def arnold_logg_name(family, r="r", cell=None, degree="k", dim="d"):
     out = f"\\mathcal{{{family[0]}}}"
     if len(family) > 1:
         out += f"^{family[1]}"
@@ -6,15 +6,15 @@ def arnold_logg_name(family, r="r", cell=None, degree="k"):
     out += f"\\Lambda^{{{r}}}"
     if cell is not None:
         if cell == "simplex":
-            out += "(\\Delta_d)"
+            out += f"(\\Delta_{dim})"
         elif cell == "tp":
-            out += "(\\square_d)"
+            out += f"(\\square_{dim})"
         else:
             raise ValueError(f"Unknown cell: {cell}")
     return out
 
 
-def cockburn_fu_name(family, r="r", cell=None, degree="k"):
+def cockburn_fu_name(family, r="r", cell=None, degree="k", dim="d"):
     out = ""
     if r != "r":
         out += "\\left["
