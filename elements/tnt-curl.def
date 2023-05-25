@@ -2,7 +2,8 @@ name: Tiniest tensor H(curl)
 html-name: Tiniest tensor H(curl)
 alt-names:
   - TNT H(curl)
-exterior-calculus:
+complexes:
+  de-rham:
   - TNT,1,tp
 ndofs:
   quadrilateral:

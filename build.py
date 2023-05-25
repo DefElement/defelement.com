@@ -116,15 +116,12 @@ for e in categoriser.elements:
     content += "</a></small></p>"
 
     # Alternative names
-    alt_names = e.alternative_names(include_exterior=False)
+    alt_names = e.alternative_names(include_complexes=False)
     if len(alt_names) > 0:
         element_data.append(("Alternative names", ", ".join(alt_names)))
-    al_names = e.arnold_logg_names()
-    if len(al_names) > 0:
-        element_data.append(("Exterior calculus names", ", ".join(al_names)))
-    cf_names = e.cockburn_fu_names()
-    if len(cf_names) > 0:
-        element_data.append(("Cockburn&ndash;fu names", ", ".join(cf_names)))
+    c_names = e.complexes()
+    if "de-rham" in c_names:
+        element_data.append(("De Rham complex families", ", ".join(c_names["de-rham"])))
 
     # Short names
     short_names = e.short_names()
@@ -297,10 +294,10 @@ for e in categoriser.elements:
 
     # Write references section
     refs = e.references()
-    if len(al_names) > 0:
-        refs.append(arnold_logg_reference)
-    if len(cf_names) > 0:
-        refs.append(cockburn_fu_reference)
+    #if len(al_names) > 0:
+    #    refs.append(arnold_logg_reference)
+    #if len(cf_names) > 0:
+    #    refs.append(cockburn_fu_reference)
     if len(refs) > 0:
         content += "<h2>References</h2>\n"
         content += "<ul class='citations'>\n"
@@ -628,8 +625,7 @@ content += "<p>You can find some information about how these familes are defined
 content += "<a href='/de-rham.html'>here</a></p>"
 content += "<table class='families'>\n"
 content += "<tr>"
-content += "<td><small>Exterior calculus name</small></td>"
-content += "<td><small>Cockburn&ndash;Fu name</small></td>"
+content += "<td><small>Name(s)</small></td>"
 content += "<td>\\(H^k\\)</td>"
 content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
 content += "<td>\\(H^{k-1}(\\textbf{curl})\\)</td>"
@@ -638,9 +634,8 @@ content += "<td>\\(H^{k-1}(\\text{div})\\)</td>"
 content += "<td>\\(\\xrightarrow{\\nabla\\cdot}\\)</td>"
 content += "<td>\\(H^{k-1}\\)</td>"
 content += "</tr>\n"
-for fname, data in categoriser.exterior_families.items():
+for fname, data in categoriser.families["de-rham"].items():
     family = data["elements"]
-
     names = []
     if "arnold-logg" in data:
         names.append("\\(" + arnold_logg_name(data['arnold-logg']) + "\\)")

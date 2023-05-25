@@ -1,6 +1,7 @@
 name: trimmed serendipity H(div)
 html-name: trimmed serendipity H(div)
-exterior-calculus:
+complexes:
+  de-rham:
   - S-,d-1,tp
 min-order: 1
 categories:

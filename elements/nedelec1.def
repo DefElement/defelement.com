@@ -15,7 +15,8 @@ min-order: 1
 categories:
   - vector
   - Hcurl
-exterior-calculus:
+complexes:
+  de-rham:
   - P-,1,simplex
   - Q-,1,tp
 sobolev: H(curl)

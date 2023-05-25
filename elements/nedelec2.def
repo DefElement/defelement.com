@@ -6,7 +6,8 @@ categories:
   - Hcurl
 short-names:
   - N2curl
-exterior-calculus: P,1,simplex
+complexes:
+  de-rham: P,1,simplex
 ndofs:
   interval:
     formula: k+1

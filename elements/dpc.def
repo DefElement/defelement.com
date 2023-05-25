@@ -2,7 +2,8 @@ name: dPc
 html-name: dPc
 alt-names:
   - discontinuous polynomial cubical
-exterior-calculus:
+complexes:
+  de-rham:
   - S,d,tp
   - S-,d,tp
 ndofs:
