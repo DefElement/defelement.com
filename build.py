@@ -614,22 +614,26 @@ for cell in categoriser.references.keys():
 with open(os.path.join(settings.html_path, "reference_numbering.html"), "w") as f:
     f.write(make_html_page(content))
 
+
 # Families
-content = "<h1>Complex families</h1>\n"
-content += "<p>You can find some information about how these familes are defined "
-content += "<a href='/de-rham.html'>here</a></p>"
-content += "<h2>De Rham complex in 3D</h2>\n"
-content += "<table class='families'>\n"
-content += "<tr>"
-content += "<td><small>Name(s)</small></td>"
-content += "<td>\\(H^k\\)</td>"
-content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
-content += "<td>\\(H^{k-1}(\\textbf{curl})\\)</td>"
-content += "<td>\\(\\xrightarrow{\\nabla\\times}\\)</td>"
-content += "<td>\\(H^{k-1}(\\text{div})\\)</td>"
-content += "<td>\\(\\xrightarrow{\\nabla\\cdot}\\)</td>"
-content += "<td>\\(H^{k-1}\\)</td>"
-content += "</tr>\n"
+def linked_names(dim):
+    out = []
+    if "arnold-logg" in data:
+        out.append(
+            f"<a href='/families/{fname}.html'>"
+            "\\(" + arnold_logg_name(data['arnold-logg'], cell=cell, dim=dim) + "\\)"
+            "</a>")
+    if "cockburn-fu" in data:
+        out.append(
+            f"<a href='/families/{fname}.html'>"
+            "\\(" + cockburn_fu_name(data['cockburn-fu'], cell=cell, dim=dim) + "\\)"
+            "</a>")
+    return ", ".join(out)
+
+
+de_rham_3d = []
+de_rham_2d = []
+
 for fname, data in categoriser.families["de-rham"].items():
     family = data["elements"]
     names = []
@@ -646,19 +650,7 @@ for fname, data in categoriser.families["de-rham"].items():
     sub_content += "<ul>"
     for cell in ["simplex", "tp"]:
         if cell in family:
-            content += "<tr>"
-            linked_names = []
-            if "arnold-logg" in data:
-                linked_names.append(
-                    f"<a href='/families/{fname}.html'>"
-                    "\\(" + arnold_logg_name(data['arnold-logg'], cell=cell) + "\\)"
-                    "</a>")
-            if "cockburn-fu" in data:
-                linked_names.append(
-                    f"<a href='/families/{fname}.html'>"
-                    "\\(" + cockburn_fu_name(data['cockburn-fu'], cell=cell) + "\\)"
-                    "</a>")
-            content += "<td>" + ", ".join(linked_names) + "</td>"
+
             for order in ["0", "1", "d-1", "d"]:
                 if order in family[cell]:
                     sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"
@@ -672,19 +664,62 @@ for fname, data in categoriser.families["de-rham"].items():
                                                               order, cell) + "\\)")
                     sub_content += " / ".join(names)
                     sub_content += f" ({family[cell][order][0]})</a></li>"
-                    content += f"<td><a href='/elements/{family[cell][order][1]}'"
-                    content += " style='text-decoration:none'>"
-                    content += f"{family[cell][order][0]}</a></td>"
-                else:
-                    content += "<td>&nbsp;</td>"
-                if order != "d":
-                    content += "<td>&nbsp;</td>"
-            content += "</tr>"
+
+            if all(i in family[cell] for i in ["0", "1", "d-1", "d"]):
+                row3d = "<tr>"
+                row3d += f"<td>{linked_names(3)}</td>"
+                for order in ["0", "1", "d-1", "d"]:
+                    row3d += f"<td><a href='/elements/{family[cell][order][1]}'"
+                    row3d += " style='text-decoration:none'>"
+                    row3d += f"{family[cell][order][0]}</a></td>"
+                    if order != "d":
+                        row3d += "<td>&nbsp;</td>"
+                row3d += "</tr>"
+                de_rham_3d.append(row3d)
+            if all(i in family[cell] for i in ["0", "d-1", "d"]):
+                row2d = "<tr>"
+                row2d += f"<td>{linked_names(2)}</td>"
+                for order in ["0", "d-1", "d"]:
+                    row2d += f"<td><a href='/elements/{family[cell][order][1]}'"
+                    row2d += " style='text-decoration:none'>"
+                    row2d += f"{family[cell][order][0]}</a></td>"
+                    if order != "d":
+                        row2d += "<td>&nbsp;</td>"
+                row2d += "</tr>"
+                de_rham_2d.append(row2d)
         sub_content += "</ul>"
 
     with open(os.path.join(settings.htmlfamilies_path, f"{fname}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
+content = "<h1>Complex families</h1>\n"
+content += "<p>You can find some information about how these familes are defined "
+content += "<a href='/de-rham.html'>here</a></p>"
+content += "<h2>De Rham complex in 3D</h2>\n"
+content += "<table class='families'>\n"
+content += "<tr>"
+content += "<td><small>Name(s)</small></td>"
+content += "<td>\\(H^1\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla}\\)</td>"
+content += "<td>\\(H(\\textbf{curl})\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla\\times}\\)</td>"
+content += "<td>\\(H(\\text{div})\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla\\cdot}\\)</td>"
+content += "<td>\\(L^2\\)</td>"
+content += "</tr>\n"
+content += "\n".join(de_rham_3d)
+content += "</table>"
+content += "<h2>De Rham complex in 2D</h2>\n"
+content += "<table class='families'>\n"
+content += "<tr>"
+content += "<td><small>Name(s)</small></td>"
+content += "<td>\\(H^1\\)</td>"
+content += "<td>\\(\\xrightarrow{\\textbf{curl}}\\)</td>"
+content += "<td>\\(H(\\text{div})\\)</td>"
+content += "<td>\\(\\xrightarrow{\\nabla\\cdot}\\)</td>"
+content += "<td>\\(L_2\\)</td>"
+content += "</tr>\n"
+content += "\n".join(de_rham_2d)
 content += "</table>"
 with open(os.path.join(settings.htmlfamilies_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
