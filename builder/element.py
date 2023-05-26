@@ -51,7 +51,7 @@ def make_formula(data):
 class Categoriser:
     def __init__(self):
         self.elements = []
-        self.complexes = {}
+        self.families = {}
         self.references = {}
         self.categories = {}
         self.implementations = {}
