@@ -18,10 +18,10 @@ de-rham:
     cockburn-fu: 3
   CH:
     name:
-      general: $\mathrm{C}\mathrm{P}^{3-r}\mathrm{\Lambda}^r(\mathcal{R})$
-      '0': $\mathrm{C}^1\mathrm{P}^3\mathrm{\Lambda}^0(\mathcal{R})$
-      d-1: $\mathrm{C}_d^0\mathrm{P}^2\mathrm{\Lambda}^1(\mathcal{R})$
-      d: $\mathrm{C}^0\mathrm{P}^1\mathrm{\Lambda}^2(\mathcal{R})$
+      general: \mathrm{C}\mathrm{P}^{3-r}\mathrm{\Lambda}^r(\mathcal{R})
+      '0': \mathrm{C}^1\mathrm{P}^3\mathrm{\Lambda}^0(\mathcal{R})
+      d-1: \mathrm{C}_d^0\mathrm{P}^2\mathrm{\Lambda}^1(\mathcal{R})
+      d: \mathrm{C}^0\mathrm{P}^1\mathrm{\Lambda}^2(\mathcal{R})
     references:
       - title: Generalized Finite Element Systems for smooth differential forms and Stokes' problem
         author:
