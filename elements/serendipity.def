@@ -2,7 +2,8 @@ name: serendipity
 html-name: serendipity
 short-names:
   - S
-exterior-calculus:
+complexes:
+  de-rham:
   - S,0,tp
   - S-,0,tp,k-d
 min-order: 1

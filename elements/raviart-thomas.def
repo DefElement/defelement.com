@@ -7,7 +7,8 @@ alt-names:
 short-names:
   - RT
   - RWG
-exterior-calculus: P-,d-1,simplex
+complexes:
+  de-rham: P-,d-1,simplex
 ndofs:
   triangle:
     formula: k(k+2)

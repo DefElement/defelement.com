@@ -3,7 +3,8 @@ html-name: Brezzi&ndash;Douglas&ndash;Marini
 min-order: 1
 short-names:
   - BDM
-exterior-calculus: P,d-1,simplex
+complexes:
+  de-rham: P,d-1,simplex
 categories:
   - vector
   - Hdiv

@@ -12,7 +12,8 @@ short-names:
   - P
   - CG
   - DG
-exterior-calculus:
+complexes:
+  de-rham:
   - P-,0,simplex
   - P,0,simplex
   - Q-,0,tp

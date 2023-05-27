@@ -6,7 +6,8 @@ alt-names:
 short-names:
   - RTcf (quadrilateral)
   - Ncf (hexahedron)
-exterior-calculus: Q-,d-1,tp
+complexes:
+  de-rham: Q-,d-1,tp
 min-order: 1
 categories:
   - vector

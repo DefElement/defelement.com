@@ -6,7 +6,8 @@ alt-names:
 short-names:
   - BDMce (quadrilateral)
   - AAe (hexahedron)
-exterior-calculus: S,1,tp
+complexes:
+  de-rham: S,1,tp
 min-order: 1
 categories:
   - vector

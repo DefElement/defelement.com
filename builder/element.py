@@ -5,7 +5,8 @@ from datetime import datetime
 from github import Github
 from . import snippets
 from . import settings
-from .families import arnold_logg_name, cockburn_fu_name
+from .families import (arnold_logg_name, cockburn_fu_name,
+                       arnold_logg_reference, cockburn_fu_reference)
 from .markup import insert_links
 from .polyset import make_poly_set, make_extra_info
 
@@ -50,7 +51,7 @@ def make_formula(data):
 class Categoriser:
     def __init__(self):
         self.elements = []
-        self.exterior_families = {}
+        self.families = {}
         self.references = {}
         self.categories = {}
         self.implementations = {}
@@ -78,9 +79,10 @@ class Categoriser:
 
     def load_families(self, file):
         with open(file) as f:
-            self.exterior_families = yaml.load(f, Loader=yaml.FullLoader)
-        for i in self.exterior_families:
-            self.exterior_families[i]["elements"] = {}
+            self.families = yaml.load(f, Loader=yaml.FullLoader)
+        for t in self.families:
+            for i in self.families[t]:
+                self.families[t][i]["elements"] = {}
 
     def load_references(self, file):
         with open(file) as f:
@@ -114,17 +116,21 @@ class Categoriser:
 
         self.elements.sort(key=lambda x: x.name.lower())
 
-    def add_exterior_family(self, e, name, fname):
+    def add_family(self, t, e, name, fname):
         if len(e.split(",")) == 3:
             i, j, k = e.split(",")
         else:
+            print(e)
             i, j, k, _ = e.split(",")
-        if i not in self.exterior_families:
+        if t not in self.families:
+            self.families[t] = {}
+            warnings.warn(f"Complex type included in familes data: {t}")
+        if i not in self.families[t]:
             warnings.warn(f"Family not included in familes data: {i}")
-            self.exterior_families[i] = {"elements": {}}
-        if k not in self.exterior_families[i]["elements"]:
-            self.exterior_families[i]["elements"][k] = {}
-        self.exterior_families[i]["elements"][k][j] = (name, fname)
+            self.families[t][i] = {"elements": {}}
+        if k not in self.families[t][i]["elements"]:
+            self.families[t][i]["elements"][k] = {}
+        self.families[t][i]["elements"][k][j] = (name, fname)
 
     def add_reference(self, e, fname):
         self.references[e] = fname
@@ -157,8 +163,9 @@ class Categoriser:
         for r in e.reference_elements(False):
             assert r in self.references
 
-        for i in e.exterior_calculus_names(False, False):
-            self.add_exterior_family(i, e.html_name, e.html_filename)
+        for j, k in e.complexes(False, False).items():
+            for i in k:
+                self.add_family(j, i, e.html_name, e.html_filename)
 
     def elements_in_category(self, c):
         return [e for e in self.elements if c in e.categories(False, False)]
@@ -199,7 +206,7 @@ class Element:
         else:
             return self.data["reference-elements"]
 
-    def alternative_names(self, include_bracketed=True, include_exterior=True, link=True,
+    def alternative_names(self, include_bracketed=True, include_complexes=True, link=True,
                           strip_cell_name=False, cell=None):
         if "alt-names" not in self.data:
             return []
@@ -215,8 +222,8 @@ class Element:
         if strip_cell_name:
             out = [i.split(" (")[0] for i in out]
 
-        if include_exterior:
-            out += self.exterior_calculus_names(link=link)
+        if include_complexes:
+            out += self.family_names(link=link)
         return out
 
     def short_names(self):
@@ -234,88 +241,40 @@ class Element:
             return None
         return self.data["sobolev"]
 
-    def cockburn_fu_names(self, link=True):
-        if "exterior-calculus" not in self.data:
-            return []
+    def complexes(self, link=True, names=True):
+        if "complexes" not in self.data:
+            return {}
 
-        out = []
-        ec = self.data["exterior-calculus"]
-        if not isinstance(ec, (list, tuple)):
-            ec = [ec]
-        for e in ec:
-            names = []
-            e_s = e.split(",")
-            if len(e_s) == 3:
-                fam, ext, cell = e_s
-                k = "k"
-            else:
-                fam, ext, cell, k = e_s
-            data = self._c.exterior_families[fam]
-            if "cockburn-fu" in data:
-                names.append("\\(" + cockburn_fu_name(data["cockburn-fu"], ext, cell, k) + "\\)")
-                if link:
-                    entry = f"<a class='nou' href='/families/{fam}.html'>"
-                entry += " / ".join(names)
-                if link:
-                    entry += "</a>"
-                out.append(entry)
-        return out
-
-    def arnold_logg_names(self, link=True):
-        if "exterior-calculus" not in self.data:
-            return []
-
-        out = []
-        ec = self.data["exterior-calculus"]
-        if not isinstance(ec, (list, tuple)):
-            ec = [ec]
-        for e in ec:
-            names = []
-            e_s = e.split(",")
-            if len(e_s) == 3:
-                fam, ext, cell = e_s
-                k = "k"
-            else:
-                fam, ext, cell, k = e_s
-            data = self._c.exterior_families[fam]
-            if "arnold-logg" in data:
-                names.append("\\(" + arnold_logg_name(data["arnold-logg"], ext, cell, k) + "\\)")
-                if link:
-                    entry = f"<a class='nou' href='/families/{fam}.html'>"
-                entry += " / ".join(names)
-                if link:
-                    entry += "</a>"
-                out.append(entry)
-        return out
-
-    def exterior_calculus_names(self, link=True, math=True):
-        if "exterior-calculus" not in self.data:
-            return []
-
-        if not math:
-            assert not link
-            if not isinstance(self.data["exterior-calculus"], (list, tuple)):
-                return [self.data["exterior-calculus"]]
-            return self.data["exterior-calculus"]
-
-        out = []
-        ec = self.data["exterior-calculus"]
-        if not isinstance(ec, (list, tuple)):
-            ec = [ec]
-        for e in ec:
-            names = []
-            i, j, k = e.split(",")
-            data = self._c.exterior_families[i]
-            for key, f in [("arnold-logg", arnold_logg_name),
-                           ("cockburn-fu", cockburn_fu_name)]:
-                if key in data:
-                    names.append("\\(" + f(data[key], j, k) + "\\)")
-            if link:
-                entry = f"<a class='nou' href='/families/{i}.html'>"
-            entry += " / ".join(names)
-            if link:
-                entry += "</a>"
-            out.append(entry)
+        out = {}
+        com = self.data["complexes"]
+        for key, families in com.items():
+            out[key] = []
+            if not isinstance(families, (list, tuple)):
+                families = [families]
+            for e in families:
+                if names:
+                    namelist = []
+                    e_s = e.split(",")
+                    if len(e_s) == 3:
+                        fam, ext, cell = e_s
+                        k = "k"
+                    else:
+                        fam, ext, cell, k = e_s
+                    data = self._c.families[key][fam]
+                    for key2, f in [("arnold-logg", arnold_logg_name),
+                                    ("cockburn-fu", cockburn_fu_name)]:
+                        if key2 in data:
+                            namelist.append("\\(" + f(data[key2], ext, cell, k) + "\\)")
+                    entry = ""
+                    if link:
+                        entry = f"<a class='nou' href='/families/{fam   }.html'>"
+                    entry += " / ".join(namelist)
+                    if link:
+                        entry += "</a>"
+                    out[key].append(entry)
+                else:
+                    print(e)
+                    out[key].append(e)
         return out
 
     def order_range(self):
@@ -564,9 +523,25 @@ class Element:
             return [f"{cnames[c]}" for c in self.data["categories"]]
 
     def references(self):
-        if "references" not in self.data:
-            return []
-        return self.data["references"]
+        references = self.data["references"] if "references" in self.data else []
+
+        if "complexes" in self.data:
+            for key, families in self.data["complexes"].items():
+                if not isinstance(families, (list, tuple)):
+                    families = [families]
+                for e in families:
+                    e_s = e.split(",")
+                    if len(e_s) == 3:
+                        fam, ext, cell = e_s
+                        k = "k"
+                    else:
+                        fam, ext, cell, k = e_s
+                    data = self._c.families[key][fam]
+                    if "arnold-logg" in data and arnold_logg_reference not in references:
+                        references.append(arnold_logg_reference)
+                    if "cockburn-fu" in data and cockburn_fu_reference not in references:
+                        references.append(cockburn_fu_reference)
+        return references
 
     @property
     def test(self):

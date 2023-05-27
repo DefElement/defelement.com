@@ -2,7 +2,8 @@ name: Tiniest tensor
 html-name: Tiniest tensor
 alt-names:
   - TNT
-exterior-calculus:
+complexes:
+  de-rham:
   - TNT,0,tp
 ndofs:
   quadrilateral:

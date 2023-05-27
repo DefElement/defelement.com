@@ -2,7 +2,8 @@ name: Tiniest tensor H(div)
 html-name: Tiniest tensor H(div)
 alt-names:
   - TNT H(div)
-exterior-calculus:
+complexes:
+  de-rham:
   - TNT,d-1,tp
 ndofs:
   quadrilateral:
