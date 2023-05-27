@@ -5,6 +5,8 @@ alt-names:
 short-names:
   - HCT
   - CT
+complexes:
+  de-rham: CH,0,simplex
 min-order: 3
 max-order: 3
 ndofs:
