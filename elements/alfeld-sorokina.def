@@ -1,0 +1,43 @@
+name: Alfeld-Sorokina
+html-name: Alfeld&ndash;Sorokina
+complexes:
+  de-rham: CH,d-1,simplex
+ndofs:
+  triangle:
+    formula: 15
+entity-ndofs:
+  vertices:
+    formula: 3
+  edges:
+    formula: 2
+  faces:
+    formula: 0
+sobolev: H1
+mapping: identity
+min-order: 2
+max-order: 2
+categories:
+  - vector
+  - Hdiv
+  - macro
+reference-elements:
+  - triangle
+dofs:
+  vertices:
+    - point evaluations in coordinate directions
+    - point evaulations of divergence
+  edges: points evaluations in coordinate directions    
+symfem: Alfeld-Sorokina
+examples:
+  - triangle,2
+references:
+  - title: Linear differential operators on bivariate spline spaces and spline vector fields
+    author:
+    - Alfeld, Peter
+    - Sorokina, Tatyana
+    journal: BIT Numerical Mathematics
+    volume: 56
+    year: 2016
+    pagestart: 15
+    pageend: 32
+    doi: 10.1007/s10543-015-0557-x
