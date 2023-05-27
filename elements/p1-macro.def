@@ -1,0 +1,40 @@
+name: P1 macro
+html-name: P1 macro
+complexes:
+  de-rham: CH,d,simplex
+ndofs:
+  triangle:
+    formula: 4
+entity-ndofs:
+  vertices:
+    formula: 1
+  edges:
+    formula: 0
+  faces:
+    formula: 1
+sobolev: H1
+mapping: identity
+min-order: 1
+max-order: 1
+categories:
+  - scalar
+  - macro
+reference-elements:
+  - triangle
+dofs:
+  vertices: point evaluations
+  faces: integral of function value
+symfem: P1 macro
+examples:
+  - triangle,1
+references:
+  - title: Generalized Finite Element Systems for smooth differential forms and Stokes' problem
+    author:
+    - Christansen, Snorre H.
+    - Hu, Kaibo
+    journal: Numerische Mathematik
+    volume: 140
+    year: 2018
+    pagestart: 327
+    pageend: 371
+    doi: 10.1007/s00211-018-0970-6
