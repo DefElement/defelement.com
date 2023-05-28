@@ -4,7 +4,7 @@ import symfem
 from datetime import datetime
 from symfem import create_element
 from builder import plotting, settings
-from builder.markup import markup, insert_links, python_highlight, cap_first
+from builder.markup import markup, insert_links, python_highlight, cap_first, heading_with_self_ref
 from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
@@ -105,7 +105,7 @@ cdescs = {
 all_examples = []
 for e in categoriser.elements:
     print(e.name)
-    content = f"<h1>{cap_first(e.html_name)}</h1>"
+    content = heading_with_self_ref("h1", cap_first(e.html_name))
     element_data = []
     implementations = []
 
@@ -246,7 +246,7 @@ for e in categoriser.elements:
 
     # Write implementations
     if len(implementations) > 0:
-        content += "<h2>Implementations</h2>\n"
+        content += heading_with_self_ref("h2", "Implementations")
         content += "<table class='element-info'>"
         for i, j in implementations:
             content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
@@ -281,7 +281,7 @@ for e in categoriser.elements:
                 element_examples.append(eginfo)
 
         if len(element_examples) > 0:
-            content += "<h2>Examples</h2>\n"
+            content += heading_with_self_ref("h2", "Examples")
             content += "<table class='element-info'>"
             for eg in element_examples:
                 element = create_element(*eg['args'], **eg['kwargs'])
@@ -294,7 +294,7 @@ for e in categoriser.elements:
     # Write references section
     refs = e.references()
     if len(refs) > 0:
-        content += "<h2>References</h2>\n"
+        content += heading_with_self_ref("h2", "References")
         content += "<ul class='citations'>\n"
         for i, r in enumerate(refs):
             content += f"<li>{markup_citation(r)}"
@@ -306,7 +306,7 @@ for e in categoriser.elements:
 
     # Write created and updated dates
     if e.created is not None:
-        content += "<h2>DefElement stats</h2>\n"
+        content += heading_with_self_ref("h2", "DefElement stats")
         content += "<table class='element-info'>"
         content += f"<tr><td>Element&nbsp;added</td><td>{e.created.strftime('%d %B %Y')}</td></tr>"
         content += "<tr><td>Element&nbsp;last&nbsp;updated</td>"
@@ -358,7 +358,7 @@ else:
         j.join()
 
 # Index page
-content = "<h1>Index of elements</h1>\n"
+content = heading_with_self_ref("h1", "Index of elements")
 # Generate filtering Javascript
 content += "<script type='text/javascript'>\n"
 content += "function do_filter_refall(){\n"
@@ -476,7 +476,7 @@ with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
 # Recently updated elements
 rss_icon = ("<span style='color:#FF8800;padding-left:10px'>"
             "<i class='fa fa-rss' aria-hidden='true'></i></span>")
-content = "<h1>Recent elements</h1>\n"
+content = heading_with_self_ref("h1", "Recent elements")
 content += f"<h2>Recently added elements <a href='/new-elements.xml'>{rss_icon}</a></h2>\n"
 content += "<ul>\n"
 for e in categoriser.recently_added(10):
@@ -510,7 +510,7 @@ with open(os.path.join(settings.html_path, "updated-elements.xml"), "w") as f:
 
 # Category index
 os.mkdir(os.path.join(settings.htmlindices_path, "categories"))
-content = "<h1>Categories</h1>\n"
+content = heading_with_self_ref("h1", "Categories")
 for c in categoriser.categories:
     category_pages = []
     for e in categoriser.elements_in_category(c):
@@ -525,7 +525,8 @@ for c in categoriser.categories:
     content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
-    sub_content = f"<h1>{categoriser.get_category_name(c)}</h1>\n<ul>"
+    sub_content = heading_with_self_ref("h1", categoriser.get_category_name(c))
+    sub_content += "<ul>"
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
@@ -537,7 +538,7 @@ with open(os.path.join(settings.htmlindices_path, "categories/index.html"), "w")
 
 # Implementations index
 os.mkdir(os.path.join(settings.htmlindices_path, "implementations"))
-content = "<h1>Implemented elements</h1>\n"
+content = heading_with_self_ref("h1", "Implemented elements")
 for c, info in categoriser.implementations.items():
     category_pages = []
     for e in categoriser.elements_in_implementation(c):
@@ -574,7 +575,7 @@ with open(os.path.join(settings.htmlindices_path, "implementations/index.html"),
 
 # Reference elements index
 os.mkdir(os.path.join(settings.htmlindices_path, "references"))
-content = "<h1>Reference elements</h1>\n"
+content = heading_with_self_ref("h1", "Reference elements")
 for c in categoriser.references:
     refels = []
     for e in categoriser.elements_by_reference(c):
@@ -587,10 +588,11 @@ for c in categoriser.references:
     content += f"<h2><a href='/lists/references/{c}.html'></a>{cap_first(c)}</h2>\n"
     content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
-    sub_content = "<h1>Finite elements on a"
+    heading = "Finite elements on a"
     if c[0] in "aeiou":
-        sub_content += "n"
-    sub_content += f" {c}</h1>\n"
+        heading += "n"
+    heading += f" {c}"
+    sub_content = heading_with_self_ref("h1", heading)
     sub_content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
     with open(os.path.join(settings.htmlindices_path, f"references/{c}.html"), "w") as f:
@@ -600,15 +602,15 @@ with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w")
     f.write(make_html_page(content))
 
 # Page shoeing numbering of references
-content = "<h1>Reference cell numbering</h1>"
+content = heading_with_self_ref("h1", "Reference cell numbering")
 content += "<p>This page illustrates the entity numbering used for each reference cell.</p>"
 for cell in categoriser.references.keys():
     if cell == "dual polygon":
         for i in [4, 5, 6]:
-            content += f"<h2>Dual polygon ({i})</h2>"
+            content += heading_with_self_ref("h2", f"Dual polygon ({i})")
             content += plotting.plot_reference(symfem.create_reference(f"dual polygon({i})"))
     else:
-        content += f"<h2>{cell[0].upper()}{cell[1:]}</h2>"
+        content += heading_with_self_ref("h2", cap_first(cell))
         content += plotting.plot_reference(symfem.create_reference(cell))
 
 with open(os.path.join(settings.html_path, "reference_numbering.html"), "w") as f:
@@ -643,7 +645,7 @@ for fname, data in categoriser.families["de-rham"].items():
         names.append("\\(" + cockburn_fu_name(data['cockburn-fu'], dim=3) + "\\)")
     if len(names) == 0:
         raise ValueError(f"No name found for family: {fname}")
-    sub_content = "<h1>The " + " / ".join(names) + " family</h1>"
+    sub_content = heading_with_self_ref("h1", "The " + " / ".join(names) + " family")
 
     assert len([i for i in ["simplex", "tp"] if i in family]) == 1
 
@@ -692,10 +694,10 @@ for fname, data in categoriser.families["de-rham"].items():
     with open(os.path.join(settings.htmlfamilies_path, f"{fname}.html"), "w") as f:
         f.write(make_html_page(sub_content))
 
-content = "<h1>Complex families</h1>\n"
+content = heading_with_self_ref("h1", "Complex families")
 content += "<p>You can find some information about how these familes are defined "
 content += "<a href='/de-rham.html'>here</a></p>"
-content += "<h2>De Rham complex in 3D</h2>\n"
+content += heading_with_self_ref("h2", "De Rham complex in 3D")
 content += "<table class='families'>\n"
 content += "<tr>"
 content += "<td><small>Name(s)</small></td>"
@@ -709,7 +711,7 @@ content += "<td>\\(L^2\\)</td>"
 content += "</tr>\n"
 content += "\n".join(de_rham_3d)
 content += "</table>"
-content += "<h2>De Rham complex in 2D</h2>\n"
+content += heading_with_self_ref("h2", "De Rham complex in 2D")
 content += "<table class='families'>\n"
 content += "<tr>"
 content += "<td><small>Name(s)</small></td>"
@@ -725,7 +727,8 @@ with open(os.path.join(settings.htmlfamilies_path, "index.html"), "w") as f:
     f.write(make_html_page(content))
 
 # List of lists
-content = "<h1>Lists of elements</h1>\n<ul>\n"
+content = heading_with_self_ref("h1", "Lists of elements")
+content += "<ul>\n"
 content += "<li><a href='/lists/categories'>Finite elements by category</a></li>\n"
 content += "<li><a href='/lists/references'>Finite elements by reference element</a></li>\n"
 content += "<li><a href='/lists/recent.html'>Recently added/updated finite elements</a></li>\n"

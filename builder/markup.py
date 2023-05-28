@@ -8,12 +8,17 @@ from . import symbols
 from . import plotting
 from . import settings
 from .citations import markup_citation
+from urllib.parse import quote_plus
 
 page_references = []
 
 
 def cap_first(txt):
     return txt[:1].upper() + txt[1:]
+
+def heading_with_self_ref(hx, content):
+    id = quote_plus(content)
+    return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
 
 
 def list_contributors():
@@ -23,7 +28,7 @@ def list_contributors():
     for info in people:
         if "img" in info:
             out += f"<img src='/img/people/{info['img']}' class='person'>"
-        out += f"<h2>{info['name']}</h2>"
+        out += heading_with_self_ref("h2", info['name'])
         if "desc" in info:
             out += f"<p>{markup(info['desc'])}</p>"
         out += "<ul class='person-info'>"
@@ -61,7 +66,7 @@ def markup(content):
             while line.startswith("#"):
                 line = line[1:]
                 i += 1
-            out += f"<h{i}>{line.strip()}</h{i}>\n"
+            out += heading_with_self_ref(f"h{i}", line.strip())
         elif line == "":
             if popen:
                 out += "</p>\n"
@@ -109,7 +114,7 @@ def markup(content):
         out = out.replace("{{list contributors}}", list_contributors())
 
     if len(page_references) > 0:
-        out += "<h2>References</h2>"
+        out += heading_with_self_ref("h2", "References")
         out += "<ul class='citations'>"
         out += "".join([f"<li><a class='refid' id='ref{i+1}'>[{i+1}]</a> {j}</li>"
                         for i, j in enumerate(page_references)])

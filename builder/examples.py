@@ -4,6 +4,7 @@ from symfem.finite_element import CiarletElement, DirectElement
 from symfem.functions import AnyFunction
 from symfem.symbols import t
 from .html import make_html_page
+from .markup import heading_with_self_ref
 from . import settings, symbols, plotting
 
 defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
@@ -53,7 +54,8 @@ def describe_dof(element, d):
 
 
 def markup_example(element, html_name, element_page, fname):
-    eg = f"<h1>Degree {element.order} {html_name} on a {element.reference.name}</h1>\n"
+    eg = heading_with_self_ref("h1", f"Degree {element.order} {html_name} on a {element.reference.name}")
+    eg += "\n"
     eg += f"<a href='{element_page}'><small>&#9664; Back to {html_name} definition page"
     eg += "</a></small>\n"
     eg += "<center>" + plotting.plot_dof_diagram(element) + "</center>\n"
