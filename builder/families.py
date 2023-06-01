@@ -31,6 +31,19 @@ def cockburn_fu_name(family, r="r", cell=None, degree="k", dim="d"):
     return out
 
 
+def custom_name(family, r="r", cell=None, degree="k", dim="d"):
+    out = family
+    if isinstance(family, dict):
+        if r == "r":
+            out = family["general"]
+        else:
+            out = family[r]
+    out = out.replace("<r>", f"{r}")
+    out = out.replace("<dim>", f"{dim}")
+    out = out.replace("<degree>", f"{degree}")
+    return out
+
+
 arnold_logg_reference = {
     "title": "Periodic table of the finite elements",
     "author": "Arnold, Douglas N. and Logg, Anders",
@@ -52,3 +65,9 @@ cockburn_fu_reference = {
     "year": "2017",
     "doi": "10.1137/16M1073352"
 }
+
+keys_and_names = [
+    ("cockburn-fu", cockburn_fu_name),
+    ("arnold-logg", arnold_logg_name),
+    ("name", custom_name),
+]

@@ -5,8 +5,7 @@ from datetime import datetime
 from github import Github
 from . import snippets
 from . import settings
-from .families import (arnold_logg_name, cockburn_fu_name,
-                       arnold_logg_reference, cockburn_fu_reference)
+from .families import keys_and_names, arnold_logg_reference, cockburn_fu_reference
 from .markup import insert_links
 from .polyset import make_poly_set, make_extra_info
 
@@ -261,8 +260,7 @@ class Element:
                     else:
                         fam, ext, cell, k = e_s
                     data = self._c.families[key][fam]
-                    for key2, f in [("arnold-logg", arnold_logg_name),
-                                    ("cockburn-fu", cockburn_fu_name)]:
+                    for key2, f in keys_and_names:
                         if key2 in data:
                             namelist.append("\\(" + f(data[key2], ext, cell, k) + "\\)")
                     entry = ""
@@ -541,6 +539,10 @@ class Element:
                         references.append(arnold_logg_reference)
                     if "cockburn-fu" in data and cockburn_fu_reference not in references:
                         references.append(cockburn_fu_reference)
+                    if "references" in data:
+                        for r in references:
+                            if r not in references:
+                                references.append(r)
         return references
 
     @property
