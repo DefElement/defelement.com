@@ -10,7 +10,7 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
-from builder.families import arnold_logg_name, cockburn_fu_name
+from builder.families import keys_and_names
 from builder.rss import make_rss
 
 start_all = datetime.now()
@@ -618,18 +618,14 @@ with open(os.path.join(settings.html_path, "reference_numbering.html"), "w") as 
 
 
 # Families
-def linked_names(dim):
+def linked_names(dim, fname, cell):
     out = []
-    if "arnold-logg" in data:
-        out.append(
-            f"<a href='/families/{fname}.html'>"
-            "\\(" + arnold_logg_name(data['arnold-logg'], cell=cell, dim=dim) + "\\)"
-            "</a>")
-    if "cockburn-fu" in data:
-        out.append(
-            f"<a href='/families/{fname}.html'>"
-            "\\(" + cockburn_fu_name(data['cockburn-fu'], cell=cell, dim=dim) + "\\)"
-            "</a>")
+    for key, name in keys_and_names:
+        if key in data:
+            out.append(
+                f"<a href='/families/{fname}.html'>"
+                "\\(" + name(data[key], cell=cell, dim=dim) + "\\)"
+                "</a>")
     return ", ".join(out)
 
 
@@ -639,10 +635,9 @@ de_rham_2d = []
 for fname, data in categoriser.families["de-rham"].items():
     family = data["elements"]
     names = []
-    if "arnold-logg" in data:
-        names.append("\\(" + arnold_logg_name(data['arnold-logg'], dim=3) + "\\)")
-    if "cockburn-fu" in data:
-        names.append("\\(" + cockburn_fu_name(data['cockburn-fu'], dim=3) + "\\)")
+    for key, name in keys_and_names:
+        if key in data:
+            names.append("\\(" + name(data[key], dim=3) + "\\)")
     if len(names) == 0:
         raise ValueError(f"No name found for family: {fname}")
     sub_content = heading_with_self_ref("h1", "The " + " / ".join(names) + " family")
@@ -658,18 +653,15 @@ for fname, data in categoriser.families["de-rham"].items():
                     sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"
                     sub_content += " style='text-decoration:none'>"
                     names = []
-                    if "arnold-logg" in data:
-                        names.append("\\(" + arnold_logg_name(data['arnold-logg'],
-                                                              order, cell) + "\\)")
-                    if "cockburn-fu" in data:
-                        names.append("\\(" + cockburn_fu_name(data['cockburn-fu'],
-                                                              order, cell) + "\\)")
+                    for key, name in keys_and_names:
+                        if key in data:
+                            names.append("\\(" + name(data[key], order, cell) + "\\)")
                     sub_content += " / ".join(names)
                     sub_content += f" ({family[cell][order][0]})</a></li>"
 
             if all(i in family[cell] for i in ["0", "1", "d-1", "d"]):
                 row3d = "<tr>"
-                row3d += f"<td>{linked_names(3)}</td>"
+                row3d += f"<td>{linked_names(3, fname, cell)}</td>"
                 for order in ["0", "1", "d-1", "d"]:
                     row3d += f"<td><a href='/elements/{family[cell][order][1]}'"
                     row3d += " style='text-decoration:none'>"
@@ -680,7 +672,7 @@ for fname, data in categoriser.families["de-rham"].items():
                 de_rham_3d.append(row3d)
             if all(i in family[cell] for i in ["0", "d-1", "d"]):
                 row2d = "<tr>"
-                row2d += f"<td>{linked_names(2)}</td>"
+                row2d += f"<td>{linked_names(2, fname, cell)}</td>"
                 for order in ["0", "d-1", "d"]:
                     row2d += f"<td><a href='/elements/{family[cell][order][1]}'"
                     row2d += " style='text-decoration:none'>"
