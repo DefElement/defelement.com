@@ -41,6 +41,7 @@ a.nou, a.nou:link, a.nou:active, a.nou:visited, a.nou:hover {text-decoration:non
 
 h2 {margin-top:50px}
 h1, h2, h3, h4, h5, h6 {font-family: 'Varela Round', sans-serif;font-weight:normal;color:#44AAFF}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {text-decoration:none}
 body, p {font-family:sans}
 p {text-align:justify}
 

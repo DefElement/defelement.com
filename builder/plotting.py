@@ -55,7 +55,7 @@ def do_the_plot(
 ) -> str:
     global all_plots
     from .html import make_html_page
-    from .markup import cap_first
+    from .markup import cap_first, heading_with_self_ref
 
     filename = filename.replace(" ", "-")
 
@@ -72,7 +72,7 @@ def do_the_plot(
         plot(*args, os.path.join(settings.htmlimg_path, f"{filename}-large.png"),
              plot_options={"png_width": png_width * 9 // 2}, **svg_kw, **kwargs)
 
-        img_page = f"<h1>{cap_first(desc)}</h1>\n"
+        img_page = heading_with_self_ref("h1", cap_first(desc))
         img_page += f"<center><a href='/img/{filename}-large.png'>"
         img_page += f"<img src='/img/{filename}.png'></a></center>\n"
 
