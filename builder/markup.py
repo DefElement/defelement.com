@@ -16,6 +16,7 @@ page_references = []
 def cap_first(txt):
     return txt[:1].upper() + txt[1:]
 
+
 def heading_with_self_ref(hx, content):
     id = quote_plus(content)
     return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
