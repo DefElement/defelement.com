@@ -114,6 +114,9 @@ def list_contributors(format="html"):
                         out += ")"
                     out += "</li>\n"
                 out += "</ul>"
+                out += ("<p>If you're listed here, you can find instructions for how to add "
+                        "information about yourself on the [contributing page](contributing.md"
+                        "#Adding+yourself+to+the+contributors+list)</p>")
 
         return out
     else:
@@ -265,6 +268,7 @@ def insert_links(txt):
     txt = re.sub(r"\(index::([^\)]+)::([^\)]+)\)", r"(/lists/\1/\2.html)", txt)
     txt = re.sub(r"\(index::([^\)]+)\)", r"(/lists/\1)", txt)
     txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)
+    txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", r"(/\1.html#\2)", txt)
     txt = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", txt)
     return txt
 
