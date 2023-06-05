@@ -46,7 +46,7 @@ The entries in this yaml file are:
 <tr><td>`ufl`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
 </table>
 
-## Adding yourself to the contributors
+## Adding yourself to the contributors list
 Once you have contributed to DefElement, you should add your name and some information about
 yourself to the [contributors page](contributors.md). To do this, you should add info about
 yourself to the file `data/contributors`. If you wish to include a picture of yourself, add

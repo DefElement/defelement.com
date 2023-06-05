@@ -26,6 +26,11 @@ Information about adding an element of DefElement can be found at
 On opening a pull request, unit tests and style checks will run. You can click on these in the pull request
 to see where (if anywhere) there are errors in your changes.
 
+## Adding yourself to the contributors list
+Once you have contributed to DefElement, you should add your name and some information about yourself to the [contributors page](https://defelement.com/contributors.html).
+To do this, you should add info about yourself to the file [data/contributors](data/contributors). If you wish to include a picture of yourself,
+add a square-shaped image to the [pictures/](pictures/) folder. 
+
 ## Code of conduct
 We expect all our contributors to follow [the Contributor Covenant](CODE_OF_CONDUCT.md). Any unacceptable
 behaviour can be reported to Matthew (defelement@mscroggs.co.uk).
