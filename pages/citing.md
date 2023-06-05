@@ -24,3 +24,22 @@ This will create a reference along the lines of:
 <ul class='citations'>
 <li>The DefElement contributors. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
 </ul>
+
+You may also wish to cite the [poster about DefElement](https://doi.org/10.6084/m9.figshare.23294939.v1) that was presented at [FEniCS 2023](https://fenicsproject.org/fenics-2023/).
+To cite this, you can use the following BibTeX:
+
+```
+@inproceedings{defelement-poster,
+       AUTHOR = {{Scroggs, Matthew W.}},
+        TITLE = {{D}ef{E}lement: an encyclopedia of finite element definitions (poster)},
+    BOOKTITLE = {FEniCS 2023 Conference},
+         YEAR = {2023},
+          DOI = {10.6084/m9.figshare.23294939.v1},
+}
+```
+
+This will create a reference along the lines of:
+
+<ul class='citations'>
+<li>M. W. Scroggs. <i>DefElement: an encyclopedia of finite element definitions (poster)</i>, 2023, FEniCS 2023 Conference, <a href=https://doi.org/10.6084/m9.figshare.23294939.v1>1https://doi.org/10.6084/m9.figshare.23294939.v1</a>.</li>
+</ul>
