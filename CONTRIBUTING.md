@@ -17,6 +17,12 @@ If you want to suggest a new featute or improvement to DefElement, suggest it on
 [issue tracker](https://github.com/mscroggs/defelement.com/issues/new?assignees=&labels=feature+request&template=suggest-an-improvement.md&title=)
 using the *Suggest an improvement* template.
 
+### Discussion ideas for new features
+You can use [GitHub's Discussions](https://github.com/mscroggs/defelement.com/discussions) to discuss
+ideas you have for features (that perhaps aren't fully formed enough yet to make an issue) or to
+discuss other people's ideas. You're welcome to also use the Discussions to just chat to other
+members of the community.
+
 ## Contribution directly
 
 ### Submitting a pull request
