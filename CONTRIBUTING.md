@@ -62,6 +62,14 @@ then building the full website.
 python3 build.py _test_html --test auto --processes 4
 ```
 
+If you've updated an element, then you can test this element by replacing `auto` with the filename of the element you have edited.
+If you've updated multiple elements, you can use multiple filenames separated by commas. For example:
+
+```bash
+python3 build.py _test_html --test dpc --processes 4
+python3 build.py _test_html --test lagrange,vector-lagrange --processes 4
+```
+
 ## Adding yourself to the contributors list
 Once you have contributed to DefElement, you should add your name and some information about yourself to the [contributors page](https://defelement.com/contributors.html).
 To do this, you should add info about yourself to the file [data/contributors](data/contributors). If you wish to include a picture of yourself,
