@@ -4,11 +4,10 @@ import yaml
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
-pages_path = os.path.join(dir_path, "../pages")
 
 
 def parse_contributing_page():
-    with open(os.path.join(pages_path, "contributing.md")) as f:
+    with open(os.path.join(dir_path, "../CONTRIBUTING.md")) as f:
         table = f.read().split("<table")[1].split(">", 1)[1].split("</table>")[0]
     if "<thead>" in table:
         table = table.split("</thead>")[1]

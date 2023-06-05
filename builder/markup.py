@@ -138,7 +138,7 @@ def markup(content):
             if code:
                 if is_python:
                     out += python_highlight(line.replace(" ", "&nbsp;"))
-                elif is_python:
+                elif is_bash:
                     out += bash_highlight(line.replace(" ", "&nbsp;"))
                 else:
                     out += line.replace(" ", "&nbsp;")
@@ -278,22 +278,6 @@ def python_highlight(txt):
 
 def bash_highlight(txt):
     txt = txt.replace(" ", "&nbsp;")
-    out = []
-    for line in txt.split("\n"):
-        comment = ""
-        if "#" in line:
-            lsp = line.split("#", 1)
-            line = lsp[0]
-            comment = f"<span style='color:#FF8800'>#{lsp[1]}</span>"
-
-        lsp = line.split("\"")
-        line = lsp[0]
-
-        for i, j in enumerate(lsp[1:]):
-            if i % 2 == 0:
-                line += f"<span style='color:#DD2299'>\"{j}"
-            else:
-                line += f"\"</span>{j}"
-
-        out.append(line + comment)
-    return "<br />".join(out)
+    txt = re.sub("(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)",
+                 r"<span style='color:#FF8800'>\1</span>", txt)
+    return "<br />".join(txt.split("\n"))
