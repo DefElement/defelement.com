@@ -101,8 +101,8 @@ def list_contributors(format="html"):
                 i += 1
             if len(extras) > 0:
                 out += heading_with_self_ref("h2", "Additional contributors")
-                out += "<p>The following people have contributed to DefElement but are yet to add details about themselves to this page:</p>"
-                out += "<ul>\n"
+                out += ("<p>The following people have contributed to DefElement but are yet to add "
+                        "details about themselves to this page:</p>\n<ul>\n")
                 for u in extras:
                     out += "<li>"
                     if u[1] is not None:
