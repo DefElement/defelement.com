@@ -2,8 +2,10 @@ import os
 import re
 import shlex
 import symfem
+import warnings
 import yaml
 from datetime import datetime
+from github import Github
 from . import symbols
 from . import plotting
 from . import settings
@@ -48,6 +50,7 @@ def list_contributors(format="html"):
     with open(os.path.join(settings.data_path, "contributors")) as f:
         people = yaml.load(f, Loader=yaml.FullLoader)
     if format == "html":
+        included = []
         out = ""
         for info in people:
             if "img" in info:
@@ -68,6 +71,7 @@ def list_contributors(format="html"):
                 out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
                         "<i class='fa fa-github' aria-hidden='true'></i>"
                         f"&nbsp;{info['github']}</a></div>")
+                included.append(info["github"])
             if "twitter" in info:
                 out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
                         "<i class='fa fa-twitter' aria-hidden='true'></i>"
@@ -78,6 +82,39 @@ def list_contributors(format="html"):
                         "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
                         f"&nbsp;@{handle}@{url}</a></div>")
             out += "<br style='clear:both' />"
+
+        if settings.github_token is None:
+            warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
+        else:
+            g = Github(settings.github_token)
+            repo = g.get_repo("mscroggs/defelement.com")
+            pages = repo.get_contributors()
+            i = 0
+            extras = []
+            while True:
+                page = pages.get_page(i)
+                if len(page) == 0:
+                    break
+                for user in page:
+                    if user.login not in included:
+                        extras.append((user.login, user.name))
+                i += 1
+            if len(extras) > 0:
+                out += heading_with_self_ref("h2", "Additional contributors")
+                out += "<p>The following people have contributed to DefElement but are yet to add details about themselves to this page:</p>"
+                out += "<ul>\n"
+                for u in extras:
+                    out += "<li>"
+                    if u[1] is not None:
+                        out += f"{u[1]} ("
+                    out += ("<a href='https://github.com/{u[0]}'>"
+                            "<i class='fa fa-github' aria-hidden='true'></i>"
+                            f"&nbsp;{u[0]}</a>")
+                    if u[1] is not None:
+                        out += ")"
+                    out += "</li>\n"
+                out += "</ul>"
+
         return out
     else:
         names = []
