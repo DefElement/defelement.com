@@ -24,3 +24,32 @@ This will create a reference along the lines of:
 <ul class='citations'>
 <li>The DefElement contributors. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
 </ul>
+
+## DefElement poster
+
+You may also wish to cite the [DefElement poster](https://doi.org/10.6084/m9.figshare.23294939.v1) that was presented at [FEniCS 2023](https://fenicsproject.org/fenics-2023/).
+To cite this, you can use the following BibTeX:
+
+```
+@inproceedings{defelement-poster,
+       AUTHOR = {{Scroggs, Matthew W.}},
+        TITLE = {{D}ef{E}lement: an encyclopedia of finite element definitions (poster)},
+    BOOKTITLE = {FEniCS 2023 Conference},
+         YEAR = {2023},
+          DOI = {10.6084/m9.figshare.23294939.v1},
+}
+```
+
+This will create a reference along the lines of:
+
+<ul class='citations'>
+<li>M. W. Scroggs. <i>DefElement: an encyclopedia of finite element definitions (poster)</i>, 2023, FEniCS 2023 Conference, <a href=https://doi.org/10.6084/m9.figshare.23294939.v1>https://doi.org/10.6084/m9.figshare.23294939.v1</a>.</li>
+</ul>
+
+If you'd like a copy of the poster, you can download
+[the A0 poster](/pdfs/poster-a0.pdf),
+[the A0 poster (with bleed for printing)](/pdfs/poster-a0-bleed.pdf),
+[the A4 poster](/pdfs/poster-a4.pdf), or
+[the A4 poster (with bleed for printing)](/pdfs/poster-a4-bleed.pdf).
+These are all available under the same [Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/)
+as the rest of DefElement.
