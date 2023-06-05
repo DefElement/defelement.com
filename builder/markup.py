@@ -2,8 +2,10 @@ import os
 import re
 import shlex
 import symfem
+import warnings
 import yaml
 from datetime import datetime
+from github import Github
 from . import symbols
 from . import plotting
 from . import settings
@@ -22,42 +24,110 @@ def heading_with_self_ref(hx, content):
     return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
 
 
-def list_contributors():
+def format_names(names, format):
+    if format == "bibtex":
+        return " and ".join(names)
+    else:
+        formatted_names = []
+        for n in names:
+            n = n.split(", ")
+            name = ""
+            for i in n[:0:-1]:
+                for j in i.split(" "):
+                    name += f"{j[0]}. "
+            name += n[0]
+            formatted_names.append(name)
+        if len(formatted_names) <= 2:
+            return " and ".join(formatted_names)
+        else:
+            return ", and ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
+
+
+def list_contributors(format="html"):
+    if format not in ["html", "bibtex", "citation"]:
+        raise ValueError(f"Unsupported format: {format}")
+
     with open(os.path.join(settings.data_path, "contributors")) as f:
         people = yaml.load(f, Loader=yaml.FullLoader)
-    out = ""
-    for info in people:
-        if "img" in info:
-            out += f"<img src='/img/people/{info['img']}' class='person'>"
-        out += heading_with_self_ref("h2", info['name'])
-        if "desc" in info:
-            out += f"<p>{markup(info['desc'])}</p>"
-        out += "<ul class='person-info'>"
-        if "website" in info:
-            website_name = info["website"].split("//")[1].strip("/")
-            out += (f"<li><a href='{info['website']}'>"
-                    "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
-                    f"&nbsp;{website_name}</a></li>")
-        if "github" in info:
-            out += (f"<li><a href='https://github.com/{info['github']}'>"
-                    "<i class='fa fa-github' aria-hidden='true'></i>"
-                    f"&nbsp;{info['github']}</a></li>")
-        if "twitter" in info:
-            out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
-                    "<i class='fa fa-twitter' aria-hidden='true'></i>"
-                    f"&nbsp;@{info['twitter']}</a></li>")
-        if "email" in info:
-            out += (f"<li><a href='mailto:{info['email']}'>"
-                    "<i class='fa fa-envelope' aria-hidden='true'></i>"
-                    f"&nbsp;{info['email']}</a></li>")
-        if "mastodon" in info:
-            handle, url = info["mastodon"].split("@")
-            out += (f"<li><a href='https://{url}/@{handle}'>"
-                    "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
-                    f"&nbsp;@{handle}@{url}</a></li>")
-        out += "</ul>"
-        out += "<br style='clear:both' />"
-    return out
+    if format == "html":
+        included = []
+        out = ""
+        for info in people:
+            if "img" in info:
+                out += f"<img src='/img/people/{info['img']}' class='person'>"
+            out += heading_with_self_ref("h2", " ".join(info["name"].split(", ")[::-1]))
+            if "desc" in info:
+                out += f"<p>{markup(info['desc'])}</p>"
+            if "website" in info:
+                website_name = info["website"].split("//")[1].strip("/")
+                out += (f"<div class='social'><a href='{info['website']}'>"
+                        "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
+                        f"&nbsp;{website_name}</a></div>")
+            if "email" in info:
+                out += (f"<div class='social'><a href='mailto:{info['email']}'>"
+                        "<i class='fa fa-envelope' aria-hidden='true'></i>"
+                        f"&nbsp;{info['email']}</a></div>")
+            if "github" in info:
+                out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
+                        "<i class='fa fa-github' aria-hidden='true'></i>"
+                        f"&nbsp;{info['github']}</a></div>")
+                included.append(info["github"])
+            if "twitter" in info:
+                out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
+                        "<i class='fa fa-twitter' aria-hidden='true'></i>"
+                        f"&nbsp;@{info['twitter']}</a></div>")
+            if "mastodon" in info:
+                handle, url = info["mastodon"].split("@")
+                out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
+                        "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
+                        f"&nbsp;@{handle}@{url}</a></div>")
+            out += "<br style='clear:both' />"
+
+        if settings.github_token is None:
+            warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
+        else:
+            g = Github(settings.github_token)
+            repo = g.get_repo("mscroggs/defelement.com")
+            pages = repo.get_contributors()
+            i = 0
+            extras = []
+            while True:
+                page = pages.get_page(i)
+                if len(page) == 0:
+                    break
+                for user in page:
+                    if user.login not in included:
+                        extras.append((user.login, user.name))
+                i += 1
+            if len(extras) > 0:
+                out += heading_with_self_ref("h2", "Additional contributors")
+                out += ("<p>The following people have contributed to DefElement but are yet to add "
+                        "details about themselves to this page:</p>\n<ul>\n")
+                for u in extras:
+                    out += "<li>"
+                    if u[1] is not None:
+                        out += f"{u[1]} ("
+                    out += ("<a href='https://github.com/{u[0]}'>"
+                            "<i class='fa fa-github' aria-hidden='true'></i>"
+                            f"&nbsp;{u[0]}</a>")
+                    if u[1] is not None:
+                        out += ")"
+                    out += "</li>\n"
+                out += "</ul>"
+
+        return out
+    else:
+        names = []
+        for info in people:
+            names.append(info["name"])
+        names.sort(key=lambda i: "AAA" if i.startswith("Scroggs") else i)
+
+        if len(names) <= 1:
+            if format == "bibtex":
+                return "{The DefElement contributors}"
+            else:
+                return "The DefElement contributors"
+        return format_names(names, format)
 
 
 def markup(content):
@@ -68,6 +138,13 @@ def markup(content):
             if f"{{{{{file}}}}}" in content:
                 with open(os.path.join(settings.dir_path, file)) as f:
                     content = content.replace(f"{{{{{file}}}}}", f.read())
+
+    if "{{list contributors}}" in content:
+        content = content.replace("{{list contributors}}", list_contributors())
+    if "{{list contributors|" in content:
+        content = re.sub("{{list contributors\\|([^}]+)}}",
+                         lambda matches: list_contributors(matches[1]), content)
+    content = re.sub(r"{{author-info::([^}]+)}}", author_info, content)
 
     out = ""
     popen = False
@@ -168,8 +245,6 @@ def markup(content):
     out = re.sub(r"\*([^\n]+)\*", r"<em>\1</em>", out)
 
     out = out.replace("{{tick}}", "<i class='fa-solid fa-check' style='color:#55ff00'></i>")
-    if "{{list contributors}}" in out:
-        out = out.replace("{{list contributors}}", list_contributors())
 
     if len(page_references) > 0:
         out += heading_with_self_ref("h2", "References")
@@ -199,6 +274,36 @@ def code_include(matches):
     with open(os.path.join(settings.dir_path, matches[1])) as f:
         out += "<br />".join(line.replace(" ", "&nbsp;") for line in f)
     out += "</p>"
+    return out
+
+
+def author_info(matches):
+    authors, title, url = matches[1].split("|")
+    authors = authors.split(";")
+    out = ("<div class='authors'>Written by "
+           " ".join(" ".join(i.split(", ")[::-1]) for i in authors) + "</div>"
+           "<a class='show_eg_link' href='javascript:show_author_cite_info()' id='showcitelink' "
+           "style='display:block'>&darr; Cite this page &darr;</a>"
+           "<div id='authorcite' style='display:none'>"
+           "<a class='show_eg_link' href='javascript:hide_author_cite_info()' id='showcitelink' "
+           "style='display:block'>&uarr; Hide citation info &uarr;</a>"
+           "You can cite this page using the following BibTeX:\n\n"
+           "```\n"
+           "@misc{defelement,\n"
+           f"       AUTHOR = {{{format_names(authors, 'bibtex')}}},\n"
+           f"        TITLE = {{{{D}}ef{{E}}lement: {title}}},\n"
+           "         YEAR = {{{{date:Y}}}},\n"
+           f" HOWPUBLISHED = {{\\url{{https://defelement.com/{url}}}}},\n"
+           "         NOTE = {[Online; accessed {{date:D-M-Y}}]}\n"
+           "}\n"
+           "```\n\n"
+           "This will create a reference along the lines of:\n\n"
+           "<ul class='citations'>"
+           f"<li>{format_names(authors, 'citation')}. <i>DefElement: {title}</i>, {{{{date:Y}}}}, "
+           f"<a href='https://defelement.com/{url}'>https://defelement.com/{url}</a> "
+           "[Online; accessed: {{date:D-M-Y}}]</li>\n"
+           "</ul>"
+           "</div>")
     return out
 
 

@@ -1,3 +1,8 @@
+--
+authors:
+  - Scroggs, Matthew W.
+--
+
 # How to define a finite element
 This page describes how finite elements are defined in the DefElement database.
 
