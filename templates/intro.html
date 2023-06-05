@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset='UTF-8'>
@@ -11,6 +12,16 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="https://kit.fontawesome.com/5506de0e1b.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+function show_author_cite_info() {
+    document.getElementById("showcitelink").style.display = "none"
+    document.getElementById("authorcite").style.display = "block"
+}
+function hide_author_cite_info() {
+    document.getElementById("showcitelink").style.display = "block"
+    document.getElementById("authorcite").style.display = "none"
+}
+</script>
 <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">

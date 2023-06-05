@@ -1,3 +1,8 @@
+--
+authors:
+  - Scroggs, Matthew W.
+--
+
 # Barycentric dual grids
 
 Some elements are defined on a [barycentric dual grid](reference::dual polygon).

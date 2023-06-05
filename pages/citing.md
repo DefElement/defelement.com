@@ -11,7 +11,7 @@ website, you can use the following BibTeX:
 
 ```
 @misc{defelement,
-       AUTHOR = {{{{list contributors|bibtex}}}},
+       AUTHOR = {{{list contributors|bibtex}}},
         TITLE = {{D}ef{E}lement: an encyclopedia of finite element definitions},
          YEAR = {{{{date:Y}}}},
  HOWPUBLISHED = {\url{https://defelement.com}},
@@ -32,7 +32,7 @@ To cite this, you can use the following BibTeX:
 
 ```
 @misc{defelement-poster,
-       AUTHOR = {{Scroggs, Matthew W.}},
+       AUTHOR = {Scroggs, Matthew W.},
         TITLE = {{D}ef{E}lement: an encyclopedia of finite element definitions},
          YEAR = {2023},
  HOWPUBLISHED = {Poster presented at FEniCS 2023, Cagliari, Italy},

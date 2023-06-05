@@ -10,6 +10,7 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
+from builder.tools import parse_metadata, insert_author_info
 from builder.families import keys_and_names
 from builder.rss import make_rss
 
@@ -74,7 +75,12 @@ for file in os.listdir(settings.pages_path):
         fname = file[:-3]
         print(f"{fname}.html", end="", flush=True)
         with open(os.path.join(settings.pages_path, file)) as f:
-            content = markup(f.read())
+            metadata, content = parse_metadata(f.read())
+
+        if "authors" in metadata:
+            content = insert_author_info(content, metadata["authors"], f"{fname}.html")
+
+        content = markup(content)
 
         with open(os.path.join(settings.html_path, f"{fname}.html"), "w") as f:
             f.write(make_html_page(content))
