@@ -38,14 +38,19 @@ def list_contributors():
             out += (f"<li><a href='{info['website']}'>"
                     "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
                     f"&nbsp;{website_name}</a></li>")
-        if "twitter" in info:
-            out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
-                    "<i class='fa fa-twitter' aria-hidden='true'></i>"
-                    f"&nbsp;@{info['twitter']}</a></li>")
         if "github" in info:
             out += (f"<li><a href='https://github.com/{info['github']}'>"
                     "<i class='fa fa-github' aria-hidden='true'></i>"
                     f"&nbsp;{info['github']}</a></li>")
+        if "twitter" in info:
+            out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
+                    "<i class='fa fa-twitter' aria-hidden='true'></i>"
+                    f"&nbsp;@{info['twitter']}</a></li>")
+        if "mastodon" in info:
+            handle, url = info["mastodon"].split("@")
+            out += (f"<li><a href='https://{url}/@{handle}'>"
+                    "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
+                    f"&nbsp;@{handle}@{url}</a></li>")
         out += "</ul>"
         out += "<br style='clear:both' />"
     return out
