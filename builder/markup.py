@@ -107,7 +107,7 @@ def list_contributors(format="html"):
                     out += "<li>"
                     if u[1] is not None:
                         out += f"{u[1]} ("
-                    out += ("<a href='https://github.com/{u[0]}'>"
+                    out += (f"<a href='https://github.com/{u[0]}'>"
                             "<i class='fa fa-github' aria-hidden='true'></i>"
                             f"&nbsp;{u[0]}</a>")
                     if u[1] is not None:
