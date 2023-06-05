@@ -62,33 +62,74 @@ def list_contributors():
 
 def markup(content):
     global page_references
+
+    for file in os.listdir(settings.dir_path):
+        if file.endswith(".md"):
+            if f"{{{{{file}}}}}" in content:
+                with open(os.path.join(settings.dir_path, file)) as f:
+                    content = content.replace(f"{{{{{file}}}}}", f.read())
+
     out = ""
     popen = False
+    ulopen = False
+    liopen = False
     code = False
     is_python = False
+    is_bash = False
 
     for line in content.split("\n"):
         if line.startswith("#"):
             if popen:
                 out += "</p>\n"
                 popen = False
+            if ulopen:
+                if liopen:
+                    out += "</li>"
+                    liopen = False
+                out += "</ul>\n"
+                ulopen = False
             i = 0
             while line.startswith("#"):
                 line = line[1:]
                 i += 1
             out += heading_with_self_ref(f"h{i}", line.strip())
+        elif line.startswith("* "):
+            if popen:
+                out += "</p>\n"
+                popen = False
+            if not ulopen:
+                out += "<ul>"
+                ulopen = True
+            if liopen:
+                out += "</li>"
+                liopen = False
+            out += "<li>"
+            liopen = True
+            out += line[2:].strip()
         elif line == "":
             if popen:
                 out += "</p>\n"
                 popen = False
+            if ulopen:
+                if liopen:
+                    out += "</li>"
+                    liopen = False
+                out += "</ul>\n"
+                ulopen = False
         elif line == "```":
             code = not code
             is_python = False
+            is_bash = False
         elif line == "```python":
             code = not code
             is_python = True
+            is_bash = False
+        elif line == "```bash":
+            code = not code
+            is_python = False
+            is_bash = True
         else:
-            if not popen and not line.startswith("<") and not line.startswith("\\["):
+            if not ulopen and not popen and not line.startswith("<") and not line.startswith("\\["):
                 if code:
                     out += "<p class='pcode'>"
                 else:
@@ -97,6 +138,8 @@ def markup(content):
             if code:
                 if is_python:
                     out += python_highlight(line.replace(" ", "&nbsp;"))
+                elif is_python:
+                    out += bash_highlight(line.replace(" ", "&nbsp;"))
                 else:
                     out += line.replace(" ", "&nbsp;")
                 out += "<br />"
@@ -105,6 +148,8 @@ def markup(content):
                 out += " "
 
     page_references = []
+
+    out = out.replace("(CODE_OF_CONDUCT.md)", "(code-of-conduct.md)")
 
     out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
 
@@ -118,6 +163,9 @@ def markup(content):
     out = re.sub(r"{{img::([^}]+)}}", plot_img, out)
 
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
+
+    out = re.sub(r"\*\*([^\n]+)\*\*", r"<strong>\1</strong>", out)
+    out = re.sub(r"\*([^\n]+)\*", r"<em>\1</em>", out)
 
     out = out.replace("{{tick}}", "<i class='fa-solid fa-check' style='color:#55ff00'></i>")
     if "{{list contributors}}" in out:
@@ -206,6 +254,29 @@ def insert_dates(txt):
 
 
 def python_highlight(txt):
+    txt = txt.replace(" ", "&nbsp;")
+    out = []
+    for line in txt.split("\n"):
+        comment = ""
+        if "#" in line:
+            lsp = line.split("#", 1)
+            line = lsp[0]
+            comment = f"<span style='color:#FF8800'>#{lsp[1]}</span>"
+
+        lsp = line.split("\"")
+        line = lsp[0]
+
+        for i, j in enumerate(lsp[1:]):
+            if i % 2 == 0:
+                line += f"<span style='color:#DD2299'>\"{j}"
+            else:
+                line += f"\"</span>{j}"
+
+        out.append(line + comment)
+    return "<br />".join(out)
+
+
+def bash_highlight(txt):
     txt = txt.replace(" ", "&nbsp;")
     out = []
     for line in txt.split("\n"):
