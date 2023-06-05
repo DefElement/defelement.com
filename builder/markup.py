@@ -22,42 +22,63 @@ def heading_with_self_ref(hx, content):
     return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
 
 
-def list_contributors():
+def list_contributors(format="html"):
+    if format not in ["html", "bibtex", "citation"]:
+        raise ValueError(f"Unsupported format: {format}")
+
     with open(os.path.join(settings.data_path, "contributors")) as f:
         people = yaml.load(f, Loader=yaml.FullLoader)
-    out = ""
-    for info in people:
-        if "img" in info:
-            out += f"<img src='/img/people/{info['img']}' class='person'>"
-        out += heading_with_self_ref("h2", info['name'])
-        if "desc" in info:
-            out += f"<p>{markup(info['desc'])}</p>"
-        out += "<ul class='person-info'>"
-        if "website" in info:
-            website_name = info["website"].split("//")[1].strip("/")
-            out += (f"<li><a href='{info['website']}'>"
-                    "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
-                    f"&nbsp;{website_name}</a></li>")
-        if "github" in info:
-            out += (f"<li><a href='https://github.com/{info['github']}'>"
-                    "<i class='fa fa-github' aria-hidden='true'></i>"
-                    f"&nbsp;{info['github']}</a></li>")
-        if "twitter" in info:
-            out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
-                    "<i class='fa fa-twitter' aria-hidden='true'></i>"
-                    f"&nbsp;@{info['twitter']}</a></li>")
-        if "email" in info:
-            out += (f"<li><a href='mailto:{info['email']}'>"
-                    "<i class='fa fa-envelope' aria-hidden='true'></i>"
-                    f"&nbsp;{info['email']}</a></li>")
-        if "mastodon" in info:
-            handle, url = info["mastodon"].split("@")
-            out += (f"<li><a href='https://{url}/@{handle}'>"
-                    "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
-                    f"&nbsp;@{handle}@{url}</a></li>")
-        out += "</ul>"
-        out += "<br style='clear:both' />"
-    return out
+    if format == "html":
+        out = ""
+        for info in people:
+            if "img" in info:
+                out += f"<img src='/img/people/{info['img']}' class='person'>"
+            out += heading_with_self_ref("h2", f"{info['first-names']} {info['last-name']}")
+            if "desc" in info:
+                out += f"<p>{markup(info['desc'])}</p>"
+            out += "<ul class='person-info'>"
+            if "website" in info:
+                website_name = info["website"].split("//")[1].strip("/")
+                out += (f"<li><a href='{info['website']}'>"
+                        "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
+                        f"&nbsp;{website_name}</a></li>")
+            if "github" in info:
+                out += (f"<li><a href='https://github.com/{info['github']}'>"
+                        "<i class='fa fa-github' aria-hidden='true'></i>"
+                        f"&nbsp;{info['github']}</a></li>")
+            if "twitter" in info:
+                out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
+                        "<i class='fa fa-twitter' aria-hidden='true'></i>"
+                        f"&nbsp;@{info['twitter']}</a></li>")
+            if "email" in info:
+                out += (f"<li><a href='mailto:{info['email']}'>"
+                        "<i class='fa fa-envelope' aria-hidden='true'></i>"
+                        f"&nbsp;{info['email']}</a></li>")
+            if "mastodon" in info:
+                handle, url = info["mastodon"].split("@")
+                out += (f"<li><a href='https://{url}/@{handle}'>"
+                        "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
+                        f"&nbsp;@{handle}@{url}</a></li>")
+            out += "</ul>"
+            out += "<br style='clear:both' />"
+        return out
+    else:
+        names = []
+        for info in people:
+            names.append((info['last-name'], info['first-names']))
+        names.sort(key=lambda i: "AAA" if i[0] == "Scroggs" else ", ".join(i))
+
+        if len(names) <= 1:
+            return "The DefElement contributors"
+
+        if format == "bibtex":
+            return " and ".join(f"{i[0]}, {i[1]}" for i in names)
+        else:
+            names = [f"{i[1]} {i[0]}" for i in names]
+            if len(names) <= 2:
+                return " and ".join(names)
+            else:
+                return ", and ".join(", ".join(names[:-1]), names[-1])
 
 
 def markup(content):
@@ -68,6 +89,12 @@ def markup(content):
             if f"{{{{{file}}}}}" in content:
                 with open(os.path.join(settings.dir_path, file)) as f:
                     content = content.replace(f"{{{{{file}}}}}", f.read())
+
+    if "{{list contributors}}" in content:
+        content = content.replace("{{list contributors}}", list_contributors())
+    if "{{list contributors|" in content:
+        content = re.sub("\{\{list contributors\|([^\}]+)\}\}", lambda matches: list_contributors(matches[1]), content)
+
 
     out = ""
     popen = False
@@ -168,8 +195,6 @@ def markup(content):
     out = re.sub(r"\*([^\n]+)\*", r"<em>\1</em>", out)
 
     out = out.replace("{{tick}}", "<i class='fa-solid fa-check' style='color:#55ff00'></i>")
-    if "{{list contributors}}" in out:
-        out = out.replace("{{list contributors}}", list_contributors())
 
     if len(page_references) > 0:
         out += heading_with_self_ref("h2", "References")

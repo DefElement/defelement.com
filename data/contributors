@@ -1,4 +1,5 @@
-- name: "Matthew Scroggs"
+- last-name: Scroggs
+  first-names: Matthew W.
   img: m-scroggs.jpg
   twitter: mscroggs
   mastodon: mscroggs@mathstodon.xyz
@@ -6,7 +7,3 @@
   website: https://mscroggs.co.uk
   email: defelement@mscroggs.co.uk
   desc: "Matthew is a Postdoctoral Research Fellow at the University College London who works on finite and boundary element methods. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the open-source boundary element software [Bempp](https://github.com/bempp)."
-- name: "Symfem Bot"
-  img: bot.png
-  github: symfembot
-  desc: "Symfem Bot is a robot that performs many automated maintenance tasks on DefElement."
