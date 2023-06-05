@@ -46,6 +46,10 @@ def list_contributors():
             out += (f"<li><a href='https://twitter.com/{info['twitter']}'>"
                     "<i class='fa fa-twitter' aria-hidden='true'></i>"
                     f"&nbsp;@{info['twitter']}</a></li>")
+        if "email" in info:
+            out += (f"<li><a href='mailto:{info['email']}'>"
+                    "<i class='fa fa-envelope' aria-hidden='true'></i>"
+                    f"&nbsp;{info['email']}</a></li>")
         if "mastodon" in info:
             handle, url = info["mastodon"].split("@")
             out += (f"<li><a href='https://{url}/@{handle}'>"
