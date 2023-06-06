@@ -116,7 +116,7 @@ def list_contributors(format="html"):
                 out += "</ul>"
                 out += ("<p>If you're listed here, you can find instructions for how to add "
                         "information about yourself on the [contributing page](contributing.md"
-                        "#Adding+yourself+to+the+contributors+list)</p>")
+                        "#Adding+yourself+to+the+contributors+list).</p>")
 
         return out
     else:
