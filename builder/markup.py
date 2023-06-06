@@ -284,30 +284,31 @@ def code_include(matches):
 def author_info(matches):
     authors, title, url = matches[1].split("|")
     authors = authors.split(";")
-    out = ("<div class='authors'>Written by "
-           " ".join(" ".join(i.split(", ")[::-1]) for i in authors) + "</div>"
-           "<a class='show_eg_link' href='javascript:show_author_cite_info()' id='showcitelink' "
-           "style='display:block'>&darr; Cite this page &darr;</a>"
-           "<div id='authorcite' style='display:none'>"
-           "<a class='show_eg_link' href='javascript:hide_author_cite_info()' id='showcitelink' "
-           "style='display:block'>&uarr; Hide citation info &uarr;</a>"
-           "You can cite this page using the following BibTeX:\n\n"
-           "```\n"
-           "@misc{defelement,\n"
-           f"       AUTHOR = {{{format_names(authors, 'bibtex')}}},\n"
-           f"        TITLE = {{{{D}}ef{{E}}lement: {title}}},\n"
-           "         YEAR = {{{{date:Y}}}},\n"
-           f" HOWPUBLISHED = {{\\url{{https://defelement.com/{url}}}}},\n"
-           "         NOTE = {[Online; accessed {{date:D-M-Y}}]}\n"
-           "}\n"
-           "```\n\n"
-           "This will create a reference along the lines of:\n\n"
-           "<ul class='citations'>"
-           f"<li>{format_names(authors, 'citation')}. <i>DefElement: {title}</i>, {{{{date:Y}}}}, "
-           f"<a href='https://defelement.com/{url}'>https://defelement.com/{url}</a> "
-           "[Online; accessed: {{date:D-M-Y}}]</li>\n"
-           "</ul>"
-           "</div>")
+    out = "<div class='authors'>Written by "
+    out += " ".join(" ".join(i.split(", ")[::-1]) for i in authors)
+    out += (
+        "</div>\n"
+        "<a class='show_eg_link' href='javascript:show_author_cite_info()' id='showcitelink' "
+        "style='display:block'>&darr; Cite this page &darr;</a>"
+        "<div id='authorcite' style='display:none'>"
+        "<a class='show_eg_link' href='javascript:hide_author_cite_info()' id='showcitelink' "
+        "style='display:block'>&uarr; Hide citation info &uarr;</a>"
+        "You can cite this page using the following BibTeX:\n\n"
+        "```\n"
+        "@misc{defelement,\n"
+        f"       AUTHOR = {{{format_names(authors, 'bibtex')}}},\n"
+        f"        TITLE = {{{{D}}ef{{E}}lement: {title}}},\n"
+        "         YEAR = {{{{date:Y}}}},\n"
+        f" HOWPUBLISHED = {{\\url{{https://defelement.com/{url}}}}},\n"
+        "         NOTE = {[Online; accessed {{date:D-M-Y}}]}\n"
+        "}\n"
+        "```\n\n"
+        "This will create a reference along the lines of:\n\n"
+        "<ul class='citations'>"
+        f"<li>{format_names(authors, 'citation')}. <i>DefElement: {title}</i>, {{{{date:Y}}}}, "
+        f"<a href='https://defelement.com/{url}'>https://defelement.com/{url}</a> "
+        "[Online; accessed: {{date:D-M-Y}}]</li>\n"
+        "</ul></div>")
     return out
 
 
