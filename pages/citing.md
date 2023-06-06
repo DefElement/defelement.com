@@ -49,6 +49,8 @@ This will create a reference along the lines of:
 If you'd like a copy of the poster, you can download
 [the A0 poster](/pdfs/poster-a0.pdf),
 [the A0 poster (with bleed for printing)](/pdfs/poster-a0-bleed.pdf),
+[the A1 poster](/pdfs/poster-a1.pdf),
+[the A1 poster (with bleed for printing)](/pdfs/poster-a1-bleed.pdf),
 [the A4 poster](/pdfs/poster-a4.pdf), or
 [the A4 poster (with bleed for printing)](/pdfs/poster-a4-bleed.pdf).
 These are all available under the same [Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/)
