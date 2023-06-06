@@ -10,7 +10,7 @@ from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
 from builder.snippets import parse_example
-from builder.tools import parse_metadata, insert_author_info
+from builder.tools import parse_metadata, insert_author_info, html_local
 from builder.families import keys_and_names
 from builder.rss import make_rss
 
@@ -25,6 +25,16 @@ parser.add_argument('--github-token', metavar="github_token", default=None,
                     help="Provide a GitHub token to get update timestamps.")
 parser.add_argument('--processes', metavar="processes", default=None,
                     help="The number of processes to run the building of examples on.")
+
+sitemap = {}
+
+
+def write_html_page(path, title, content):
+    global sitemap
+    assert html_local(path) not in sitemap
+    sitemap[html_local(path)] = title
+    with open(path, "w") as f:
+        f.write(make_html_page(content, title))
 
 
 args = parser.parse_args()
@@ -82,8 +92,8 @@ for file in os.listdir(settings.pages_path):
 
         content = markup(content)
 
-        with open(os.path.join(settings.html_path, f"{fname}.html"), "w") as f:
-            f.write(make_html_page(content))
+        write_html_page(os.path.join(settings.html_path, f"{fname}.html"),
+                        metadata["title"], content)
         end = datetime.now()
         print(f" (completed in {(end - start).total_seconds():.2f}s)")
 
@@ -320,8 +330,8 @@ for e in categoriser.elements:
         content += "</table>"
 
     # Write file
-    with open(os.path.join(settings.htmlelement_path, e.html_filename), "w") as f:
-        f.write(make_html_page(content, e.html_name))
+    write_html_page(os.path.join(settings.htmlelement_path, e.html_filename),
+                    e.html_name, content)
 
 
 def build_examples(egs, process=""):
@@ -474,10 +484,8 @@ for e in categoriser.elements:
 elementlist.sort(key=lambda x: x[0])
 content += "<ul>" + "\n".join([i[1] for i in elementlist]) + "</ul>"
 
-with open(os.path.join(settings.htmlelement_path, "index.html"), "w") as f:
-    f.write(make_html_page(content))
-with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.htmlelement_path, "index.html"),
+                "Index of elements", content)
 
 # Recently updated elements
 rss_icon = ("<span style='color:#FF8800;padding-left:10px'>"
@@ -501,8 +509,8 @@ for e in categoriser.recently_updated(10):
     content += "</li>\n"
 content += "</ul>\n"
 
-with open(os.path.join(settings.htmlindices_path, "recent.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.htmlindices_path, "recent.html"),
+                "Recent elements", content)
 
 with open(os.path.join(settings.html_path, "new-elements.xml"), "w") as f:
     f.write(make_rss(categoriser.recently_added(10), "recently added elements",
@@ -536,11 +544,11 @@ for c in categoriser.categories:
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
-    with open(os.path.join(settings.htmlindices_path, f"categories/{c}.html"), "w") as f:
-        f.write(make_html_page(sub_content))
+    write_html_page(os.path.join(settings.htmlindices_path, f"categories/{c}.html"),
+                    categoriser.get_category_name(c), sub_content)
 
-with open(os.path.join(settings.htmlindices_path, "categories/index.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.htmlindices_path, "categories/index.html"),
+                "Categories", content)
 
 # Implementations index
 os.mkdir(os.path.join(settings.htmlindices_path, "implementations"))
@@ -573,11 +581,11 @@ for c, info in categoriser.implementations.items():
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
-    with open(os.path.join(settings.htmlindices_path, f"implementations/{c}.html"), "w") as f:
-        f.write(make_html_page(sub_content))
+    write_html_page(os.path.join(settings.htmlindices_path, f"implementations/{c}.html"),
+                    f"Implemented in {info['name']}", sub_content)
 
-with open(os.path.join(settings.htmlindices_path, "implementations/index.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.htmlindices_path, "implementations/index.html"),
+                "Implemented elements", content)
 
 # Reference elements index
 os.mkdir(os.path.join(settings.htmlindices_path, "references"))
@@ -591,7 +599,7 @@ for c in categoriser.references:
 
     refels.sort(key=lambda x: x[0])
 
-    content += f"<h2><a href='/lists/references/{c}.html'></a>{cap_first(c)}</h2>\n"
+    content += f"<h2>{cap_first(c)}</h2>\n"
     content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
     heading = "Finite elements on a"
@@ -601,13 +609,13 @@ for c in categoriser.references:
     sub_content = heading_with_self_ref("h1", heading)
     sub_content += "<ul>" + "".join([i[1] for i in refels]) + "</ul>"
 
-    with open(os.path.join(settings.htmlindices_path, f"references/{c}.html"), "w") as f:
-        f.write(make_html_page(sub_content))
+    write_html_page(os.path.join(settings.htmlindices_path, f"references/{c}.html"),
+                    heading, sub_content)
 
-with open(os.path.join(settings.htmlindices_path, "references/index.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.htmlindices_path, "references/index.html"),
+                "Reference elements", content)
 
-# Page shoeing numbering of references
+# Page showing numbering of references
 content = heading_with_self_ref("h1", "Reference cell numbering")
 content += "<p>This page illustrates the entity numbering used for each reference cell.</p>"
 for cell in categoriser.references.keys():
@@ -619,8 +627,8 @@ for cell in categoriser.references.keys():
         content += heading_with_self_ref("h2", cap_first(cell))
         content += plotting.plot_reference(symfem.create_reference(cell))
 
-with open(os.path.join(settings.html_path, "reference_numbering.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.html_path, "reference_numbering.html"),
+                "Reference cell numbering", content)
 
 
 # Families
@@ -689,8 +697,8 @@ for fname, data in categoriser.families["de-rham"].items():
                 de_rham_2d.append(row2d)
         sub_content += "</ul>"
 
-    with open(os.path.join(settings.htmlfamilies_path, f"{fname}.html"), "w") as f:
-        f.write(make_html_page(sub_content))
+    write_html_page(os.path.join(settings.htmlfamilies_path, f"{fname}.html"),
+                    "The " + " / ".join(names) + " family", sub_content)
 
 content = heading_with_self_ref("h1", "Complex families")
 content += "<p>You can find some information about how these familes are defined "
@@ -721,8 +729,7 @@ content += "<td>\\(L_2\\)</td>"
 content += "</tr>\n"
 content += "\n".join(de_rham_2d)
 content += "</table>"
-with open(os.path.join(settings.htmlfamilies_path, "index.html"), "w") as f:
-    f.write(make_html_page(content))
+write_html_page(os.path.join(settings.htmlfamilies_path, "index.html"), "Complex families", content)
 
 # List of lists
 content = heading_with_self_ref("h1", "Lists of elements")
@@ -731,7 +738,38 @@ content += "<li><a href='/lists/categories'>Finite elements by category</a></li>
 content += "<li><a href='/lists/references'>Finite elements by reference element</a></li>\n"
 content += "<li><a href='/lists/recent.html'>Recently added/updated finite elements</a></li>\n"
 content += "</ul>"
-with open(os.path.join(settings.htmlindices_path, "index.html"), "w") as f:
+write_html_page(os.path.join(settings.htmlindices_path, "index.html"), "Lists of elements", content)
+
+# Site map
+sitemap[html_local(os.path.join(settings.html_path, "sitemap.html"))] = "List of all pages"
+
+
+def list_pages(folder):
+    items = []
+    if folder == "":
+        items.append(("A", "<li><a href='/index.html'>Front page</a>"))
+    for i, j in sitemap.items():
+        if i.startswith(folder):
+            file = i[len(folder) + 1:]
+            if "/" in file:
+                subfolder, subfile = file.split("/", 1)
+                if subfile == "index.html":
+                    items.append((j.lower(), list_pages(f"{folder}/{subfolder}")))
+            elif file != "index.html":
+                items.append((j.lower(), f"<li><a href='{i}'>{j}</a></li>"))
+    items.sort(key=lambda a: a[0])
+    out = ""
+    if folder != "":
+        title = sitemap[f"{folder}/index.html"]
+        out += f"<li><a href='{folder}/index.html'>{title}</a>"
+    out += "<ul>" + "\n".join(i[1] for i in items) + "</ul>"
+    if folder != "":
+        out += "</li>"
+    return out
+
+
+content = heading_with_self_ref("h1", "List of all pages") + list_pages("")
+with open(os.path.join(settings.html_path, "sitemap.html"), "w") as f:
     f.write(make_html_page(content))
 
 end_all = datetime.now()

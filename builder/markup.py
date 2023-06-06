@@ -133,9 +133,7 @@ def list_contributors(format="html"):
         return format_names(names, format)
 
 
-def markup(content):
-    global page_references
-
+def preprocess(content):
     for file in os.listdir(settings.dir_path):
         if file.endswith(".md"):
             if f"{{{{{file}}}}}" in content:
@@ -148,6 +146,13 @@ def markup(content):
         content = re.sub("{{list contributors\\|([^}]+)}}",
                          lambda matches: list_contributors(matches[1]), content)
     content = re.sub(r"{{author-info::([^}]+)}}", author_info, content)
+    return content
+
+
+def markup(content):
+    global page_references
+
+    content = preprocess(content)
 
     out = ""
     popen = False

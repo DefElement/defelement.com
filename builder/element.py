@@ -119,7 +119,6 @@ class Categoriser:
         if len(e.split(",")) == 3:
             i, j, k = e.split(",")
         else:
-            print(e)
             i, j, k, _ = e.split(",")
         if t not in self.families:
             self.families[t] = {}
@@ -271,7 +270,6 @@ class Element:
                         entry += "</a>"
                     out[key].append(entry)
                 else:
-                    print(e)
                     out[key].append(e)
         return out
 
