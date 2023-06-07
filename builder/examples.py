@@ -49,6 +49,7 @@ def describe_dof(element, d):
             else:
                 new_s += ','.join(defelement_t[:dim])
             new_s += f"\\) is a parametrisation of \\({symb[0]}\\)"
+            symb.append(new_s)
             break
 
     return desc, symb
