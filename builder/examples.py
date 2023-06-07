@@ -40,6 +40,7 @@ def describe_dof(element, d):
     for i, j in zip(t, defelement_t):
         desc = desc.replace(sympy.latex(i), j)
 
+    for j in defelement_t:
         if j in desc:
             dim = element.reference.tdim
             new_s = "\\("
