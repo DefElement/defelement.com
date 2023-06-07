@@ -17,17 +17,6 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v3
 
-      - name: Clone Symfem
-        uses: actions/checkout@v3
-        with:
-          path: ./symfem
-          repository: mscroggs/symfem
-          ref: main
-      - name: Install Symfem
-        run: |
-            cd symfem
-            pip3 install .[optional]
-
       - run: pip3 install -r requirements.txt
         name: Install requirements
       - run: |
@@ -44,6 +33,13 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v3
+
+      - name: Load Symfem cache
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-matrix-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
@@ -88,6 +84,13 @@ jobs:
       - run: sudo apt-get install -y python3-setuptools python3-pip
         name: Install dependencies
       - uses: actions/checkout@v3
+
+      - name: Load Symfem cache
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-matrix-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
@@ -139,6 +142,13 @@ jobs:
         name: Install dependencies
       - uses: actions/checkout@v3
 
+      - name: Load Symfem cache
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-matrix-cache
+
       - name: Clone Symfem
         uses: actions/checkout@v3
         with:
@@ -182,6 +192,14 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v1
 
+      - name: Save matrix cache
+        id: cache-save
+        uses: actions/cache/save@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-matrix-cache-${{ github.run_id }}
+          restore-keys: symfem-matrix-cache
+
   run-tests:
     name: Run tests
     runs-on: ubuntu-latest
@@ -201,6 +219,13 @@ jobs:
 
       - name: Install requirements
         run: pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+
+      - name: Load Symfem cache
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-matrix-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
