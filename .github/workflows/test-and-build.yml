@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: /home/runner/.cache/symfem
-          key: symfem-matrix-cache
+          key: symfem-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
@@ -90,7 +90,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: /home/runner/.cache/symfem
-          key: symfem-matrix-cache
+          key: symfem-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: /home/runner/.cache/symfem
-          key: symfem-matrix-cache
+          key: symfem-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
@@ -197,8 +197,8 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: /home/runner/.cache/symfem
-          key: symfem-matrix-cache-${{ github.run_id }}
-          restore-keys: symfem-matrix-cache
+          key: symfem-cache-${{ github.run_id }}
+          restore-keys: symfem-cache
 
   run-tests:
     name: Run tests
@@ -225,7 +225,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: /home/runner/.cache/symfem
-          key: symfem-matrix-cache
+          key: symfem-cache
 
       - name: Clone Symfem
         uses: actions/checkout@v3
