@@ -115,5 +115,5 @@ To do this, you should add info about yourself to the file [data/contributors](h
 add a square-shaped image to the [pictures/](https://github.com/mscroggs/defelement.com/blob/main/pictures/) folder.
 
 ## Code of conduct
-We expect all our contributors to follow [the Contributor Covenant](CODE_OF_CONDUCT.md). Any unacceptable
+We expect all our contributors to follow our [code of conduct](CODE_OF_CONDUCT.md). Any unacceptable
 behaviour can be reported to Matthew (defelement@mscroggs.co.uk).
