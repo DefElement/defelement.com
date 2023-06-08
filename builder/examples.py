@@ -48,7 +48,7 @@ def describe_dof(element, d):
                 new_s += defelement_t[0]
             else:
                 new_s += ','.join(defelement_t[:dim])
-            new_s += f"\\) is a parametrisation of \\({symb[0]}\\)"
+            new_s += f"\\) is a parametrisation of \\({d.entity_tex()}\\)"
             break
 
     return desc, symb
