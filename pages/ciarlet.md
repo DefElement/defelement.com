@@ -41,13 +41,15 @@ defines a finite element by a triple \(({{symbols.reference}},{{symbols.polyset}
 <ul>
 <li>\({{symbols.reference}}\subset\mathbb{R}^d\) is the reference element, ususally a polygon or polyhedron;</li>
 <li>\({{symbols.polyset}}\) is a finite dimensional polynomial space on \({{symbols.reference}}\) of dimension \(n\);</li>
-<li>\({{symbols.dual_basis}}=\{{{symbols.functional}}_0,...,{{symbols.functional}}_{n-1}\}\) is a basis of the dual space \({{symbols.polyset}}^*=\{f:{{symbols.polyset}}\to\mathbb{R}\}\).</li>
+<li>\({{symbols.dual_basis}}=\{{{symbols.functional}}_0,...,{{symbols.functional}}_{n-1}\}\) is a basis of the dual space \({{symbols.polyset}}^*=\{f:{{symbols.polyset}}\to\mathbb{R}\}\). Each functional \({{symbols.functional}}_i\) is associated with a subentity of the reference element \({{symbols.reference}}\).</li>
 </ul>
 
 The basis functions \(\{{{symbols.basis_function}}_0,...,{{symbols.basis_function}}_{n-1}\}\)
 of the finite element space are defined by
 
 \[{{symbols.functional}}_i({{symbols.basis_function}}_j) = \begin{cases}1&i=j\\0&i\not=j\end{cases}\]
+
+The correct continuity is enforced by ensuring that the same global degree-of-freedom is associated with corresponding functionals on the shared subentities of neighbouring cells.
 
 ### Example: Order 1 Lagrange space on a triangle
 An order 1 [Lagrange space](element::lagrange) on a triangle is defined by:

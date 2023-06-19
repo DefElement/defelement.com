@@ -130,6 +130,31 @@ def list_contributors(format="html"):
                 return "{The DefElement contributors}"
             else:
                 return "The DefElement contributors"
+
+        if format == "bibtex":
+            if settings.github_token is None:
+                warnings.warn(
+                    "Building without GitHub token. Skipping search for GitHub contributors.")
+            else:
+                included = [info["github"] for info in people if "github" in info]
+                g = Github(settings.github_token)
+                repo = g.get_repo("mscroggs/defelement.com")
+                pages = repo.get_contributors()
+                i = 0
+                while True:
+                    page = pages.get_page(i)
+                    if len(page) == 0:
+                        break
+                    for user in page:
+                        if user.login not in included:
+                            names.append("others")
+                            break
+                    else:
+                        i += 1
+                        continue
+                    break
+        print(names)
+
         return format_names(names, format)
 
 
