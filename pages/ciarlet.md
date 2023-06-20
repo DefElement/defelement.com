@@ -41,7 +41,7 @@ defines a finite element by a triple \(({{symbols.reference}},{{symbols.polyset}
 <ul>
 <li>\({{symbols.reference}}\subset\mathbb{R}^d\) is the reference element, ususally a polygon or polyhedron;</li>
 <li>\({{symbols.polyset}}\) is a finite dimensional polynomial space on \({{symbols.reference}}\) of dimension \(n\);</li>
-<li>\({{symbols.dual_basis}}=\{{{symbols.functional}}_0,...,{{symbols.functional}}_{n-1}\}\) is a basis of the dual space \({{symbols.polyset}}^*=\{f:{{symbols.polyset}}\to\mathbb{R}\}\). Each functional \({{symbols.functional}}_i\) is associated with a subentity of the reference element \({{symbols.reference}}\).</li>
+<li>\({{symbols.dual_basis}}=\{{{symbols.functional}}_0,...,{{symbols.functional}}_{n-1}\}\) is a basis of the dual space \({{symbols.polyset}}^*=\{f:{{symbols.polyset}}\to\mathbb{R}|f\text{ is linear}\}\). Each functional \({{symbols.functional}}_i\) is associated with a subentity of the reference element \({{symbols.reference}}\).</li>
 </ul>
 
 The basis functions \(\{{{symbols.basis_function}}_0,...,{{symbols.basis_function}}_{n-1}\}\)
