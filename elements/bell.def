@@ -6,17 +6,16 @@ categories:
   - scalar
 ndofs:
   triangle:
-    formula: 21
+    formula: 18
 reference-elements:
   - triangle
 polynomial-set:
-  triangle: poly[k]
+  triangle: <k>[\left\{p\in{{poly[k]}}\middle|\text{normal derivative of $p$ on each edge is cubic}\right\}]
 dofs:
   vertices:
     - point evaluations
     - point evaluations of derivatives in coordinate directions
     - point evaluations of components of Jacobian
-  edges: integral moments of normal derivatives with (lagrange,0)
 mapping: identity
 sobolev: H3
 symfem: Bell
