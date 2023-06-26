@@ -125,12 +125,6 @@ def list_contributors(format="html"):
             names.append(info["name"])
         names.sort(key=lambda i: "AAA" if i.startswith("Scroggs") else i)
 
-        if len(names) <= 1:
-            if format == "bibtex":
-                return "{The DefElement contributors}"
-            else:
-                return "The DefElement contributors"
-
         if format == "bibtex":
             if settings.github_token is None:
                 warnings.warn(
