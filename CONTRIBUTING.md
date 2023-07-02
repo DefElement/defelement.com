@@ -23,7 +23,7 @@ ideas you have for features (that perhaps aren't fully formed enough yet to make
 discuss other people's ideas. You're welcome to also use the Discussions to just chat to other
 members of the community.
 
-## Contribution directly
+## Contributing directly
 
 ### Submitting a pull request
 If you want to directly submit changes to DefElement, you can do this by forking the [DefElement GitHub repository](https://github.com/mscroggs/defelement.com),
