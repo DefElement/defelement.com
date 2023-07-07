@@ -37,10 +37,16 @@ def format_names(names, format):
                     name += f"{j[0]}. "
             name += n[0]
             formatted_names.append(name)
-        if len(formatted_names) <= 2:
-            return " and ".join(formatted_names)
+        if names[-1] == "et al":
+            if len(formatted_names) <= 2:
+                return " ".join(formatted_names)
+            else:
+                return ", ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
         else:
-            return ", and ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
+            if len(formatted_names) <= 2:
+                return " and ".join(formatted_names)
+            else:
+                return ", and ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
 
 
 def list_contributors(format="html"):
@@ -125,29 +131,30 @@ def list_contributors(format="html"):
             names.append(info["name"])
         names.sort(key=lambda i: "AAA" if i.startswith("Scroggs") else i)
 
-        if format == "bibtex":
-            if settings.github_token is None:
-                warnings.warn(
-                    "Building without GitHub token. Skipping search for GitHub contributors.")
-            else:
-                included = [info["github"] for info in people if "github" in info]
-                g = Github(settings.github_token)
-                repo = g.get_repo("mscroggs/defelement.com")
-                pages = repo.get_contributors()
-                i = 0
-                while True:
-                    page = pages.get_page(i)
-                    if len(page) == 0:
-                        break
-                    for user in page:
-                        if user.login not in included:
-                            names.append("others")
-                            break
-                    else:
-                        i += 1
-                        continue
+        if settings.github_token is None:
+            warnings.warn(
+                "Building without GitHub token. Skipping search for GitHub contributors.")
+        else:
+            included = [info["github"] for info in people if "github" in info]
+            g = Github(settings.github_token)
+            repo = g.get_repo("mscroggs/defelement.com")
+            pages = repo.get_contributors()
+            i = 0
+            while True:
+                page = pages.get_page(i)
+                if len(page) == 0:
                     break
-        print(names)
+                for user in page:
+                    if user.login not in included:
+                        if format == "bibtex":
+                            names.append("others")
+                        else:
+                            names.append("et al")
+                        break
+                else:
+                    i += 1
+                    continue
+                break
 
         return format_names(names, format)
 
