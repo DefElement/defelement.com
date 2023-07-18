@@ -46,7 +46,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: main
+          ref: legendre-lobatto
       - name: Install Symfem
         run: |
             cd symfem
@@ -97,7 +97,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: main
+          ref: legendre-lobatto
       - name: Install Symfem
         run: |
             cd symfem
@@ -154,7 +154,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: main
+          ref: legendre-lobatto
       - name: Install Symfem
         run: |
             cd symfem
@@ -232,7 +232,7 @@ jobs:
         with:
           path: ./symfem
           repository: mscroggs/symfem
-          ref: main
+          ref: legendre-lobatto
       - name: Install Symfem
         run: |
             cd symfem
