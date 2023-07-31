@@ -2,7 +2,6 @@ name: Lobatto
 html-name: Lobatto
 notes:
   - The derivatives of most of the basis functions of this element are orthogonal.
-  - DG
 sobolev: H1
 mapping: identity
 ndofs:
