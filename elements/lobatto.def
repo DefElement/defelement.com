@@ -1,0 +1,67 @@
+name: Lobatto
+html-name: Lobatto
+notes:
+  - The derivatives of most of the basis functions of this element are orthogonal.
+  - DG
+sobolev: H1
+mapping: identity
+ndofs:
+  interval:
+    formula: k+1
+    oeis: A000027
+  quadrilateral:
+    formula: (k+1)^2
+    oeis: A000290
+  hexahedron:
+    formula: (k+1)^3
+    oeis: A000578
+entity-ndofs:
+  vertices:
+    formula: 1
+    oeis: A000012
+  edges:
+    formula: k-1
+    oeis: A000027
+  faces:
+    quadrilateral:
+      formula: (k-1)^2
+      oeis: A000290
+  volumes:
+    hexahedron:
+      formula: (k-1)^3
+      oeis: A000578
+min-order: 1
+categories:
+  - scalar
+reference-elements:
+  - interval
+  - triangle
+  - tetrahedron
+  - quadrilateral
+  - hexahedron
+  - prism
+  - pyramid
+dofs:
+  vertices: point evaluations
+  edges: integrals against L2 dual of Lobatto polynomials
+  faces: integrals against L2 dual of Lobatto polynomials
+  volumes: integrals against L2 dual of Lobatto polynomials
+polynomial-set:
+  interval: poly[k]
+  quadrilateral: qoly[k]
+  hexahedron: qoly[k]
+symfem:
+  interval: Lagrange variant=lobatto
+  quadrilateral: Q variant=lobatto
+  hexahedron: Q variant=lobatto
+ufl:
+  interval: Lobatto
+examples:
+  - interval,1
+  - interval,2
+  - interval,3
+  - quadrilateral,1
+  - quadrilateral,2
+  - quadrilateral,3
+  - hexahedron,1
+  - hexahedron,2
