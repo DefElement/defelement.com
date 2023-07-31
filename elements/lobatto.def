@@ -51,13 +51,11 @@ polynomial-set:
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
 symfem:
-  interval: Lagrange, variant=lobatto
-  quadrilateral: Q, variant=lobatto
-  hexahedron: Q, variant=lobatto
+  interval: Lagrange variant=lobatto
+  quadrilateral: Q variant=lobatto
+  hexahedron: Q variant=lobatto
 ufl:
   interval: Lobatto
-  quadrilateral: Lobatto
-  hexahedron: Lobatto
 examples:
   - interval,1
   - interval,2
