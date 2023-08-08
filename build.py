@@ -373,6 +373,9 @@ else:
     for j in jobs:
         j.join()
 
+    for j in jobs:
+        assert j.exitcode == 0
+
 # Index page
 content = heading_with_self_ref("h1", "Index of elements")
 # Generate filtering Javascript
