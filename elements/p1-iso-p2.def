@@ -28,6 +28,7 @@ categories:
   - scalar
   - macro
 reference-elements:
+  - interval
   - triangle
   - quadrilateral
 dofs:
