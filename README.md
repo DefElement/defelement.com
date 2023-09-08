@@ -7,6 +7,8 @@ plus the file `build.py`) is released under an [MIT license](LICENSE.txt).
 The content of the DefElement website itself (including that in `elements/`, `files/`, `pages/`)
 is released under a
 [Creative Commons Attribution 4.0 International (CC BY 4.0) license](LICENSE-CC.txt).
+Font Awesome (contained in `files/fontawesome`) is released under a
+[Font Awesome Free License](files/fontawesome/LICENSE.txt).
 
 The examples included in DefElement are generated using [Symfem](https://github.com/mscroggs/symfem).
 

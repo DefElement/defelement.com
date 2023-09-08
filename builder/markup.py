@@ -67,20 +67,20 @@ def list_contributors(format="html"):
             if "website" in info:
                 website_name = info["website"].split("//")[1].strip("/")
                 out += (f"<div class='social'><a href='{info['website']}'>"
-                        "<i class='fa fa-internet-explorer' aria-hidden='true'></i>"
+                        "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
                         f"&nbsp;{website_name}</a></div>")
             if "email" in info:
                 out += (f"<div class='social'><a href='mailto:{info['email']}'>"
-                        "<i class='fa fa-envelope' aria-hidden='true'></i>"
+                        "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
                         f"&nbsp;{info['email']}</a></div>")
             if "github" in info:
                 out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
-                        "<i class='fa fa-github' aria-hidden='true'></i>"
+                        "<i class='fa-brands fa-github' aria-hidden='true'></i>"
                         f"&nbsp;{info['github']}</a></div>")
                 included.append(info["github"])
             if "twitter" in info:
                 out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
-                        "<i class='fa fa-twitter' aria-hidden='true'></i>"
+                        "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
                         f"&nbsp;@{info['twitter']}</a></div>")
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
@@ -114,7 +114,7 @@ def list_contributors(format="html"):
                     if u[1] is not None:
                         out += f"{u[1]} ("
                     out += (f"<a href='https://github.com/{u[0]}'>"
-                            "<i class='fa fa-github' aria-hidden='true'></i>"
+                            "<i class='fa-brands fa-github' aria-hidden='true'></i>"
                             f"&nbsp;{u[0]}</a>")
                     if u[1] is not None:
                         out += ")"
