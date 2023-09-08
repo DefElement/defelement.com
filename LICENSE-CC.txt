@@ -1,7 +1,7 @@
 The content of the DefElement website, including:
   - The contents of data/
   - The contents of elements/
-  - The contents of files/
+  - The contents of files/, excuding files/fontawesome
   - The contents of img/
   - The contents of pages/
 is released under a Creative Commons CC BY 4.0 license:
