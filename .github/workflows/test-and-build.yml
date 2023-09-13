@@ -177,8 +177,9 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: mkdir ../verification
 
+      - run: mkdir ../verification
+        name: Make dir
       - run: python3 verify.py ../verification/verification.json --processes 4
         name: Run verification
       - run: |
@@ -189,6 +190,7 @@ jobs:
           git commit -m "verification.json"
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
           git push -u origin gh-pages --force
+        name: Push to GitHub
 
   build-and-push-website:
     name: Build and deploy defelement.com
