@@ -184,6 +184,8 @@ jobs:
         name: Run verification
       - run: |
           cd ../verification
+          git config --global user.email "symfem@mscroggs.co.uk"
+          git config --global user.name "Finite Element Bot"
           git init
           git checkout -b verification
           git add .
