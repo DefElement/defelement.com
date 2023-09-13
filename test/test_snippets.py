@@ -1,6 +1,7 @@
 import pytest
 import os
 from builder.element import Categoriser
+from builder.implementations import examples
 
 dir = os.path.dirname(os.path.realpath(__file__))
 c = Categoriser()
@@ -12,7 +13,7 @@ elements = [e.name for e in c.elements]
 
 
 @pytest.mark.parametrize("element", elements)
-@pytest.mark.parametrize("library", ["symfem", "basix", "ufl", "bempp"])
+@pytest.mark.parametrize("library", examples.keys())
 def test_snippets(element, library):
     e = c.get_element(element)
 

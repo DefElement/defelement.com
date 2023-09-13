@@ -14,6 +14,8 @@ htmlimg_path = _os.path.join(html_path, "img")
 htmlindices_path = _os.path.join(html_path, "lists")
 htmlfamilies_path = _os.path.join(html_path, "families")
 
+verification_json = _os.path.join(dir_path, "verification.json")
+
 github_token = None
 
 processes = 1

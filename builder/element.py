@@ -3,7 +3,7 @@ import warnings
 import yaml
 from datetime import datetime
 from github import Github
-from . import snippets
+from . import implementations
 from . import settings
 from .families import keys_and_names, arnold_logg_reference, cockburn_fu_reference
 from .markup import insert_links
@@ -500,10 +500,10 @@ class Element:
             return joiner.join(imp_list)
 
     def make_implementation_examples(self, lib):
-        return getattr(snippets, f"{lib}_example")(self)
+        return implementations.examples[lib](self)
 
     def has_implementation_examples(self, lib):
-        return hasattr(snippets, f"{lib}_example")
+        return lib in implementations.examples
 
     def categories(self, link=True, map_name=True):
         if "categories" not in self.data:
