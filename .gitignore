@@ -3,9 +3,12 @@
 _html
 _html/*
 
+verification.json
+
 .*.swp
 
 *.xcf
 
 _temp*
 *.log
+

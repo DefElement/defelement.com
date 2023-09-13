@@ -9,7 +9,7 @@ from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
-from builder.snippets import parse_example
+from builder.implementations import parse_example
 from builder.tools import parse_metadata, insert_author_info, html_local
 from builder.families import keys_and_names
 from builder.rss import make_rss
@@ -211,7 +211,8 @@ for e in categoriser.elements:
             if e.has_implementation_examples(codename):
 
                 info += "<br />"
-
+                # Pass: <i class="fa-solid fa-square-check"></i>
+                # Fail: <i class="fa-solid fa-square-xmark"></i>
                 info += f"<a class='show_eg_link' id='show_{codename}_link' "
                 info += f"href='javascript:show_{codename}_eg()'"
                 info += " style='display:block'>"

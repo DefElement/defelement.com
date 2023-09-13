@@ -128,10 +128,73 @@ jobs:
         name: Build website HTML
         if: ${{ github.event.pull_request.head.repo.fork }}
 
+  verification:
+    name: Run verification
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc-10
+      CXX: g++-10
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - uses: actions/checkout@v3
+
+      - name: Install requirements
+        run: pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+
+      - name: Load Symfem cache
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-cache
+
+      - name: Clone Symfem
+        uses: actions/checkout@v3
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
+      - name: Install Symfem
+        run: |
+            cd symfem
+            pip3 install .[optional]
+
+      - name: Install Basix
+        run: |
+          sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
+          pip3 install pybind11
+          pip3 install git+https://github.com/FEniCS/basix.git
+
+      - name: Install UFL
+        run: pip3 install git+https://github.com/FEniCS/ufl.git
+
+      - name: Install Bempp-cl
+        run: pip3 install git+https://github.com/bempp/bempp-cl.git
+
+      - run: pip3 install -r requirements.txt
+        name: Install requirements
+      - run: mkdir ../verification
+
+      - run: python3 verify.py ../verification/verification.json --processes 4
+        name: Run verification
+      - run: |
+          cd ../verification
+          git init
+          git checkout -b verification
+          git add .
+          git commit -m "verification.json"
+          git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
+          git push -u origin gh-pages --force
+
   build-and-push-website:
     name: Build and deploy defelement.com
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    needs: verification
 
     permissions:
       contents: read
