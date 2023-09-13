@@ -191,7 +191,7 @@ jobs:
           git add .
           git commit -m "verification.json"
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
-          git push -u origin gh-pages --force
+          git push -u origin verification --force
         name: Push to GitHub
 
   build-and-push-website:
