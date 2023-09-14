@@ -32,6 +32,7 @@ dofs:
   cell: integral moments with (vector-lagrange,k-2)
 symfem: N1div
 basix: RT
+basix.ufl: RT
 ufl: RT
 bempp:
   triangle: RWG orders=0

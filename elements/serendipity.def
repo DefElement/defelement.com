@@ -40,6 +40,7 @@ polynomial-set:
   hexahedron: poly[k] && serendipity[k]
 symfem: serendipity
 basix: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
+basix.ufl: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
 ufl: S
 examples:
   - interval,1

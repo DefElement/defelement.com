@@ -31,6 +31,7 @@ polynomial-set:
 mapping: identity
 sobolev: H1
 basix: P lagrange_variant=gll_warped
+basix.ufl: P lagrange_variant=gll_warped
 symfem: Lagrange variant=lobatto
 examples:
   - interval,1

@@ -33,6 +33,7 @@ dofs:
 symfem: N2curl
 ufl: N2curl
 basix: N2E
+basix.ufl: N2E
 examples:
   - triangle,1
   - triangle,2

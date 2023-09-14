@@ -24,6 +24,7 @@ sobolev: H(curl curl)
 mapping: double covariant Piola
 symfem: Regge
 basix: Regge
+basix.ufl: Regge
 ufl: Regge
 examples:
   - triangle,1

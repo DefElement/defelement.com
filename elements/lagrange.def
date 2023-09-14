@@ -104,7 +104,20 @@ symfem:
   hexahedron: Q
   prism: Lagrange
   pyramid: Lagrange
-basix: P lagrange_variant=equispaced
+basix:
+  interval: P lagrange_variant=equispaced
+  triangle: P lagrange_variant=equispaced
+  quadrilateral: P lagrange_variant=equispaced
+  tetrahedron: P lagrange_variant=equispaced
+  hexahedron: P lagrange_variant=equispaced
+  prism: P lagrange_variant=equispaced
+basix.ufl:
+  interval: P lagrange_variant=equispaced
+  triangle: P lagrange_variant=equispaced
+  quadrilateral: P lagrange_variant=equispaced
+  tetrahedron: P lagrange_variant=equispaced
+  hexahedron: P lagrange_variant=equispaced
+  prism: P lagrange_variant=equispaced
 ufl:
   interval: Lagrange
   triangle: Lagrange
