@@ -121,8 +121,11 @@ def plot_function(element, dof_i, link: bool = True):
         ref_id = element.reference.name
 
     desc = f"Basis function in a {element.name} space"
-    return do_the_plot(f"element-{element.name}-{ref_id}-{element.order}-{dof_i}", desc,
-                       element.plot_basis_function, [dof_i], link=link)
+    filename = f"element-{element.name}"
+    for i, j in element.init_kwargs().items():
+        filename += f"-{i}-{j}"
+    filename += f"-{ref_id}-{element.order}-{dof_i}"
+    return do_the_plot(filename, desc, element.plot_basis_function, [dof_i], link=link)
 
 
 def plot_basis_functions(element, link: bool = True):
@@ -191,5 +194,8 @@ def plot_dof_diagram(element, link: bool = True):
     desc = "DOFs of "
     desc += "an" if element.name.lower()[0] in "aieou" else "a"
     desc += f" {element.name} element"
-    return do_the_plot(f"element-{element.name}-{ref_id}-{element.order}-dofs", desc,
-                       element.plot_dof_diagram, link=link)
+    filename = f"element-{element.name}"
+    for i, j in element.init_kwargs().items():
+        filename += f"-{i}-{j}"
+    filename += f"-{ref_id}-{element.order}-dofs"
+    return do_the_plot(filename, desc, element.plot_dof_diagram, link=link)
