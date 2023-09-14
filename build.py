@@ -251,6 +251,11 @@ for e in categoriser.elements:
                 info += "<p class='pcode'>" + python_highlight(
                     e.make_implementation_examples(codename)) + "</p>"
                 info += "</div>"
+                if codename == "symfem":
+                    info += (
+                        f"{green_check} <span style='{text_style}'>"
+                        "This implementation is used to compute the examples below and "
+                        "verify other implementations.</span>")
                 if e.filename in verification and codename in verification[e.filename]:
                     v = verification[e.filename][codename]
                     if len(v["fail"]) == 0:
