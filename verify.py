@@ -70,7 +70,7 @@ def verify(egs, process="", result_dict=None):
                     results[e.filename] = {}
                 if i not in results[e.filename]:
                     results[e.filename][i] = {"pass": [], "fail": []}
-                if np.allclose(sym_table, t):
+                if sym_table.shape == t.shape and np.allclose(sym_table, t):
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
                 else:

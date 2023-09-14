@@ -86,7 +86,7 @@ def basix_ufl_example(element):
         assert len(kwargs) == 0
         ord = int(ord)
 
-        basix_name, params = element.get_implementation_string("basix", ref)
+        basix_name, params = element.get_implementation_string("basix.ufl", ref)
 
         if basix_name is not None:
             out += "\n\n"
@@ -218,7 +218,7 @@ def basix_ufl_tabulate(element, example):
     ref, ord, kwargs = parse_example(example)
     assert len(kwargs) == 0
     ord = int(ord)
-    basix_name, params = element.get_implementation_string("basix", ref)
+    basix_name, params = element.get_implementation_string("basix.ufl", ref)
     if basix_name is None:
         raise NotImplementedError()
     kwargs = {}
