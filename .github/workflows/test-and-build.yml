@@ -111,6 +111,14 @@ jobs:
             cd symfem
             pip3 install .[optional]
 
+      - name: Clone verification
+        uses: actions/checkout@v3
+        with:
+          path: ./verification
+          repository: mscroggs/defelement.com
+          ref: verification
+        continue-on-error: true
+
       - run: mkdir -p ~/.local/share/fonts
         name: Make font folder
       - name: Clone Varela Round
@@ -129,10 +137,10 @@ jobs:
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py _html --github-token ${{ secrets.bot_github_token }} --processes 4
+      - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
         if: ${{ !github.event.pull_request.head.repo.fork }}
-      - run: python3 build.py _html --processes 4
+      - run: python3 build.py _html --verification-json verification/verification.json --processes 4
         name: Build website HTML
         if: ${{ github.event.pull_request.head.repo.fork }}
 
