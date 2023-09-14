@@ -1,3 +1,4 @@
+import json
 import os
 import argparse
 import symfem
@@ -9,7 +10,7 @@ from builder.examples import markup_example
 from builder.citations import markup_citation, make_bibtex
 from builder.element import Categoriser
 from builder.html import make_html_page
-from builder.implementations import parse_example
+from builder.implementations import parse_example, verifications
 from builder.tools import parse_metadata, insert_author_info, html_local
 from builder.families import keys_and_names
 from builder.rss import make_rss
@@ -25,6 +26,8 @@ parser.add_argument('--github-token', metavar="github_token", default=None,
                     help="Provide a GitHub token to get update timestamps.")
 parser.add_argument('--processes', metavar="processes", default=None,
                     help="The number of processes to run the building of examples on.")
+parser.add_argument('--verification-json', metavar="verification_json", default=None,
+                    help="Provide a verification JSON.")
 
 sitemap = {}
 
@@ -50,6 +53,9 @@ if args.processes is not None:
 
 if args.github_token is not None:
     settings.github_token = args.github_token
+
+if args.verification_json is not None:
+    settings.verification_json = args.verification_json
 
 if args.test is None:
     test_elements = None
@@ -116,6 +122,20 @@ cdescs = {
     "H(curl)": "Components tangential to facets are continuous",
     "H(div div)": "Inner products with normals to facets are continuous",
     "H(curl curl)": "Inner products with tangents to facets are continuous"}
+
+verification = {}
+if os.path.isfile(settings.verification_json):
+    with open(settings.verification_json) as f:
+        verification = json.load(f)
+
+icon_style = "font-size:150%;vertical-align:middle"
+text_style = "font-size:80%;vertical-align:middle"
+green_check = ("<i class='fa-solid fa-square-check' style='color:"
+               f"{symfem.plotting.Colors.GREEN};{icon_style}'></i>")
+orange_check = ("<i class='fa-solid fa-square-xmark' style='color:"
+                f"{symfem.plotting.Colors.ORANGE};{icon_style}'></i>")
+red_check = ("<i class='fa-solid fa-square-xmark' style='color:"
+             f"#FF0000;{icon_style}'></i>")
 
 # Generate element pages
 all_examples = []
@@ -211,8 +231,6 @@ for e in categoriser.elements:
             if e.has_implementation_examples(codename):
 
                 info += "<br />"
-                # Pass: <i class="fa-solid fa-square-check"></i>
-                # Fail: <i class="fa-solid fa-square-xmark"></i>
                 info += f"<a class='show_eg_link' id='show_{codename}_link' "
                 info += f"href='javascript:show_{codename}_eg()'"
                 info += " style='display:block'>"
@@ -233,6 +251,50 @@ for e in categoriser.elements:
                 info += "<p class='pcode'>" + python_highlight(
                     e.make_implementation_examples(codename)) + "</p>"
                 info += "</div>"
+                if e.filename in verification and codename in verification[e.filename]:
+                    v = verification[e.filename][codename]
+                    if len(v["fail"]) == 0:
+                        info += (
+                            f"{green_check} <span style='{text_style}'>"
+                            "This implementation gives the correct basis functions for all of "
+                            "the examples below."
+                            "</span>")
+                    elif len(v["pass"]) > 0:
+                        info += (
+                            f"{orange_check} <span style='{text_style}'>"
+                            "This implementation gives the correct basis functions for some of "
+                            "the examples below.</span>"
+                            f"<div style='display:block;margin-left:30px;{text_style}' "
+                            f"id='{codename}-showverification'>"
+                            f"<a href='javascript:show_{codename}_verification()'>"
+                            "&darr; Show more &darr;</a></div>"
+                            f"<div style='display:none;' id='{codename}-hiddenverification'>"
+                            f"<div style='margin-left:30px;{text_style}'>"
+                            f"<a href='javascript:hide_{codename}_verification()'>"
+                            "&uarr; Hide &uarr;</a></div>"
+                            f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
+                            f"{green_check} "
+                            f"<b>Correct</b>: {'; '.join(v['pass'])}</div>"
+                            f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
+                            f"{red_check} "
+                            f"<b>Incorrect</b>: {'; '.join(v['fail'])}</div></div>"
+                            "<script type='text/javascript'>\n"
+                            f"function show_{codename}_verification(){{"
+                            "\n"
+                            f"document.getElementById('{codename}-showverification')"
+                            ".style.display = 'none'\n"
+                            f"document.getElementById('{codename}-hiddenverification')"
+                            ".style.display = 'block'\n}\n"
+                            f"function hide_{codename}_verification(){{"
+                            "\n"
+                            f"document.getElementById('{codename}-showverification')"
+                            ".style.display = 'block'\n"
+                            f"document.getElementById('{codename}-hiddenverification')"
+                            ".style.display = 'none'\n}\n</script>")
+                    else:
+                        info += (
+                            f"{red_check} "
+                            "This implementation does not give the correct basis functions.</span>")
                 info += "<script type='text/javascript'>\n"
                 info += f"function show_{codename}_eg(){{\n"
                 info += f" document.getElementById('show_{codename}_link').style.display='none'\n"
@@ -333,6 +395,44 @@ for e in categoriser.elements:
     # Write file
     write_html_page(os.path.join(settings.htmlelement_path, e.html_filename),
                     e.html_name, content)
+
+# Make verification page
+content = heading_with_self_ref("h1", "Verification")
+content += "<table class='bordered align-left'>"
+content += "<thead>"
+content += "<tr><td>Element</td>"
+vs = []
+for i in verifications:
+    if i != "symfem":
+        vs.append(i)
+        content += f"<td>{categoriser.implementations[i]['name']}</td>"
+content += "</tr>"
+rows = []
+for e in categoriser.elements:
+    n = 0
+    row = "<tr>"
+    row += f"<td><a href='/elements/{e.filename}.html'>{e.html_name}</a></td>"
+    for i in vs:
+        row += "<td>"
+        if e.filename in verification and i in verification[e.filename]:
+            n += 1
+            result = verification[e.filename][i]
+            if len(result["fail"]) == 0:
+                row += green_check
+            elif len(result["pass"]) > 0:
+                row += orange_check
+            else:
+                row += red_check
+        row += "</td>"
+    row += "</tr>"
+    rows.append((row, n))
+rows.sort(key=lambda i: -i[1])
+content += "".join(i[0] for i in rows)
+content += "</thead>"
+content += "</table>"
+
+write_html_page(os.path.join(settings.html_path, "verification.html"),
+                "Verification", content)
 
 
 def build_examples(egs, process=""):

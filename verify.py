@@ -66,16 +66,16 @@ def verify(egs, process="", result_dict=None):
         if len(tables) > 0:
             sym_table = verifications["symfem"](e, eg)
             for i, t in tables.items():
-                if e.name not in results:
-                    results[e.name] = {}
-                if i not in results[e.name]:
-                    results[e.name][i] = {"pass": [], "fail": []}
+                if e.filename not in results:
+                    results[e.filename] = {}
+                if i not in results[e.filename]:
+                    results[e.filename][i] = {"pass": [], "fail": []}
                 if np.allclose(sym_table, t):
-                    results[e.name][i]["pass"].append(eg)
-                    print(f"{process}{e.name} {i} {eg} {green}\u2713{default}")
+                    results[e.filename][i]["pass"].append(eg)
+                    print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
                 else:
-                    results[e.name][i]["fail"].append(eg)
-                    print(f"{process}{e.name} {i} {eg} {red}\u2715{default}")
+                    results[e.filename][i]["fail"].append(eg)
+                    print(f"{process}{e.filename} {i} {eg} {red}\u2715{default}")
     if result_dict is not None:
         result_dict[process] = results
     return results
