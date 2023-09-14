@@ -231,7 +231,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: ./verification
-          repository: mscroggs/symfem
+          repository: mscroggs/defelement.com
           ref: verification
 
       - run: mkdir -p ~/.local/share/fonts
