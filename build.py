@@ -347,7 +347,7 @@ for e in categoriser.elements:
                 cell, order, kwargs = parse_example(eg)
                 symfem_name, params = e.get_implementation_string("symfem", cell)
 
-                fname = f"{cell}-{symfem_name}-{order}.html"
+                fname = f"{cell}-{e.filename}-{order}.html"
                 for s in " ()":
                     fname = fname.replace(s, "-")
 
