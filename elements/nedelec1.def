@@ -69,8 +69,8 @@ basix:
 basix.ufl:
   triangle: N1E lagrange_variant=equispaced
   tetrahedron: N1E lagrange_variant=equispaced
-  quadrilateral: N1E
-  hexahedron: N1E
+  quadrilateral: N1E lagrange_variant=equispaced
+  hexahedron: N1E lagrange_variant=equispaced
 ufl:
   triangle: N1curl
   tetrahedron: N1curl
