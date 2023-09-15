@@ -502,7 +502,8 @@ class Element:
                 if lib == "basix":
                     s = f"basix.ElementFamily.{s}"
                     if "lagrange_variant" in params:
-                        s += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+                        s += (", lagrange_variant=basix.LagrangeVariant.
+                              f"{params['lagrange_variant']}")
                     if "dpc_variant" in params:
                         s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
                     if "discontinuous" in params:
@@ -510,7 +511,8 @@ class Element:
                 elif lib == "basix.ufl":
                     s = f"basix.ElementFamily.{s}"
                     if "lagrange_variant" in params:
-                        s += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+                        s += (", lagrange_variant=basix.LagrangeVariant."
+                              f"{params['lagrange_variant']}")
                     if "dpc_variant" in params:
                         s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
                     if "rank" in params:
@@ -540,7 +542,8 @@ class Element:
                     elif lib == "basix.ufl":
                         s = f"basix.ElementFamily.{s}"
                         if "lagrange_variant" in params:
-                            s += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+                            s += (", lagrange_variant=basix.LagrangeVariant."
+                                  f"{params['lagrange_variant']}")
                         if "dpc_variant" in params:
                             s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
                         if "rank" in params:
