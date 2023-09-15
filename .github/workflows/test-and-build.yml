@@ -209,6 +209,7 @@ jobs:
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
           git push -u origin verification --force
         name: Push to GitHub
+        if: github.ref == 'refs/heads/main'
 
   build-and-push-website:
     name: Build and deploy defelement.com
