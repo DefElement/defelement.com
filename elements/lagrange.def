@@ -168,6 +168,11 @@ ufl:
 bempp:
   equispaced:
     triangle: P orders=1
+fiat:
+  equispaced:
+    interval: Lagrange
+    triangle: Lagrange
+    tetrahedron: Lagrange
 examples:
   - interval,1,equispaced
   - interval,2,equispaced

@@ -68,6 +68,7 @@ The entries in this yaml file are:
 <tr><td>`bempp`</td><td></td><td>The string used to define this element in [Bempp](https://github.com/bempp/bempp-cl).</td></tr>
 <tr><td>`symfem`</td><td></td><td>The string used to define this element in [Symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
 <tr><td>`ufl`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
+<tr><td>`fiat`</td><td></td><td>The class name for this element in [FAIT](https://github.com/firedrakeproject/fiat).</td></tr>
 </table>
 
 ### Testing your contribution
