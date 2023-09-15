@@ -235,18 +235,16 @@ for e in categoriser.elements:
 
             if e.has_implementation_examples(codename):
                 jscodename = codename.replace('.', '_').replace('-', '_')
-                info += "<br />"
-                info += f"<a class='show_eg_link' id='show_{jscodename}_link' "
-                info += f"href='javascript:show_{jscodename}_eg()'"
-                info += " style='display:block'>"
-                info += f"&darr; Show {libname} examples &darr;</a>"
-                info += f"<a class='hide_eg_link' id='hide_{jscodename}_link' "
-                info += f"href='javascript:hide_{jscodename}_eg()'"
-                info += " style='display:none'>"
-                info += f"&uarr; Hide {libname} examples &uarr;</a>"
-                info += f"<div id='{jscodename}_eg' style='display:none'>"
-                info += "Before trying this example, you must install "
-                info += f"<a href='{url}'>{libname}</a>"
+                info += (
+                    "<br />"
+                    f"<a class='show_eg_link' id='show_{jscodename}_link' "
+                    f"href='javascript:show_{jscodename}_eg()' style='display:block'>"
+                    f"&darr; Show {libname} examples &darr;</a>"
+                    f"<a class='hide_eg_link' id='hide_{jscodename}_link' "
+                    f"href='javascript:hide_{jscodename}_eg()' style='display:none'>"
+                    f"&uarr; Hide {libname} examples &uarr;</a>"
+                    f"<div id='{jscodename}_eg' style='display:none'>"
+                    f"Before trying this example, you must install <a href='{url}'>{libname}</a>")
                 if pip is None:
                     info += ". "
                 else:
@@ -305,18 +303,19 @@ for e in categoriser.elements:
                         info += (
                             f"{red_check} "
                             "This implementation does not give the correct basis functions.</span>")
-                info += "<script type='text/javascript'>\n"
-                info += f"function show_{jscodename}_eg(){{\n"
-                info += f" document.getElementById('show_{jscodename}_link').style.display='none'\n"
-                info += f" document.getElementById('hide_{jscodename}_link').style.display='block'\n"
-                info += f" document.getElementById('{jscodename}_eg').style.display='block'\n"
-                info += "}\n"
-                info += f"function hide_{jscodename}_eg(){{\n"
-                info += f" document.getElementById('show_{jscodename}_link').style.display='block'\n"
-                info += f" document.getElementById('hide_{jscodename}_link').style.display='none'\n"
-                info += f" document.getElementById('{jscodename}_eg').style.display='none'\n"
-                info += "}\n"
-                info += "</script>"
+                info += (
+                    "<script type='text/javascript'>\n"
+                    f"function show_{jscodename}_eg(){{\n"
+                    f" document.getElementById('show_{jscodename}_link').style.display='none'\n"
+                    f" document.getElementById('hide_{jscodename}_link').style.display='block'\n"
+                    f" document.getElementById('{jscodename}_eg').style.display='block'\n"
+                    "}\n"
+                    f"function hide_{jscodename}_eg(){{\n"
+                    f" document.getElementById('show_{jscodename}_link').style.display='block'\n"
+                    f" document.getElementById('hide_{jscodename}_link').style.display='none'\n"
+                    f" document.getElementById('{jscodename}_eg').style.display='none'\n"
+                    "}\n"
+                    "</script>")
 
             implementations.append(
                 (f"<a href='/lists/implementations/{libname}.html'>{libname}</a>", info))
