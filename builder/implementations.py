@@ -286,4 +286,3 @@ verifications = {
     "basix": basix_tabulate,
     "basix.ufl": basix_ufl_tabulate,
 }
-
