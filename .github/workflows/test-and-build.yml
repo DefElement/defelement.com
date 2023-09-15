@@ -335,7 +335,7 @@ jobs:
           pip3 install git+https://github.com/FEniCS/basix.git
 
       - name: Install UFL
-        run: pip3 install git+https://github.com/FEniCS/ufl.git@ufl-legacy
+        run: pip3 install git+https://github.com/FEniCS/ufl.git@ufl_legacy
 
       - name: Install FIAT
         run: pip3 install git+https://github.com/firedrakeproject/fiat.git
