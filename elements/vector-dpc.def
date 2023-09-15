@@ -23,7 +23,7 @@ polynomial-set:
   hexahedron: poly[k]^d
 symfem: vector dPc
 ufl: DPC type=VectorElement discontinuous=true
-basix.ufl: DPC rank=1 discontinuous=True
+basix.ufl: DPC rank=1 discontinuous=True dpc_variant=simplex_equispaced
 examples:
   - quadrilateral,1
   - quadrilateral,2

@@ -12,6 +12,7 @@ short-names:
   - DG
 notes:
   - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
+  - For the Lobatto variant, he derivatives of most of the basis functions are orthogonal.
 variants:
   equispaced:
     description: The variant has its point evaluations at equally spaced points.
@@ -23,6 +24,11 @@ variants:
       - Gauss&ndash;Lobatto&ndash;Legendre
     short-names:
       - GLL
+  lobatto:
+    description: This variant uses integrals against L2 duals of Lobatto polynomials in the place of point evaluations
+    variant-name: Lobatto
+    names:
+      - Lobatto
 complexes:
   de-rham:
   - P-,0,simplex
@@ -120,7 +126,12 @@ symfem:
     interval: Lagrange variant=gll
     quadrilateral: Q variant=gll
     hexahedron: Q variant=gll
+  lobatto:
+    interval: Lagrange variant=lobatto
+    quadrilateral: Q variant=lobatto
+    hexahedron: Q variant=lobatto
 basix:
+  display: P
   equispaced:
     interval: P lagrange_variant=equispaced
     triangle: P lagrange_variant=equispaced
@@ -133,6 +144,7 @@ basix:
     quadrilateral: P lagrange_variant=gll_warped
     hexahedron: P lagrange_variant=gll_warped
 basix.ufl:
+  display: P
   equispaced:
     interval: P lagrange_variant=equispaced
     triangle: P lagrange_variant=equispaced
@@ -151,6 +163,8 @@ ufl:
     tetrahedron: Lagrange
     quadrilateral: Q
     hexahedron: Q
+  lobatto:
+    interval: Lobatto
 bempp:
   equispaced:
     triangle: P orders=1
@@ -178,3 +192,12 @@ examples:
   - interval,4,gll
   - quadrilateral,1,gll
   - quadrilateral,2,gll
+  - interval,1,lobatto
+  - interval,2,lobatto
+  - interval,3,lobatto
+  - quadrilateral,1,lobatto
+  - quadrilateral,2,lobatto
+  - quadrilateral,3,lobatto
+  - hexahedron,1,lobatto
+  - hexahedron,2,lobatto
+

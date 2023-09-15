@@ -182,14 +182,9 @@ jobs:
       - name: Install Basix
         run: |
           sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
+          pip3 install git+https://github.com/FEniCS/ufl.git
           pip3 install pybind11
           pip3 install git+https://github.com/FEniCS/basix.git
-
-      - name: Install UFL
-        run: pip3 install git+https://github.com/FEniCS/ufl.git
-
-      - name: Install Bempp-cl
-        run: pip3 install git+https://github.com/bempp/bempp-cl.git
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
@@ -209,6 +204,7 @@ jobs:
           git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
           git push -u origin verification --force
         name: Push to GitHub
+        if: github.ref == 'refs/heads/main'
 
   build-and-push-website:
     name: Build and deploy defelement.com

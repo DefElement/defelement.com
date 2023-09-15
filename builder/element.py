@@ -504,6 +504,14 @@ class Element:
     def list_of_implementation_strings(self, lib, joiner="<br />"):
         assert self.implemented(lib)
 
+        if "display" in self.data[lib]:
+            d = self.data[lib]["display"]
+            if lib == "basix":
+                return f"<code>basix.ElementFamily.{d}</code>"
+            elif lib == "basix.ufl":
+                return f"<code>basix.ElementFamily.{d}</code>"
+            else:
+                return f"<code>\"{d}\"</code>"
         if "variants" in self.data:
             variants = self.data["variants"]
         else:
