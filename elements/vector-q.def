@@ -29,6 +29,7 @@ polynomial-set:
   hexahedron: qoly[k]^d
 symfem: vector Q
 ufl: Q type=VectorElement
+basix.ufl: P lagrange_variant=equispaced rank=1
 examples:
   - quadrilateral,1
   - quadrilateral,2

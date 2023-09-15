@@ -30,6 +30,7 @@ mapping: identity
 sobolev: H1
 symfem: bubble
 basix: bubble
+basix.ufl: bubble
 ufl: Bubble
 examples:
   - interval,2

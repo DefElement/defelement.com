@@ -23,6 +23,7 @@ polynomial-set:
   hexahedron: poly[k]^d
 symfem: vector dPc
 ufl: DPC type=VectorElement discontinuous=true
+basix.ufl: DPC rank=1 discontinuous=True
 examples:
   - quadrilateral,1
   - quadrilateral,2

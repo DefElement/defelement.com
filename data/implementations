@@ -4,13 +4,17 @@ symfem:
   install: pip3 install symfem
 basix:
   name: Basix
-  url: https://github.com/fenics/basix
-  install: pip3 install git+https://github.com/fenics/basix.git
+  url: https://github.com/FEniCS/basix
+  install: pip3 install git+https://github.com/FEniCS/basix.git
 ufl:
-  name: UFL
-  url: https://github.com/fenics/ufl
-  install: pip3 install UFL
+  name: (legacy) UFL
+  url: https://github.com/FEniCS/ufl/tree/ufl_legacy
+  install: pip3 install git+https://github.com/FEniCS/ufl.git@ufl_legacy
 bempp:
   name: Bempp
   url: https://github.com/bempp/bempp-cl
   install: pip3 install bempp-cl
+basix.ufl:
+  name: Basix.UFL
+  url: https://github.com/FEniCS/basix
+  install: pip3 install git+https://github.com/FEniCS/basix.git[ufl]

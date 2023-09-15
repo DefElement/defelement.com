@@ -25,6 +25,7 @@ dofs:
   facets: point evaluation at midpoint
 symfem: Crouzeix-Raviart
 basix: CR
+basix.ufl: CR
 ufl: Crouzeix-Raviart
 examples:
   - triangle,1

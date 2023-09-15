@@ -30,6 +30,7 @@ mapping: contravariant Piola
 sobolev: H(div)
 symfem: N2div
 basix: BDM
+basix.ufl: BDM
 ufl: BDM
 examples:
   - triangle,1
