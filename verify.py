@@ -49,10 +49,10 @@ for e in categoriser.elements:
 
 
 def allclose_maybe_permuted(table0, table1):
-    remaining = [i for i, _ in enumerate(table1)]
-    for t0 in table0:
+    remaining = [i for i, _ in enumerate(table1.T)]
+    for t0 in table0.T:
         for i in remaining:
-            if np.allclose(t0, table1[i]):
+            if np.allclose(t0, table1.T[i]):
                 remaining.remove(i)
                 break
         else:
