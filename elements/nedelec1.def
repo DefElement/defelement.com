@@ -11,6 +11,13 @@ short-names:
   - NC
   - RTce (quadrilateral)
   - Nce (hexahedron)
+variants:
+  legendre:
+    variant-name: Legendre
+    description: Integral moments are taken against orthonormal polynomials
+  lagrange:
+    variant-name: Lagrange
+    description: Integral moments are taken against (Lagrange)[element:lagrange] basis functions
 min-order: 1
 categories:
   - vector
@@ -56,39 +63,65 @@ dofs:
     tetrahedron: integral moments with (vector-lagrange,k-3)
     hexahedron: integral moments with (qdiv,k-1)
 symfem:
-  triangle: N1curl
-  tetrahedron: N1curl
-  quadrilateral: Qcurl
-  hexahedron: Qcurl
-  prism: Ncurl
+  lagrange:
+    triangle: N1curl
+    tetrahedron: N1curl
+    quadrilateral: Qcurl
+    hexahedron: Qcurl
+    prism: Ncurl
+  legendre:
+    triangle: N1curl variant=legendre
+    tetrahedron: N1curl variant=legendre
+    quadrilateral: Qcurl variant=legendre
+    hexahedron: Qcurl variant=legendre
+    prism: Ncurl variant=legendre
 basix:
-  triangle: N1E
-  tetrahedron: N1E
-  quadrilateral: N1E
-  hexahedron: N1E
+  display: N1E
+  lagrange:
+    triangle: N1E
+    tetrahedron: N1E
+    quadrilateral: N1E
+    hexahedron: N1E
+  legendre:
+    triangle: N1E lagrange_variant=legendre
+    tetrahedron: N1E lagrange_variant=legendre
+    quadrilateral: N1E lagrange_variant=legendre
+    hexahedron: N1E lagrange_variant=legendre
 basix.ufl:
-  triangle: N1E lagrange_variant=equispaced
-  tetrahedron: N1E lagrange_variant=equispaced
-  quadrilateral: N1E
-  hexahedron: N1E
+  display: N1E
+  lagrange:
+    triangle: N1E lagrange_variant=equispaced
+    tetrahedron: N1E lagrange_variant=equispaced
+    quadrilateral: N1E lagrange_variant=equispaced
+    hexahedron: N1E lagrange_variant=equispaced
+  legendre:
+    triangle: N1E
+    tetrahedron: N1E
+    quadrilateral: N1E
+    hexahedron: N1E
 ufl:
-  triangle: N1curl
-  tetrahedron: N1curl
-  quadrilateral: RTCE
-  hexahedron: NCE
+  lagrange:
+    triangle: N1curl
+    tetrahedron: N1curl
+    quadrilateral: RTCE
+    hexahedron: NCE
 bempp:
   triangle: SNC orders=0
 examples:
-  - triangle,1
-  - triangle,2
-  - quadrilateral,1
-  - quadrilateral,2
-  - tetrahedron,1
-  - tetrahedron,2
-  - hexahedron,1
-  - hexahedron,2
-  - prism,1
-  - prism,2
+  - triangle,1,lagrange
+  - triangle,2,lagrange
+  - quadrilateral,1,lagrange
+  - quadrilateral,2,lagrange
+  - tetrahedron,1,lagrange
+  - tetrahedron,2,lagrange
+  - hexahedron,1,lagrange
+  - hexahedron,2,lagrange
+  - prism,1,lagrange
+  - prism,2,lagrange
+  - triangle,1,legendre
+  - triangle,2,legendre
+  - quadrilateral,1,legendre
+  - quadrilateral,2,legendre
 references:
   - title: Mixed finite elements in \(\mathbb{R}^3\)
     author: N&eacute;d&eacute;lec, Jean-Claude
