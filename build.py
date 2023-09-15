@@ -234,7 +234,7 @@ for e in categoriser.elements:
             info = e.list_of_implementation_strings(codename)
 
             if e.has_implementation_examples(codename):
-                jscodename = codename.replace('.', '_').replace('-'. '_')
+                jscodename = codename.replace('.', '_').replace('-', '_')
                 info += "<br />"
                 info += f"<a class='show_eg_link' id='show_{jscodename}_link' "
                 info += f"href='javascript:show_{jscodename}_eg()'"
