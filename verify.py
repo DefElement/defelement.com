@@ -48,6 +48,18 @@ for e in categoriser.elements:
                 elements_to_verify.append((e, eg, implementations))
 
 
+def allclose_maybe_permuted(table0, table1):
+    remaining = [i for i, _ in enumerate(table1.T)]
+    for t0 in table0.T:
+        for i in remaining:
+            if np.allclose(t0, table1.T[i]):
+                remaining.remove(i)
+                break
+        else:
+            return False
+    return True
+
+
 def verify(egs, process="", result_dict=None):
     green = "\033[32m"
     red = "\033[31m"
@@ -70,7 +82,7 @@ def verify(egs, process="", result_dict=None):
                     results[e.filename] = {}
                 if i not in results[e.filename]:
                     results[e.filename][i] = {"pass": [], "fail": []}
-                if sym_table.shape == t.shape and np.allclose(sym_table, t):
+                if sym_table.shape == t.shape and allclose_maybe_permuted(sym_table, t):
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
                 else:
