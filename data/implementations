@@ -17,4 +17,8 @@ bempp:
 basix.ufl:
   name: Basix.UFL
   url: https://github.com/FEniCS/basix
-  install: pip3 install git+https://github.com/FEniCS/basix.git[ufl]
+  install: pip3 install git+https://github.com/FEniCS/basix.git git+https://github.com/FEniCS/ufl.git
+fiat:
+  name: FIAT
+  url: https://github.com/firedrakeproject/fiat
+  install: pip3 install git+https://github.com/firedrakeproject/fiat.git

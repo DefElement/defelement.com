@@ -121,8 +121,8 @@ def basix_ufl_example(element):
     return out
 
 
-def ufl_example(element):
-    out = "import ufl"
+def ufl_legacy_example(element):
+    out = "import ufl_legacy"
     for e in element.examples:
         ref, ord, variant, kwargs = parse_example(e)
         assert len(kwargs) == 0
@@ -137,9 +137,9 @@ def ufl_example(element):
             out += "\n\n"
             out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
             if "type" in params:
-                out += f"element = ufl.{params['type']}("
+                out += f"element = ufl_legacy.{params['type']}("
             else:
-                out += "element = ufl.FiniteElement("
+                out += "element = ufl_legacy.FiniteElement("
             out += f"\"{ufl_name}\", \"{ref}\", {ord})"
     return out
 
@@ -167,6 +167,38 @@ def bempp_example(element):
             out += f"# Create {element.name} order {ord}\n"
             out += "element = bempp.api.function_space(grid, "
             out += f"\"{bempp_name}\", {ord})"
+    return out
+
+
+def fiat_example(element):
+    out = "import FIAT"
+    for e in element.examples:
+        ref, ord, variant, kwargs = parse_example(e)
+        assert len(kwargs) == 0
+        ord = int(ord)
+
+        try:
+            fiat_name, params = element.get_implementation_string("fiat", ref, variant)
+        except VariantNotImplemented:
+            continue
+
+        if fiat_name is None:
+            continue
+
+        out += "\n\n"
+        out += f"# Create {element.name_with_variant(variant)} order {ord}\n"
+        if ref in ["interval", "triangle", "tetrahedron"]:
+            out += f"cell = FIAT.ufc_cell(\"{ref}\")\n"
+        elif ref == "quadrilateral":
+            out += "cell = FIAT.reference_element.UFCQuadrilateral()\n"
+        elif ref == "hexahedron":
+            out += "cell = FIAT.reference_element.UFCHexahedron()\n"
+        else:
+            raise ValueError(f"Unsupported cell: {ref}")
+        out += f"element = FIAT.{fiat_name}(cell, {ord}"
+        for i, j in params.items():
+            out += f", {i}=\"{j}\""
+        out += ")"
     return out
 
 
@@ -273,16 +305,52 @@ def basix_ufl_tabulate(element, example):
     return e.tabulate(0, pts)[0].reshape(pts.shape[0], e.value_size, -1)
 
 
+def fiat_tabulate(element, example):
+    import FIAT
+
+    ref, ord, variant, kwargs = parse_example(example)
+    assert len(kwargs) == 0
+    ord = int(ord)
+    try:
+        fiat_name, params = element.get_implementation_string("fiat", ref, variant)
+    except VariantNotImplemented:
+        raise NotImplementedError()
+    if fiat_name is None:
+        raise NotImplementedError()
+    if ref in ["interval", "triangle", "tetrahedron"]:
+        cell = FIAT.ufc_cell(ref)
+    elif ref == "quadrilateral":
+        cell = FIAT.reference_element.UFCQuadrilateral()
+    elif ref == "hexahedron":
+        cell = FIAT.reference_element.UFCHexahedron()
+    else:
+        raise ValueError(f"Unsupported cell: {ref}")
+
+    e = getattr(FIAT, fiat_name)(cell, ord, **params)
+    pts = points(ref)
+    out = list(e.tabulate(0, pts).values())[0]
+
+    def product(ls):
+        out = 1
+        for i in ls:
+            out *= i
+        return out
+
+    return out.T.reshape(pts.shape[0], product(e.value_shape()), -1)
+
+
 examples = {
     "symfem": symfem_example,
     "basix": basix_example,
     "basix.ufl": basix_ufl_example,
     "bempp": bempp_example,
-    "ufl": ufl_example,
+    "ufl": ufl_legacy_example,
+    "fiat": fiat_example,
 }
 
 verifications = {
     "symfem": symfem_tabulate,
     "basix": basix_tabulate,
     "basix.ufl": basix_ufl_tabulate,
+    "fiat": fiat_tabulate,
 }

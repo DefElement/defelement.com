@@ -186,6 +186,9 @@ jobs:
           pip3 install pybind11
           pip3 install git+https://github.com/FEniCS/basix.git
 
+      - name: Install FIAT
+        run: pip3 install git+https://github.com/firedrakeproject/fiat.git
+
       - run: pip3 install -r requirements.txt
         name: Install requirements
 
@@ -327,11 +330,15 @@ jobs:
       - name: Install Basix
         run: |
           sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
+          pip3 install git+https://github.com/FEniCS/ufl.git
           pip3 install pybind11
           pip3 install git+https://github.com/FEniCS/basix.git
 
       - name: Install UFL
-        run: pip3 install git+https://github.com/FEniCS/ufl.git
+        run: pip3 install git+https://github.com/FEniCS/ufl.git@ufl_legacy
+
+      - name: Install FIAT
+        run: pip3 install git+https://github.com/firedrakeproject/fiat.git
 
       - name: Install Bempp-cl
         run: pip3 install git+https://github.com/bempp/bempp-cl.git
