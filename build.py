@@ -163,6 +163,11 @@ for e in categoriser.elements:
     if len(short_names) > 0:
         element_data.append(("Abbreviated names", ", ".join(short_names)))
 
+    # Variants
+    variants = e.variants()
+    if len(variants) > 0:
+        element_data.append(("Variants", "<br />".join(variants)))
+
     # Orders
     element_data.append(("Orders", e.order_range()))
 

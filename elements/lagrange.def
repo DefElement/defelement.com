@@ -20,7 +20,7 @@ variants:
     description: This variant has its point evaluations at GLL points.
     variant-name: GLL
     names:
-      - Gauss--Lobatto--Legendre
+      - Gauss&ndash;Lobatto&ndash;Legendre
     short-names:
       - GLL
 complexes:

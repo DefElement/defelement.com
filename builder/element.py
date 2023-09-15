@@ -192,6 +192,14 @@ class Element:
     def variant_name(self, variant):
         return self.data["variants"][variant]["variant-name"]
 
+    def variants(self):
+        if "variants" not in self.data:
+            return []
+        return [
+            f"{v['variant-name']}: {v['description']}"
+            for v in self.data["variants"].values()
+        ]
+
     def min_order(self, ref):
         if "min-order" not in self.data:
             return 0
@@ -213,15 +221,25 @@ class Element:
         else:
             return self.data["reference-elements"]
 
-    def alternative_names(self, include_bracketed=True, include_complexes=True, link=True,
-                          strip_cell_name=False, cell=None):
+    def alternative_names(
+        self, include_bracketed=True, include_complexes=True, include_variants=True, link=True,
+        strip_cell_name=False, cell=None
+    ):
         if "alt-names" not in self.data:
             return []
+        out = self.data["alt-names"]
+        if include_complexes:
+            out += self.family_names(link=link)
+        if include_variants and "variants" in self.data:
+            for v in self.data["variants"].values():
+                if "names" in v:
+                    out += [f"{i} ({v['variant-name']} variant)" for i in v["names"]]
+
         if include_bracketed:
             out = [i[1:-1] if i[0] == "(" and i[-1] == ")" else i
-                   for i in self.data["alt-names"]]
+                   for i in out]
         else:
-            out = [i for i in self.data["alt-names"] if i[0] != "(" or i[-1] != ")"]
+            out = [i for i in out if i[0] != "(" or i[-1] != ")"]
 
         if cell is not None:
             out = [i for i in out if " (" not in i or cell in i]
@@ -229,14 +247,18 @@ class Element:
         if strip_cell_name:
             out = [i.split(" (")[0] for i in out]
 
-        if include_complexes:
-            out += self.family_names(link=link)
         return out
 
-    def short_names(self):
-        if "short-names" not in self.data:
-            return []
-        return self.data["short-names"]
+    def short_names(self, include_variants=True):
+        out = []
+        if "short-names" in self.data:
+            out += self.data["short-names"]
+        if include_variants and "variants" in self.data:
+            for v in self.data["variants"].values():
+                if "short-names" in v:
+                    out += [f"{i} ({v['variant-name']} variant)" for i in v["short-names"]]
+        return out
+
 
     def mapping(self):
         if "mapping" not in self.data:
@@ -502,7 +524,7 @@ class Element:
                 if lib == "basix":
                     s = f"basix.ElementFamily.{s}"
                     if "lagrange_variant" in params:
-                        s += (", lagrange_variant=basix.LagrangeVariant.
+                        s += (", lagrange_variant=basix.LagrangeVariant."
                               f"{params['lagrange_variant']}")
                     if "dpc_variant" in params:
                         s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
