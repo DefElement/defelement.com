@@ -195,8 +195,15 @@ def points(ref):
     raise ValueError(f"Unsupported cell type: {ref}")
 
 
-def symfem_tabulate(element, example):
+def to_array(data):
     import numpy as np
+
+    if isinstance(data, (list, tuple)):
+        return np.array([to_array(i) for i in data])
+    return float(data)
+
+
+def symfem_tabulate(element, example):
     import symfem
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -206,7 +213,8 @@ def symfem_tabulate(element, example):
     if ref == "dual polygon":
         ref += "(4)"
     e = symfem.create_element(ref, symfem_name, ord, **params)
-    return np.array([[float(i) for i in j] for j in e.tabulate_basis(points(ref))])
+    table = to_array(e.tabulate_basis(points(ref), "xx,yy,zz"))
+    return table.reshape(table.shape[0], e.range_dim, e.space_dim)
 
 
 def basix_tabulate(element, example):
@@ -232,8 +240,7 @@ def basix_tabulate(element, example):
     e = basix.create_element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    table = e.tabulate(0, points(ref))[0]
-    return table.reshape((table.shape[0], -1))
+    return e.tabulate(0, points(ref))[0].transpose((0, 2, 1))
 
 
 def basix_ufl_tabulate(element, example):
@@ -262,9 +269,8 @@ def basix_ufl_tabulate(element, example):
     e = basix.ufl.element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    table = e.tabulate(0, points(ref))[0]
-    table = table.reshape(table.shape[0], e.value_size, -1).transpose((0, 2, 1))
-    return table.reshape((table.shape[0], -1))
+    pts = points(ref)
+    return e.tabulate(0, pts)[0].reshape(pts.shape[0], e.value_size, -1)
 
 
 examples = {
@@ -280,3 +286,4 @@ verifications = {
     "basix": basix_tabulate,
     "basix.ufl": basix_ufl_tabulate,
 }
+

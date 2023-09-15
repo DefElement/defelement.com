@@ -16,6 +16,13 @@ ndofs:
   tetrahedron:
     formula: k(k+1)(k+3)/2
     oeis: A077414
+variants:
+  legendre:
+    variant-name: Legendre
+    description: Integral moments are taken against orthonormal polynomials
+  lagrange:
+    variant-name: Lagrange
+    description: Integral moments are taken against (Lagrange)[element:lagrange] basis functions
 categories:
   - vector
   - Hdiv
@@ -30,17 +37,30 @@ polynomial-set:
 dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (vector-lagrange,k-2)
-symfem: N1div
-basix: RT
-basix.ufl: RT
-ufl: RT
+symfem:
+  lagrange: N1div
+  legendre: N1div variant=legendre
+basix:
+  display: RT
+  lagrange: RT
+  legendre: RT lagrange_variant=legendre
+basix.ufl:
+  display: RT
+  lagrange: RT lagrange_variant=equispaced
+  legendre: RT
+ufl:
+  lagrange: RT
 bempp:
   triangle: RWG orders=0
 examples:
-  - triangle,1
-  - triangle,2
-  - tetrahedron,1
-  - tetrahedron,2
+  - triangle,1,lagrange
+  - triangle,2,lagrange
+  - tetrahedron,1,lagrange
+  - tetrahedron,2,lagrange
+  - triangle,1,legendre
+  - triangle,2,legendre
+  - tetrahedron,1,legendre
+  - tetrahedron,2,legendre
 references:
   - type: incollection
     title: A mixed finite element method for 2nd order elliptic problems
