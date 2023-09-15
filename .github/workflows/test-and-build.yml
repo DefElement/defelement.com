@@ -182,8 +182,9 @@ jobs:
       - name: Install Basix
         run: |
           sudo apt-get install -y libopenblas-dev liblapack-dev ninja-build
+          pip3 install git+https://github.com/FEniCS/ufl.git
           pip3 install pybind11
-          pip3 install git+https://github.com/FEniCS/basix.git[optional]
+          pip3 install git+https://github.com/FEniCS/basix.git
 
       - run: pip3 install -r requirements.txt
         name: Install requirements
