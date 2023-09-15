@@ -18,6 +18,13 @@ ndofs:
   tetrahedron:
     formula: (k+1)(k+2)(k+3)/2
     oeis: A027480
+variants:
+  legendre:
+    variant-name: Legendre
+    description: Integral moments are taken against orthonormal polynomials
+  lagrange:
+    variant-name: Lagrange
+    description: Integral moments are taken against (Lagrange)[element:lagrange] basis functions
 reference-elements:
   - triangle
   - tetrahedron
@@ -30,15 +37,28 @@ dofs:
   edges: tangent integral moments with (lagrange,k)
   faces: integral moments with (raviart-thomas,k-1)
   volumes: integral moments with (raviart-thomas,k-2)
-symfem: N2curl
-ufl: N2curl
-basix: N2E
-basix.ufl: N2E
+symfem:
+  lagrange: N2curl
+  legendre: N2curl variant=legendre
+basix:
+  display: N2E
+  lagrange: N2E
+  legendre: N2E lagrange_variant=legendre
+basix.ufl:
+  display: N2E
+  lagrange: N2E lagrange_variant=equispaced
+  legendre: N2E
+ufl:
+  lagrange: N2curl
 examples:
-  - triangle,1
-  - triangle,2
-  - tetrahedron,1
-  - tetrahedron,2
+  - triangle,1,lagrange
+  - triangle,2,lagrange
+  - tetrahedron,1,lagrange
+  - tetrahedron,2,lagrange
+  - triangle,1,legendre
+  - triangle,2,legendre
+  - tetrahedron,1,legendre
+  - tetrahedron,2,legendre
 references:
   - title: A new family of mixed finite elements in \(\mathbb{R}^3\)
     author: N&eacute;d&eacute;lec, Jean-Claude
