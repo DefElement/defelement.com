@@ -195,7 +195,7 @@ def fiat_example(element):
             out += "cell = FIAT.reference_element.UFCHexahedron()\n"
         else:
             raise ValueError(f"Unsupported cell: {ref}")
-        out += "element = FIAT.{fiat_name}(cell, {ord}"
+        out += f"element = FIAT.{fiat_name}(cell, {ord}"
         for i, j in params.items():
             out += f", {i}=\"{j}\""
         out += ")"
