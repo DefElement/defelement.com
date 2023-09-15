@@ -184,23 +184,21 @@ def fiat_example(element):
 
         if fiat_name is None:
             continue
-        orders = [int(i) for i in params["orders"].split(",")]
 
-        if ord in orders:
-            out += "\n\n"
-            out += f"# Create {element.name_with_variant(variant)} order {ord}\n"
-            if ref in ["interval", "triangle", "tetrahedron"]:
-                out += f"cell = FIAT.ufc_cell(\"{ref}\")\n"
-            elif ref == "quadrilateral":
-                out += "cell = FIAT.reference_element.UFCQuadrilateral()\n"
-            elif ref == "hexahedron":
-                out += "cell = FIAT.reference_element.UFCHexahedron()\n"
-            else:
-                raise ValueError(f"Unsupported cell: {ref}")
-            out += "element = FIAT.{fiat_name}(cell, {ord}"
-            for i, j in params.items():
-                out += f", {i}=\"{j}\""
-            ")"
+        out += "\n\n"
+        out += f"# Create {element.name_with_variant(variant)} order {ord}\n"
+        if ref in ["interval", "triangle", "tetrahedron"]:
+            out += f"cell = FIAT.ufc_cell(\"{ref}\")\n"
+        elif ref == "quadrilateral":
+            out += "cell = FIAT.reference_element.UFCQuadrilateral()\n"
+        elif ref == "hexahedron":
+            out += "cell = FIAT.reference_element.UFCHexahedron()\n"
+        else:
+            raise ValueError(f"Unsupported cell: {ref}")
+        out += "element = FIAT.{fiat_name}(cell, {ord}"
+        for i, j in params.items():
+            out += f", {i}=\"{j}\""
+        out += ")"
     return out
 
 
