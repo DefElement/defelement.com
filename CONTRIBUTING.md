@@ -48,6 +48,7 @@ The entries in this yaml file are:
 <tr><td>`reference&#8209;elements`</td><td>{{tick}}</td><td>The reference element(s) that this finite element can be defined on.</td></tr>
 <tr><td>`alt&#8209;names`</td><td></td><td>Alternative (HTML) names of the element.</td></tr>
 <tr><td>`short&#8209;names`</td><td></td><td>Abbreviated names of the element.</td></tr>
+<tr><td>`variants`</td><td></td><td>Variants of this element.</td></tr>
 <tr><td>`complexes`</td><td></td><td>Any discretiations of complexes that this element is part of.</td></tr>
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>

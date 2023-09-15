@@ -344,14 +344,19 @@ for e in categoriser.elements:
             assert e.implemented("symfem")
 
             for eg in e.examples:
-                cell, order, kwargs = parse_example(eg)
-                symfem_name, params = e.get_implementation_string("symfem", cell)
+                cell, order, variant, kwargs = parse_example(eg)
+                symfem_name, params = e.get_implementation_string("symfem", cell, variant)
 
-                fname = f"{cell}-{e.filename}-{order}.html"
+                fname = f"{cell}-{e.filename}"
+                if variant is not None:
+                    fname += f"-{variant}"
+                fname += f"-{order}.html"
                 for s in " ()":
                     fname = fname.replace(s, "-")
 
                 name = f"{cell}<br />order {order}"
+                if variant is not None:
+                    name += f"<br />{e.variant_name(variant)} variant"
                 for i, j in kwargs.items():
                     name += f"<br />{i}={str(j).replace(' ', '&nbsp;')}"
 

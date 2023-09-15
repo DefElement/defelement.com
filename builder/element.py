@@ -6,6 +6,7 @@ from github import Github
 from . import implementations
 from . import settings
 from .families import keys_and_names, arnold_logg_reference, cockburn_fu_reference
+from .implementations import VariantNotImplemented
 from .markup import insert_links
 from .polyset import make_poly_set, make_extra_info
 
@@ -182,6 +183,14 @@ class Element:
         self._c = None
         self.created = None
         self.modified = None
+
+    def name_with_variant(self, variant):
+        if variant is None:
+            return self.name
+        return f"{self.name} ({self.variant_name(variant)} variant)"
+
+    def variant_name(self, variant):
+        return self.data["variants"][variant]["variant-name"]
 
     def min_order(self, ref):
         if "min-order" not in self.data:
@@ -441,14 +450,20 @@ class Element:
     def implemented(self, lib):
         return lib in self.data
 
-    def get_implementation_string(self, lib, reference):
+    def get_implementation_string(self, lib, reference, variant=None):
         assert self.implemented(lib)
-        if isinstance(self.data[lib], dict):
-            if reference not in self.data[lib]:
-                return None, {}
-            out = self.data[lib][reference]
+        if variant is None:
+            data = self.data[lib]
         else:
-            out = self.data[lib]
+            if variant not in self.data[lib]:
+                raise VariantNotImplemented()
+            data = self.data[lib][variant]
+        if isinstance(data, dict):
+            if reference not in data:
+                return None, {}
+            out = data[reference]
+        else:
+            out = data
         params = {}
         if "=" in out:
             sp = out.split("=")
@@ -467,33 +482,85 @@ class Element:
 
     def list_of_implementation_strings(self, lib, joiner="<br />"):
         assert self.implemented(lib)
-        if isinstance(self.data[lib], str):
-            s, params = self.get_implementation_string(lib, None)
-            if lib == "basix":
-                s = f"basix.ElementFamily.{s}"
-                if "lagrange_variant" in params:
-                    s += f", ..., basix.LagrangeVariant.{params['lagrange_variant']}"
-            else:
-                s = f"\"{s}\""
-                if "variant" in params:
-                    s += f", variant=\"{params['variant']}\""
-            return f"<code>{s}</code>"
+
+        if "variants" in self.data:
+            variants = self.data["variants"]
+        else:
+            variants = {None: {}}
 
         i_dict = {}
-        for i, j in self.data[lib].items():
-            s, params = self.get_implementation_string(lib, i)
-            if lib == "basix":
-                s = f"basix.ElementFamily.{s}"
-                if "lagrange_variant" in params:
-                    s += f", ..., basix.LagrangeVariant.{params['lagrange_variant']}"
+        for v, vinfo in variants.items():
+            if v is None:
+                data = self.data[lib]
             else:
-                s = f"\"{s}\""
-                if "variant" in params:
-                    s += f", variant=\"{params['variant']}\""
-            if s not in i_dict:
-                i_dict[s] = []
-            i_dict[s].append(i)
-        imp_list = [f"<code>{i}</code> ({', '.join(j)})" for i, j in i_dict.items()]
+                if v not in self.data[lib]:
+                    continue
+                data = self.data[lib][v]
+            if isinstance(data, str):
+                s, params = self.get_implementation_string(lib, None, v)
+                # TODO: move this to implementations.py
+                if lib == "basix":
+                    s = f"basix.ElementFamily.{s}"
+                    if "lagrange_variant" in params:
+                        s += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+                    if "dpc_variant" in params:
+                        s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
+                    if "discontinuous" in params:
+                        s += f", discontinuous={params['discontinuous']}"
+                elif lib == "basix.ufl":
+                    s = f"basix.ElementFamily.{s}"
+                    if "lagrange_variant" in params:
+                        s += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+                    if "dpc_variant" in params:
+                        s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
+                    if "rank" in params:
+                        s += f", rank={params['rank']}"
+                    if "discontinuous" in params:
+                        s += f", discontinuous={params['discontinuous']}"
+                else:
+                    s = f"\"{s}\""
+                    if "variant" in params:
+                        s += f", variant=\"{params['variant']}\""
+                if s not in i_dict:
+                    i_dict[s] = []
+                if v is None:
+                    i_dict[s].append("")
+                else:
+                    i_dict[s].append(vinfo["variant-name"])
+            else:
+                for i, j in data.items():
+                    s, params = self.get_implementation_string(lib, i, v)
+                    if lib == "basix":
+                        s = f"basix.ElementFamily.{s}"
+                        if "lagrange_variant" in params:
+                            s += (", lagrange_variant=basix.LagrangeVariant."
+                                  f"{params['lagrange_variant']}")
+                        if "dpc_variant" in params:
+                            s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
+                    elif lib == "basix.ufl":
+                        s = f"basix.ElementFamily.{s}"
+                        if "lagrange_variant" in params:
+                            s += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+                        if "dpc_variant" in params:
+                            s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
+                        if "rank" in params:
+                            s += f", rank={params['rank']}"
+                        if "discontinuous" in params:
+                            s += f", discontinuous={params['discontinuous']}"
+                    else:
+                        s = f"\"{s}\""
+                        if "variant" in params:
+                            s += f", variant=\"{params['variant']}\""
+                    if s not in i_dict:
+                        i_dict[s] = []
+                    if v is None:
+                        i_dict[s].append(i)
+                    else:
+                        i_dict[s].append(f"{i}, {vinfo['variant-name']}")
+        if len(i_dict) == 1:
+            return f"<code>{list(i_dict.keys())[0]}</code>"
+        imp_list = [f"<code>{i}</code> <span style='font-size:60%'>({'; '.join(j)})</span>"
+                    for i, j in i_dict.items()]
         if joiner is None:
             return imp_list
         else:
