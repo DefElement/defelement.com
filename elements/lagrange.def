@@ -121,6 +121,7 @@ symfem:
     quadrilateral: Q variant=gll
     hexahedron: Q variant=gll
 basix:
+  display: P
   equispaced:
     interval: P lagrange_variant=equispaced
     triangle: P lagrange_variant=equispaced
@@ -133,6 +134,7 @@ basix:
     quadrilateral: P lagrange_variant=gll_warped
     hexahedron: P lagrange_variant=gll_warped
 basix.ufl:
+  display: P
   equispaced:
     interval: P lagrange_variant=equispaced
     triangle: P lagrange_variant=equispaced
