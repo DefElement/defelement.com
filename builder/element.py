@@ -259,7 +259,6 @@ class Element:
                     out += [f"{i} ({v['variant-name']} variant)" for i in v["short-names"]]
         return out
 
-
     def mapping(self):
         if "mapping" not in self.data:
             return None
