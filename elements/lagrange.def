@@ -6,12 +6,23 @@ alt-names:
   - DGT (facets)
   - Hdiv trace (facets)
   - Q (quadrilateral and hexahedron)
-notes:
-  - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
 short-names:
   - P
   - CG
   - DG
+notes:
+  - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
+variants:
+  equispaced:
+    description: The variant has its point evaluations at equally spaced points.
+    variant-name: equispaced
+  gll:
+    description: This variant has its point evaluations at GLL points.
+    variant-name: GLL
+    names:
+      - Gauss&ndash;Lobatto&ndash;Legendre
+    short-names:
+      - GLL
 complexes:
   de-rham:
   - P-,0,simplex
@@ -97,50 +108,73 @@ polynomial-set:
   prism: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|\max(p_1+p_2,p_3)\leqslant k\right\}]
   pyramid: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|p_3\leqslant k-1,p_1+p_3\leqslant k,p_2+p_3\leqslant k\right\}] && <k>[\operatorname{span}\left\{x_3^k\right\}]
 symfem:
-  interval: Lagrange
-  triangle: Lagrange
-  tetrahedron: Lagrange
-  quadrilateral: Q
-  hexahedron: Q
-  prism: Lagrange
-  pyramid: Lagrange
+  equispaced:
+    interval: Lagrange
+    triangle: Lagrange
+    tetrahedron: Lagrange
+    quadrilateral: Q
+    hexahedron: Q
+    prism: Lagrange
+    pyramid: Lagrange
+  gll:
+    interval: Lagrange variant=gll
+    quadrilateral: Q variant=gll
+    hexahedron: Q variant=gll
 basix:
-  interval: P lagrange_variant=equispaced
-  triangle: P lagrange_variant=equispaced
-  quadrilateral: P lagrange_variant=equispaced
-  tetrahedron: P lagrange_variant=equispaced
-  hexahedron: P lagrange_variant=equispaced
-  prism: P lagrange_variant=equispaced
+  equispaced:
+    interval: P lagrange_variant=equispaced
+    triangle: P lagrange_variant=equispaced
+    quadrilateral: P lagrange_variant=equispaced
+    tetrahedron: P lagrange_variant=equispaced
+    hexahedron: P lagrange_variant=equispaced
+    prism: P lagrange_variant=equispaced
+  gll:
+    interval: P lagrange_variant=gll_warped
+    quadrilateral: P lagrange_variant=gll_warped
+    hexahedron: P lagrange_variant=gll_warped
 basix.ufl:
-  interval: P lagrange_variant=equispaced
-  triangle: P lagrange_variant=equispaced
-  quadrilateral: P lagrange_variant=equispaced
-  tetrahedron: P lagrange_variant=equispaced
-  hexahedron: P lagrange_variant=equispaced
-  prism: P lagrange_variant=equispaced
+  equispaced:
+    interval: P lagrange_variant=equispaced
+    triangle: P lagrange_variant=equispaced
+    quadrilateral: P lagrange_variant=equispaced
+    tetrahedron: P lagrange_variant=equispaced
+    hexahedron: P lagrange_variant=equispaced
+    prism: P lagrange_variant=equispaced
+  gll:
+    interval: P lagrange_variant=gll_warped
+    quadrilateral: P lagrange_variant=gll_warped
+    hexahedron: P lagrange_variant=gll_warped
 ufl:
-  interval: Lagrange
-  triangle: Lagrange
-  tetrahedron: Lagrange
-  quadrilateral: Q
-  hexahedron: Q
+  equispaced:
+    interval: Lagrange
+    triangle: Lagrange
+    tetrahedron: Lagrange
+    quadrilateral: Q
+    hexahedron: Q
 bempp:
-  triangle: P orders=1
+  equispaced:
+    triangle: P orders=1
 examples:
-  - interval,1
-  - interval,2
-  - interval,3
-  - triangle,1
-  - triangle,2
-  - triangle,3
-  - quadrilateral,1
-  - quadrilateral,2
-  - quadrilateral,3
-  - tetrahedron,1
-  - tetrahedron,2
-  - hexahedron,1
-  - hexahedron,2
-  - prism,1
-  - prism,2
-  - pyramid,1
-  - pyramid,2
+  - interval,1,equispaced
+  - interval,2,equispaced
+  - interval,3,equispaced
+  - triangle,1,equispaced
+  - triangle,2,equispaced
+  - triangle,3,equispaced
+  - quadrilateral,1,equispaced
+  - quadrilateral,2,equispaced
+  - quadrilateral,3,equispaced
+  - tetrahedron,1,equispaced
+  - tetrahedron,2,equispaced
+  - hexahedron,1,equispaced
+  - hexahedron,2,equispaced
+  - prism,1,equispaced
+  - prism,2,equispaced
+  - pyramid,1,equispaced
+  - pyramid,2,equispaced
+  - interval,1,gll
+  - interval,2,gll
+  - interval,3,gll
+  - interval,4,gll
+  - quadrilateral,1,gll
+  - quadrilateral,2,gll

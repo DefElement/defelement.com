@@ -1,6 +1,10 @@
 import re
 
 
+class VariantNotImplemented(BaseException):
+    pass
+
+
 def _parse_value(v):
     v = v.strip()
     if v[0] == "[" and v[-1] == "]":
@@ -22,21 +26,26 @@ def parse_example(e):
             kwargs[key] = _parse_value(value)
     else:
         kwargs = {}
-    ref, order = e.split(",")
-    return ref, int(order), kwargs
+    s = e.split(",")
+    if len(s) == 3:
+        ref, order, variant = s
+    else:
+        ref, order = e.split(",")
+        variant = None
+    return ref, int(order), variant, kwargs
 
 
 def symfem_example(element):
     out = "import symfem"
     for e in element.examples:
-        ref, ord, kwargs = parse_example(e)
+        ref, ord, variant, kwargs = parse_example(e)
         ord = int(ord)
 
-        symfem_name, params = element.get_implementation_string("symfem", ref)
+        symfem_name, params = element.get_implementation_string("symfem", ref, variant)
 
         if symfem_name is not None:
             out += "\n\n"
-            out += f"# Create {element.name} order {ord} on a {ref}\n"
+            out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
             if ref == "dual polygon":
                 out += f"element = symfem.create_element(\"{ref}(4)\","
             else:
@@ -57,15 +66,18 @@ def symfem_example(element):
 def basix_example(element):
     out = "import basix"
     for e in element.examples:
-        ref, ord, kwargs = parse_example(e)
+        ref, ord, variant, kwargs = parse_example(e)
         assert len(kwargs) == 0
         ord = int(ord)
 
-        basix_name, params = element.get_implementation_string("basix", ref)
+        try:
+            basix_name, params = element.get_implementation_string("basix", ref, variant)
+        except VariantNotImplemented:
+            continue
 
         if basix_name is not None:
             out += "\n\n"
-            out += f"# Create {element.name} order {ord} on a {ref}\n"
+            out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
             out += "element = basix.create_element("
             out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
             if "lagrange_variant" in params:
@@ -82,15 +94,18 @@ def basix_example(element):
 def basix_ufl_example(element):
     out = "import basix\nimport basix.ufl"
     for e in element.examples:
-        ref, ord, kwargs = parse_example(e)
+        ref, ord, variant, kwargs = parse_example(e)
         assert len(kwargs) == 0
         ord = int(ord)
 
-        basix_name, params = element.get_implementation_string("basix.ufl", ref)
+        try:
+            basix_name, params = element.get_implementation_string("basix.ufl", ref, variant)
+        except VariantNotImplemented:
+            continue
 
         if basix_name is not None:
             out += "\n\n"
-            out += f"# Create {element.name} order {ord} on a {ref}\n"
+            out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
             out += "element = basix.ufl.element("
             out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
             if "lagrange_variant" in params:
@@ -109,15 +124,18 @@ def basix_ufl_example(element):
 def ufl_example(element):
     out = "import ufl"
     for e in element.examples:
-        ref, ord, kwargs = parse_example(e)
+        ref, ord, variant, kwargs = parse_example(e)
         assert len(kwargs) == 0
         ord = int(ord)
 
-        ufl_name, params = element.get_implementation_string("ufl", ref)
+        try:
+            ufl_name, params = element.get_implementation_string("ufl", ref, variant)
+        except VariantNotImplemented:
+            continue
 
         if ufl_name is not None:
             out += "\n\n"
-            out += f"# Create {element.name} order {ord} on a {ref}\n"
+            out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
             if "type" in params:
                 out += f"element = ufl.{params['type']}("
             else:
@@ -131,11 +149,15 @@ def bempp_example(element):
     out += "\n"
     out += "grid = bempp.api.shapes.regular_sphere(1)"
     for e in element.examples:
-        ref, ord, kwargs = parse_example(e)
+        ref, ord, variant, kwargs = parse_example(e)
         assert len(kwargs) == 0
         ord = int(ord)
 
-        bempp_name, params = element.get_implementation_string("bempp", ref)
+        try:
+            bempp_name, params = element.get_implementation_string("bempp", ref, variant)
+        except VariantNotImplemented:
+            continue
+
         if bempp_name is None:
             continue
         orders = [int(i) for i in params["orders"].split(",")]
@@ -177,9 +199,9 @@ def symfem_tabulate(element, example):
     import numpy as np
     import symfem
 
-    ref, ord, kwargs = parse_example(example)
+    ref, ord, variant, kwargs = parse_example(example)
     ord = int(ord)
-    symfem_name, params = element.get_implementation_string("symfem", ref)
+    symfem_name, params = element.get_implementation_string("symfem", ref, variant)
     assert symfem_name is not None
     if ref == "dual polygon":
         ref += "(4)"
@@ -190,10 +212,13 @@ def symfem_tabulate(element, example):
 def basix_tabulate(element, example):
     import basix
 
-    ref, ord, kwargs = parse_example(example)
+    ref, ord, variant, kwargs = parse_example(example)
     assert len(kwargs) == 0
     ord = int(ord)
-    basix_name, params = element.get_implementation_string("basix", ref)
+    try:
+        basix_name, params = element.get_implementation_string("basix", ref, variant)
+    except VariantNotImplemented:
+        raise NotImplementedError()
     if basix_name is None:
         raise NotImplementedError()
     kwargs = {}
@@ -215,10 +240,13 @@ def basix_ufl_tabulate(element, example):
     import basix
     import basix.ufl
 
-    ref, ord, kwargs = parse_example(example)
+    ref, ord, variant, kwargs = parse_example(example)
     assert len(kwargs) == 0
     ord = int(ord)
-    basix_name, params = element.get_implementation_string("basix.ufl", ref)
+    try:
+        basix_name, params = element.get_implementation_string("basix.ufl", ref, variant)
+    except VariantNotImplemented:
+        raise NotImplementedError()
     if basix_name is None:
         raise NotImplementedError()
     kwargs = {}
