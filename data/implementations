@@ -20,5 +20,5 @@ basix.ufl:
   install: pip3 install git+https://github.com/FEniCS/basix.git git+https://github.com/FEniCS/ufl.git
 fiat:
   name: FIAT
-  ufl: https://github.com/firedrakeproject/fiat
+  url: https://github.com/firedrakeproject/fiat
   install: pip3 install git+https://github.com/firedrakeproject/fiat.git
