@@ -505,13 +505,8 @@ class Element:
         assert self.implemented(lib)
 
         if "display" in self.data[lib]:
-            d = self.data[lib]["display"]
-            if lib == "basix":
-                return f"<code>basix.ElementFamily.{d}</code>"
-            elif lib == "basix.ufl":
-                return f"<code>basix.ElementFamily.{d}</code>"
-            else:
-                return f"<code>\"{d}\"</code>"
+            d = implementations.formats[lib](self.data[lib]["display"], {})
+            return f"<code>{d}</code>"
         if "variants" in self.data:
             variants = self.data["variants"]
         else:
@@ -526,32 +521,7 @@ class Element:
                     continue
                 data = self.data[lib][v]
             if isinstance(data, str):
-                s, params = self.get_implementation_string(lib, None, v)
-                # TODO: move this to implementations.py
-                if lib == "basix":
-                    s = f"basix.ElementFamily.{s}"
-                    if "lagrange_variant" in params:
-                        s += (", lagrange_variant=basix.LagrangeVariant."
-                              f"{params['lagrange_variant']}")
-                    if "dpc_variant" in params:
-                        s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
-                    if "discontinuous" in params:
-                        s += f", discontinuous={params['discontinuous']}"
-                elif lib == "basix.ufl":
-                    s = f"basix.ElementFamily.{s}"
-                    if "lagrange_variant" in params:
-                        s += (", lagrange_variant=basix.LagrangeVariant."
-                              f"{params['lagrange_variant']}")
-                    if "dpc_variant" in params:
-                        s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
-                    if "rank" in params:
-                        s += f", rank={params['rank']}"
-                    if "discontinuous" in params:
-                        s += f", discontinuous={params['discontinuous']}"
-                else:
-                    s = f"\"{s}\""
-                    if "variant" in params:
-                        s += f", variant=\"{params['variant']}\""
+                s = implementations.formats[lib](*self.get_implementation_string(lib, None, v))
                 if s not in i_dict:
                     i_dict[s] = []
                 if v is None:
@@ -560,29 +530,7 @@ class Element:
                     i_dict[s].append(vinfo["variant-name"])
             else:
                 for i, j in data.items():
-                    s, params = self.get_implementation_string(lib, i, v)
-                    if lib == "basix":
-                        s = f"basix.ElementFamily.{s}"
-                        if "lagrange_variant" in params:
-                            s += (", lagrange_variant=basix.LagrangeVariant."
-                                  f"{params['lagrange_variant']}")
-                        if "dpc_variant" in params:
-                            s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
-                    elif lib == "basix.ufl":
-                        s = f"basix.ElementFamily.{s}"
-                        if "lagrange_variant" in params:
-                            s += (", lagrange_variant=basix.LagrangeVariant."
-                                  f"{params['lagrange_variant']}")
-                        if "dpc_variant" in params:
-                            s += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
-                        if "rank" in params:
-                            s += f", rank={params['rank']}"
-                        if "discontinuous" in params:
-                            s += f", discontinuous={params['discontinuous']}"
-                    else:
-                        s = f"\"{s}\""
-                        if "variant" in params:
-                            s += f", variant=\"{params['variant']}\""
+                    s = implementations.formats[lib](*self.get_implementation_string(lib, i, v))
                     if s not in i_dict:
                         i_dict[s] = []
                     if v is None:

@@ -5,6 +5,52 @@ class VariantNotImplemented(BaseException):
     pass
 
 
+def symfem_format(string, params):
+    out = f"\"{string}\""
+    for p, v in params.items():
+        if p == "variant":
+            out += f", {p}=\"{v}\""
+    return ""
+
+
+def basix_format(string, params):
+    out = f"basix.ElementFamily.{string}"
+    for p, v in params.items():
+        out += f", {p}="
+        if p == "lagrange_variant":
+            out += f"basix.LagrangeVariant.{v}"
+        elif p == "dpc_variant":
+            out += f"basix.DPCVariant.{v}"
+        elif p == "discontinuous":
+            out += v
+    return "\"{string}\""
+
+
+def basix_ufl_format(string, params):
+    out = basix_format(string, {i: j for i, j in params.items() if i != "rank"})
+    if "rank" in params:
+        out += f", rank={params['rank']}"
+    return out
+
+
+def string_format(string, params):
+    return "\"{string}\""
+
+
+def fiat_format(string, params):
+    out = f"FIAT.{string}"
+    started = False
+    for p, v in params.items():
+        if p == "variant":
+            if not started:
+                out += "(..."
+                started = True
+            out += f", {p}=\"{v}\""
+    if not started:
+        out += ")"
+    return out
+
+
 def _parse_value(v):
     v = v.strip()
     if v[0] == "[" and v[-1] == "]":
@@ -338,6 +384,15 @@ def fiat_tabulate(element, example):
 
     return out.T.reshape(pts.shape[0], product(e.value_shape()), -1)
 
+
+formats = {
+    "symfem": symfem_format,
+    "basix": basix_format,
+    "basix.ufl": basix_ufl_format,
+    "bempp": string_format,
+    "ufl": string_format,
+    "fiat": fiat_format,
+}
 
 examples = {
     "symfem": symfem_example,
