@@ -43,6 +43,7 @@ implementations:
   basix: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
   basix.ufl: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
   ufl: S
+  fiat: Serendipity
 examples:
   - interval,1
   - interval,2

@@ -17,6 +17,7 @@ dofs:
 implementations:
   symfem: nonconforming AW
   ufl: AWnc
+  fiat: ArnoldWintherNC
 examples:
   - triangle,2
 references:

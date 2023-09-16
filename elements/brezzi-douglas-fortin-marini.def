@@ -37,6 +37,8 @@ implementations:
   ufl:
     triangle: BDFM
     tetrahedron: BDFM
+  fiat:
+    triangle: BrezziDouglasFortinMarini order=2
 examples:
   - triangle,1
   - triangle,2

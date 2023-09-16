@@ -33,6 +33,7 @@ implementations:
   basix: bubble
   basix.ufl: bubble
   ufl: Bubble
+  fiat: Bubble
 examples:
   - interval,2
   - interval,3

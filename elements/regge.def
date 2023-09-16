@@ -27,6 +27,7 @@ implementations:
   basix: Regge
   basix.ufl: Regge
   ufl: Regge
+  fiat: Regge
 examples:
   - triangle,1
   - triangle,2

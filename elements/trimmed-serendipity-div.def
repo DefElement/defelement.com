@@ -20,6 +20,7 @@ polynomial-set:
   hexahedron: poly[k-1]^d && <k>[\operatorname{span}\left\{\boldsymbol{x}p\middle|p\in{{tpoly[k-1]}}\right\}] && <k>[\operatorname{span}\left\{\operatorname{curl}\left(\left(\begin{array}{c}0\\-z\\y\end{array}\right)xy^az^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}] && <k>[\operatorname{span}\left\{\operatorname{curl}\left(\left(\begin{array}{c}-z\\0\\x\end{array}\right)yx^az^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}] && <k>[\operatorname{span}\left\{\operatorname{curl}\left(\left(\begin{array}{c}-y\\x\\0\end{array}\right)zx^ay^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}]
 implementations:
   symfem: TSdiv
+  fiat: TrimmedSerendipityDiv
 sobolev: H(div)
 mapping: contravariant Piola
 examples:

@@ -49,6 +49,7 @@ implementations:
     legendre: BDM
   ufl:
     lagrange: BDM
+  fiat: BrezziDouglasMarini
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

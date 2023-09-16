@@ -51,6 +51,10 @@ implementations:
     legendre: N2E
   ufl:
     lagrange: N2curl
+  fiat:
+    legendre:
+      triangle: NedelecSecondKind variant=integral
+      tetrahedron: NedelecSecondKind variant=integral
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

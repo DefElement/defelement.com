@@ -19,6 +19,7 @@ mapping: double contravariant Piola
 implementations:
   symfem: HHJ
   ufl: HHJ
+  fiat: HellanHerrmannJohnson
 examples:
   - triangle,1
   - triangle,2

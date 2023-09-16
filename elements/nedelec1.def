@@ -107,7 +107,12 @@ implementations:
       quadrilateral: RTCE
       hexahedron: NCE
   bempp:
-    triangle: SNC orders=0
+    lagrange:
+      triangle: SNC orders=0
+  fiat:
+    legendre:
+      triangle: Nedelec variant=integral
+      tetrahedron: Nedelec variant=integral
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

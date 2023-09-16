@@ -39,6 +39,7 @@ implementations:
     quadrilateral: DPC dpc_variant=simplex_equispaced discontinuous=True
     hexahedron: DPC dpc_variant=simplex_equispaced discontinuous=True
   ufl: DPC
+  fiat: DPC
 examples:
   - interval,1
   - interval,2

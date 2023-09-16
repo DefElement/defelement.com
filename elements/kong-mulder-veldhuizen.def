@@ -10,6 +10,7 @@ reference-elements:
 implementations:
   symfem: KMV
   ufl: KMV
+  fiat: KongMulderVeldhuizen
 examples:
   - triangle,1
   - triangle,3
