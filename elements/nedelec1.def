@@ -62,51 +62,52 @@ dofs:
   volumes:
     tetrahedron: integral moments with (vector-lagrange,k-3)
     hexahedron: integral moments with (qdiv,k-1)
-symfem:
-  lagrange:
-    triangle: N1curl
-    tetrahedron: N1curl
-    quadrilateral: Qcurl
-    hexahedron: Qcurl
-    prism: Ncurl
-  legendre:
-    triangle: N1curl variant=legendre
-    tetrahedron: N1curl variant=legendre
-    quadrilateral: Qcurl variant=legendre
-    hexahedron: Qcurl variant=legendre
-    prism: Ncurl variant=legendre
-basix:
-  display: N1E
-  lagrange:
-    triangle: N1E
-    tetrahedron: N1E
-    quadrilateral: N1E
-    hexahedron: N1E
-  legendre:
-    triangle: N1E lagrange_variant=legendre
-    tetrahedron: N1E lagrange_variant=legendre
-    quadrilateral: N1E lagrange_variant=legendre
-    hexahedron: N1E lagrange_variant=legendre
-basix.ufl:
-  display: N1E
-  lagrange:
-    triangle: N1E lagrange_variant=equispaced
-    tetrahedron: N1E lagrange_variant=equispaced
-    quadrilateral: N1E lagrange_variant=equispaced
-    hexahedron: N1E lagrange_variant=equispaced
-  legendre:
-    triangle: N1E
-    tetrahedron: N1E
-    quadrilateral: N1E
-    hexahedron: N1E
-ufl:
-  lagrange:
-    triangle: N1curl
-    tetrahedron: N1curl
-    quadrilateral: RTCE
-    hexahedron: NCE
-bempp:
-  triangle: SNC orders=0
+implementations:
+  symfem:
+    lagrange:
+      triangle: N1curl
+      tetrahedron: N1curl
+      quadrilateral: Qcurl
+      hexahedron: Qcurl
+      prism: Ncurl
+    legendre:
+      triangle: N1curl variant=legendre
+      tetrahedron: N1curl variant=legendre
+      quadrilateral: Qcurl variant=legendre
+      hexahedron: Qcurl variant=legendre
+      prism: Ncurl variant=legendre
+  basix:
+    display: N1E
+    lagrange:
+      triangle: N1E
+      tetrahedron: N1E
+      quadrilateral: N1E
+      hexahedron: N1E
+    legendre:
+      triangle: N1E lagrange_variant=legendre
+      tetrahedron: N1E lagrange_variant=legendre
+      quadrilateral: N1E lagrange_variant=legendre
+      hexahedron: N1E lagrange_variant=legendre
+  basix.ufl:
+    display: N1E
+    lagrange:
+      triangle: N1E lagrange_variant=equispaced
+      tetrahedron: N1E lagrange_variant=equispaced
+      quadrilateral: N1E lagrange_variant=equispaced
+      hexahedron: N1E lagrange_variant=equispaced
+    legendre:
+      triangle: N1E
+      tetrahedron: N1E
+      quadrilateral: N1E
+      hexahedron: N1E
+  ufl:
+    lagrange:
+      triangle: N1curl
+      tetrahedron: N1curl
+      quadrilateral: RTCE
+      hexahedron: NCE
+  bempp:
+    triangle: SNC orders=0
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

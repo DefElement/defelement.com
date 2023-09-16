@@ -18,7 +18,8 @@ dofs:
   vertices: points evaluation
   edges: point evaluations
   faces: point evaluations
-symfem: conforming Crouzeix-Raviart
+implementations:
+  symfem: conforming Crouzeix-Raviart
 examples:
   - triangle,1
   - triangle,2

@@ -12,8 +12,9 @@ categories:
   - Hcurl
 reference-elements:
   - dual polygon
-symfem: RBC
-bempp: RBC orders=0
+implementations:
+  symfem: RBC
+  bempp: RBC orders=0
 sobolev: H(curl)
 mapping: covariant Piola
 examples:

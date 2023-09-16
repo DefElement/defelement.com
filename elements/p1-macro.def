@@ -24,7 +24,8 @@ reference-elements:
 dofs:
   vertices: point evaluations
   faces: integral of function value
-symfem: P1 macro
+implementations:
+  symfem: P1 macro
 examples:
   - triangle,1
 references:

@@ -37,19 +37,20 @@ dofs:
   edges: tangent integral moments with (lagrange,k)
   faces: integral moments with (raviart-thomas,k-1)
   volumes: integral moments with (raviart-thomas,k-2)
-symfem:
-  lagrange: N2curl
-  legendre: N2curl variant=legendre
-basix:
-  display: N2E
-  lagrange: N2E
-  legendre: N2E lagrange_variant=legendre
-basix.ufl:
-  display: N2E
-  lagrange: N2E lagrange_variant=equispaced
-  legendre: N2E
-ufl:
-  lagrange: N2curl
+implementations:
+  symfem:
+    lagrange: N2curl
+    legendre: N2curl variant=legendre
+  basix:
+    display: N2E
+    lagrange: N2E
+    legendre: N2E lagrange_variant=legendre
+  basix.ufl:
+    display: N2E
+    lagrange: N2E lagrange_variant=equispaced
+    legendre: N2E
+  ufl:
+    lagrange: N2curl
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

@@ -16,8 +16,9 @@ dofs:
   edges: point evaluations of normal derivatives at midpoints
 mapping: identity
 sobolev: H1
-symfem: Morley
-ufl: Morley
+implementations:
+  symfem: Morley
+  ufl: Morley
 examples:
   - triangle,2
 references:

@@ -12,7 +12,8 @@ categories:
   - macro
 reference-elements:
   - triangle
-symfem: rHCT
+implementations:
+  symfem: rHCT
 examples:
   - triangle,3
 references:

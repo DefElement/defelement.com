@@ -63,12 +63,7 @@ The entries in this yaml file are:
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 <tr><td>`references`</td><td></td><td>References to where the element is defined.</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
-<tr><td>`basix`</td><td></td><td>The name of the enum item used to define this element in [Basix](https://github.com/fenics/basix)'s `create_element` function.</td></tr>
-<tr><td>`basix.ufl`</td><td></td><td>The name of the enum item used to define this element in [Basix.UFL](https://github.com/fenics/basix)'s `element` function.</td></tr>
-<tr><td>`bempp`</td><td></td><td>The string used to define this element in [Bempp](https://github.com/bempp/bempp-cl).</td></tr>
-<tr><td>`symfem`</td><td></td><td>The string used to define this element in [Symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
-<tr><td>`ufl`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
-<tr><td>`fiat`</td><td></td><td>The class name for this element in [FAIT](https://github.com/firedrakeproject/fiat).</td></tr>
+<tr><td>`implementations`</td><td></td><td>Strings/enum entries/etc to create this element in supported implementations.</td></tr>
 </table>
 
 ### Testing your contribution

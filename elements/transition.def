@@ -15,7 +15,8 @@ dofs:
   edges: point evaluations
   faces: point evaluations
   volumes: point evaluations
-symfem: transition
+implementations:
+  symfem: transition
 examples:
   - triangle,1 {edge_orders=[2,1,1]}
   - triangle,1 {edge_orders=[3,2,1]}

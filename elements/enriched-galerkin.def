@@ -33,12 +33,13 @@ reference-elements:
   - hexahedron
   - prism
   - pyramid
-symfem:
-  interval: EG
-  triangle: EG
-  tetrahedron: EG
-  quadrilateral: EG
-  hexahedron: EG
+implementations:
+  symfem:
+    interval: EG
+    triangle: EG
+    tetrahedron: EG
+    quadrilateral: EG
+    hexahedron: EG
 examples:
   - interval,1
   - interval,2

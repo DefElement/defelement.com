@@ -35,9 +35,10 @@ dofs:
   vertices: point evaluations
   edges: point evaluations
   faces: point evaluations
-symfem: P1-iso-P2
-basix: iso
-basix.ufl: iso
+implementations:
+  symfem: P1-iso-P2
+  basix: iso
+  basix.ufl: iso
 examples:
   - interval,1
   - triangle,1

@@ -32,7 +32,8 @@ dofs:
   edges: integrals of normal derivatives
   faces: integrals of normal derivatives
   volumes: integrals of normal derivatives
-symfem: Wu-Xu
+implementations:
+  symfem: Wu-Xu
 examples:
   - interval,2
   - triangle,3

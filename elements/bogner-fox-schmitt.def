@@ -16,7 +16,8 @@ dofs:
     - point evaluations
     - point evaluations of derivatives in coordinate directions
     - point evaluation of mixed second derivative
-symfem: BFS
+implementations:
+  symfem: BFS
 mapping: identity
 sobolev: H2
 examples:

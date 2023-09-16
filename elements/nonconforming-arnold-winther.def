@@ -14,8 +14,9 @@ polynomial-set:
 dofs:
   edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,1)
   faces: integral moments of three components with (lagrange,0)
-symfem: nonconforming AW
-ufl: AWnc
+implementations:
+  symfem: nonconforming AW
+  ufl: AWnc
 examples:
   - triangle,2
 references:

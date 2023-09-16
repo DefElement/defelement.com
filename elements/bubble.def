@@ -28,10 +28,11 @@ polynomial-set:
   tetrahedron: <k>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
 mapping: identity
 sobolev: H1
-symfem: bubble
-basix: bubble
-basix.ufl: bubble
-ufl: Bubble
+implementations:
+  symfem: bubble
+  basix: bubble
+  basix.ufl: bubble
+  ufl: Bubble
 examples:
   - interval,2
   - interval,3

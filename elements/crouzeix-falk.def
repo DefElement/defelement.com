@@ -18,7 +18,8 @@ sobolev: L2
 dofs:
   facets: point evaluation at three points
   cell: point evaluation at midpoint
-symfem: Crouzeix-Falk
+implementations:
+  symfem: Crouzeix-Falk
 examples:
   - triangle,3
 references:

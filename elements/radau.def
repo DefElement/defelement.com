@@ -28,7 +28,8 @@ polynomial-set:
   interval: qoly[k]
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
-symfem: Lagrange variant=radau
+implementations:
+  symfem: Lagrange variant=radau
 examples:
   - interval,1
   - interval,2

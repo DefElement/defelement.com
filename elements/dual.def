@@ -13,12 +13,13 @@ categories:
   - scalar
 reference-elements:
   - dual polygon
-symfem: dual
+implementations:
+  symfem: dual
+  bempp: DUAL orders=0,1
 mapping: identity
 sobolev:
   n=0: L2
   n=1: H1
-bempp: DUAL orders=0,1
 examples:
   - dual polygon(6),0
   - dual polygon(4),1

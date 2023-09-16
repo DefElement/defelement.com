@@ -30,14 +30,15 @@ polynomial-set:
   interval: poly[k]
   quadrilateral: poly[k]
   hexahedron: poly[k]
-symfem: dPc
-basix:
-  quadrilateral: DPC dpc_variant=simplex_equispaced discontinuous=True
-  hexahedron: DPC dpc_variant=simplex_equispaced discontinuous=True
-basix.ufl:
-  quadrilateral: DPC dpc_variant=simplex_equispaced discontinuous=True
-  hexahedron: DPC dpc_variant=simplex_equispaced discontinuous=True
-ufl: DPC
+implementations:
+  symfem: dPc
+  basix:
+    quadrilateral: DPC dpc_variant=simplex_equispaced discontinuous=True
+    hexahedron: DPC dpc_variant=simplex_equispaced discontinuous=True
+  basix.ufl:
+    quadrilateral: DPC dpc_variant=simplex_equispaced discontinuous=True
+    hexahedron: DPC dpc_variant=simplex_equispaced discontinuous=True
+  ufl: DPC
 examples:
   - interval,1
   - interval,2

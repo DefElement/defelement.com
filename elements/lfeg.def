@@ -24,11 +24,12 @@ reference-elements:
   - tetrahedron
   - quadrilateral
   - hexahedron
-symfem:
-  triangle: LFEG
-  tetrahedron: LFEG
-  quadrilateral: LFEG
-  hexahedron: LFEG
+implementations:
+  symfem:
+    triangle: LFEG
+    tetrahedron: LFEG
+    quadrilateral: LFEG
+    hexahedron: LFEG
 examples:
   - triangle,1
   - triangle,2

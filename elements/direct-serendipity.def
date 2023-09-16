@@ -5,8 +5,9 @@ categories:
   - scalar
 reference-elements:
   - quadrilateral
-symfem: direct serendipity
-ufl: Sdirect
+implementations:
+  symfem: direct serendipity
+  ufl: Sdirect
 mapping: identity
 sobolev: H1
 examples:

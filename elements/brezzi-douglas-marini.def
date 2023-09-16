@@ -35,19 +35,20 @@ dofs:
   cell: integral moments with (nedelec1,k-1)
 mapping: contravariant Piola
 sobolev: H(div)
-symfem:
-  lagrange: N2div
-  legendre: N2div variant=legendre
-basix:
-  display: BDM
-  lagrange: BDM
-  legendre: BDM lagrange_variant=legendre
-basix.ufl:
-  display: BDM
-  lagrange: BDM lagrange_variant=equispaced
-  legendre: BDM
-ufl:
-  lagrange: BDM
+implementations:
+  symfem:
+    lagrange: N2div
+    legendre: N2div variant=legendre
+  basix:
+    display: BDM
+    lagrange: BDM
+    legendre: BDM lagrange_variant=legendre
+  basix.ufl:
+    display: BDM
+    lagrange: BDM lagrange_variant=equispaced
+    legendre: BDM
+  ufl:
+    lagrange: BDM
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

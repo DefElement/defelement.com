@@ -17,7 +17,8 @@ categories:
   - macro
 reference-elements:
   - triangle
-symfem: HCT
+implementations:
+  symfem: HCT
 examples:
   - triangle,3
 references:
