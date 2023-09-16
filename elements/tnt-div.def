@@ -27,9 +27,10 @@ dofs:
 polynomial-set:
   quadrilateral: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\end{array}\right)\right\} @defmath@\tilde{B}_k@(\tilde{P}_k-\tilde{P}_{k-2})/(4k-2)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
   hexahedron: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\tilde{P}_{k}(z)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\tilde{P}_{k}(z)\\\tilde{P}_{k}(x)\tilde{P}_{k}(y)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\tilde{P}_{k}(0)\\\tilde{P}_{k}(x)\tilde{P}_{k}(y)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\tilde{P}_{k}(z)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\tilde{P}_{k}(z)\\\tilde{P}_{k}(x)\tilde{P}_{k}(0)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\tilde{P}_{k}(0)\\\tilde{P}_{k}(x)\tilde{P}_{k}(0)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\tilde{P}_{k}(z)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\tilde{P}_{k}(z)\\\tilde{P}_{k}(0)\tilde{P}_{k}(y)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\tilde{P}_{k}(0)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\tilde{P}_{k}(0)\\\tilde{P}_{k}(0)\tilde{P}_{k}(y)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(0)\tilde{P}_{k}(z)\\\tilde{P}_k(0)\tilde{B}_{k+1}(0)\tilde{P}_{k}(z)\\\tilde{P}_{k}(0)\tilde{P}_{k}(0)\tilde{B}_{k+1}(z)\end{array}\right)\right\} @defmath@\tilde{B}_k@(\tilde{P}_k-\tilde{P}_{k-2})/(4k-2)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
-symfem:
-  quadrilateral: TNTdiv
-  hexahedron: TNTdiv
+implementations:
+  symfem:
+    quadrilateral: TNTdiv
+    hexahedron: TNTdiv
 examples:
   - quadrilateral,1
   - quadrilateral,2

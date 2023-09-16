@@ -38,10 +38,11 @@ polynomial-set:
   interval: poly[k] && serendipity[k]
   quadrilateral: poly[k] && serendipity[k]
   hexahedron: poly[k] && serendipity[k]
-symfem: serendipity
-basix: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
-basix.ufl: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
-ufl: S
+implementations:
+  symfem: serendipity
+  basix: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
+  basix.ufl: serendipity lagrange_variant=equispaced dpc_variant=simplex_equispaced
+  ufl: S
 examples:
   - interval,1
   - interval,2

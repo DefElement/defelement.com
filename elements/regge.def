@@ -22,10 +22,11 @@ dofs:
   volumes: point evaluations of inner products with direction of edges
 sobolev: H(curl curl)
 mapping: double covariant Piola
-symfem: Regge
-basix: Regge
-basix.ufl: Regge
-ufl: Regge
+implementations:
+  symfem: Regge
+  basix: Regge
+  basix.ufl: Regge
+  ufl: Regge
 examples:
   - triangle,1
   - triangle,2

@@ -27,7 +27,8 @@ dofs:
     - point evaluations in coordinate directions
     - point evaulations of divergence
   edges: points evaluations in coordinate directions    
-symfem: Alfeld-Sorokina
+implementations:
+  symfem: Alfeld-Sorokina
 examples:
   - triangle,2
 references:

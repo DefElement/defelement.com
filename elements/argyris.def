@@ -19,8 +19,9 @@ dofs:
   edges: point evaluations of normal derivatives at midpoints
 mapping: identity
 sobolev: H3
-symfem: Argyris
-ufl: Argyris
+implementations:
+  symfem: Argyris
+  ufl: Argyris
 examples:
   - triangle,5
 references:

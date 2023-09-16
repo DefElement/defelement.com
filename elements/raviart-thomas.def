@@ -37,21 +37,22 @@ polynomial-set:
 dofs:
   facets: normal integral moments with (lagrange,k-1)
   cell: integral moments with (vector-lagrange,k-2)
-symfem:
-  lagrange: N1div
-  legendre: N1div variant=legendre
-basix:
-  display: RT
-  lagrange: RT
-  legendre: RT lagrange_variant=legendre
-basix.ufl:
-  display: RT
-  lagrange: RT lagrange_variant=equispaced
-  legendre: RT
-ufl:
-  lagrange: RT
-bempp:
-  triangle: RWG orders=0
+implementations:
+  symfem:
+    lagrange: N1div
+    legendre: N1div variant=legendre
+  basix:
+    display: RT
+    lagrange: RT
+    legendre: RT lagrange_variant=legendre
+  basix.ufl:
+    display: RT
+    lagrange: RT lagrange_variant=equispaced
+    legendre: RT
+  ufl:
+    lagrange: RT
+  bempp:
+    triangle: RWG orders=0
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

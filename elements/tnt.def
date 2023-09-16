@@ -26,9 +26,10 @@ dofs:
 polynomial-set:
   quadrilateral: qoly[k] && <k>[\left\{x\tilde{B}_{k+1}(y),(1-x)\tilde{B}_{k+1}(y),y\tilde{B}_{k+1}(x),(1-y)\tilde{B}_{k+1}(x)\right\} @defmath@\tilde{B}_k@(\tilde{P}_{k+2}-\tilde{P}_k)/(4k+6)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
   hexahedron: qoly[k] && <k>[\left\{xy\tilde{B}_{k+1}(z),(1-x)y\tilde{B}_{k+1}(z),(x(1-y)\tilde{B}_{k+1}(z),(1-x)(1-y)\tilde{B}_{k+1}(z)\right\} @defmath@\tilde{B}_k@(\tilde{P}_{k+2}-\tilde{P}_k)/(4k+6)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@] && <k>[\left\{xz\tilde{B}_{k+1}(y),(1-x)z\tilde{B}_{k+1}(y),(x(1-z)\tilde{B}_{k+1}(y),(1-x)(1-z)\tilde{B}_{k+1}(y)\right\}] && <k>[\left\{yz\tilde{B}_{k+1}(x),(1-y)z\tilde{B}_{k+1}(x),(y(1-z)\tilde{B}_{k+1}(x),(1-y)(1-z)\tilde{B}_{k+1}(x)\right\}]
-symfem:
-  quadrilateral: TNT
-  hexahedron: TNT
+implementations:
+  symfem:
+    quadrilateral: TNT
+    hexahedron: TNT
 examples:
   - quadrilateral,1
   - quadrilateral,2

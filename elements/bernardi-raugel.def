@@ -30,7 +30,8 @@ dofs:
   cell: integral moments of the divergence with (vector-lagrange,0)
 mapping: contravariant Piola
 sobolev: H(div)
-symfem: Bernardi-Raugel
+implementations:
+  symfem: Bernardi-Raugel
 examples:
   - triangle,1
   - tetrahedron,1

@@ -43,7 +43,7 @@ To cite this, you can use the following BibTeX:
 This will create a reference along the lines of:
 
 <ul class='citations'>
-<li>M. W. Scroggs. <i>DefElement: an encyclopedia of finite element definitions (poster)</i>, 2023, Poster presented at FEniCS 2023, Cagliari, Italy, <a href=https://doi.org/10.6084/m9.figshare.23294939.v1>https://doi.org/10.6084/m9.figshare.23294939.v1</a>.</li>
+<li>M. W. Scroggs. <i>DefElement: an encyclopedia of finite element definitions</i>, 2023, Poster presented at FEniCS 2023, Cagliari, Italy, <a href=https://doi.org/10.6084/m9.figshare.23294939.v1>https://doi.org/10.6084/m9.figshare.23294939.v1</a>.</li>
 </ul>
 
 If you'd like a copy of the poster, you can download

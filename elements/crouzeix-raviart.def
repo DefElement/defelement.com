@@ -23,10 +23,11 @@ polynomial-set:
   tetrahedron: poly[k]
 dofs:
   facets: point evaluation at midpoint
-symfem: Crouzeix-Raviart
-basix: CR
-basix.ufl: CR
-ufl: Crouzeix-Raviart
+implementations:
+  symfem: Crouzeix-Raviart
+  basix: CR
+  basix.ufl: CR
+  ufl: Crouzeix-Raviart
 examples:
   - triangle,1
 references:

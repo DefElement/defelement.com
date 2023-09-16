@@ -113,66 +113,67 @@ polynomial-set:
   hexahedron: qoly[k]
   prism: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|\max(p_1+p_2,p_3)\leqslant k\right\}]
   pyramid: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|p_3\leqslant k-1,p_1+p_3\leqslant k,p_2+p_3\leqslant k\right\}] && <k>[\operatorname{span}\left\{x_3^k\right\}]
-symfem:
-  equispaced:
-    interval: Lagrange
-    triangle: Lagrange
-    tetrahedron: Lagrange
-    quadrilateral: Q
-    hexahedron: Q
-    prism: Lagrange
-    pyramid: Lagrange
-  gll:
-    interval: Lagrange variant=gll
-    quadrilateral: Q variant=gll
-    hexahedron: Q variant=gll
-  lobatto:
-    interval: Lagrange variant=lobatto
-    quadrilateral: Q variant=lobatto
-    hexahedron: Q variant=lobatto
-basix:
-  display: P
-  equispaced:
-    interval: P lagrange_variant=equispaced
-    triangle: P lagrange_variant=equispaced
-    quadrilateral: P lagrange_variant=equispaced
-    tetrahedron: P lagrange_variant=equispaced
-    hexahedron: P lagrange_variant=equispaced
-    prism: P lagrange_variant=equispaced
-  gll:
-    interval: P lagrange_variant=gll_warped
-    quadrilateral: P lagrange_variant=gll_warped
-    hexahedron: P lagrange_variant=gll_warped
-basix.ufl:
-  display: P
-  equispaced:
-    interval: P lagrange_variant=equispaced
-    triangle: P lagrange_variant=equispaced
-    quadrilateral: P lagrange_variant=equispaced
-    tetrahedron: P lagrange_variant=equispaced
-    hexahedron: P lagrange_variant=equispaced
-    prism: P lagrange_variant=equispaced
-  gll:
-    interval: P lagrange_variant=gll_warped
-    quadrilateral: P lagrange_variant=gll_warped
-    hexahedron: P lagrange_variant=gll_warped
-ufl:
-  equispaced:
-    interval: Lagrange
-    triangle: Lagrange
-    tetrahedron: Lagrange
-    quadrilateral: Q
-    hexahedron: Q
-  lobatto:
-    interval: Lobatto
-bempp:
-  equispaced:
-    triangle: P orders=1
-fiat:
-  equispaced:
-    interval: Lagrange
-    triangle: Lagrange
-    tetrahedron: Lagrange
+implementations:
+  symfem:
+    equispaced:
+      interval: Lagrange
+      triangle: Lagrange
+      tetrahedron: Lagrange
+      quadrilateral: Q
+      hexahedron: Q
+      prism: Lagrange
+      pyramid: Lagrange
+    gll:
+      interval: Lagrange variant=gll
+      quadrilateral: Q variant=gll
+      hexahedron: Q variant=gll
+    lobatto:
+      interval: Lagrange variant=lobatto
+      quadrilateral: Q variant=lobatto
+      hexahedron: Q variant=lobatto
+  basix:
+    display: P
+    equispaced:
+      interval: P lagrange_variant=equispaced
+      triangle: P lagrange_variant=equispaced
+      quadrilateral: P lagrange_variant=equispaced
+      tetrahedron: P lagrange_variant=equispaced
+      hexahedron: P lagrange_variant=equispaced
+      prism: P lagrange_variant=equispaced
+    gll:
+      interval: P lagrange_variant=gll_warped
+      quadrilateral: P lagrange_variant=gll_warped
+      hexahedron: P lagrange_variant=gll_warped
+  basix.ufl:
+    display: P
+    equispaced:
+      interval: P lagrange_variant=equispaced
+      triangle: P lagrange_variant=equispaced
+      quadrilateral: P lagrange_variant=equispaced
+      tetrahedron: P lagrange_variant=equispaced
+      hexahedron: P lagrange_variant=equispaced
+      prism: P lagrange_variant=equispaced
+    gll:
+      interval: P lagrange_variant=gll_warped
+      quadrilateral: P lagrange_variant=gll_warped
+      hexahedron: P lagrange_variant=gll_warped
+  ufl:
+    equispaced:
+      interval: Lagrange
+      triangle: Lagrange
+      tetrahedron: Lagrange
+      quadrilateral: Q
+      hexahedron: Q
+    lobatto:
+      interval: Lobatto
+  bempp:
+    equispaced:
+      triangle: P orders=1
+  fiat:
+    equispaced:
+      interval: Lagrange
+      triangle: Lagrange
+      tetrahedron: Lagrange
 examples:
   - interval,1,equispaced
   - interval,2,equispaced

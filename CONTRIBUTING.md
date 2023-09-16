@@ -63,12 +63,7 @@ The entries in this yaml file are:
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 <tr><td>`references`</td><td></td><td>References to where the element is defined.</td></tr>
 <tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/mscroggs/defelement.com/blob/main/data/categories).</td></tr>
-<tr><td>`basix`</td><td></td><td>The name of the enum item used to define this element in [Basix](https://github.com/fenics/basix)'s `create_element` function.</td></tr>
-<tr><td>`basix.ufl`</td><td></td><td>The name of the enum item used to define this element in [Basix.UFL](https://github.com/fenics/basix)'s `element` function.</td></tr>
-<tr><td>`bempp`</td><td></td><td>The string used to define this element in [Bempp](https://github.com/bempp/bempp-cl).</td></tr>
-<tr><td>`symfem`</td><td></td><td>The string used to define this element in [Symfem](https://github.com/mscroggs/symfem)'s `create_element` function.</td></tr>
-<tr><td>`ufl`</td><td></td><td>The string used to define this element in [UFL](https://github.com/fenics/ufl).</td></tr>
-<tr><td>`fiat`</td><td></td><td>The class name for this element in [FAIT](https://github.com/firedrakeproject/fiat).</td></tr>
+<tr><td>`implementations`</td><td></td><td>Strings/enum entries/etc to create this element in supported implementations.</td></tr>
 </table>
 
 ### Testing your contribution
@@ -111,6 +106,32 @@ If you've updated multiple elements, you can use multiple filenames separated by
 python3 build.py _test_html --test dpc --processes 4
 python3 build.py _test_html --test lagrange,vector-lagrange --processes 4
 ```
+
+### Adding an implementation
+To add a library to the implementations section of DefElement, you must first add details of the
+library to the file [`/data/implementations`](https://github.com/mscroggs/defelement.com/blob/main/data/implementations).
+You must include three key pieces of information about the library: its `name`, `url`, and a bash command to `install` it.
+These three pieces of information are filed under an `id` for your library.
+
+Once this has been done, you should next add the library to [`builder/implementations.py`](https://github.com/mscroggs/defelement.com/blob/main/builder/implementations.py).
+At the end of this file, there are three dictionaries, mapping the `id` of a library to a function.
+You should add functions to these that do the following:
+
+* The functions in `formats` take an implementation string and a set of parameters as inputs
+  and return the implementation information for the library, as it will be displayed on each
+  element's page.
+* The functions in `examples` take a DefElement `Element` object as an input and return a block
+  of Python (as a string) that creates all the examples of that element using the library.
+* [optional] The functions in `verifications` take a DefElement `Element` object and an example as
+  inputs and return the element for that example tabulated at the set of points given by the
+  function `points`. The shape of the output of these functions are
+  `(number of points, value size, number of basis functions)`. These functions are used to
+  [verify](https://defelement.com/verification.html) that the implementation has the same basis
+  functions as Symfem.
+
+Once these steps are done, you can start adding implementation details for your library to
+the `implementation` field of elements in the [`elements`](https://github.com/mscroggs/defelement.com/blob/main/elements)
+folder.
 
 ## Adding yourself to the contributors list
 Once you have contributed to DefElement, you should add your name and some information about yourself to the [contributors page](https://defelement.com/contributors.html).

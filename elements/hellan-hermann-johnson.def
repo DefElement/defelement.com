@@ -16,8 +16,9 @@ dofs:
   faces: point evaluations of tensor products with symmetric matrices whose entries are in (lagrange,k-1)
 sobolev: H(div div)
 mapping: double contravariant Piola
-symfem: HHJ
-ufl: HHJ
+implementations:
+  symfem: HHJ
+  ufl: HHJ
 examples:
   - triangle,1
   - triangle,2

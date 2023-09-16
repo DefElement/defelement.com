@@ -18,7 +18,8 @@ dofs:
   cell: integral moments with (vector-lagrange,k-2)
 mapping: contravariant Piola
 sobolev: H(div)
-symfem: BDDF
+implementations:
+  symfem: BDDF
 min-order: 1
 examples:
   - hexahedron,1

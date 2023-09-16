@@ -63,6 +63,7 @@ def allclose_maybe_permuted(table0, table1):
 def verify(egs, process="", result_dict=None):
     green = "\033[32m"
     red = "\033[31m"
+    blue = "\033[34m"
     default = "\033[0m"
 
     results = {}
@@ -74,14 +75,19 @@ def verify(egs, process="", result_dict=None):
             except ImportError:
                 print(f"{process}{i} not installed")
             except NotImplementedError:
-                pass
+                if e.filename not in results:
+                    results[e.filename] = {}
+                if i not in results[e.filename]:
+                    results[e.filename][i] = {"pass": [], "fail": [], "not implemented": []}
+                results[e.filename][i]["not implemented"].append(eg)
+                print(f"{process}{e.filename} {i} {eg} {blue}\u2013{default}")
         if len(tables) > 0:
             sym_table = verifications["symfem"](e, eg)
             for i, t in tables.items():
                 if e.filename not in results:
                     results[e.filename] = {}
                 if i not in results[e.filename]:
-                    results[e.filename][i] = {"pass": [], "fail": []}
+                    results[e.filename][i] = {"pass": [], "fail": [], "not implemented": []}
                 if sym_table.shape == t.shape and allclose_maybe_permuted(sym_table, t):
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")

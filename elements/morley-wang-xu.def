@@ -31,7 +31,8 @@ dofs:
   faces: integrals of normal derivatives
   volumes: integrals of normal derivatives
 mapping: identity
-symfem: MWX
+implementations:
+  symfem: MWX
 examples:
   - interval,1
   - triangle,1

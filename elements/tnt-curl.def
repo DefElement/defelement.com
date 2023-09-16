@@ -30,9 +30,10 @@ dofs:
 polynomial-set:
   quadrilateral: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{P}_k(x)\tilde{B}_{k+1}(y)\\-\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(0)\tilde{B}_{k+1}(y)\\-\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(x)\tilde{B}_{k+1}(0)\\-\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\end{array}\right)\right\}] @defmath@\tilde{B}_k@(\tilde{P}_{k+2}-\tilde{P}_k)/(4k+6)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
   hexahedron: qoly[k]^d && <k>[\left\{f\boldsymbol{g}\middle|f\in\{x,1-x\},\boldsymbol{g}\in\left\{\left(\begin{array}{c}\tilde{P}_k(y)\tilde{B}_{k+1}(z)\\-\tilde{B}_{k+1}(y)\tilde{P}_{k}(z)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(0)\tilde{B}_{k+1}(z)\\-\tilde{B}_{k+1}(0)\tilde{P}_{k}(z)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(y)\tilde{B}_{k+1}(0)\\-\tilde{B}_{k+1}(y)\tilde{P}_{k}(0)\end{array}\right),\right\}\right\} @defmath@\tilde{B}_k@(\tilde{P}_{k+2}-\tilde{P}_k)/(4k+6)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@] && <k>[\left\{f\boldsymbol{g}\middle|f\in\{y,1-y\},\boldsymbol{g}\in\left\{\left(\begin{array}{c}\tilde{P}_k(x)\tilde{B}_{k+1}(z)\\-\tilde{B}_{k+1}(x)\tilde{P}_{k}(z)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(0)\tilde{B}_{k+1}(z)\\-\tilde{B}_{k+1}(0)\tilde{P}_{k}(z)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(x)\tilde{B}_{k+1}(0)\\-\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\end{array}\right),\right\}\right\}] && <k>[\left\{f\boldsymbol{g}\middle|f\in\{z,1-z\},\boldsymbol{g}\in\left\{\left(\begin{array}{c}\tilde{P}_k(x)\tilde{B}_{k+1}(y)\\-\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(0)\tilde{B}_{k+1}(y)\\-\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\end{array}\right),\left(\begin{array}{c}\tilde{P}_k(x)\tilde{B}_{k+1}(0)\\-\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\end{array}\right),\right\}\right\}]
-symfem:
-  quadrilateral: TNTcurl
-  hexahedron: TNTcurl
+implementations:
+  symfem:
+    quadrilateral: TNTcurl
+    hexahedron: TNTcurl
 examples:
   - quadrilateral,1
   - quadrilateral,2

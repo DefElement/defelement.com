@@ -19,7 +19,8 @@ dofs:
   facets: point evaluation at midpoint
 sobolev: L2
 mapping: identity
-symfem: Rannacher-Turek
+implementations:
+  symfem: Rannacher-Turek
 examples:
   - quadrilateral,1
 references:

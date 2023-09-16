@@ -22,9 +22,10 @@ dofs:
 polynomial-set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
-symfem: vector Lagrange
-ufl: Lagrange type=VectorElement
-basix.ufl: P lagrange_variant=equispaced rank=1
+implementations:
+  symfem: vector Lagrange
+  ufl: Lagrange type=VectorElement
+  basix.ufl: P lagrange_variant=equispaced rank=1
 examples:
   - triangle,1
   - triangle,2

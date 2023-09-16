@@ -18,8 +18,9 @@ dofs:
     - point evaluations of components of Jacobian
 mapping: identity
 sobolev: H3
-symfem: Bell
-ufl: Bell
+implementations:
+  symfem: Bell
+  ufl: Bell
 examples:
   - triangle,5
 references:

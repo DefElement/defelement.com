@@ -32,10 +32,11 @@ dofs:
   cell: integral moments with (vector-lagrange,k-2)
 mapping: contravariant Piola
 sobolev: H(div)
-symfem: BDFM
-ufl:
-  triangle: BDFM
-  tetrahedron: BDFM
+implementations:
+  symfem: BDFM
+  ufl:
+    triangle: BDFM
+    tetrahedron: BDFM
 examples:
   - triangle,1
   - triangle,2

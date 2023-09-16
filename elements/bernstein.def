@@ -29,8 +29,9 @@ polynomial-set:
   tetrahedron: poly[k]
 mapping: identity
 sobolev: H1
-symfem: Bernstein
-ufl: Bernstein
+implementations:
+  symfem: Bernstein
+  ufl: Bernstein
 examples:
   - interval,1
   - interval,2

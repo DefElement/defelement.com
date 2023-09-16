@@ -18,7 +18,8 @@ sobolev: L2
 dofs:
   facets: point evaluation at two points (but only one point on one of the edges)
   cell: point evaluation at midpoint
-symfem: Fortin-Soulie
+implementations:
+  symfem: Fortin-Soulie
 examples:
   - triangle,2
 references:

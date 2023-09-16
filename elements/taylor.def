@@ -28,8 +28,9 @@ polynomial-set:
   interval: poly[k]
   triangle: poly[k]
   tetrahedron: poly[k]
-symfem: Taylor
-ufl: TDG
+implementations:
+  symfem: Taylor
+  ufl: TDG
 examples:
   - interval,1
   - interval,2

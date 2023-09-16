@@ -16,7 +16,8 @@ dofs:
     - integral moments with (nedelec1,k)
     - integral moments of the divergence with "\(x^{k+1}y^q\) for q=0,1,...,k"
     - integral moments of the divergence with "\(x^qy^{k+1}\) for q=0,1,...,k"
-symfem: ABF
+implementations:
+  symfem: ABF
 mapping: contravariant Piola
 sobolev: H(div)
 examples:

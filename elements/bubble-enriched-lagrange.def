@@ -16,7 +16,8 @@ mapping: identity
 sobolev: H1
 polynomial-set:
   triangle: poly[k] && <k+2>[\left\{p\in {{poly[k]}}\middle|p=0\text{ on the boundary}\right\}]
-symfem: bubble enriched Lagrange
+implementations:
+  symfem: bubble enriched Lagrange
 examples:
   - triangle,1
   - triangle,2
