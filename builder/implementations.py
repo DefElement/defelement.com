@@ -246,7 +246,7 @@ def fiat_example(element):
             raise ValueError(f"Unsupported cell: {ref}")
         out += f"element = FIAT.{fiat_name}({cell}"
         if "order" not in params or params["order"] != "None":
-            out += ", {ord}"
+            out += f", {ord}"
         for i, j in params.items():
             if i != "order":
                 out += f", {i}=\"{j}\""
