@@ -572,7 +572,7 @@ for i in verifications:
         f"<td>{categoriser.implementations[i]['name']}</td>"
         f"<td><img src='/badges/{i}.svg'></td>"
         "<td style='font-size:80%;font-family:monospace'>"
-        f"[![{badge_descs[i]}](https://deflement.com/badges/{i}.svg)]"
+        f"[![{badge_descs[i]}](https://defelement.com/badges/{i}.svg)]"
         "(https://defelement.com/verification.html)</td>"
         "</tr>")
 content += "</table>"
