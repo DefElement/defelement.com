@@ -9,7 +9,7 @@ parser.add_argument('--install-type', metavar="itype", default="all",
 args = parser.parse_args()
 
 with open("data/implementations") as f:
-    data = yaml.load(f)
+    data = yaml.load(f, Loader=yaml.FullLoader)
 
 if args.itype == "all":
     for i in data.values():
