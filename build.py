@@ -136,6 +136,8 @@ orange_check = ("<i class='fa-solid fa-square-xmark' style='color:"
                 f"{symfem.plotting.Colors.ORANGE};{icon_style}'></i>")
 red_check = ("<i class='fa-solid fa-square-xmark' style='color:"
              f"#FF0000;{icon_style}'></i>")
+blue_minus = ("<i class='fa-solid fa-square-minus' style='color:"
+              f"{symfem.plotting.Colors.BLUE};{icon_style}'></i>")
 
 # Generate element pages
 all_examples = []
@@ -262,11 +264,46 @@ for e in categoriser.elements:
                 if e.filename in verification and codename in verification[e.filename]:
                     v = verification[e.filename][codename]
                     if len(v["fail"]) == 0:
-                        info += (
-                            f"{green_check} <span style='{text_style}'>"
-                            "This implementation gives the correct basis functions for all of "
-                            "the examples below."
-                            "</span>")
+                        if len(v["not implemented"]) == 0:
+                            info += (
+                                f"{green_check} <span style='{text_style}'>"
+                                "This implementation is correct for all the examples below."
+                                "</span>")
+                        else:
+                            info += (
+                                f"{green_check} <span style='{text_style}'>"
+                                "This implementation is correct basis for all the examples below "
+                                "that it supports."
+                                "</span>"
+                                f"<div style='display:block;margin-left:30px;{text_style}' "
+                                f"id='{jscodename}-showverification'>"
+                                f"<a href='javascript:show_{jscodename}_verification()'>"
+                                "&darr; Show more &darr;</a></div>"
+                                f"<div style='display:none;' id='{jscodename}-hiddenverification'>"
+                                f"<div style='margin-left:30px;{text_style}'>"
+                                f"<a href='javascript:hide_{jscodename}_verification()'>"
+                                "&uarr; Hide &uarr;</a></div>"
+                                f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
+                                f"{green_check} "
+                                f"<b>Correct</b>: {'; '.join(v['pass'])}</div>"
+                                f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
+                                f"{blue_minus} "
+                                f"<b>Not implemented</b>: {'; '.join(v['not implemented'])}</div>"
+                                "</div>"
+                                "</div>"
+                                "<script type='text/javascript'>\n"
+                                f"function show_{jscodename}_verification(){{"
+                                "\n"
+                                f"document.getElementById('{jscodename}-showverification')"
+                                ".style.display = 'none'\n"
+                                f"document.getElementById('{jscodename}-hiddenverification')"
+                                ".style.display = 'block'\n}\n"
+                                f"function hide_{jscodename}_verification(){{"
+                                "\n"
+                                f"document.getElementById('{jscodename}-showverification')"
+                                ".style.display = 'block'\n"
+                                f"document.getElementById('{jscodename}-hiddenverification')"
+                                ".style.display = 'none'\n}\n</script>")
                     elif len(v["pass"]) > 0:
                         info += (
                             f"{orange_check} <span style='{text_style}'>"
@@ -285,7 +322,15 @@ for e in categoriser.elements:
                             f"<b>Correct</b>: {'; '.join(v['pass'])}</div>"
                             f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
                             f"{red_check} "
-                            f"<b>Incorrect</b>: {'; '.join(v['fail'])}</div></div>"
+                            f"<b>Incorrect</b>: {'; '.join(v['fail'])}</div>")
+                        if len(v["not implemented"]) > 0:
+                            info += (
+                                f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
+                                f"{blue_minus} "
+                                f"<b>Not implemented</b>: {'; '.join(v['not implemented'])}</div>"
+                                "</div>")
+                        info += (
+                            "</div>"
                             "<script type='text/javascript'>\n"
                             f"function show_{jscodename}_verification(){{"
                             "\n"

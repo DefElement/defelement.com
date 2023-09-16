@@ -10,7 +10,7 @@ def symfem_format(string, params):
     for p, v in params.items():
         if p == "variant":
             out += f", {p}=\"{v}\""
-    return ""
+    return out
 
 
 def basix_format(string, params):
@@ -23,7 +23,7 @@ def basix_format(string, params):
             out += f"basix.DPCVariant.{v}"
         elif p == "discontinuous":
             out += v
-    return "\"{string}\""
+    return out
 
 
 def basix_ufl_format(string, params):
@@ -34,7 +34,7 @@ def basix_ufl_format(string, params):
 
 
 def string_format(string, params):
-    return "\"{string}\""
+    return f"\"{string}\""
 
 
 def fiat_format(string, params):
