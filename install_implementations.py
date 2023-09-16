@@ -15,7 +15,7 @@ if args.itype == "all":
     for i in data.values():
         os.system(i["install"])
 elif args.itype == "verification":
-    for i in implemenations.verifications:
+    for i in implementations.verifications:
         os.system(data[i]["install"])
 else:
     raise RuntimeError(f"Unknown install type: {args.itype}")
