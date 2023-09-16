@@ -274,7 +274,7 @@ for e in categoriser.elements:
                         else:
                             info += (
                                 f"{green_check} <span style='{text_style}'>"
-                                "This implementation is correct basis for all the examples below "
+                                "This implementation is correct for all the examples below "
                                 "that it supports."
                                 "</span>"
                                 f"<div style='display:block;margin-left:30px;{text_style}' "
@@ -309,7 +309,7 @@ for e in categoriser.elements:
                     elif len(v["pass"]) > 0:
                         info += (
                             f"{orange_check} <span style='{text_style}'>"
-                            "This implementation gives the correct basis functions for some of "
+                            "This implementation is correct for some of "
                             "the examples below.</span>"
                             f"<div style='display:block;margin-left:30px;{text_style}' "
                             f"id='{jscodename}-showverification'>"
@@ -349,7 +349,7 @@ for e in categoriser.elements:
                     else:
                         info += (
                             f"{red_check} "
-                            "This implementation does not give the correct basis functions.</span>")
+                            "This implementation is incorrect for this element.</span>")
                 info += (
                     "<script type='text/javascript'>\n"
                     f"function show_{jscodename}_eg(){{\n"
