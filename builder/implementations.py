@@ -231,6 +231,9 @@ def fiat_example(element):
         if fiat_name is None:
             continue
 
+        if "order" in params and params["order"] != "None" and ord != int(params["order"]):
+            continue
+
         out += "\n\n"
         out += f"# Create {element.name_with_variant(variant)} order {ord}\n"
         if ref in ["interval", "triangle", "tetrahedron"]:
@@ -241,9 +244,12 @@ def fiat_example(element):
             cell = "FIAT.reference_element.UFCHexahedron()"
         else:
             raise ValueError(f"Unsupported cell: {ref}")
-        out += f"element = FIAT.{fiat_name}({cell}, {ord}"
+        out += f"element = FIAT.{fiat_name}({cell}"
+        if "order" not in params or params["order"] != "None":
+            out += ", {ord}"
         for i, j in params.items():
-            out += f", {i}=\"{j}\""
+            if i != "order":
+                out += f", {i}=\"{j}\""
         out += ")"
     return out
 
@@ -372,7 +378,16 @@ def fiat_tabulate(element, example):
     else:
         raise ValueError(f"Unsupported cell: {ref}")
 
-    e = getattr(FIAT, fiat_name)(cell, ord, **params)
+    args = []
+    if "order" in params:
+        if params["order"] != "None":
+            if ord != int(params['order']):
+                raise NotImplementedError
+            args.append(ord)
+    else:
+        args.append(ord)
+
+    e = getattr(FIAT, fiat_name)(cell, *args, **{i: j for i, j in params.items() if i != "order"})
     pts = points(ref)
     out = list(e.tabulate(0, pts).values())[0]
 

@@ -31,7 +31,7 @@ polynomial-set:
 implementations:
   symfem: Taylor
   ufl: TDG
-  fiat: DiscontinousTaylor
+  fiat: DiscontinuousTaylor
 examples:
   - interval,1
   - interval,2

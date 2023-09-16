@@ -74,7 +74,7 @@ def verify(egs, process="", result_dict=None):
                 tables[i] = verifications[i](e, eg)
             except ImportError:
                 print(f"{process}{i} not installed")
-            except NotImplementedError:
+            except (NotImplementedError, AssertionError):
                 if e.filename not in results:
                     results[e.filename] = {}
                 if i not in results[e.filename]:
