@@ -46,7 +46,7 @@ def fiat_format(string, params):
                 out += "(..."
                 started = True
             out += f", {p}=\"{v}\""
-    if not started:
+    if started:
         out += ")"
     return out
 
