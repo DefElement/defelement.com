@@ -53,6 +53,10 @@ implementations:
     lagrange: RT
   bempp:
     triangle: RWG orders=0
+  fiat:
+    legendre:
+      triangle: RaviartThomas variant=integral
+      tetrahedron: RaviartThomas variant=integral
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

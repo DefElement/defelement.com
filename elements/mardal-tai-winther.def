@@ -33,6 +33,7 @@ implementations:
   symfem: MTW
   ufl:
     triangle: MTW
+  fiat: MardalThatiWinther
 examples:
   - triangle,3
   - tetrahedron,3

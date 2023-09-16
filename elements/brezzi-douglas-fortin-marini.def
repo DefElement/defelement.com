@@ -37,6 +37,7 @@ implementations:
   ufl:
     triangle: BDFM
     tetrahedron: BDFM
+  fiat: BrezziDouglasFortinMarini
 examples:
   - triangle,1
   - triangle,2

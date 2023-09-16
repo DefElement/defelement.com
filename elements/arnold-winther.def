@@ -21,6 +21,7 @@ dofs:
 implementations:
   symfem: AW
   ufl: AWc
+  fiat ArnoldWinther
 examples:
   - triangle,3
   - triangle,4

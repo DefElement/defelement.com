@@ -28,6 +28,7 @@ implementations:
   basix: CR
   basix.ufl: CR
   ufl: Crouzeix-Raviart
+  fiat: CrouzeixRaviart
 examples:
   - triangle,1
 references:
