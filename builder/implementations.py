@@ -234,14 +234,14 @@ def fiat_example(element):
         out += "\n\n"
         out += f"# Create {element.name_with_variant(variant)} order {ord}\n"
         if ref in ["interval", "triangle", "tetrahedron"]:
-            out += f"cell = FIAT.ufc_cell(\"{ref}\")\n"
+            cell = f"FIAT.ufc_cell(\"{ref}\")"
         elif ref == "quadrilateral":
-            out += "cell = FIAT.reference_element.UFCQuadrilateral()\n"
+            cell = "FIAT.reference_element.UFCQuadrilateral()"
         elif ref == "hexahedron":
-            out += "cell = FIAT.reference_element.UFCHexahedron()\n"
+            cell = "FIAT.reference_element.UFCHexahedron()"
         else:
             raise ValueError(f"Unsupported cell: {ref}")
-        out += f"element = FIAT.{fiat_name}(cell, {ord}"
+        out += f"element = FIAT.{fiat_name}({cell}, {ord}"
         for i, j in params.items():
             out += f", {i}=\"{j}\""
         out += ")"

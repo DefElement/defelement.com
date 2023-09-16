@@ -112,6 +112,32 @@ python3 build.py _test_html --test dpc --processes 4
 python3 build.py _test_html --test lagrange,vector-lagrange --processes 4
 ```
 
+### Adding an implementation
+To add a library to the implementations section of DefElement, you must first add details of the
+library to the file [`/data/implementations`](https://github.com/mscroggs/defelement.com/blob/main/data/implementations).
+You must include three key pieces of information about the library: its `name`, `url`, and a bash command to `install` it.
+These three pieces of information are filed under an `id` for your library.
+
+Once this has been done, you should next add the library to [`builder/implementations.py`](https://github.com/mscroggs/defelement.com/blob/main/builder/implementations.py).
+At the end of this file, there are three dictionaries, mapping the `id` of a library to a function.
+You should add functions to these that do the following:
+
+* The functions in `formats` take an implementation string and a set of parameters as inputs
+  and return the implementation information for the library, as it will be displayed on each
+  element's page.
+* The functions in `examples` take a DefElement `Element` object as an input and return a block
+  of Python (as a string) that creates all the examples of that element using the library.
+* [optional] The functions in `verifications` take a DefElement `Element` object and an example as
+  inputs and return the element for that example tabulated at the set of points given by the
+  function `points`. The shape of the output of these functions are
+  `(number of points, value size, number of basis functions)`. These functions are used to
+  [verify](https://defelement.com/verification.html) that the implementation has the same basis
+  functions as Symfem.
+
+Once these steps are done, you can start adding implementation details for your library to
+the `implementation` field of elements in the [`elements`](https://github.com/mscroggs/defelement.com/blob/main/elements)
+folder.
+
 ## Adding yourself to the contributors list
 Once you have contributed to DefElement, you should add your name and some information about yourself to the [contributors page](https://defelement.com/contributors.html).
 To do this, you should add info about yourself to the file [data/contributors](https://github.com/mscroggs/defelement.com/blob/main/data/contributors). If you wish to include a picture of yourself,
