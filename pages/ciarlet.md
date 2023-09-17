@@ -39,7 +39,7 @@ The Ciarlet definition <ref type="book" title="The Finite Element Method for Ell
 defines a finite element by a triple \(({{symbols.reference}},{{symbols.polyset}},{{symbols.dual_basis}})\), where
 
 <ul>
-<li>\({{symbols.reference}}\subset\mathbb{R}^d\) is the reference element, ususally a polygon or polyhedron;</li>
+<li>\({{symbols.reference}}\subset\mathbb{R}^d\) is the reference element, usually a polygon or polyhedron;</li>
 <li>\({{symbols.polyset}}\) is a finite dimensional polynomial space on \({{symbols.reference}}\) of dimension \(n\);</li>
 <li>\({{symbols.dual_basis}}=\{{{symbols.functional}}_0,...,{{symbols.functional}}_{n-1}\}\) is a basis of the dual space \({{symbols.polyset}}^*=\{f:{{symbols.polyset}}\to\mathbb{R}|f\text{ is linear}\}\). Each functional \({{symbols.functional}}_i\) is associated with a subentity of the reference element \({{symbols.reference}}\).</li>
 </ul>
@@ -85,7 +85,7 @@ the integral moment functionals \({{symbols.functional}}_1,...,{{symbols.functio
 where \({{symbols.basis_function}}_1,...,{{symbols.basis_function}}_{n_e}\) are the basis functions of the finite
 element space on \(e\).
 
-For vector-values spaces, integral moment functional can be defined using a vector-valued space
+For vector-valued spaces, integral moment functional can be defined using a vector-valued space
 on \(e\) and taking the dot product inside the integral,
 \[{{symbols.functional}}_i:\boldsymbol{v}\mapsto \int_e \boldsymbol{v}\cdot{{symbols.vector_basis_function}}_i.\]
 Alternatively, an integral moment can
