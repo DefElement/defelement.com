@@ -1,3 +1,8 @@
+--
+authors:
+  - Scroggs, Matthew W.
+--
+
 # De Rham element families
 The following relationship is the \(L^2\) de Rham complex:
 $$
