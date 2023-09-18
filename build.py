@@ -469,9 +469,10 @@ for i, v in verifications.items():
                 good += len(j[i]["pass"])
                 total += len(j[i]["pass"]) + len(j[i]["fail"])
         proportion = f"{good} / {total}"
-        if good / total < 0.4:
+        p = 0 if total == 0 else good / total
+        if p < 0.4:
             col = "#FF0000"
-        elif good / total > 0.9:
+        elif p > 0.9:
             col = symfem.plotting.Colors.GREEN
         else:
             col = symfem.plotting.Colors.ORANGE
