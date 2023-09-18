@@ -162,6 +162,21 @@ $$\left({{symbols.mapping}}^\text{curl curl}{{symbols.matrix_basis_function}}\ri
 $$\left({{symbols.mapping}}^\text{div div}{{symbols.matrix_basis_function}}\right)(\boldsymbol{x})
 :=\frac1{\left(\det {{symbols.jacobian}}\right)^2}{{symbols.jacobian}}{{symbols.matrix_basis_function}}({{symbols.geometry_map}}^{-1}(\boldsymbol{x})){{symbols.jacobian}}^T$$
 
+## Variants of finite elements
+For many elements, there are a number of different choices that could be made for the functionals
+in \({{symbols.dual_basis}}\) that define the element that give rise to an element with the same
+key properties. For example, when defining a [Lagrange element](element::lagrange) on a triangle, there are many possible
+choices for where exactly to locate the point evaluation functionals.
+We refer to a pair of elements as variants of each other if:
+
+* They are defined on the same reference element \({{symbols.reference}}\);
+* They are defined using the same polynomial set \({{symbols.polyset}}\);
+* The functionals in \({{symbols.dual_basis}}\) associated with each facet, ridge, and peak of the
+  cell, and the push forward/pull back map used lead to the same type of continuity between cells.
+
+
+Commonly used variants of elements are shown on each element's page.
+
 ## Notation
 Throughout this website, the notation given here in this section is used.
 
