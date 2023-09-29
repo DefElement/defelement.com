@@ -348,7 +348,7 @@ for e in categoriser.elements:
                             ".style.display = 'none'\n}\n</script>")
                     else:
                         info += (
-                            f"{red_check} "
+                            f"{red_check} <span style='{text_style}'>"
                             "This implementation is incorrect for this element.</span>")
                 info += (
                     "<script type='text/javascript'>\n"
