@@ -27,9 +27,9 @@ def basix_format(string, params):
 
 
 def basix_ufl_format(string, params):
-    out = basix_format(string, {i: j for i, j in params.items() if i != "rank"})
-    if "rank" in params:
-        out += f", rank={params['rank']}"
+    out = basix_format(string, {i: j for i, j in params.items() if i != "shape"})
+    if "shape" in params:
+        out += f", shape={params['shape']}"
     return out
 
 
@@ -161,8 +161,14 @@ def basix_ufl_example(element):
             if "discontinuous" in params:
                 assert params["discontinuous"] in ["True", "False"]
                 out += f", discontinuous={params['discontinuous']}"
-            if "rank" in params:
-                out += f", rank={params['rank']}"
+            if "shape" in params:
+                if ref == "interval":
+                    dim = 1
+                elif ref in ["triangle", "quadrilateral"]:
+                    dim = 2
+                else:
+                    dim = 3
+                out += ", shape=" + params["shape"].replace("gdim", f"{gdim}")
             out += ")"
     return out
 

@@ -30,7 +30,7 @@ polynomial-set:
 implementations:
   symfem: vector Q
   ufl: Q type=VectorElement
-  basix.ufl: P lagrange_variant=equispaced rank=1
+  basix.ufl: P lagrange_variant=equispaced shape=(dim,)
 examples:
   - quadrilateral,1
   - quadrilateral,2
