@@ -168,7 +168,7 @@ def basix_ufl_example(element):
                     dim = 2
                 else:
                     dim = 3
-                out += ", shape=" + params["shape"].replace("gdim", f"{gdim}")
+                out += ", shape=" + params["shape"].replace("dim", f"{dim}")
             out += ")"
     return out
 
@@ -343,8 +343,15 @@ def basix_ufl_tabulate(element, example, points):
         kwargs["dpc_variant"] = getattr(basix.DPCVariant, params['dpc_variant'])
     if "discontinuous" in params:
         kwargs["discontinuous"] = params["discontinuous"] == "True"
-    if "rank" in params:
-        kwargs["rank"] = int(params["rank"])
+    if "shape" in params:
+        if ref == "interval":
+            dim = 1
+        elif ref in ["triangle", "quadrilateral"]:
+            dim = 2
+        else:
+            dim = 3
+        kwargs["shape"] = tuple(
+            dim if i == "dim" else int(i) for i in params["shape"][1:-1].split(",") if i != "")
 
     e = basix.ufl.element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
