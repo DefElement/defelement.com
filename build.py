@@ -575,7 +575,10 @@ content += (
     "</td></tr>"
     f"<tr><td>{orange_check}</td><td>Verification passes for some examples, but not all</td></tr>"
     f"<tr><td>{red_check}</td><td>Verification fails for all examples</td></tr>"
-    "</table>")
+    "</table>"
+    "<br /><br />"
+    "The verification data is also available <a href='https://raw.githubusercontent.com/mscroggs/"
+    "defelement.com/verification/verification.json' target='new'>in JSON format</a>.")
 
 content += heading_with_self_ref("h2", "Verification GitHub badges")
 content += "<table class='bordered align-left'>"
