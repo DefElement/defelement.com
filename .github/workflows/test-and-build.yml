@@ -184,8 +184,12 @@ jobs:
 
       - run: mkdir ../verification
         name: Make dir
+      - run: python3 verify.py ../verification/verification.json --test auto --processes 4
+        name: Run verification test
+        if: github.ref != 'refs/heads/main'
       - run: python3 verify.py ../verification/verification.json --processes 4
         name: Run verification
+        if: github.ref == 'refs/heads/main'
       - run: |
           cd ../verification
           git config --global user.email "symfem@mscroggs.co.uk"
