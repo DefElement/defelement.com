@@ -1,0 +1,60 @@
+name: Test and build
+
+on:
+  schedule:
+    - cron: "0 7 1,16 * *"
+
+jobs:
+  verification:
+    name: Run verification
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc-10
+      CXX: g++-10
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - uses: actions/checkout@v3
+
+      - name: Load Symfem cache
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/runner/.cache/symfem
+          key: symfem-cache
+
+      - name: Clone Symfem
+        uses: actions/checkout@v3
+        with:
+          path: ./symfem
+          repository: mscroggs/symfem
+          ref: main
+      - name: Install Symfem
+        run: |
+            cd symfem
+            pip3 install .[optional]
+
+      - run: pip3 install -r requirements.txt
+        name: Install requirements
+
+      - name: Install implementations
+        run: python install_implementations.py --install-type verification
+
+      - run: mkdir ../verification
+        name: Make dir
+      - run: python3 verify.py ../verification/verification.json --processes 4
+        name: Run verification
+      - run: |
+          cd ../verification
+          git config --global user.email "symfem@mscroggs.co.uk"
+          git config --global user.name "Finite Element Bot"
+          git init
+          git checkout -b verification
+          git add .
+          git commit -m "verification.json"
+          git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
+          git push -u origin verification --force
+        name: Push to GitHub
