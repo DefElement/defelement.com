@@ -110,7 +110,7 @@ else:
     results = manager.dict()
     for i in range(p):
         process = multiprocessing.Process(
-            target=verify,
+            target=verify_examples,
             args=(elements_to_verify[n_egs * i // p: n_egs * (i + 1) // p], f"[{i}] ", results)
         )
         jobs.append(process)

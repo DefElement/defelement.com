@@ -1,4 +1,5 @@
 import re
+from .utils import to_array
 
 
 class VariantNotImplemented(BaseException):
@@ -258,14 +259,6 @@ def fiat_example(element):
                 out += f", {i}=\"{j}\""
         out += ")"
     return out
-
-
-def to_array(data):
-    import numpy as np
-
-    if isinstance(data, (list, tuple)):
-        return np.array([to_array(i) for i in data])
-    return float(data)
 
 
 def symfem_create_element(element, example):

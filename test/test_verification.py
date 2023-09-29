@@ -48,7 +48,7 @@ def test_hermite_vs_lagrange():
     assert not verify("triangle", info0, info1)
 
 
-def xtest_verify_bdm_vs_n2():
+def test_verify_bdm_vs_n2():
     with open(os.path.join(element_path, "brezzi-douglas-marini.def")) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     e0 = Element(data, "brezzi-douglas-marini")
