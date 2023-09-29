@@ -1,4 +1,5 @@
 import re
+from .utils import to_array
 
 
 class VariantNotImplemented(BaseException):
@@ -260,14 +261,6 @@ def fiat_example(element):
     return out
 
 
-def to_array(data):
-    import numpy as np
-
-    if isinstance(data, (list, tuple)):
-        return np.array([to_array(i) for i in data])
-    return float(data)
-
-
 def symfem_create_element(element, example):
     import symfem
 
@@ -280,7 +273,24 @@ def symfem_create_element(element, example):
     return symfem.create_element(ref, symfem_name, ord, **params)
 
 
-def symfem_tabulate(element, example, points):
+class CachedSymfemTabulator:
+    def __init__(self, element):
+        self.element = element
+        self.tables = []
+
+    def tabulate(self, points):
+        import numpy as np
+
+        for i, j in self.tables:
+            if i.shape == points.shape and np.allclose(i, points):
+                return j
+        shape = (points.shape[0], self.element.range_dim, self.element.space_dim)
+        table = to_array(self.element.tabulate_basis(points, "xx,yy,zz")).reshape(shape)
+        self.tables.append((points, table))
+        return table
+
+
+def symfem_verify(element, example):
     import symfem
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -290,13 +300,13 @@ def symfem_tabulate(element, example, points):
     if ref == "dual polygon":
         ref += "(4)"
     e = symfem.create_element(ref, symfem_name, ord, **params)
-    table = to_array(e.tabulate_basis(points, "xx,yy,zz"))
-    edofs = tuple(tuple(len(e.entity_dofs(i, j)) for j in range(e.reference.sub_entity_count(i)))
-                  for i in range(e.reference.tdim + 1))
-    return table.reshape(table.shape[0], e.range_dim, e.space_dim), edofs
+    edofs = [[e.entity_dofs(i, j) for j in range(e.reference.sub_entity_count(i))]
+             for i in range(e.reference.tdim + 1)]
+    t = CachedSymfemTabulator(e)
+    return edofs, lambda points: t.tabulate(points)
 
 
-def basix_tabulate(element, example, points):
+def basix_verify(element, example):
     import basix
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -319,11 +329,10 @@ def basix_tabulate(element, example, points):
     e = basix.create_element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    edofs = tuple(tuple(len(j) for j in i) for i in e.entity_dofs)
-    return e.tabulate(0, points)[0].transpose((0, 2, 1)), edofs
+    return e.entity_dofs, lambda points: e.tabulate(0, points)[0].transpose((0, 2, 1))
 
 
-def basix_ufl_tabulate(element, example, points):
+def basix_ufl_verify(element, example):
     import basix
     import basix.ufl
 
@@ -354,13 +363,12 @@ def basix_ufl_tabulate(element, example, points):
             dim if i == "dim" else int(i) for i in params["shape"][1:-1].split(",") if i != "")
 
     e = basix.ufl.element(
-        getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
-        **kwargs)
-    edofs = tuple(tuple(len(j) for j in i) for i in e.entity_dofs)
-    return e.tabulate(0, points)[0].reshape(points.shape[0], e.value_size, -1), edofs
+        getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord, **kwargs)
+    return e.entity_dofs, lambda points: e.tabulate(0, points)[0].reshape(
+        points.shape[0], e.value_size, -1)
 
 
-def fiat_tabulate(element, example, points):
+def fiat_verify(element, example):
     import FIAT
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -391,16 +399,13 @@ def fiat_tabulate(element, example, points):
         args.append(ord)
 
     e = getattr(FIAT, fiat_name)(cell, *args, **{i: j for i, j in params.items() if i != "order"})
-    out = list(e.tabulate(0, points).values())[0]
 
-    def product(ls):
-        out = 1
-        for i in ls:
-            out *= i
-        return out
-
-    edofs = tuple(tuple(len(j) for j in i.values()) for i in e.entity_dofs().values())
-    return out.T.reshape(points.shape[0], product(e.value_shape()), -1), edofs
+    value_size = 1
+    for i in e.value_shape():
+        value_size *= i
+    edofs = [list(i.values()) for i in e.entity_dofs().values()]
+    return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+        points.shape[0], value_size, -1)
 
 
 formats = {
@@ -422,8 +427,8 @@ examples = {
 }
 
 verifications = {
-    "symfem": symfem_tabulate,
-    "basix": basix_tabulate,
-    "basix.ufl": basix_ufl_tabulate,
-    "fiat": fiat_tabulate,
+    "symfem": symfem_verify,
+    "basix": basix_verify,
+    "basix.ufl": basix_ufl_verify,
+    "fiat": fiat_verify,
 }
