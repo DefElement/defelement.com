@@ -115,7 +115,7 @@ def verify(ref, info0, info1):
                 ed1 = edofs1[d][e]
                 t0 = tab0(pts)[:, :, ed0]
                 t1 = tab1(pts)[:, :, ed1]
-                if not same_span(t0, t1):
+                if not same_span(t0, t1, False):
                     return False
 
     return True
