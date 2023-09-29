@@ -145,7 +145,7 @@ jobs:
         if: ${{ github.event.pull_request.head.repo.fork }}
 
   verification:
-    name: Run verification
+    name: Test verification
     runs-on: ubuntu-latest
     env:
       CC: gcc-10
@@ -182,32 +182,13 @@ jobs:
       - name: Install implementations
         run: python install_implementations.py --install-type verification
 
-      - run: mkdir ../verification
-        name: Make dir
-      - run: python3 verify.py ../verification/verification.json --test auto --processes 4
+      - run: python3 verify.py verification.json --test auto --processes 4
         name: Run verification test
-        if: github.ref != 'refs/heads/main'
-      - run: python3 verify.py ../verification/verification.json --processes 4
-        name: Run verification
-        if: github.ref == 'refs/heads/main'
-      - run: |
-          cd ../verification
-          git config --global user.email "symfem@mscroggs.co.uk"
-          git config --global user.name "Finite Element Bot"
-          git init
-          git checkout -b verification
-          git add .
-          git commit -m "verification.json"
-          git remote add origin https://symfembot:${{ secrets.bot_github_token }}@github.com/mscroggs/defelement.com.git
-          git push -u origin verification --force
-        name: Push to GitHub
-        if: github.ref == 'refs/heads/main'
 
   build-and-push-website:
     name: Build and deploy defelement.com
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: verification
 
     permissions:
       contents: read
