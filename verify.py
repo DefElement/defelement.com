@@ -1,5 +1,4 @@
 import os
-import basix
 import json
 import argparse
 import numpy as np
@@ -13,23 +12,25 @@ def points(ref):
     import numpy as np
 
     if ref == "interval":
-        return np.array([[i / 15] for i in range(16)])
+        return np.array([[i / 20] for i in range(21)])
+
     if ref == "quadrilateral":
-        return np.array([[i / 10, j / 10] for i in range(11) for j in range(11)])
-    if ref == "hexahedron":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7) for k in range(7)])
+        return np.array([[i / 15, j / 15] for i in range(16) for j in range(16)])
     if ref == "triangle":
-        return np.array([[i / 10, j / 10] for i in range(11) for j in range(11 - i)])
+        return np.array([[i / 15, j / 15] for i in range(16) for j in range(16 - i)])
+
+    if ref == "hexahedron":
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11) for k in range(11)])
     if ref == "tetrahedron":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7 - i) for k in range(7 - i - j)])
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11 - i) for k in range(11 - i - j)])
     if ref == "prism":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7 - i) for k in range(7)])
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11 - i) for k in range(11)])
     if ref == "pyramid":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7) for k in range(7 - max(i, j))])
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11) for k in range(11 - max(i, j))])
 
     raise ValueError(f"Unsupported cell type: {ref}")
 
@@ -87,24 +88,6 @@ def allclose_maybe_permuted(table0, table1):
     return True
 
 
-def legendre_coefficients(tabulate, cell, max_degree):
-    celltype = getattr(basix.CellType, cell)
-    pts, wts = basix.make_quadrature(celltype, max_degree * 2)
-    # Evaluate function at quadrature points
-    values = tabulate(pts)
-    # Evaluate orthogonal basis at quadrature points
-    poly = basix.tabulate_polynomials(basix.PolynomialType.legendre, celltype, max_degree, pts)
-    # Create matrix
-    mat = np.zeros((values.shape[2], poly.shape[0] * values.shape[1]))
-    # a_ij = sum_k(w_k function_i(p_k) * legendre_j(p_k))
-    for i in range(values.shape[2]):
-        for j in range(poly.shape[0]):
-            for v in range(values.shape[1]):
-                for k in range(pts.shape[0]):
-                    mat[i, j * values.shape[1] + v] += wts[k] * values[k, v, i] * poly[j, k]
-    return mat
-
-
 def verify(egs, process="", result_dict=None):
     green = "\033[32m"
     red = "\033[31m"
@@ -113,41 +96,45 @@ def verify(egs, process="", result_dict=None):
 
     results = {}
     for e, eg, implementations in egs:
+        if e.filename not in results:
+            results[e.filename] = {}
         symfem_e = symfem_create_element(e, eg)
-        max_degree = symfem_e.maximum_degree
         if "pyramid" in eg:
             continue
 
+        pts = points(symfem_e.reference.name)
         tables = {}
         for i in implementations:
             try:
-                tables[i] = legendre_coefficients(
-                    lambda pts: verifications[i](e, eg, pts),
-                    symfem_e.reference.name, max_degree)
+                t, edofs = verifications[i](e, eg, pts)
+                ndofs = t.shape[-1]
+                tables[i] = (t.reshape(-1, ndofs).T, edofs)
             except ImportError:
                 print(f"{process}{i} not installed")
             except NotImplementedError:
-                if e.filename not in results:
-                    results[e.filename] = {}
                 if i not in results[e.filename]:
                     results[e.filename][i] = {"pass": [], "fail": [], "not implemented": []}
                 results[e.filename][i]["not implemented"].append(eg)
                 print(f"{process}{e.filename} {i} {eg} {blue}\u2013{default}")
         if len(tables) > 0:
-            sym_table = legendre_coefficients(
-                lambda pts: verifications["symfem"](e, eg, pts),
-                symfem_e.reference.name, max_degree)
-            for i, t in tables.items():
-                stack = np.vstack([sym_table, t])
-                rank = np.linalg.matrix_rank(stack)
-                if e.filename not in results:
-                    results[e.filename] = {}
+            sym_table, sym_edofs = verifications["symfem"](e, eg, pts)
+            ndofs = sym_table.shape[-1]
+            sym_table = sym_table.reshape(-1, ndofs).T
+            for i, (t, ed) in tables.items():
                 if i not in results[e.filename]:
                     results[e.filename][i] = {"pass": [], "fail": [], "not implemented": []}
-                if rank == sym_table.shape[0]:
+                try:
+                    assert t.shape == sym_table.shape
+
+                    assert ed == sym_edofs
+
+                    stack = np.vstack([sym_table, t])
+                    rank = np.linalg.matrix_rank(stack)
+                    assert rank == sym_table.shape[0]
+
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
-                else:
+                except AssertionError:
                     results[e.filename][i]["fail"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {red}\u2715{default}")
     if result_dict is not None:

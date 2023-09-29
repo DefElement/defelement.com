@@ -285,7 +285,9 @@ def symfem_tabulate(element, example, points):
         ref += "(4)"
     e = symfem.create_element(ref, symfem_name, ord, **params)
     table = to_array(e.tabulate_basis(points, "xx,yy,zz"))
-    return table.reshape(table.shape[0], e.range_dim, e.space_dim)
+    edofs = tuple(tuple(len(e.entity_dofs(i, j)) for j in range(e.reference.sub_entity_count(i)))
+                  for i in range(e.reference.tdim + 1))
+    return table.reshape(table.shape[0], e.range_dim, e.space_dim), edofs
 
 
 def basix_tabulate(element, example, points):
@@ -311,7 +313,8 @@ def basix_tabulate(element, example, points):
     e = basix.create_element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    return e.tabulate(0, points)[0].transpose((0, 2, 1))
+    edofs = tuple(tuple(len(j) for j in i) for i in e.entity_dofs)
+    return e.tabulate(0, points)[0].transpose((0, 2, 1)), edofs
 
 
 def basix_ufl_tabulate(element, example, points):
@@ -340,7 +343,8 @@ def basix_ufl_tabulate(element, example, points):
     e = basix.ufl.element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    return e.tabulate(0, points)[0].reshape(points.shape[0], e.value_size, -1)
+    edofs = tuple(tuple(len(j) for j in i) for i in e.entity_dofs)
+    return e.tabulate(0, points)[0].reshape(points.shape[0], e.value_size, -1), edofs
 
 
 def fiat_tabulate(element, example, points):
@@ -382,7 +386,8 @@ def fiat_tabulate(element, example, points):
             out *= i
         return out
 
-    return out.T.reshape(points.shape[0], product(e.value_shape()), -1)
+    edofs = tuple(tuple(len(j) for j in i.values()) for i in e.entity_dofs().values())
+    return out.T.reshape(points.shape[0], product(e.value_shape()), -1), edofs
 
 
 formats = {
