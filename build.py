@@ -528,7 +528,7 @@ with open(os.path.join(badges, "symfem.svg"), "w") as f:
 
 # Make verification page
 content = heading_with_self_ref("h1", "Verification")
-content += "<table class='bordered align-left'>"
+content += "<table style='margin:auto' class='bordered align-left'>"
 content += "<thead>"
 content += "<tr><td>Element</td>"
 vs = []
@@ -557,9 +557,28 @@ for e in categoriser.elements:
     row += "</tr>"
     rows.append((row, n))
 rows.sort(key=lambda i: -i[1])
-content += "".join(i[0] for i in rows)
+for i in rows:
+    if i[1] > 0:
+        content += i[0]
 content += "</thead>"
 content += "</table>"
+content += "<br /><br />"
+content += (
+    "For each element in the table above, the verification test passes for an example if:"
+    "<ol>"
+    "<li>The element's basis functions span the same space as Symfem.</li>"
+    "<li>The number of DOFs associated with each sub-entity of the cell is the same as Symfem.</li>"
+    "</ol>"
+    "The symbols in the table have the following meaning:"
+    "<table style='margin:auto' class='bordered align-left'>"
+    f"<tr><td>{green_check}</td><td>Verification passes from all the examples on the element's page"
+    "</td></tr>"
+    f"<tr><td>{orange_check}</td><td>Verification passes for some examples, but not all</td></tr>"
+    f"<tr><td>{red_check}</td><td>Verification fails for all examples</td></tr>"
+    "</table>"
+    "<br /><br />"
+    "The verification data is also available <a href='https://raw.githubusercontent.com/mscroggs/"
+    "defelement.com/verification/verification.json' target='new'>in JSON format</a>.")
 
 content += heading_with_self_ref("h2", "Verification GitHub badges")
 content += "<table class='bordered align-left'>"

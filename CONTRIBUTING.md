@@ -122,12 +122,11 @@ You should add functions to these that do the following:
   element's page.
 * The functions in `examples` take a DefElement `Element` object as an input and return a block
   of Python (as a string) that creates all the examples of that element using the library.
-* [optional] The functions in `verifications` take a DefElement `Element` object and an example as
-  inputs and return the element for that example tabulated at the set of points given by the
-  function `points`. The shape of the output of these functions are
-  `(number of points, value size, number of basis functions)`. These functions are used to
-  [verify](https://defelement.com/verification.html) that the implementation has the same basis
-  functions as Symfem.
+* [optional] The functions in `verifications` take a DefElement `Element` object, an example, and
+  a set of points as inputs and returns the element for that example tabulated at the set of points and
+  the number of DOFs associated with each sub-entity as a tuple of tuples.
+  The shape of the first output is `(number of points, value size, number of basis functions)`.
+  These functions are used to [verify](https://defelement.com/verification.html) that the implementation spans the same space as Symfem.
 
 Once these steps are done, you can start adding implementation details for your library to
 the `implementation` field of elements in the [`elements`](https://github.com/mscroggs/defelement.com/blob/main/elements)

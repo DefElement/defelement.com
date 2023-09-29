@@ -27,9 +27,9 @@ def basix_format(string, params):
 
 
 def basix_ufl_format(string, params):
-    out = basix_format(string, {i: j for i, j in params.items() if i != "rank"})
-    if "rank" in params:
-        out += f", rank={params['rank']}"
+    out = basix_format(string, {i: j for i, j in params.items() if i != "shape"})
+    if "shape" in params:
+        out += f", shape={params['shape']}"
     return out
 
 
@@ -161,8 +161,14 @@ def basix_ufl_example(element):
             if "discontinuous" in params:
                 assert params["discontinuous"] in ["True", "False"]
                 out += f", discontinuous={params['discontinuous']}"
-            if "rank" in params:
-                out += f", rank={params['rank']}"
+            if "shape" in params:
+                if ref == "interval":
+                    dim = 1
+                elif ref in ["triangle", "quadrilateral"]:
+                    dim = 2
+                else:
+                    dim = 3
+                out += ", shape=" + params["shape"].replace("dim", f"{dim}")
             out += ")"
     return out
 
@@ -254,31 +260,6 @@ def fiat_example(element):
     return out
 
 
-def points(ref):
-    import numpy as np
-
-    if ref == "interval":
-        return np.array([[i / 15] for i in range(16)])
-    if ref == "quadrilateral":
-        return np.array([[i / 10, j / 10] for i in range(11) for j in range(11)])
-    if ref == "hexahedron":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7) for k in range(7)])
-    if ref == "triangle":
-        return np.array([[i / 10, j / 10] for i in range(11) for j in range(11 - i)])
-    if ref == "tetrahedron":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7 - i) for k in range(7 - i - j)])
-    if ref == "prism":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7 - i) for k in range(7)])
-    if ref == "pyramid":
-        return np.array([[i / 6, j / 6, k / 6]
-                         for i in range(7) for j in range(7) for k in range(7 - max(i, j))])
-
-    raise ValueError(f"Unsupported cell type: {ref}")
-
-
 def to_array(data):
     import numpy as np
 
@@ -287,7 +268,19 @@ def to_array(data):
     return float(data)
 
 
-def symfem_tabulate(element, example):
+def symfem_create_element(element, example):
+    import symfem
+
+    ref, ord, variant, kwargs = parse_example(example)
+    ord = int(ord)
+    symfem_name, params = element.get_implementation_string("symfem", ref, variant)
+    assert symfem_name is not None
+    if ref == "dual polygon":
+        ref += "(4)"
+    return symfem.create_element(ref, symfem_name, ord, **params)
+
+
+def symfem_tabulate(element, example, points):
     import symfem
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -297,11 +290,13 @@ def symfem_tabulate(element, example):
     if ref == "dual polygon":
         ref += "(4)"
     e = symfem.create_element(ref, symfem_name, ord, **params)
-    table = to_array(e.tabulate_basis(points(ref), "xx,yy,zz"))
-    return table.reshape(table.shape[0], e.range_dim, e.space_dim)
+    table = to_array(e.tabulate_basis(points, "xx,yy,zz"))
+    edofs = tuple(tuple(len(e.entity_dofs(i, j)) for j in range(e.reference.sub_entity_count(i)))
+                  for i in range(e.reference.tdim + 1))
+    return table.reshape(table.shape[0], e.range_dim, e.space_dim), edofs
 
 
-def basix_tabulate(element, example):
+def basix_tabulate(element, example, points):
     import basix
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -324,10 +319,11 @@ def basix_tabulate(element, example):
     e = basix.create_element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    return e.tabulate(0, points(ref))[0].transpose((0, 2, 1))
+    edofs = tuple(tuple(len(j) for j in i) for i in e.entity_dofs)
+    return e.tabulate(0, points)[0].transpose((0, 2, 1)), edofs
 
 
-def basix_ufl_tabulate(element, example):
+def basix_ufl_tabulate(element, example, points):
     import basix
     import basix.ufl
 
@@ -347,17 +343,24 @@ def basix_ufl_tabulate(element, example):
         kwargs["dpc_variant"] = getattr(basix.DPCVariant, params['dpc_variant'])
     if "discontinuous" in params:
         kwargs["discontinuous"] = params["discontinuous"] == "True"
-    if "rank" in params:
-        kwargs["rank"] = int(params["rank"])
+    if "shape" in params:
+        if ref == "interval":
+            dim = 1
+        elif ref in ["triangle", "quadrilateral"]:
+            dim = 2
+        else:
+            dim = 3
+        kwargs["shape"] = tuple(
+            dim if i == "dim" else int(i) for i in params["shape"][1:-1].split(",") if i != "")
 
     e = basix.ufl.element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
         **kwargs)
-    pts = points(ref)
-    return e.tabulate(0, pts)[0].reshape(pts.shape[0], e.value_size, -1)
+    edofs = tuple(tuple(len(j) for j in i) for i in e.entity_dofs)
+    return e.tabulate(0, points)[0].reshape(points.shape[0], e.value_size, -1), edofs
 
 
-def fiat_tabulate(element, example):
+def fiat_tabulate(element, example, points):
     import FIAT
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -388,8 +391,7 @@ def fiat_tabulate(element, example):
         args.append(ord)
 
     e = getattr(FIAT, fiat_name)(cell, *args, **{i: j for i, j in params.items() if i != "order"})
-    pts = points(ref)
-    out = list(e.tabulate(0, pts).values())[0]
+    out = list(e.tabulate(0, points).values())[0]
 
     def product(ls):
         out = 1
@@ -397,7 +399,8 @@ def fiat_tabulate(element, example):
             out *= i
         return out
 
-    return out.T.reshape(pts.shape[0], product(e.value_shape()), -1)
+    edofs = tuple(tuple(len(j) for j in i.values()) for i in e.entity_dofs().values())
+    return out.T.reshape(points.shape[0], product(e.value_shape()), -1), edofs
 
 
 formats = {

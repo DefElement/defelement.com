@@ -25,7 +25,7 @@ polynomial-set:
 implementations:
   symfem: vector Lagrange
   ufl: Lagrange type=VectorElement
-  basix.ufl: P lagrange_variant=equispaced rank=1
+  basix.ufl: P shape=(dim,) lagrange_variant=equispaced rank=1
 examples:
   - triangle,1
   - triangle,2

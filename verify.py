@@ -5,7 +5,35 @@ import numpy as np
 from datetime import datetime
 from builder import settings
 from builder.element import Categoriser
-from builder.implementations import verifications
+from builder.implementations import verifications, symfem_create_element
+
+
+def points(ref):
+    import numpy as np
+
+    if ref == "interval":
+        return np.array([[i / 20] for i in range(21)])
+
+    if ref == "quadrilateral":
+        return np.array([[i / 15, j / 15] for i in range(16) for j in range(16)])
+    if ref == "triangle":
+        return np.array([[i / 15, j / 15] for i in range(16) for j in range(16 - i)])
+
+    if ref == "hexahedron":
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11) for k in range(11)])
+    if ref == "tetrahedron":
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11 - i) for k in range(11 - i - j)])
+    if ref == "prism":
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11 - i) for k in range(11)])
+    if ref == "pyramid":
+        return np.array([[i / 10, j / 10, k / 10]
+                         for i in range(11) for j in range(11) for k in range(11 - max(i, j))])
+
+    raise ValueError(f"Unsupported cell type: {ref}")
+
 
 start_all = datetime.now()
 
@@ -68,30 +96,45 @@ def verify(egs, process="", result_dict=None):
 
     results = {}
     for e, eg, implementations in egs:
+        if e.filename not in results:
+            results[e.filename] = {}
+        symfem_e = symfem_create_element(e, eg)
+        if "pyramid" in eg:
+            continue
+
+        pts = points(symfem_e.reference.name)
         tables = {}
         for i in implementations:
             try:
-                tables[i] = verifications[i](e, eg)
+                t, edofs = verifications[i](e, eg, pts)
+                ndofs = t.shape[-1]
+                tables[i] = (t.reshape(-1, ndofs).T, edofs)
             except ImportError:
                 print(f"{process}{i} not installed")
             except NotImplementedError:
-                if e.filename not in results:
-                    results[e.filename] = {}
                 if i not in results[e.filename]:
                     results[e.filename][i] = {"pass": [], "fail": [], "not implemented": []}
                 results[e.filename][i]["not implemented"].append(eg)
                 print(f"{process}{e.filename} {i} {eg} {blue}\u2013{default}")
         if len(tables) > 0:
-            sym_table = verifications["symfem"](e, eg)
-            for i, t in tables.items():
-                if e.filename not in results:
-                    results[e.filename] = {}
+            sym_table, sym_edofs = verifications["symfem"](e, eg, pts)
+            ndofs = sym_table.shape[-1]
+            sym_table = sym_table.reshape(-1, ndofs).T
+            for i, (t, ed) in tables.items():
                 if i not in results[e.filename]:
                     results[e.filename][i] = {"pass": [], "fail": [], "not implemented": []}
-                if sym_table.shape == t.shape and allclose_maybe_permuted(sym_table, t):
+                try:
+                    assert t.shape == sym_table.shape
+
+                    assert ed == sym_edofs
+
+                    stack = np.vstack([sym_table, t])
+                    rank = np.linalg.matrix_rank(stack)
+                    assert rank == sym_table.shape[0]
+
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
-                else:
+                except AssertionError:
                     results[e.filename][i]["fail"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {red}\u2715{default}")
     if result_dict is not None:
