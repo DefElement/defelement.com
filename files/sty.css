@@ -31,6 +31,7 @@ a.nou, a.nou:link, a.nou:active, a.nou:visited, a.nou:hover {text-decoration:non
 
 .content {max-width:740px;margin:auto;padding:35px 10px;background-color:rgba(255,255,255,0.9)}
 .footer .content {padding:10px}
+.footer .content a {margin-right:10px;margin-left:10px}
 
 .title {text-align:center;font-size:35px}
 .tagline {text-align:center;font-size:25px;color:#44AAFF}
@@ -48,14 +49,14 @@ p {text-align:justify}
 .head a {text-decoration:none}
 
 .egdetail {display:none}
-.egdetail.current {display:block; border:2px solid black; overflow-x:scroll;padding-bottom:10px;
+.egdetail.current {display:block; border:2px solid #000000; overflow-x:scroll;padding-bottom:10px;
                    overflow-y:clip}
 
 a.eglink {margin-right:10px;display:inline-block;padding:5px;border:2px solid #AAAAAA;color:#AAAAAA;
           border-bottom:none;border-radius:10px 10px 0px 0px;text-decoration:none;text-align:center}
-a.eglink.current {border:2px solid black;color:black; border-bottom:none}
+a.eglink.current {border:2px solid #000000;color:#000000; border-bottom:none}
 a.eglink.current:hover,
-a.eglink.current {color:black}
+a.eglink.current {color:#000000}
 a.eglink:hover {color:#FF8800}
 
 .citations li {font-size:90%}
@@ -68,7 +69,7 @@ li {margin-bottom:10px;margin-top:10px}
 .basisf {border-bottom:2px dashed #AAAAAA}
 .basisf:last-of-type {border-bottom:none}
 
-a.refid, a.refid:visited, a.refid:link, a.refid:active, a.refid:hover {color:black}
+a.refid, a.refid:visited, a.refid:link, a.refid:active, a.refid:hover {color:#000000}
 a.refid:target {font-weight:bold; color:#FF8800}
 
 table.bordered, table.bordered tr, table.bordered td
@@ -102,10 +103,10 @@ a.show_eg_link, a.hide_eg_link {font-size:80%;padding-top:10px;padding-bottom:10
 
 p.pcode {margin-left:50px;margin-right:50px;font-family:monospace;white-space:nowrap;}
 
-table.families tr td {text-align:center; border-top:2px solid black; font-size:small; padding:5px}
+table.families tr td {text-align:center; border-top:2px solid #000000; font-size:small; padding:5px}
 table.families tr:first-of-type td {border-top:none; font-size:unset;}
 table.families {border-collapse:collapse;}
-table.families tr td:nth-of-type(1) {border-right: 2px dashed black;}
+table.families tr td:nth-of-type(1) {border-right: 2px dashed #000000;}
 
 img.person {float:right;width:200px;margin-left:20px;border-radius: 50%;margin-top:30px}
 

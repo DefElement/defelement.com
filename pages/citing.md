@@ -1,7 +1,16 @@
+# Reusing content from DefElement
+The text, images, and other content on this website (excluding Font Awesome, which is released under [its own license](https://github.com/mscroggs/defelement.com/blob/main/files/fontawesome/LICENSE.txt))
+may be reused under the terms of a
+[Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/): this means
+that you can reuse any of the content as long as you attribute DefElement.
+For reuse on a website, you could attribute us by including a link to DefElement;
+for reuse in print, you could attribute us by including "DefElement" somewhere near the image or information;
+for reuse in a paper, you could cite DefElement.
+
+The DefElement logo can be found on the [branding page](branding.md).
+
 # Citing this website
 
-The text, images, and other content on this website may be reused under the terms of a
-[Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/).
 The code used to generate this website is available on [GitHub](https://github.com/mscroggs/defelement.com)
 under an [MIT license](https://github.com/mscroggs/defelement.com/blob/main/LICENSE.txt).
 

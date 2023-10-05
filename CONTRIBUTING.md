@@ -132,6 +132,9 @@ Once these steps are done, you can start adding implementation details for your 
 the `implementation` field of elements in the [`elements`](https://github.com/mscroggs/defelement.com/blob/main/elements)
 folder.
 
+## Style guide
+When contributing to DefElement, you should follow [the DefElement style guide](https://defelement.com/style-guide.html).
+
 ## Adding yourself to the contributors list
 Once you have contributed to DefElement, you should add your name and some information about yourself to the [contributors page](https://defelement.com/contributors.html).
 To do this, you should add info about yourself to the file [data/contributors](https://github.com/mscroggs/defelement.com/blob/main/data/contributors). If you wish to include a picture of yourself,

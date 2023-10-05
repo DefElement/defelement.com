@@ -43,13 +43,13 @@ dimensional function space. These function spaces are commonly defined using a f
 on a reference element to derive basis functions for the space. This website contains a collection
 of finite elements, and examples of the basis functions they define.
 
-Following the [Ciarlet definition](ciarlet.md) of a finite element, the elements on this website
+Following the Ciarlet definition of a finite element, the elements on this website
 are defined using a reference element, a polynomial space, and a set of functionals. Each element's
 page describes how these are defined for that element, and gives examples of these and the basis
 functions they lead to for a selection of low-order spaces.
 
 You can read a detailed description of how the finite element definitions can be understood
-[here](ciarlet.md).
+on the [how to understand a finite element page](ciarlet.md).
 
 ## Contributing to DefElement
 If you find an error or inaccuracy in a DefElement entry, please open
@@ -58,10 +58,16 @@ You can also open an issue to suggest a new element that should be added to the 
 
 Alternatively, you could fork the [DefElement GitHub repo](https://github.com/mscroggs/defelement.com),
 make the changes yourself, and open a pull request. You can find more information about adding
-an element to DefElement [here](contributing.md).
+an element to DefElement on the [contributing page](contributing.md).
 
 The functional information and examples on the element pages are generated using
 [Symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
 Before adding an element to DefElement, it should first be implemented in Symfem.
 
-A list of everyone who has contributed to DefElement can be found [here](contributors.md).
+A list of everyone who has contributed to DefElement can be found on the [contributors page](contributors.md).
+
+## Licensing and reuse
+All the information and images on DefElement are licensed under a 
+[Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/): this means
+that you can reuse them as long as you attribute DefElement.
+Full details of the licenses and attributions can be found on the [citing page](citing.md).
