@@ -164,7 +164,9 @@ def preprocess(content):
         if file.endswith(".md"):
             if f"{{{{{file}}}}}" in content:
                 with open(os.path.join(settings.dir_path, file)) as f:
-                    content = content.replace(f"{{{{{file}}}}}", f.read().replace("](https://defelement.com", "]("))
+                    content = content.replace(
+                        f"{{{{{file}}}}}",
+                        f.read().replace("](https://defelement.com", "]("))
 
     if "{{list contributors}}" in content:
         content = content.replace("{{list contributors}}", list_contributors())
