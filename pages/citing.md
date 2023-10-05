@@ -1,4 +1,6 @@
-# Reusing content from DefElement
+# Reusing & citing
+
+## Reusing content from DefElement
 The text, images, and other content on this website (excluding Font Awesome, which is released under [its own license](https://github.com/mscroggs/defelement.com/blob/main/files/fontawesome/LICENSE.txt))
 may be reused under the terms of a
 [Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/): this means
@@ -9,7 +11,7 @@ for reuse in a paper, you could cite DefElement.
 
 The DefElement logo can be found on the [branding page](branding.md).
 
-# Citing this website
+## Citing DefElement
 
 The code used to generate this website is available on [GitHub](https://github.com/mscroggs/defelement.com)
 under an [MIT license](https://github.com/mscroggs/defelement.com/blob/main/LICENSE.txt).
@@ -34,7 +36,7 @@ This will create a reference along the lines of:
 <li>{{list contributors|citation}}. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
 </ul>
 
-## DefElement poster
+### DefElement poster
 
 You may also wish to cite the [DefElement poster](https://doi.org/10.6084/m9.figshare.23294939.v1) that was presented at [FEniCS 2023](https://fenicsproject.org/fenics-2023/).
 To cite this, you can use the following BibTeX:

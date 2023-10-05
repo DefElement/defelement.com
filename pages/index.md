@@ -1,4 +1,4 @@
-<div id='sideplots' style='float:right;width:220px;padding:10px'>
+<div id='sideplots' style='float:right;width:220px;padding:10px 0px 20px 40px'>
 <div>{{plot::triangle,Raviart-Thomas,1::1}}</div>
 <div style='font-size:80%;color:#AAAAAA;text-align:center'>A basis function of an order 1 [Raviart&ndash;Thomas space](element::raviart-thomas) on a triangle</div>
 <div>{{plot::quadrilateral,Q,2::3}}</div>
@@ -15,13 +15,14 @@ This website contains a collection of definitions of finite elements,
 including commonly used elements such as
 [Lagrange](element::lagrange),
 [Raviart&ndash;Thomas](element::raviart-thomas),
-[N&eacute;d&eacute;lec (first kind)](element::nedelec1)
+[N&eacute;d&eacute;lec (first kind)](element::nedelec1),
 and
 [N&eacute;d&eacute;lec (second kind)](element::nedelec2)
 elements,
 and more exotic elements such as
-[serendipity H(div)](element::sdiv),
-[serendipity H(curl)](element::scurl)
+[serendipity](element::serendipity),
+[Hermite](element::hermite),
+[P1-iso-P2](element::p1-iso-p2),
 and
 [Regge](element::regge)
 elements.

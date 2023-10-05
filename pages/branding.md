@@ -7,6 +7,9 @@ The name of this encyclopedia is DefElement. It should be written with a capital
 <div style='text-align:center'><img src='/logo-250.png'></div>
 The DefElement logo was designed by Matthew Scroggs, and uses letters from the [Varela Round](https://fonts.google.com/specimen/Varela+Round/about) font
 that was designed by Joe Prince.
+The font can be reused under the same license as the other content on DefElement
+([Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/)).
+More information can be found on the [citing & reuse page](citing.md).
 
 * [DefElement logo 250&times;250px](/logo-250.png)
 * [DefElement logo 1000&times;1000px](/logo-1000.png)
