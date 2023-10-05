@@ -1,12 +1,7 @@
+MIT (builder/, templates/, test/, build.py)
+
 MIT License
-
-This license applies to:
-  - The contents of builder/
-  - The contents of templates/
-  - The contents of test/
-  - The file build.py
-
-Copyright (c) 2020 Matthew Scroggs
+Copyright (c) 2020 Matthew Scroggs & other contributors to DefElement
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
