@@ -29,11 +29,11 @@ python build.py --test lagrange,raviart-thomas
 
 ## Licensing
 
-The code to generate and test the DefElement website (contained in `builder/`, `templates/`, and `test/`
-plus the file `build.py`) is released under an [MIT license](LICENSE.txt).
-The content of the DefElement website itself (including that in `elements/`, `files/`, `pages/`)
-is released under a
-[Creative Commons Attribution 4.0 International (CC BY 4.0) license](LICENSE-CC.txt).
-Font Awesome (contained in `files/fontawesome`) is released under a
-[Font Awesome Free License](files/fontawesome/LICENSE.txt).
+The code to generate and test the DefElement website (`builder/`, `templates/`, `test/`, `build.py`, `verify.py`)
+is released under an [MIT license](LICENSE.txt).
+
+The content of the DefElement website itself (including `data/`, `elements/`, `files/`, `pages/`, `people/`)
+is released under a [Creative Commons Attribution 4.0 International (CC BY 4.0) license](LICENSE-CC.txt).
+
+Font Awesome (`files/fontawesome`) is released under a [Font Awesome Free License](files/fontawesome/LICENSE.txt).
 
