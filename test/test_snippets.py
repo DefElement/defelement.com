@@ -1,7 +1,7 @@
 import pytest
 import os
-from builder.element import Categoriser
-from builder.implementations import examples
+from defelement.element import Categoriser
+from defelement.implementations import examples
 
 dir = os.path.dirname(os.path.realpath(__file__))
 c = Categoriser()

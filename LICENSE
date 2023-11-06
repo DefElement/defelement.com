@@ -1,4 +1,4 @@
-MIT (builder/, templates/, test/, build.py, verification.py, install_implementations.py)
+MIT (defelement/, templates/, test/, build.py, verification.py, install_implementations.py)
 
 MIT License
 Copyright (c) 2020 Matthew Scroggs & other contributors to DefElement

@@ -1,7 +1,7 @@
 import argparse
 import os
 import yaml
-from builder import implementations
+from defelement import implementations
 
 parser = argparse.ArgumentParser(description="Install implementations")
 parser.add_argument('--install-type', default="all",

@@ -29,7 +29,7 @@ python build.py --test lagrange,raviart-thomas
 
 ## Licensing
 
-The code to generate and test the DefElement website (`builder/`, `templates/`, `test/`, `build.py`, `verify.py`, `install_implementations.py`)
+The code to generate and test the DefElement website (`defelement/`, `templates/`, `test/`, `build.py`, `verify.py`, `install_implementations.py`)
 is released under an [MIT license](LICENSE.txt).
 
 The content of the DefElement website itself (including `data/`, `elements/`, `files/`, `pages/`, `people/`)

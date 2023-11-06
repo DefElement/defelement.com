@@ -76,7 +76,7 @@ The style checks will check that the Python scripts that generate DefElement pas
 If you've changed these scripts, you can run these checks locally by running:
 
 ```bash
-python3 -m flake8 builder build.py test
+python3 -m flake8 defelement build.py test
 ```
 
 Before you can run the tests or do a test build, you'll need to install DefElement's requirements:
@@ -113,7 +113,7 @@ library to the file [`/data/implementations`](https://github.com/mscroggs/defele
 You must include three key pieces of information about the library: its `name`, `url`, and a bash command to `install` it.
 These three pieces of information are filed under an `id` for your library.
 
-Once this has been done, you should next add the library to [`builder/implementations.py`](https://github.com/mscroggs/defelement.com/blob/main/builder/implementations.py).
+Once this has been done, you should next add the library to [`defelement/implementations.py`](https://github.com/mscroggs/defelement.com/blob/main/defelement/implementations.py).
 At the end of this file, there are three dictionaries, mapping the `id` of a library to a function.
 You should add functions to these that do the following:
 
