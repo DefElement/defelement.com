@@ -4,16 +4,17 @@ import argparse
 import symfem
 from datetime import datetime
 from symfem import create_element
-from builder import plotting, settings
-from builder.markup import markup, insert_links, python_highlight, cap_first, heading_with_self_ref
-from builder.examples import markup_example
-from builder.citations import markup_citation, make_bibtex
-from builder.element import Categoriser
-from builder.html import make_html_page
-from builder.implementations import parse_example, verifications
-from builder.tools import parse_metadata, insert_author_info, html_local
-from builder.families import keys_and_names
-from builder.rss import make_rss
+from defelement import plotting, settings
+from defelement.markup import (markup, insert_links, python_highlight, cap_first,
+                               heading_with_self_ref)
+from defelement.examples import markup_example
+from defelement.citations import markup_citation, make_bibtex
+from defelement.element import Categoriser
+from defelement.html import make_html_page
+from defelement.implementations import parse_example, verifications
+from defelement.tools import parse_metadata, insert_author_info, html_local
+from defelement.families import keys_and_names
+from defelement.rss import make_rss
 
 start_all = datetime.now()
 

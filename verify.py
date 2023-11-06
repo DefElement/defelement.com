@@ -3,10 +3,10 @@ import json
 import argparse
 import numpy as np
 from datetime import datetime
-from builder import settings
-from builder.element import Categoriser
-from builder.implementations import verifications
-from builder.verification import verify
+from defelement import settings
+from defelement.element import Categoriser
+from defelement.implementations import verifications
+from defelement.verification import verify
 
 start_all = datetime.now()
 

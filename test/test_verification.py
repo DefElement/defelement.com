@@ -1,9 +1,9 @@
 import os
 import yaml
 
-from builder.element import Element
-from builder.implementations import verifications
-from builder.verification import verify
+from defelement.element import Element
+from defelement.implementations import verifications
+from defelement.verification import verify
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 element_path = os.path.join(dir_path, "../elements")
