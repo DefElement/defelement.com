@@ -404,6 +404,21 @@ def fiat_verify(element, example):
     for i in e.value_shape():
         value_size *= i
     edofs = [list(i.values()) for i in e.entity_dofs().values()]
+    if ref == "quadrilateral":
+        edofs = [
+            [edofs[0][0], edofs[0][2], edofs[0][1], edofs[0][3]],
+            [edofs[1][2], edofs[1][0], edofs[1][1], edofs[1][3]],
+            [edofs[2][0]],
+        ]
+    if ref == "hexahedron":
+        edofs = [
+            [edofs[0][0], edofs[0][4], edofs[0][2], edofs[0][6],
+             edofs[0][1], edofs[0][5], edofs[0][3], edofs[0][7]],
+            [edofs[1][8], edofs[1][4], edofs[1][0], edofs[1][6], edofs[1][2], edofs[1][10],
+             edofs[1][1], edofs[1][3], edofs[1][9], edofs[1][5], edofs[1][7], edofs[1][11]],
+            [edofs[2][4], edofs[2][2], edofs[2][0], edofs[2][1], edofs[2][3], edofs[2][5]],
+            [edofs[3][0]],
+        ]
     return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
         points.shape[0], value_size, -1)
 

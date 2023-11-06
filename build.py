@@ -5,7 +5,8 @@ import symfem
 from datetime import datetime
 from symfem import create_element
 from defelement import plotting, settings
-from defelement.markup import markup, insert_links, python_highlight, cap_first, heading_with_self_ref
+from defelement.markup import (markup, insert_links, python_highlight, cap_first,
+                               heading_with_self_ref)
 from defelement.examples import markup_example
 from defelement.citations import markup_citation, make_bibtex
 from defelement.element import Categoriser
