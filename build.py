@@ -127,9 +127,12 @@ cdescs = {
     "H(curl curl)": "Inner products with tangents to facets are continuous"}
 
 verification = {}
+v_date = None
 if os.path.isfile(settings.verification_json):
     with open(settings.verification_json) as f:
-        verification = json.load(f)
+        v_json = json.load(f)
+        verification = v_json["verification"]
+        v_date = v_json["metadata"]["date"]
 
 icon_style = "font-size:150%;vertical-align:middle"
 text_style = "font-size:80%;vertical-align:middle"
@@ -529,6 +532,11 @@ with open(os.path.join(badges, "symfem.svg"), "w") as f:
 
 # Make verification page
 content = heading_with_self_ref("h1", "Verification")
+if v_date is not None:
+    year, month, day = [int(i) for i in v_date.split("-")]
+    monthname = ["Zeromber", "January", "February", "March", "April", "May", "June",
+                 "July", "August", "September", "October", "November", "December"][month]
+    content += f"<small>Last updated: {day} {monthname} {year}</small><br /><br />"
 content += "<table style='margin:auto' class='bordered align-left'>"
 content += "<thead>"
 content += "<tr><td>Element</td>"

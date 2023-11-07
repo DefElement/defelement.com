@@ -138,4 +138,7 @@ else:
                     data[i0][i1][i2] += j2
 
 with open(settings.verification_json, "w") as f:
-    json.dump(data, f)
+    json.dump({
+        "metadata": {"date": datetime.now().strftime("%Y-%m-%d")},
+        "verification": data,
+    }, f)

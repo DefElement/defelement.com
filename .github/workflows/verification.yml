@@ -3,6 +3,7 @@ name: Verification
 on:
   schedule:
     - cron: "0 7 1,16 * *"
+  workflow_dispatch:
 
 jobs:
   verification:
