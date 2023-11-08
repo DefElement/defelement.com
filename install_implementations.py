@@ -1,3 +1,5 @@
+"""Install all supported implementations."""
+
 import argparse
 import os
 

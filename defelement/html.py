@@ -3,8 +3,8 @@
 import os
 import typing
 
-from . import settings
-from .markup import insert_dates
+from defelement import settings
+from defelement.markup import insert_dates
 
 
 def make_html_page(content: str, pagetitle: typing.Optional[str] = None) -> str:

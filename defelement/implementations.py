@@ -5,22 +5,24 @@ import typing
 
 from symfem.finite_element import FiniteElement
 
-from .element import Element
-from .tools import to_array
+from defelement.tools import to_array
 
 if typing.TYPE_CHECKING:
     from numpy import float64
     from numpy.typing import NDArray
+
+    from defelement.element import Element
     Array = NDArray[float64]
 else:
-    Array = ""
+    Array = typing.Any
+    Element = typing.Any
 
 
 class VariantNotImplemented(BaseException):
     """Error for variants that are not implemented."""
 
 
-def symfem_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
+def symfem_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
     """Format Symfem implementation string.
 
     Args:
@@ -37,7 +39,7 @@ def symfem_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
     return out
 
 
-def basix_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
+def basix_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
     """Format Basix implementation string.
 
     Args:
@@ -59,7 +61,7 @@ def basix_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
     return out
 
 
-def basix_ufl_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
+def basix_ufl_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
     """Format basix.ufl implementation string.
 
     Args:
@@ -75,7 +77,7 @@ def basix_ufl_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
     return out
 
 
-def string_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
+def string_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
     """Format implementation string.
 
     Args:
@@ -88,7 +90,7 @@ def string_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
     return f"\"{string}\""
 
 
-def fiat_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
+def fiat_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
     """Format FIAT implementation string.
 
     Args:
@@ -111,7 +113,10 @@ def fiat_format(string: str, params: typing.Dict[str, typing.Any]) -> str:
     return out
 
 
-def _parse_value(v: str) -> typing.Union[int, str, typing.List[typing.Union[int, str]]]:
+ValueType = typing.Union[int, str, typing.List["ValueType"]]
+
+
+def _parse_value(v: str) -> ValueType:
     """Parse a string.
 
     Args:
@@ -131,8 +136,8 @@ def _parse_value(v: str) -> typing.Union[int, str, typing.List[typing.Union[int,
 def parse_example(
     e: str
 ) -> typing.Tuple[
-    str, int, str,
-    typing.Dict[str, typing.Union[int, str, typing.List[typing.Union[int, str]]]]
+    str, int, typing.Optional[str],
+    typing.Dict[str, typing.Union[int, str, typing.List[ValueType]]]
 ]:
     """Parse an example.
 
@@ -420,7 +425,7 @@ class CachedSymfemTabulator:
             element: Symfem element
         """
         self.element = element
-        self.tables = []
+        self.tables: typing.List[typing.Tuple[Array, Array]] = []
 
     def tabulate(self, points: Array) -> Array:
         """Tabulate this element.
@@ -437,14 +442,16 @@ class CachedSymfemTabulator:
             if i.shape == points.shape and np.allclose(i, points):
                 return j
         shape = (points.shape[0], self.element.range_dim, self.element.space_dim)
-        table = to_array(self.element.tabulate_basis(points, "xx,yy,zz")).reshape(shape)
+        table = to_array(self.element.tabulate_basis(points, "xx,yy,zz"))
+        assert not isinstance(table, float)
+        table = table.reshape(shape)
         self.tables.append((points, table))
         return table
 
 
 def symfem_verify(
     element: Element, example: str
-) -> typing.Tuple[typing.List[typing.List[int]], typing.Callable[Array, Array]]:
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
     """Get verification data for Symfem.
 
     Args:
@@ -471,7 +478,7 @@ def symfem_verify(
 
 def basix_verify(
     element: Element, example: str
-) -> typing.Tuple[typing.List[typing.List[int]], typing.Callable[Array, Array]]:
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
     """Get verification data for Basix.
 
     Args:
@@ -508,7 +515,7 @@ def basix_verify(
 
 def basix_ufl_verify(
     element: Element, example: str
-) -> typing.Tuple[typing.List[typing.List[int]], typing.Callable[Array, Array]]:
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
     """Get verification data for basix.ufl.
 
     Args:
@@ -520,6 +527,8 @@ def basix_ufl_verify(
     """
     import basix
     import basix.ufl
+
+    kwargs: typing.Dict[str, typing.Any]
 
     ref, ord, variant, kwargs = parse_example(example)
     assert len(kwargs) == 0
@@ -555,7 +564,7 @@ def basix_ufl_verify(
 
 def fiat_verify(
     element: Element, example: str
-) -> typing.Tuple[typing.List[typing.List[int]], typing.Callable[Array, Array]]:
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
     """Get verification data for FIAT.
 
     Args:

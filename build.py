@@ -1,6 +1,9 @@
+"""Build DefElement website."""
+
 import argparse
 import json
 import os
+import typing
 from datetime import datetime
 
 import symfem
@@ -35,7 +38,14 @@ parser.add_argument('--verification-json', metavar="verification_json", default=
 sitemap = {}
 
 
-def write_html_page(path, title, content):
+def write_html_page(path: str, title: str, content: str):
+    """Write a HTML page.
+
+    Args:
+        path: Page path
+        title: Page title
+        content: Page content
+    """
     global sitemap
     assert html_local(path) not in sitemap
     sitemap[html_local(path)] = title
@@ -414,8 +424,8 @@ for e in categoriser.elements:
                 name = f"{cell}<br />order {order}"
                 if variant is not None:
                     name += f"<br />{e.variant_name(variant)} variant"
-                for i, j in kwargs.items():
-                    name += f"<br />{i}={str(j).replace(' ', '&nbsp;')}"
+                for key, value in kwargs.items():
+                    name += f"<br />{key}={str(value).replace(' ', '&nbsp;')}"
 
                 eginfo = {
                     "name": name, "args": [cell, symfem_name, order], "kwargs": kwargs,
@@ -442,12 +452,12 @@ for e in categoriser.elements:
     if len(refs) > 0:
         content += heading_with_self_ref("h2", "References")
         content += "<ul class='citations'>\n"
-        for i, r in enumerate(refs):
+        for rindex, r in enumerate(refs):
             content += f"<li>{markup_citation(r)}"
-            content += f" [<a href='/elements/bibtex/{e.filename}-{i}.bib'>BibTeX</a>]</li>\n"
+            content += f" [<a href='/elements/bibtex/{e.filename}-{rindex}.bib'>BibTeX</a>]</li>\n"
             with open(os.path.join(settings.htmlelement_path,
-                                   f"bibtex/{e.filename}-{i}.bib"), "w") as f:
-                f.write(make_bibtex(f"{e.filename}-{i}", r))
+                                   f"bibtex/{e.filename}-{rindex}.bib"), "w") as f:
+                f.write(make_bibtex(f"{e.filename}-{rindex}", r))
         content += "</ul>"
 
     # Write created and updated dates
@@ -470,10 +480,10 @@ for i, v in verifications.items():
     if i != "symfem":
         good = 0
         total = 0
-        for j in verification.values():
-            if i in j:
-                good += len(j[i]["pass"])
-                total += len(j[i]["pass"]) + len(j[i]["fail"])
+        for v in verification.values():
+            if i in v:
+                good += len(v[i]["pass"])
+                total += len(v[i]["pass"]) + len(v[i]["fail"])
         proportion = f"{good} / {total}"
         p = 0 if total == 0 else good / total
         if p < 0.4:
@@ -568,9 +578,9 @@ for e in categoriser.elements:
     row += "</tr>"
     rows.append((row, n))
 rows.sort(key=lambda i: -i[1])
-for i in rows:
-    if i[1] > 0:
-        content += i[0]
+for r in rows:
+    if r[1] > 0:
+        content += r[0]
 content += "</thead>"
 content += "</table>"
 content += "<br /><br />"
@@ -610,7 +620,13 @@ write_html_page(os.path.join(settings.html_path, "verification.html"),
                 "Verification", content)
 
 
-def build_examples(egs, process=""):
+def build_examples(egs: typing.List[typing.Dict[str, str]], process: str = ""):
+    """Build examples.
+
+    Args:
+        egs: Examples
+        process: String to print on this process
+    """
     for eg in egs:
         start = datetime.now()
 
@@ -636,21 +652,21 @@ else:
     n_egs = len(all_examples)
 
     jobs = []
-    for i in range(p):
+    for pindex in range(p):
         process = multiprocessing.Process(
             target=build_examples,
-            args=(all_examples[n_egs * i // p: n_egs * (i + 1) // p], f"[{i}] ")
+            args=(all_examples[n_egs * pindex // p: n_egs * (pindex + 1) // p], f"[{pindex}] ")
         )
         jobs.append(process)
 
-    for j in jobs:
-        j.start()
+    for job in jobs:
+        job.start()
 
-    for j in jobs:
-        j.join()
+    for job in jobs:
+        job.join()
 
-    for j in jobs:
-        assert j.exitcode == 0
+    for job in jobs:
+        assert job.exitcode == 0
 
 # Index page
 content = heading_with_self_ref("h1", "Index of elements")
@@ -898,9 +914,9 @@ content = heading_with_self_ref("h1", "Reference cell numbering")
 content += "<p>This page illustrates the entity numbering used for each reference cell.</p>"
 for cell in categoriser.references.keys():
     if cell == "dual polygon":
-        for i in [4, 5, 6]:
-            content += heading_with_self_ref("h2", f"Dual polygon ({i})")
-            content += plotting.plot_reference(symfem.create_reference(f"dual polygon({i})"))
+        for nsides in [4, 5, 6]:
+            content += heading_with_self_ref("h2", f"Dual polygon ({nsides})")
+            content += plotting.plot_reference(symfem.create_reference(f"dual polygon({nsides})"))
     else:
         content += heading_with_self_ref("h2", cap_first(cell))
         content += plotting.plot_reference(symfem.create_reference(cell))
@@ -910,13 +926,23 @@ write_html_page(os.path.join(settings.html_path, "reference_numbering.html"),
 
 
 # Families
-def linked_names(dim, fname, cell):
+def linked_names(dim: str, fname: str, cell: str) -> str:
+    """Create list of linked names.
+
+    Args:
+        dim: Dimension
+        fname: Filename
+        cell: Reference cell
+
+    Returns:
+        List of linked names
+    """
     out = []
-    for key, name in keys_and_names:
+    for key, cname in keys_and_names:
         if key in data:
             out.append(
                 f"<a href='/families/{fname}.html'>"
-                "\\(" + name(data[key], cell=cell, dim=dim) + "\\)"
+                "\\(" + cname(data[key], cell=cell, dim=dim) + "\\)"
                 "</a>")
     return ", ".join(out)
 
@@ -926,13 +952,13 @@ de_rham_2d = []
 
 for fname, data in categoriser.families["de-rham"].items():
     family = data["elements"]
-    names = []
-    for key, name in keys_and_names:
+    cnames = []
+    for key, cname in keys_and_names:
         if key in data:
-            names.append("\\(" + name(data[key], dim=3) + "\\)")
-    if len(names) == 0:
+            cnames.append("\\(" + cname(data[key], dim=3) + "\\)")
+    if len(cnames) == 0:
         raise ValueError(f"No name found for family: {fname}")
-    sub_content = heading_with_self_ref("h1", "The " + " / ".join(names) + " family")
+    sub_content = heading_with_self_ref("h1", "The " + " / ".join(cnames) + " family")
 
     assert len([i for i in ["simplex", "tp"] if i in family]) == 1
 
@@ -940,36 +966,36 @@ for fname, data in categoriser.families["de-rham"].items():
     for cell in ["simplex", "tp"]:
         if cell in family:
 
-            for order in ["0", "1", "d-1", "d"]:
-                if order in family[cell]:
-                    sub_content += f"<li><a href='/elements/{family[cell][order][1]}'"
+            for o in ["0", "1", "d-1", "d"]:
+                if o in family[cell]:
+                    sub_content += f"<li><a href='/elements/{family[cell][o][1]}'"
                     sub_content += " style='text-decoration:none'>"
-                    names = []
-                    for key, name in keys_and_names:
+                    sub_names = []
+                    for key, cname in keys_and_names:
                         if key in data:
-                            names.append("\\(" + name(data[key], order, cell) + "\\)")
-                    sub_content += " / ".join(names)
-                    sub_content += f" ({family[cell][order][0]})</a></li>"
+                            sub_names.append("\\(" + cname(data[key], o, cell) + "\\)")
+                    sub_content += " / ".join(sub_names)
+                    sub_content += f" ({family[cell][o][0]})</a></li>"
 
-            if all(i in family[cell] for i in ["0", "1", "d-1", "d"]):
+            if all(o in family[cell] for o in ["0", "1", "d-1", "d"]):
                 row3d = "<tr>"
-                row3d += f"<td>{linked_names(3, fname, cell)}</td>"
-                for order in ["0", "1", "d-1", "d"]:
-                    row3d += f"<td><a href='/elements/{family[cell][order][1]}'"
+                row3d += f"<td>{linked_names('3', fname, cell)}</td>"
+                for o in ["0", "1", "d-1", "d"]:
+                    row3d += f"<td><a href='/elements/{family[cell][o][1]}'"
                     row3d += " style='text-decoration:none'>"
-                    row3d += f"{family[cell][order][0]}</a></td>"
-                    if order != "d":
+                    row3d += f"{family[cell][o][0]}</a></td>"
+                    if o != "d":
                         row3d += "<td>&nbsp;</td>"
                 row3d += "</tr>"
                 de_rham_3d.append(row3d)
             if all(i in family[cell] for i in ["0", "d-1", "d"]):
                 row2d = "<tr>"
-                row2d += f"<td>{linked_names(2, fname, cell)}</td>"
-                for order in ["0", "d-1", "d"]:
-                    row2d += f"<td><a href='/elements/{family[cell][order][1]}'"
+                row2d += f"<td>{linked_names('2', fname, cell)}</td>"
+                for o in ["0", "d-1", "d"]:
+                    row2d += f"<td><a href='/elements/{family[cell][o][1]}'"
                     row2d += " style='text-decoration:none'>"
-                    row2d += f"{family[cell][order][0]}</a></td>"
-                    if order != "d":
+                    row2d += f"{family[cell][o][0]}</a></td>"
+                    if o != "d":
                         row2d += "<td>&nbsp;</td>"
                 row2d += "</tr>"
                 de_rham_2d.append(row2d)
@@ -1022,7 +1048,15 @@ write_html_page(os.path.join(settings.htmlindices_path, "index.html"), "Lists of
 sitemap[html_local(os.path.join(settings.html_path, "sitemap.html"))] = "List of all pages"
 
 
-def list_pages(folder):
+def list_pages(folder: str) -> str:
+    """Create list of pages in a folder.
+
+    Args:
+        folder: The folder
+
+    Returns:
+        List of pages
+    """
     items = []
     if folder == "":
         items.append(("A", "<li><a href='/index.html'>Front page</a>"))

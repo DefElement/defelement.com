@@ -22,7 +22,7 @@ def markup_authors(a: typing.Union[str, typing.List[str]]) -> str:
             return ", ".join(a[:-1]) + ", and " + a[-1]
 
 
-def markup_citation(r: typing.Dict[typing.Any]) -> str:
+def markup_citation(r: typing.Dict[str, typing.Any]) -> str:
     """Markup citations.
 
     Args:
@@ -92,7 +92,7 @@ def html_to_tex(txt: str) -> str:
     return txt
 
 
-def make_bibtex(id: str, r: typing.Dict[typing.Any]) -> str:
+def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
     """Make BibTex.
 
     Args:

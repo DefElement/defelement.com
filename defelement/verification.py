@@ -4,14 +4,14 @@ import typing
 
 import symfem
 
-from .tools import to_array
+from defelement.tools import to_array
 
 if typing.TYPE_CHECKING:
     from numpy import float64
     from numpy.typing import NDArray
     Array = NDArray[float64]
 else:
-    Array = ""
+    Array = typing.Any
 
 
 def points(ref: str) -> Array:
@@ -52,7 +52,7 @@ def points(ref: str) -> Array:
     raise ValueError(f"Unsupported cell type: {ref}")
 
 
-def entity_points(ref: str) -> Array:
+def entity_points(ref: str) -> typing.List[typing.List[Array]]:
     """Get tabulation points for sub-entities of a reference cell.
 
     Args:
@@ -75,17 +75,6 @@ def entity_points(ref: str) -> Array:
                 for p in epts]))
         out.append(row)
     return out
-
-    if ref == "interval":
-        return [
-            [np.array([[0.0]]), np.array([[1.0]])]
-        ]
-    if ref == "triangle":
-        return [
-            [np.array([[0.0, 0.0]]), np.array([[1.0, 0.0]]), np.array()]
-        ]
-
-    raise ValueError(f"Unsupported cell type: {ref}")
 
 
 def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
@@ -119,8 +108,10 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
 
 def verify(
     ref: str,
-    info0: typing.Tuple[typing.List[typing.List[int]], typing.Callable[Array, Array]],
-    info1: typing.Tuple[typing.List[typing.List[int]], typing.Callable[Array, Array]]
+    info0: typing.Tuple[typing.List[typing.List[typing.List[int]]],
+                        typing.Callable[[Array], Array]],
+    info1: typing.Tuple[typing.List[typing.List[typing.List[int]]],
+                        typing.Callable[[Array], Array]],
 ) -> bool:
     """Run verification.
 

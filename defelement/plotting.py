@@ -5,10 +5,10 @@ import typing
 from datetime import datetime
 
 import sympy
+from symfem.finite_element import FiniteElement
 from symfem.plotting import Picture, colors
 
-from . import settings
-from .eelement import Element
+from defelement import settings
 
 now = datetime.now()
 svg_desc = (
@@ -73,8 +73,8 @@ def do_the_plot(
         HTML for plot
     """
     global all_plots
-    from .html import make_html_page
-    from .markup import cap_first, heading_with_self_ref
+    from defelement.html import make_html_page
+    from defelement.markup import cap_first, heading_with_self_ref
 
     filename = filename.replace(" ", "-")
 
@@ -141,7 +141,7 @@ def plot_reference(ref, link: bool = True) -> str:
                        scale=300, link=link)
 
 
-def plot_function(element: Element, dof_i: int, link: bool = True) -> str:
+def plot_function(element: FiniteElement, dof_i: int, link: bool = True) -> str:
     """Plot a functions.
 
     Args:
@@ -165,7 +165,9 @@ def plot_function(element: Element, dof_i: int, link: bool = True) -> str:
     return do_the_plot(filename, desc, element.plot_basis_function, [dof_i], link=link)
 
 
-def plot_basis_functions(element: Element, link: bool = True) -> str:
+def plot_basis_functions(
+    element: FiniteElement, link: bool = True
+) -> typing.List[typing.Optional[str]]:
     """Plot basis functions of an element.
 
     Args:
@@ -185,7 +187,7 @@ def plot_basis_functions(element: Element, link: bool = True) -> str:
     return [plot_function(element, i, link=link) for i in range(element.space_dim)]
 
 
-def _parse_point(points: str, n: int) -> typing.Tuple[float, float]:
+def _parse_point(points: typing.List[str], n: int) -> typing.Tuple[float, float]:
     """Parge a point.
 
     Args:
@@ -219,8 +221,8 @@ def plot_img(img_filename: str, link: bool = True) -> str:
     filename = f"img-{img_filename}"
     with open(os.path.join(settings.img_path, f"{img_filename}.img")) as f:
         for line in f:
-            if ":" in f:
-                a, b = f.split(":", 1)
+            if ":" in line:
+                a, b = line.split(":", 1)
                 metadata[a.strip()] = b.strip()
     desc = metadata["DESC"]
 
@@ -250,7 +252,7 @@ def plot_img(img_filename: str, link: bool = True) -> str:
     return do_the_plot(filename, desc, actual_plot, link=link)
 
 
-def plot_dof_diagram(element: Element, link: bool = True) -> str:
+def plot_dof_diagram(element: FiniteElement, link: bool = True) -> str:
     """Plot a DOF diagram.
 
     Args:

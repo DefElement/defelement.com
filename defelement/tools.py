@@ -4,27 +4,27 @@ import typing
 
 import yaml
 
-from . import settings
-from .markup import preprocess
+from defelement import settings
+from defelement.markup import preprocess
 
 if typing.TYPE_CHECKING:
     from numpy import float64
     from numpy.typing import NDArray
     Array = NDArray[float64]
 else:
-    Array = ""
+    Array = typing.Any
 
 
-def parse_metadata(content: str) -> typing.Dict[str, typing.Any]:
+def parse_metadata(content: str) -> typing.Tuple[typing.Dict[str, typing.Any], str]:
     """Parse metadata.
 
     Args:
         content: Raw data
 
     Returns:
-        Parsed metadata
+        Parsed metadata and content without metadata
     """
-    metadata = {"title": None}
+    metadata: typing.Dict[str, typing.Any] = {"title": None}
     if content.startswith("--\n"):
         metadata_in, content = content[3:].split("\n--\n", 1)
         metadata.update(yaml.load(metadata_in, Loader=yaml.FullLoader))
@@ -65,7 +65,7 @@ def html_local(path: str) -> str:
 
 def to_array(
     data: typing.Union[Array, typing.List[typing.Any], typing.Tuple[typing.Any, ...]]
-) -> Array:
+) -> typing.Union[float, Array]:
     """Convert to an array."""
     import numpy as np
 

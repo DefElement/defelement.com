@@ -12,10 +12,10 @@ import symfem
 import yaml
 from github import Github
 
-from . import plotting, settings, symbols
-from .citations import markup_citation
+from defelement import plotting, settings, symbols
+from defelement.citations import markup_citation
 
-page_references = []
+page_references: typing.List[str] = []
 
 
 def cap_first(txt: str) -> str:
@@ -59,9 +59,9 @@ def format_names(names: typing.List[str], format: str) -> str:
     else:
         formatted_names = []
         for n in names:
-            n = n.split(", ")
+            nsp = n.split(", ")
             name = ""
-            for i in n[:0:-1]:
+            for i in nsp[:0:-1]:
                 for j in i.split(" "):
                     name += f"{j[0]}. "
             name += n[0]
@@ -70,12 +70,12 @@ def format_names(names: typing.List[str], format: str) -> str:
             if len(formatted_names) <= 2:
                 return " ".join(formatted_names)
             else:
-                return ", ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
+                return ", ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
         else:
             if len(formatted_names) <= 2:
                 return " and ".join(formatted_names)
             else:
-                return ", and ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
+                return ", and ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
 
 
 def list_contributors(format: str = "html") -> str:
@@ -367,7 +367,7 @@ def insert_links(txt: str) -> str:
     return txt
 
 
-def code_include(matches: typing.List[str]) -> str:
+def code_include(matches: typing.Match[str]) -> str:
     """Format code snippet.
 
     Args:
@@ -383,7 +383,7 @@ def code_include(matches: typing.List[str]) -> str:
     return out
 
 
-def author_info(matches: typing.List[str]) -> str:
+def author_info(matches: typing.Match[str]) -> str:
     """Format author info.
 
     Args:
@@ -422,7 +422,7 @@ def author_info(matches: typing.List[str]) -> str:
     return out
 
 
-def plot_element(matches: typing.List[str]) -> str:
+def plot_element(matches: typing.Match[str]) -> str:
     """Plot element.
 
     Args:
@@ -441,7 +441,7 @@ def plot_element(matches: typing.List[str]) -> str:
             "</center>")
 
 
-def plot_single_element(matches: typing.List[str]) -> str:
+def plot_single_element(matches: typing.Match[str]) -> str:
     """Plot a single element.
 
     Args:
@@ -458,7 +458,7 @@ def plot_single_element(matches: typing.List[str]) -> str:
     return f"<center>{plotting.plot_function(e, int(matches[4]))}</center>"
 
 
-def plot_reference(matches: typing.List[str]) -> str:
+def plot_reference(matches: typing.Match[str]) -> str:
     """Plot references.
 
     Args:
@@ -471,7 +471,7 @@ def plot_reference(matches: typing.List[str]) -> str:
     return f"<center>{plotting.plot_reference(e)}</center>"
 
 
-def plot_img(matches: typing.List[str]) -> str:
+def plot_img(matches: typing.Match[str]) -> str:
     """Plot an image.
 
     Args:
@@ -484,7 +484,7 @@ def plot_img(matches: typing.List[str]) -> str:
     return f"<center>{plotting.plot_img(e)}</center>"
 
 
-def add_citation(matches: typing.List[str]) -> str:
+def add_citation(matches: typing.Match[str]) -> str:
     """Add citation.
 
     Args:

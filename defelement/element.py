@@ -8,14 +8,16 @@ from datetime import datetime
 import yaml
 from github import Github
 
-from . import implementations, settings
-from .families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
-from .implementations import VariantNotImplemented
-from .markup import insert_links
-from .polyset import make_extra_info, make_poly_set
+from defelement import implementations, settings
+from defelement.families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
+from defelement.implementations import VariantNotImplemented
+from defelement.markup import insert_links
+from defelement.polyset import make_extra_info, make_poly_set
 
 
-def make_dof_data(ndofs: typing.Union[typing.Dict[str, str], typing.List[str]]) -> str:
+def make_dof_data(
+    ndofs: typing.Union[typing.Dict[str, typing.Any], typing.List[typing.Dict[str, typing.Any]]]
+) -> str:
     """Make DOF data.
 
     Args:
@@ -80,7 +82,7 @@ class Element:
         """
         self.data = data
         self.filename = fname
-        self._c = None
+        self._c: typing.Optional[Categoriser] = None
         self.created = None
         self.modified = None
 
@@ -136,7 +138,7 @@ class Element:
             return self.data["min-order"][ref]
         return self.data["min-order"]
 
-    def max_order(self, ref: str) -> int:
+    def max_order(self, ref: str) -> typing.Optional[int]:
         """Get the maximum order.
 
         Args:
@@ -188,7 +190,7 @@ class Element:
             return []
         out = self.data["alt-names"]
         if include_complexes:
-            out += self.family_names(link=link)
+            out += self.complexes(link=link)
         if include_variants and "variants" in self.data:
             for v in self.data["variants"].values():
                 if "names" in v:
@@ -246,7 +248,9 @@ class Element:
             return None
         return self.data["sobolev"]
 
-    def complexes(self, link: bool = True, names: bool = True) -> typing.Dict[str, str]:
+    def complexes(
+        self, link: bool = True, names: bool = True
+    ) -> typing.Dict[str, typing.List[str]]:
         """Get complexes.
 
         Args:
@@ -256,10 +260,12 @@ class Element:
         Returns:
             Complexes
         """
+        assert self._c is not None
+
         if "complexes" not in self.data:
             return {}
 
-        out = {}
+        out: typing.Dict[str, typing.List[str]] = {}
         com = self.data["complexes"]
         for key, families in com.items():
             out[key] = []
@@ -336,6 +342,8 @@ class Element:
             List of sub-elements
         """
         assert self.is_mixed
+        assert self._c is not None
+
         out = []
         for e in self.data["mixed"]:
             element, order = e.split("(")
@@ -354,17 +362,18 @@ class Element:
             return ""
 
         def dofs_on_entity(
-            entity: typing.Tuple[int, int], dofs: typing.Union[str, typing.List[str]]
+            entity: str, dofs: typing.Union[str, typing.List[str]]
         ) -> str:
             """Get DOFs on an entity.
 
             Args:
-                entity: The dimension and index of the entity
+                entity: The entity name
                 dofs: The dofs
 
             Returns:
                 Formatted DOFs
             """
+            assert self._c is not None
             if not isinstance(dofs, str):
                 doflist = [dofs_on_entity(entity, d) for d in dofs]
                 return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
@@ -431,7 +440,7 @@ class Element:
         # TODO: move some of this to polynomial file
         if "polynomial-set" not in self.data:
             return ""
-        psets = {}
+        psets: typing.Dict[str, typing.List[str]] = {}
         for i, j in self.data["polynomial-set"].items():
             if j not in psets:
                 psets[j] = []
@@ -561,8 +570,8 @@ class Element:
         return "implementations" in self.data and lib in self.data["implementations"]
 
     def get_implementation_string(
-        self, lib: str, reference: str, variant: typing.Optional[str] = None
-    ) -> str:
+        self, lib: str, reference: typing.Optional[str], variant: typing.Optional[str] = None
+    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, str]]:
         """Get implementation string.
 
         Args:
@@ -598,10 +607,6 @@ class Element:
 
         return out, params
 
-        if " variant=" in out:
-            return out.split(" variant=")
-        return out, None
-
     def list_of_implementation_strings(
         self, lib: str, joiner: typing.Union[None, str] = "<br />"
     ) -> typing.Union[str, typing.List[str]]:
@@ -624,7 +629,7 @@ class Element:
         else:
             variants = {None: {}}
 
-        i_dict = {}
+        i_dict: typing.Dict[str, typing.List[str]] = {}
         for v, vinfo in variants.items():
             if v is None:
                 data = self.data["implementations"][lib]
@@ -690,6 +695,8 @@ class Element:
         Returns:
             Categories
         """
+        assert self._c is not None
+
         if "categories" not in self.data:
             return []
         if map_name:
@@ -708,6 +715,8 @@ class Element:
         Returns:
             reference cells
         """
+        assert self._c is not None
+
         references = self.data["references"] if "references" in self.data else []
 
         if "complexes" in self.data:

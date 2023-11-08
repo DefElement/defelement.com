@@ -4,15 +4,14 @@ import os
 import typing
 
 import sympy
-from symfem.finite_element import CiarletElement, DirectElement
+from symfem.finite_element import CiarletElement, DirectElement, FiniteElement
 from symfem.functionals import BaseFunctional
 from symfem.functions import AnyFunction
 from symfem.symbols import t
 
-from . import plotting, settings, symbols
-from .element import Element
-from .html import make_html_page
-from .markup import heading_with_self_ref
+from defelement import plotting, settings, symbols
+from defelement.html import make_html_page
+from defelement.markup import heading_with_self_ref
 
 defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
 
@@ -65,7 +64,7 @@ def entity_name(dim: int) -> str:
     return ["vertex", "edge", "face", "volume"][dim]
 
 
-def describe_dof(element: Element, d: BaseFunctional) -> typing.Tuple[str, typing.List[str]]:
+def describe_dof(element: FiniteElement, d: BaseFunctional) -> typing.Tuple[str, typing.List[str]]:
     """Describe a DOF.
 
     Args:
@@ -95,7 +94,7 @@ def describe_dof(element: Element, d: BaseFunctional) -> typing.Tuple[str, typin
     return desc, symb
 
 
-def markup_example(element: Element, html_name: str, element_page: str, fname: str) -> str:
+def markup_example(element: FiniteElement, html_name: str, element_page: str, fname: str) -> str:
     """Markup examples.
 
     Args:
@@ -139,8 +138,9 @@ def markup_example(element: Element, html_name: str, element_page: str, fname: s
 
     for dof_i, func in enumerate(element.get_basis_functions()):
         eg += "<div class='basisf'><div style='display:inline-block'>"
-        if plots[dof_i] is not None:
-            eg += plots[dof_i]
+        pd = plots[dof_i]
+        if pd is not None:
+            eg += pd
         eg += "</div>"
         eg += "<div style='display:inline-block;padding-left:10px;padding-bottom:10px'>"
         if isinstance(element, CiarletElement) and len(element.dofs) > 0:
