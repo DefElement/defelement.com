@@ -1,3 +1,5 @@
+"""Plotting."""
+
 import os
 import typing
 from datetime import datetime
@@ -6,6 +8,7 @@ import sympy
 from symfem.plotting import Picture, colors
 
 from . import settings
+from .eelement import Element
 
 now = datetime.now()
 svg_desc = (
@@ -55,6 +58,20 @@ def do_the_plot(
     args: typing.List[typing.Any] = [], png_width: int = 180,
     scale: int = 250, link: bool = True
 ) -> str:
+    """Create a plot.
+
+    Args:
+        filename: Filename of plot
+        desc: Plot description
+        plot: Function that creates plot
+        args: Arguments
+        png_width: PNG width
+        scale: Scale
+        link: Should a link be included?
+
+    Returns:
+        HTML for plot
+    """
     global all_plots
     from .html import make_html_page
     from .markup import cap_first, heading_with_self_ref
@@ -103,7 +120,15 @@ def do_the_plot(
         return f"<img src='/img/{filename}.png'>"
 
 
-def plot_reference(ref, link: bool = True):
+def plot_reference(ref, link: bool = True) -> str:
+    """Plot a reference cell.
+
+    Args:
+        link: Should a link be included?
+
+    Returns:
+        HTML for plot
+    """
     if ref.name == "dual polygon":
         ref_id = f"dual-polygon-{ref.number_of_triangles}"
     else:
@@ -116,7 +141,17 @@ def plot_reference(ref, link: bool = True):
                        scale=300, link=link)
 
 
-def plot_function(element, dof_i, link: bool = True):
+def plot_function(element: Element, dof_i: int, link: bool = True) -> str:
+    """Plot a functions.
+
+    Args:
+        element: The element
+        dof_i: The DOF index
+        link: Should a link be included?
+
+    Returns:
+        HTML for plot
+    """
     if element.reference.name == "dual polygon":
         ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
     else:
@@ -130,7 +165,16 @@ def plot_function(element, dof_i, link: bool = True):
     return do_the_plot(filename, desc, element.plot_basis_function, [dof_i], link=link)
 
 
-def plot_basis_functions(element, link: bool = True):
+def plot_basis_functions(element: Element, link: bool = True) -> str:
+    """Plot basis functions of an element.
+
+    Args:
+        element: The element
+        link: Should a link be included?
+
+    Returns:
+        HTML for plot
+    """
     if element.range_dim == 1:
         if element.domain_dim > 2:
             return [None for i in range(element.space_dim)]
@@ -141,7 +185,16 @@ def plot_basis_functions(element, link: bool = True):
     return [plot_function(element, i, link=link) for i in range(element.space_dim)]
 
 
-def _parse_point(points, n):
+def _parse_point(points: str, n: int) -> typing.Tuple[float, float]:
+    """Parge a point.
+
+    Args:
+        points: Point data
+        n: Point number
+
+    Returns:
+        Point
+    """
     point = points[n].strip()
     if point == "cycle":
         assert n > 0
@@ -152,7 +205,16 @@ def _parse_point(points, n):
     return float(x) / 100, float(y) / 100
 
 
-def plot_img(img_filename: str, link: bool = True):
+def plot_img(img_filename: str, link: bool = True) -> str:
+    """Plot a image.
+
+    Args:
+        img_filename: Image filename
+        link: Should a link be included?
+
+    Returns:
+        HTML for plot
+    """
     metadata = {"DESC": ""}
     filename = f"img-{img_filename}"
     with open(os.path.join(settings.img_path, f"{img_filename}.img")) as f:
@@ -188,7 +250,16 @@ def plot_img(img_filename: str, link: bool = True):
     return do_the_plot(filename, desc, actual_plot, link=link)
 
 
-def plot_dof_diagram(element, link: bool = True):
+def plot_dof_diagram(element: Element, link: bool = True) -> str:
+    """Plot a DOF diagram.
+
+    Args:
+        element: The element
+        link: Should a link be included?
+
+    Returns:
+        HTML for plot
+    """
     if element.reference.name == "dual polygon":
         ref_id = f"dual-polygon-{element.reference.number_of_triangles}"
     else:

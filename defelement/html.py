@@ -1,10 +1,22 @@
+"""HTML tools."""
+
 import os
+import typing
 
 from . import settings
 from .markup import insert_dates
 
 
-def make_html_page(content, pagetitle=None):
+def make_html_page(content: str, pagetitle: typing.Optional[str] = None) -> str:
+    """Make a HTML page.
+
+    Args:
+        content: Page content
+        pagetitle: Page title
+
+    Return:
+        Formatted HTML page
+    """
     out = ""
     with open(os.path.join(settings.template_path, "intro.html")) as f:
         out += insert_dates(f.read())

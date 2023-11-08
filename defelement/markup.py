@@ -1,6 +1,9 @@
+"""Markup."""
+
 import os
 import re
 import shlex
+import typing
 import warnings
 from datetime import datetime
 from urllib.parse import quote_plus
@@ -15,16 +18,42 @@ from .citations import markup_citation
 page_references = []
 
 
-def cap_first(txt):
+def cap_first(txt: str) -> str:
+    """Captialise first letter.
+
+    Args:
+        txt: Input text
+
+    Returns:
+        text with capitalised first letter
+    """
     return txt[:1].upper() + txt[1:]
 
 
-def heading_with_self_ref(hx, content):
+def heading_with_self_ref(hx: str, content: str) -> str:
+    """Create heading with self reference.
+
+    Args:
+        hx: HTML tag
+        content: Heading content
+
+    Returns:
+        Heading with self reference
+    """
     id = quote_plus(content)
     return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
 
 
-def format_names(names, format):
+def format_names(names: typing.List[str], format: str) -> str:
+    """Format names.
+
+    Args:
+        names: List of names
+        format: Format. `bibtex`, `html`, and `citation` are allowed
+
+    Returns:
+        Formatted names
+    """
     if format == "bibtex":
         return " and ".join(names)
     else:
@@ -49,7 +78,15 @@ def format_names(names, format):
                 return ", and ".join(", ".join(formatted_names[:-1]), formatted_names[-1])
 
 
-def list_contributors(format="html"):
+def list_contributors(format: str = "html") -> str:
+    """Get list of contributors.
+
+    Args:
+        format: Format. `bibtex`, `html`, and `citation` are allowed
+
+    Returns:
+        Contributor list
+    """
     if format not in ["html", "bibtex", "citation"]:
         raise ValueError(f"Unsupported format: {format}")
 
@@ -159,7 +196,15 @@ def list_contributors(format="html"):
         return format_names(names, format)
 
 
-def preprocess(content):
+def preprocess(content: str) -> str:
+    """Preprocess content.
+
+    Args:
+        content: Content
+
+    Returns:
+        Preprocessed content
+    """
     for file in os.listdir(settings.dir_path):
         if file.endswith(".md"):
             if f"{{{{{file}}}}}" in content:
@@ -177,7 +222,15 @@ def preprocess(content):
     return content
 
 
-def markup(content):
+def markup(content: str) -> str:
+    """Markup content.
+
+    Args:
+        content: Content
+
+    Returns:
+        Content with markup replaced by HTML
+    """
     global page_references
 
     content = preprocess(content)
@@ -292,7 +345,15 @@ def markup(content):
     return insert_dates(out)
 
 
-def insert_links(txt):
+def insert_links(txt: str) -> str:
+    """Insert links.
+
+    Args:
+        txt: text
+
+    Returns:
+        Text with links
+    """
     txt = re.sub(r"\(element::([^\)]+)\)", r"(/elements/\1.html)", txt)
     txt = re.sub(r"\(reference::([^\)]+)\)", r"(/lists/references/\1.html)", txt)
     txt = txt.replace("(index::all)", "(/elements/index.html)")
@@ -306,7 +367,15 @@ def insert_links(txt):
     return txt
 
 
-def code_include(matches):
+def code_include(matches: typing.List[str]) -> str:
+    """Format code snippet.
+
+    Args:
+        matches: Code snippets
+
+    Returns:
+        HTML
+    """
     out = "<p class='pcode'>"
     with open(os.path.join(settings.dir_path, matches[1])) as f:
         out += "<br />".join(line.replace(" ", "&nbsp;") for line in f)
@@ -314,7 +383,15 @@ def code_include(matches):
     return out
 
 
-def author_info(matches):
+def author_info(matches: typing.List[str]) -> str:
+    """Format author info.
+
+    Args:
+        matches: author info
+
+    Returns:
+        HTML
+    """
     authors, title, url = matches[1].split("|")
     authors = authors.split(";")
     out = "<div class='authors'>Written by "
@@ -345,7 +422,15 @@ def author_info(matches):
     return out
 
 
-def plot_element(matches):
+def plot_element(matches: typing.List[str]) -> str:
+    """Plot element.
+
+    Args:
+        matches: Element data
+
+    Returns:
+        HTML for plot of element
+    """
     if "variant=" in matches[1]:
         a, b = matches[1].split(" variant=")
         e = symfem.create_element(a, matches[2], int(matches[3]), b)
@@ -356,7 +441,15 @@ def plot_element(matches):
             "</center>")
 
 
-def plot_single_element(matches):
+def plot_single_element(matches: typing.List[str]) -> str:
+    """Plot a single element.
+
+    Args:
+        matches: Element data
+
+    Returns:
+        HTML for plot of element
+    """
     if "variant=" in matches[1]:
         a, b = matches[1].split(" variant=")
         e = symfem.create_element(a, matches[2], int(matches[3]), b)
@@ -365,17 +458,41 @@ def plot_single_element(matches):
     return f"<center>{plotting.plot_function(e, int(matches[4]))}</center>"
 
 
-def plot_reference(matches):
+def plot_reference(matches: typing.List[str]) -> str:
+    """Plot references.
+
+    Args:
+        matches: Reference data
+
+    Returns:
+        HTML
+    """
     e = symfem.create_reference(matches[1])
     return f"<center>{plotting.plot_reference(e)}</center>"
 
 
-def plot_img(matches):
+def plot_img(matches: typing.List[str]) -> str:
+    """Plot an image.
+
+    Args:
+        matches: Image info
+
+    Returns:
+        HTML for image
+    """
     e = matches[1]
     return f"<center>{plotting.plot_img(e)}</center>"
 
 
-def add_citation(matches):
+def add_citation(matches: typing.List[str]) -> str:
+    """Add citation.
+
+    Args:
+        matches: Citation info
+
+    Returns:
+        HTML
+    """
     global page_references
     ref = {}
     for i in shlex.split(matches[1]):
@@ -385,7 +502,15 @@ def add_citation(matches):
     return f"<sup><a href='#ref{len(page_references)}'>[{len(page_references)}]</a></sup>"
 
 
-def insert_dates(txt):
+def insert_dates(txt: str) -> str:
+    """Insert dates.
+
+    Args:
+        txt: Text
+
+    Returns:
+        Text with dates inserted
+    """
     now = datetime.now()
     txt = txt.replace("{{date:Y}}", now.strftime("%Y"))
     txt = txt.replace("{{date:D-M-Y}}", now.strftime("%d-%B-%Y"))
@@ -396,7 +521,15 @@ def insert_dates(txt):
     return txt
 
 
-def python_highlight(txt):
+def python_highlight(txt: str) -> str:
+    """Apply syntax highlighting to Python snippet.
+
+    Args:
+        txt: Python snippet
+
+    Returns:
+        Snippet with syntax highlighting
+    """
     txt = txt.replace(" ", "&nbsp;")
     out = []
     for line in txt.split("\n"):
@@ -419,7 +552,15 @@ def python_highlight(txt):
     return "<br />".join(out)
 
 
-def bash_highlight(txt):
+def bash_highlight(txt: str) -> str:
+    """Apply syntax highlighting to Bash snippet.
+
+    Args:
+        txt: Bash snippet
+
+    Returns:
+        Snippet with syntax highlighting
+    """
     txt = txt.replace(" ", "&nbsp;")
     txt = re.sub("(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)",
                  r"<span style='color:#FF8800'>\1</span>", txt)

@@ -1,18 +1,39 @@
+"""Examples."""
+
 import os
+import typing
 
 import sympy
 from symfem.finite_element import CiarletElement, DirectElement
+from symfem.functionals import BaseFunctional
 from symfem.functions import AnyFunction
 from symfem.symbols import t
 
 from . import plotting, settings, symbols
+from .element import Element
 from .html import make_html_page
 from .markup import heading_with_self_ref
 
 defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
 
 
-def to_tex(f, tfrac=False):
+def to_tex(
+    f: typing.Union[
+        AnyFunction,
+        sympy.core.expr.Expr,
+        typing.List[typing.Union[AnyFunction, sympy.core.expr.Expr]],
+        typing.Tuple[typing.Union[AnyFunction, sympy.core.expr.Expr], ...]],
+    tfrac: bool = False
+) -> str:
+    """Convert function to TeX.
+
+    Args:
+        f: A function
+        tfrac: Should tfrac be used in the place of frac?
+
+    Returns:
+        TeX
+    """
     if isinstance(f, (list, tuple)):
         return "\\left(\\begin{array}{c}" + "\\\\".join(
             ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
@@ -32,11 +53,28 @@ def to_tex(f, tfrac=False):
         return out
 
 
-def entity_name(dim):
+def entity_name(dim: int) -> str:
+    """Get the name of a sub-entity.
+
+    Args:
+        dim: The dimension
+
+    Returns:
+        Sub-entity name
+    """
     return ["vertex", "edge", "face", "volume"][dim]
 
 
-def describe_dof(element, d):
+def describe_dof(element: Element, d: BaseFunctional) -> typing.Tuple[str, typing.List[str]]:
+    """Describe a DOF.
+
+    Args:
+        element: The element
+        d: The DOF
+
+    Returns:
+        Formatted DOF, and list of symbols included in definition
+    """
     desc, symb = d.get_tex()
 
     for i, j in zip(t, defelement_t):
@@ -57,7 +95,18 @@ def describe_dof(element, d):
     return desc, symb
 
 
-def markup_example(element, html_name, element_page, fname):
+def markup_example(element: Element, html_name: str, element_page: str, fname: str) -> str:
+    """Markup examples.
+
+    Args:
+        element: The element
+        html_name: Name of element
+        element_page: URL of elemtn page
+        fname: Filename
+
+    Returns:
+        Example as HTML
+    """
     eg = heading_with_self_ref(
         "h1", f"Degree {element.order} {html_name} on a {element.reference.name}")
     eg += "\n"

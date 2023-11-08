@@ -25,7 +25,7 @@ jobs:
           python3 -m flake8 .
         name: Flake8 checks
       - run: |
-          python3 -m pydocstyle .
+          python3 -m pydocstyle defelement
         name: Pydocstyle checks
       - run: |
           python3 -m mypy .

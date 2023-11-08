@@ -793,8 +793,7 @@ write_html_page(os.path.join(settings.htmlindices_path, "recent.html"),
 
 with open(os.path.join(settings.html_path, "new-elements.xml"), "w") as f:
     f.write(make_rss(categoriser.recently_added(10), "recently added elements",
-                     "Finite elements that have recently been added to DefElement",
-                     "created"))
+                     "Finite elements that have recently been added to DefElement", "created"))
 
 with open(os.path.join(settings.html_path, "updated-elements.xml"), "w") as f:
     f.write(make_rss(categoriser.recently_updated(10), "recently updated elements",

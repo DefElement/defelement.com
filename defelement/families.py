@@ -1,4 +1,23 @@
-def arnold_logg_name(family, r="r", cell=None, degree="k", dim="d"):
+"""Element families."""
+
+import typing
+
+
+def arnold_logg_name(
+    family: str, r: str = "r", cell: typing.Optional[str] = None, degree: str = "k", dim: str = "d"
+) -> str:
+    """Get the name used in the Periodic Table of Finite Elements.
+
+    Args:
+        family: Family
+        r: Exterior derivative order
+        cell: Cell type
+        degree: Polynomial degree
+        dim: Cell dimension
+
+    Returns:
+        Formatted name
+    """
     out = f"\\mathcal{{{family[0]}}}"
     if len(family) > 1:
         out += f"^{family[1]}"
@@ -14,7 +33,21 @@ def arnold_logg_name(family, r="r", cell=None, degree="k", dim="d"):
     return out
 
 
-def cockburn_fu_name(family, r="r", cell=None, degree="k", dim="d"):
+def cockburn_fu_name(
+    family: str, r: str = "r", cell: typing.Optional[str] = None, degree: str = "k", dim: str = "d"
+) -> str:
+    """Get the name used in the Cockburn-Fu paper.
+
+    Args:
+        family: Family
+        r: Exterior derivative order
+        cell: Cell type
+        degree: Polynomial degree
+        dim: Cell dimension
+
+    Returns:
+        Formatted name
+    """
     out = ""
     if r != "r":
         out += "\\left["
@@ -31,7 +64,21 @@ def cockburn_fu_name(family, r="r", cell=None, degree="k", dim="d"):
     return out
 
 
-def custom_name(family, r="r", cell=None, degree="k", dim="d"):
+def custom_name(
+    family: str, r: str = "r", cell: typing.Optional[str] = None, degree: str = "k", dim: str = "d"
+):
+    """Get a custom name.
+
+    Args:
+        family: Family
+        r: Exterior derivative order
+        cell: Cell type
+        degree: Polynomial degree
+        dim: Cell dimension
+
+    Returns:
+        Formatted name
+    """
     out = family
     if isinstance(family, dict):
         if r == "r":

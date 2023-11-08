@@ -1,5 +1,8 @@
+"""Polynomial sets."""
+
 import os
 import re
+import typing
 
 import yaml
 
@@ -10,23 +13,55 @@ named = {}
 defs = {}
 
 
-def make_name(i):
+def make_name(i: int) -> str:
+    """Make a polyset name.
+
+    Args:
+        i: Polyset id
+
+    Returns:
+        Polyset name
+    """
     return f"\\mathcal{{Z}}^{{({i})}}"
 
 
-def replace_def(matches):
+def replace_def(matches: typing.List[str]) -> str:
+    """Replace def.
+
+    Args:
+        matches: TODO
+
+    Returns:
+        TODO
+    """
     global defs
     defs[matches[1]] = matches[2]
     return ""
 
 
-def replace_defmath(matches):
+def replace_defmath(matches: typing.List[str]) -> str:
+    """Replace def.
+
+    Args:
+        matches: TODO
+
+    Returns:
+        TODO
+    """
     global defs
     defs[matches[1]] = f"\\({matches[2]}\\)"
     return ""
 
 
-def make_poly_set(p):
+def make_poly_set(p: str) -> str:
+    """Make a polynomial set.
+
+    Args:
+        p: Polyset data
+
+    Returns:
+        Formatted polynomial set
+    """
     global named
     global defs
     if "&&" in p:
@@ -67,7 +102,15 @@ def make_poly_set(p):
     raise ValueError(f"Unknown polynomial set: {p}")
 
 
-def make_extra_info(p):
+def make_extra_info(p: str) -> str:
+    """Make extra info.
+
+    Args:
+        p: Polyset data
+
+    Returns:
+        Extra info
+    """
     done = []
     out = []
     for a in p.split("&&"):
@@ -105,7 +148,15 @@ def make_extra_info(p):
     return "<br /><br />".join(out)
 
 
-def insert_terms(the_set):
+def insert_terms(the_set: str) -> str:
+    """Insert terms into a polyset definition.
+
+    Args:
+        the_set: Polynomial set
+
+    Returns:
+        Formatted polynomial set
+    """
     the_set = the_set.replace("{{x}}", "\\boldsymbol{x}")
     for i, (j, k) in poly_sets.items():
         the_set = re.sub(rf"{{{{{i}\[([^\]]+)\]\^dd}}}}", rf"{escape(j)}_{{\1}}^{{d\\times d}}",
@@ -118,5 +169,13 @@ def insert_terms(the_set):
     return the_set
 
 
-def escape(i):
+def escape(i: str) -> str:
+    """Escape a string.
+
+    Args:
+        i: The string
+
+    Returns:
+        Escaped string
+    """
     return i.replace("\\", "\\\\")
