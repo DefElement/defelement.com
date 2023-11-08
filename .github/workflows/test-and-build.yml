@@ -19,7 +19,9 @@ jobs:
           python-version: "3.10"
       - uses: actions/checkout@v3
 
-      - run: python3 -m pip install -r requirements.txt
+      - run: |
+          python3 -m pip install -r requirements.txt
+          python3 -m pip install numpy
         name: Install requirements
       - run: python3 -m pip install flake8 mypy pydocstyle isort
         name: Install linting tools
