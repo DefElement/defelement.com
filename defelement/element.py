@@ -286,7 +286,7 @@ class Element:
                             namelist.append("\\(" + f(data[key2], ext, cell, k) + "\\)")
                     entry = ""
                     if link:
-                        entry = f"<a class='nou' href='/families/{fam   }.html'>"
+                        entry = f"<a class='nou' href='/families/{fam}.html'>"
                     entry += " / ".join(namelist)
                     if link:
                         entry += "</a>"
