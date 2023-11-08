@@ -1,8 +1,10 @@
-import os
-import json
 import argparse
-import numpy as np
+import json
+import os
 from datetime import datetime
+
+import numpy as np
+
 from defelement import settings
 from defelement.element import Categoriser
 from defelement.implementations import verifications

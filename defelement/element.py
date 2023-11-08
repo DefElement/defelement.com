@@ -1,14 +1,15 @@
 import os
 import warnings
-import yaml
 from datetime import datetime
+
+import yaml
 from github import Github
-from . import implementations
-from . import settings
-from .families import keys_and_names, arnold_logg_reference, cockburn_fu_reference
+
+from . import implementations, settings
+from .families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
 from .implementations import VariantNotImplemented
 from .markup import insert_links
-from .polyset import make_poly_set, make_extra_info
+from .polyset import make_extra_info, make_poly_set
 
 
 def make_dof_data(ndofs):

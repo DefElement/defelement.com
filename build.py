@@ -1,20 +1,22 @@
+import argparse
 import json
 import os
-import argparse
-import symfem
 from datetime import datetime
+
+import symfem
 from symfem import create_element
+
 from defelement import plotting, settings
-from defelement.markup import (markup, insert_links, python_highlight, cap_first,
-                               heading_with_self_ref)
-from defelement.examples import markup_example
-from defelement.citations import markup_citation, make_bibtex
+from defelement.citations import make_bibtex, markup_citation
 from defelement.element import Categoriser
+from defelement.examples import markup_example
+from defelement.families import keys_and_names
 from defelement.html import make_html_page
 from defelement.implementations import parse_example, verifications
-from defelement.tools import parse_metadata, insert_author_info, html_local
-from defelement.families import keys_and_names
+from defelement.markup import (cap_first, heading_with_self_ref, insert_links, markup,
+                               python_highlight)
 from defelement.rss import make_rss
+from defelement.tools import html_local, insert_author_info, parse_metadata
 
 start_all = datetime.now()
 

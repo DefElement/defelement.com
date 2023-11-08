@@ -13,25 +13,35 @@ jobs:
     name: Run style checks
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get install -y python3-setuptools python3-pip python3-flake8
-        name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
       - run: |
-          python3 -m flake8 defelement
-          python3 -m flake8 build.py
-        name: Flake8 checks on defelement and build.py
-      - run: python3 -m flake8 test
-        name: Flake8 checks on tests
+          python3 -m flake8 .
+        name: Flake8 checks
+      - run: |
+          python3 -m pydocstyle .
+        name: Pydocstyle checks
+      - run: |
+          python3 -m mypy .
+        name: mypy checks
+      - run: |
+          python3 -m isort --check .
+        name: isort checks
 
   test-build-website:
     name: Test building of defelement.com
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get install -y python3-setuptools python3-pip
-        name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - name: Load Symfem cache
@@ -50,7 +60,7 @@ jobs:
       - name: Install Symfem
         run: |
             cd symfem
-            pip3 install .[optional]
+            python3 -m pip install .[optional]
 
       - name: Clone verification
         uses: actions/checkout@v3
@@ -76,7 +86,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
       - run: python3 build.py _test_html --verification-json verification/verification.json --test auto --processes 4
         name: Build website HTML
@@ -89,8 +99,10 @@ jobs:
       - test-build-website
       - run-tests
     steps:
-      - run: sudo apt-get install -y python3-setuptools python3-pip
-        name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - name: Load Symfem cache
@@ -109,7 +121,7 @@ jobs:
       - name: Install Symfem
         run: |
             cd symfem
-            pip3 install .[optional]
+            python3 -m pip install .[optional]
 
       - name: Clone verification
         uses: actions/checkout@v3
@@ -135,7 +147,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
       - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
@@ -154,7 +166,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - uses: actions/checkout@v3
 
@@ -174,13 +186,13 @@ jobs:
       - name: Install Symfem
         run: |
             cd symfem
-            pip3 install .[optional]
+            python3 -m pip install .[optional]
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
 
       - name: Install implementations
-        run: python install_implementations.py --install-type verification
+        run: python3 install_implementations.py --install-type verification
 
       - run: python3 verify.py verification.json --test auto --processes 4
         name: Run verification test
@@ -195,8 +207,10 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - run: sudo apt-get install -y python3-setuptools python3-pip
-        name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - name: Load Symfem cache
@@ -215,7 +229,7 @@ jobs:
       - name: Install Symfem
         run: |
             cd symfem
-            pip3 install .[optional]
+            python3 -m pip install .[optional]
 
       - name: Clone verification
         uses: actions/checkout@v3
@@ -240,7 +254,7 @@ jobs:
           tar -xf cm-unicode-0.7.0-otf.tar.xz
           cp cm-unicode-0.7.0/cmunti.otf ~/.local/share/fonts/
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
       - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.bot_github_token }} --processes 4
         name: Build website HTML
@@ -274,15 +288,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - uses: actions/checkout@v3
 
-      - run: pip3 install pytest-xdist
+      - run: python3 -m pip install pytest-xdist
         name: Install dependencies
 
       - name: Install requirements
-        run: pip3 install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
+        run: python3 -m pip install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
 
       - name: Load Symfem cache
         id: cache-restore
@@ -300,12 +314,12 @@ jobs:
       - name: Install Symfem
         run: |
             cd symfem
-            pip3 install .[optional]
+            python3 -m pip install .[optional]
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
       - name: Install implementations
-        run: python install_implementations.py --install-type all
+        run: python3 install_implementations.py --install-type all
 
       - name: Install LaTeΧ
         run: |

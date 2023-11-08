@@ -1,11 +1,13 @@
 import os
+
 import sympy
 from symfem.finite_element import CiarletElement, DirectElement
 from symfem.functions import AnyFunction
 from symfem.symbols import t
+
+from . import plotting, settings, symbols
 from .html import make_html_page
 from .markup import heading_with_self_ref
-from . import settings, symbols, plotting
 
 defelement_t = ["s_{0}", "s_{1}", "s_{2}"]
 

@@ -1,11 +1,12 @@
 import os
-import pytest
 import re
 import signal
-import symfem
 import urllib.request
-import yaml
 import warnings
+
+import pytest
+import symfem
+import yaml
 
 
 class TimeOutTheTest(BaseException):

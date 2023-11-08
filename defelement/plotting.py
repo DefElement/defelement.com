@@ -1,8 +1,10 @@
 import os
-import sympy
 import typing
 from datetime import datetime
+
+import sympy
 from symfem.plotting import Picture, colors
+
 from . import settings
 
 now = datetime.now()

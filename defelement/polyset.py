@@ -1,5 +1,6 @@
-import re
 import os
+import re
+
 import yaml
 
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/polysets")) as f:

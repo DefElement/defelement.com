@@ -1,16 +1,16 @@
 import os
 import re
 import shlex
-import symfem
 import warnings
-import yaml
 from datetime import datetime
-from github import Github
-from . import symbols
-from . import plotting
-from . import settings
-from .citations import markup_citation
 from urllib.parse import quote_plus
+
+import symfem
+import yaml
+from github import Github
+
+from . import plotting, settings, symbols
+from .citations import markup_citation
 
 page_references = []
 
