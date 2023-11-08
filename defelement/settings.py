@@ -1,3 +1,5 @@
+"""DefElement settings."""
+
 import os as _os
 
 dir_path = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "..")

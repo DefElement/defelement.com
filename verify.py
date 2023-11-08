@@ -1,10 +1,17 @@
-import os
-import json
+"""Perform verification checks."""
+
 import argparse
-import numpy as np
+import json
+import os
+import typing
 from datetime import datetime
+
+import numpy as np
+from numpy import float64
+from numpy.typing import NDArray
+
 from defelement import settings
-from defelement.element import Categoriser
+from defelement.element import Categoriser, Element
 from defelement.implementations import verifications
 from defelement.verification import verify
 
@@ -49,7 +56,16 @@ for e in categoriser.elements:
                 elements_to_verify.append((e, eg, implementations))
 
 
-def allclose_maybe_permuted(table0, table1):
+def allclose_maybe_permuted(table0: NDArray[float64], table1: NDArray[float64]) -> bool:
+    """Check if two tables are permutations of the same table.
+
+    Args:
+        table0: The first table
+        table1: The second table
+
+    Returns:
+        True if tables are allclose, otherwise False
+    """
     remaining = [i for i, _ in enumerate(table1.T)]
     for t0 in table0.T:
         for i in remaining:
@@ -61,13 +77,27 @@ def allclose_maybe_permuted(table0, table1):
     return True
 
 
-def verify_examples(egs, process="", result_dict=None):
+def verify_examples(
+    egs: typing.List[typing.Tuple[Element, str, typing.List[str]]], process: str = "",
+    result_dict: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Dict[
+        str, typing.Dict[str, typing.List[str]]]]]] = None
+) -> typing.Dict[str, typing.Dict[str, typing.Dict[str, typing.List[str]]]]:
+    """Verify examples.
+
+    Args:
+        egs: Examples
+        process: String to print on this process
+        result_dict: Dictionary to write results into
+
+    Returns:
+        Results
+    """
     green = "\033[32m"
     red = "\033[31m"
     blue = "\033[34m"
     default = "\033[0m"
 
-    results = {}
+    results: typing.Dict[str, typing.Dict[str, typing.Dict[str, typing.List[str]]]] = {}
     for e, eg, implementations in egs:
         if e.filename not in results:
             results[e.filename] = {

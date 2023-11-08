@@ -1,7 +1,18 @@
+"""Citations."""
+
 import re
+import typing
 
 
-def markup_authors(a):
+def markup_authors(a: typing.Union[str, typing.List[str]]) -> str:
+    """Markup authors.
+
+    Args:
+        a: Authors
+
+    Returns:
+        Formatted list of authors
+    """
     if isinstance(a, str):
         return a
     else:
@@ -11,7 +22,15 @@ def markup_authors(a):
             return ", ".join(a[:-1]) + ", and " + a[-1]
 
 
-def markup_citation(r):
+def markup_citation(r: typing.Dict[str, typing.Any]) -> str:
+    """Markup citations.
+
+    Args:
+        r: Citation
+
+    Returns:
+        Formatted citation
+    """
     out = ""
     if "author" in r:
         out += markup_authors(r["author"])
@@ -44,11 +63,27 @@ def markup_citation(r):
     return out
 
 
-def wrap_caps(txt):
+def wrap_caps(txt: str) -> str:
+    """Wrap capitials in curly braces.
+
+    Args:
+        txt: Input string
+
+    Returns:
+        String with capitals wrapped in curly braces
+    """
     return re.sub(r"([A-Z])", r"{\1}", txt)
 
 
-def html_to_tex(txt):
+def html_to_tex(txt: str) -> str:
+    """Convert html to TeX.
+
+    Args:
+        txt: HTML
+
+    Returns:
+        TeX
+    """
     txt = re.sub(r"&([A-Za-z])acute;", r"\\'\1", txt)
     txt = re.sub(r"&([A-Za-z])uml;", r"\\\"\1", txt)
     txt = re.sub(r"&([A-Za-z])cedil;", r"\\c{\1}", txt)
@@ -57,7 +92,16 @@ def html_to_tex(txt):
     return txt
 
 
-def make_bibtex(id, r):
+def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
+    """Make BibTex.
+
+    Args:
+        id: Unique identifier
+        r: A citation
+
+    Returns:
+        The citation in BibTeX format
+    """
     if 'type' not in r:
         r["type"] = "article"
     out = f"@{r['type']}{{{id},\n"

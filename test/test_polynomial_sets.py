@@ -1,9 +1,10 @@
 import hashlib
 import os
 import re
+from random import random
+
 import pytest
 import yaml
-from random import random
 
 element_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../elements")
 

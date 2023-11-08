@@ -36,13 +36,13 @@ jobs:
       - name: Install Symfem
         run: |
             cd symfem
-            pip3 install .[optional]
+            python3 -m pip install .[optional]
 
-      - run: pip3 install -r requirements.txt
+      - run: python3 -m pip install -r requirements.txt
         name: Install requirements
 
       - name: Install implementations
-        run: python install_implementations.py --install-type verification
+        run: python3 install_implementations.py --install-type verification
 
       - run: mkdir ../verification
         name: Make dir

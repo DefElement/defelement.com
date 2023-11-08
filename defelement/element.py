@@ -1,17 +1,31 @@
+"""DefElement elements."""
+
 import os
+import typing
 import warnings
-import yaml
 from datetime import datetime
+
+import yaml
 from github import Github
-from . import implementations
-from . import settings
-from .families import keys_and_names, arnold_logg_reference, cockburn_fu_reference
-from .implementations import VariantNotImplemented
-from .markup import insert_links
-from .polyset import make_poly_set, make_extra_info
+
+from defelement import implementations, settings
+from defelement.families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
+from defelement.implementations import VariantNotImplemented
+from defelement.markup import insert_links
+from defelement.polyset import make_extra_info, make_poly_set
 
 
-def make_dof_data(ndofs):
+def make_dof_data(
+    ndofs: typing.Union[typing.Dict[str, typing.Any], typing.List[typing.Dict[str, typing.Any]]]
+) -> str:
+    """Make DOF data.
+
+    Args:
+        ndofs: DOF information
+
+    Returns:
+        DOFs formatted as HTML
+    """
     if isinstance(ndofs, list):
         return "<br /><br />".join([f"\\({i}\\):<br />{make_dof_data(j)}"
                                     for a in ndofs for i, j in a.items()])
@@ -25,7 +39,15 @@ def make_dof_data(ndofs):
     return "<br />".join(dof_text)
 
 
-def make_formula(data):
+def make_formula(data: typing.Dict[str, typing.Any]) -> str:
+    """Make formula.
+
+    Args:
+        data: Element data
+
+    Returns:
+        Formula for number of DOFs in HTML format
+    """
     txt = ""
     if "formula" not in data and "oeis" not in data:
         return ", ".join(f"{make_formula(j)} ({i})"
@@ -48,151 +70,52 @@ def make_formula(data):
     return txt
 
 
-class Categoriser:
-    def __init__(self):
-        self.elements = []
-        self.families = {}
-        self.references = {}
-        self.categories = {}
-        self.implementations = {}
-
-    def recently_added(self, n):
-        if self.elements[0].created is None:
-            return self.elements[:n]
-        return sorted(self.elements, key=lambda e: e.created)[:-n-1:-1]
-
-    def recently_updated(self, n):
-        if self.elements[0].modified is None:
-            return self.elements[:n]
-        return sorted(self.elements, key=lambda e: e.modified)[:-n-1:-1]
-
-    def load_categories(self, file):
-        with open(file) as f:
-            for line in f:
-                if line.strip() != "":
-                    a, b = line.split(":", 1)
-                    self.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
-
-    def load_implementations(self, file):
-        with open(file) as f:
-            self.implementations = yaml.load(f, Loader=yaml.FullLoader)
-
-    def load_families(self, file):
-        with open(file) as f:
-            self.families = yaml.load(f, Loader=yaml.FullLoader)
-        for t in self.families:
-            for i in self.families[t]:
-                self.families[t][i]["elements"] = {}
-
-    def load_references(self, file):
-        with open(file) as f:
-            for line in f:
-                if line.strip() != "":
-                    self.add_reference(line.strip(), f"{line.strip()}.html")
-
-    def load_folder(self, folder):
-        for file in os.listdir(folder):
-            if file.endswith(".def") and not file.startswith("."):
-                with open(os.path.join(folder, file)) as f:
-                    data = yaml.load(f, Loader=yaml.FullLoader)
-
-                fname = file[:-4]
-
-                self.add_element(Element(data, fname))
-
-        if settings.github_token is None:
-            warnings.warn("Building without GitHub token. Timestamps will not be obtained.")
-        else:
-            g = Github(settings.github_token)
-            repo = g.get_repo("mscroggs/defelement.com")
-            for e in self.elements:
-                commits = repo.get_commits(path=f"elements/{e.filename}.def")
-                try:
-                    e.created = commits.get_page(-1)[-1].commit.committer.date
-                    e.modified = commits.get_page(0)[0].commit.committer.date
-                except IndexError:
-                    e.created = datetime.now()
-                    e.modified = datetime.now()
-
-        self.elements.sort(key=lambda x: x.name.lower())
-
-    def add_family(self, t, e, name, fname):
-        if len(e.split(",")) == 3:
-            i, j, k = e.split(",")
-        else:
-            i, j, k, _ = e.split(",")
-        if t not in self.families:
-            self.families[t] = {}
-            warnings.warn(f"Complex type included in familes data: {t}")
-        if i not in self.families[t]:
-            warnings.warn(f"Family not included in familes data: {i}")
-            self.families[t][i] = {"elements": {}}
-        if k not in self.families[t][i]["elements"]:
-            self.families[t][i]["elements"][k] = {}
-        self.families[t][i]["elements"][k][j] = (name, fname)
-
-    def add_reference(self, e, fname):
-        self.references[e] = fname
-
-    def add_category(self, fname, cname, html_filename):
-        self.categories[fname] = (cname, html_filename)
-
-    def get_category_name(self, c):
-        return self.categories[c][0]
-
-    def get_space_name(self, element, link=True):
-        for e in self.elements:
-            if e.filename == element:
-                if link:
-                    return e.html_link
-                else:
-                    return e.html_name
-                break
-        raise ValueError(f"Could not find space: {element}")
-
-    def get_element(self, ename):
-        for e in self.elements:
-            if e.name == ename:
-                return e
-        raise ValueError(f"Could not find element: {ename}")
-
-    def add_element(self, e):
-        self.elements.append(e)
-        e._c = self
-        for r in e.reference_elements(False):
-            assert r in self.references
-
-        for j, k in e.complexes(False, False).items():
-            for i in k:
-                self.add_family(j, i, e.html_name, e.html_filename)
-
-    def elements_in_category(self, c):
-        return [e for e in self.elements if c in e.categories(False, False)]
-
-    def elements_in_implementation(self, i):
-        return [e for e in self.elements if e.implemented(i)]
-
-    def elements_by_reference(self, r):
-        return [e for e in self.elements if r in e.reference_elements(False)]
-
-
 class Element:
-    def __init__(self, data, fname):
+    """An element."""
+
+    def __init__(self, data: typing.Dict[str, typing.Any], fname: str):
+        """Initialise.
+
+        Args:
+            data: element data
+            fname: filename
+        """
         self.data = data
         self.filename = fname
-        self._c = None
+        self._c: typing.Optional[Categoriser] = None
         self.created = None
         self.modified = None
 
-    def name_with_variant(self, variant):
+    def name_with_variant(self, variant: typing.Optional[str]) -> str:
+        """Get name with variant.
+
+        Args:
+            variant: The variant
+
+        Return:
+            Name with variant
+        """
         if variant is None:
             return self.name
         return f"{self.name} ({self.variant_name(variant)} variant)"
 
-    def variant_name(self, variant):
+    def variant_name(self, variant: str) -> str:
+        """Get variant name.
+
+        Args:
+            variant: The variant
+
+        Returns:
+            The variant name
+        """
         return self.data["variants"][variant]["variant-name"]
 
-    def variants(self):
+    def variants(self) -> typing.List[str]:
+        """Get variants of the element.
+
+        Returns:
+            A list of variants
+        """
         if "variants" not in self.data:
             return []
         return [
@@ -200,21 +123,45 @@ class Element:
             for v in self.data["variants"].values()
         ]
 
-    def min_order(self, ref):
+    def min_order(self, ref: str) -> int:
+        """Get the minimum order.
+
+        Args:
+            ref: Reference cell
+
+        Returns:
+            The minimum order
+        """
         if "min-order" not in self.data:
             return 0
         if isinstance(self.data["min-order"], dict):
             return self.data["min-order"][ref]
         return self.data["min-order"]
 
-    def max_order(self, ref):
+    def max_order(self, ref: str) -> typing.Optional[int]:
+        """Get the maximum order.
+
+        Args:
+            ref: Reference cell
+
+        Returns:
+            The maximum order
+        """
         if "max-order" not in self.data:
             return None
         if isinstance(self.data["max-order"], dict):
             return self.data["max-order"][ref]
         return self.data["max-order"]
 
-    def reference_elements(self, link=True):
+    def reference_elements(self, link: bool = True) -> typing.List[str]:
+        """Get reference cells.
+
+        Args:
+            link: Should a link be included?
+
+        Returns:
+            List of reference cells.
+        """
         if link:
             return [f"<a href='/lists/references/{e}.html'>{e}</a>"
                     for e in self.data["reference-elements"]]
@@ -222,14 +169,28 @@ class Element:
             return self.data["reference-elements"]
 
     def alternative_names(
-        self, include_bracketed=True, include_complexes=True, include_variants=True, link=True,
-        strip_cell_name=False, cell=None
-    ):
+        self, include_bracketed: bool = True, include_complexes: bool = True,
+        include_variants: bool = True, link: bool = True,
+        strip_cell_name: bool = False, cell: typing.Optional[str] = None
+    ) -> typing.List[str]:
+        """Get alternative names.
+
+        Args:
+            include_bracketed: Should bracketed names be included?
+            include_complexes: Should names complexes be included?
+            include_variants: Should variants be included?
+            link: Should the names be linked?
+            strip_cell_names: Should cell names be stripped?
+            cell: Reference cell
+
+        Returns:
+            A list of names
+        """
         if "alt-names" not in self.data:
             return []
         out = self.data["alt-names"]
         if include_complexes:
-            out += self.family_names(link=link)
+            out += self.complexes(link=link)
         if include_variants and "variants" in self.data:
             for v in self.data["variants"].values():
                 if "names" in v:
@@ -249,7 +210,15 @@ class Element:
 
         return out
 
-    def short_names(self, include_variants=True):
+    def short_names(self, include_variants: bool = True) -> typing.List[str]:
+        """Get short names.
+
+        Args:
+            include_variants: Should variants be included?
+
+        Returns:
+            A list of short names
+        """
         out = []
         if "short-names" in self.data:
             out += self.data["short-names"]
@@ -259,21 +228,44 @@ class Element:
                     out += [f"{i} ({v['variant-name']} variant)" for i in v["short-names"]]
         return out
 
-    def mapping(self):
+    def mapping(self) -> typing.Union[None, str]:
+        """Get mapping name.
+
+        Returns:
+            Mapping name
+        """
         if "mapping" not in self.data:
             return None
         return self.data["mapping"]
 
-    def sobolev(self):
+    def sobolev(self) -> typing.Union[None, str]:
+        """Get Sobolev space name.
+
+        Returns:
+            Sobolev space
+        """
         if "sobolev" not in self.data:
             return None
         return self.data["sobolev"]
 
-    def complexes(self, link=True, names=True):
+    def complexes(
+        self, link: bool = True, names: bool = True
+    ) -> typing.Dict[str, typing.List[str]]:
+        """Get complexes.
+
+        Args:
+            link: Should links be included?
+            names: Should names be used?
+
+        Returns:
+            Complexes
+        """
+        assert self._c is not None
+
         if "complexes" not in self.data:
             return {}
 
-        out = {}
+        out: typing.Dict[str, typing.List[str]] = {}
         com = self.data["complexes"]
         for key, families in com.items():
             out[key] = []
@@ -294,7 +286,7 @@ class Element:
                             namelist.append("\\(" + f(data[key2], ext, cell, k) + "\\)")
                     entry = ""
                     if link:
-                        entry = f"<a class='nou' href='/families/{fam   }.html'>"
+                        entry = f"<a class='nou' href='/families/{fam}.html'>"
                     entry += " / ".join(namelist)
                     if link:
                         entry += "</a>"
@@ -303,8 +295,25 @@ class Element:
                     out[key].append(e)
         return out
 
-    def order_range(self):
-        def make_order_data(min_o, max_o):
+    def order_range(self) -> str:
+        """Format the range of allowed orders.
+
+        Returns:
+            The formatted range
+        """
+        def make_order_data(
+            min_o: typing.Union[typing.Dict[str, int], int, None],
+            max_o: typing.Union[typing.Dict[str, int], int, None]
+        ) -> str:
+            """Make order data.
+
+            Args:
+                min_o: The minimum order
+                max_o: The maximum order
+
+            Returns:
+                The formatted order
+            """
             if isinstance(min_o, dict):
                 orders = []
                 for i, min_i in min_o.items():
@@ -323,8 +332,18 @@ class Element:
             self.data["min-order"] if "min-order" in self.data else 0,
             self.data["max-order"] if "max-order" in self.data else None)
 
-    def sub_elements(self, link=True):
+    def sub_elements(self, link: bool = True) -> typing.List[str]:
+        """Get sub elements of a mixed element.
+
+        Args:
+            link: Should a link be included?
+
+        Returns:
+            List of sub-elements
+        """
         assert self.is_mixed
+        assert self._c is not None
+
         out = []
         for e in self.data["mixed"]:
             element, order = e.split("(")
@@ -333,11 +352,28 @@ class Element:
             out.append(f"<li>order \\({order}\\) {space_link} space</li>")
         return out
 
-    def make_dof_descriptions(self):
+    def make_dof_descriptions(self) -> str:
+        """Make DOF descroptions.
+
+        Returns:
+            Descriptions of DOFs
+        """
         if "dofs" not in self.data:
             return ""
 
-        def dofs_on_entity(entity, dofs):
+        def dofs_on_entity(
+            entity: str, dofs: typing.Union[str, typing.List[str]]
+        ) -> str:
+            """Get DOFs on an entity.
+
+            Args:
+                entity: The entity name
+                dofs: The dofs
+
+            Returns:
+                Formatted DOFs
+            """
+            assert self._c is not None
             if not isinstance(dofs, str):
                 doflist = [dofs_on_entity(entity, d) for d in dofs]
                 return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
@@ -358,7 +394,16 @@ class Element:
                 return f"{mom_type} with an order \\({order}\\) {space_link} space"
             return dofs
 
-        def make_dof_d(data, post=""):
+        def make_dof_d(data: typing.Dict[str, typing.Any], post: str = "") -> str:
+            """Make a decription of a single DOF.
+
+            Args:
+                data: Data
+                post: String to include after DOF name
+
+            Returns:
+                Formatted DOF
+            """
             dof_data = []
             for i in ["interval", "triangle", "tetrahedron", "quadrilateral", "hexahedron"]:
                 if i in data:
@@ -386,11 +431,16 @@ class Element:
 
         return make_dof_d(self.data["dofs"])
 
-    def make_polynomial_set_html(self):
+    def make_polynomial_set_html(self) -> str:
+        """Format polynomial set as HTML.
+
+        Returns:
+            Formatted polynomial set
+        """
         # TODO: move some of this to polynomial file
         if "polynomial-set" not in self.data:
-            return []
-        psets = {}
+            return ""
+        psets: typing.Dict[str, typing.List[str]] = {}
         for i, j in self.data["polynomial-set"].items():
             if j not in psets:
                 psets[j] = []
@@ -429,49 +479,109 @@ class Element:
             out += "</script>"
         return out
 
-    def dof_counts(self):
+    def dof_counts(self) -> str:
+        """Get DOF counts.
+
+        Returns:
+            DOF counts
+        """
         if "ndofs" not in self.data:
             return ""
         return make_dof_data(self.data["ndofs"])
 
-    def entity_dof_counts(self):
+    def entity_dof_counts(self) -> str:
+        """Get entity DOF counts.
+
+        Returns:
+            Entity DOF counts
+        """
         if "entity-ndofs" not in self.data:
             return ""
         return make_dof_data(self.data["entity-ndofs"])
 
     @property
-    def name(self):
+    def name(self) -> str:
+        """Get element name.
+
+        Returns:
+            The element name
+        """
         return self.data["name"]
 
     @property
-    def notes(self):
+    def notes(self) -> typing.List[str]:
+        """Get notes.
+
+        Returns:
+            notes
+        """
         if "notes" not in self.data:
             return []
         return self.data["notes"]
 
     @property
-    def html_name(self):
+    def html_name(self) -> str:
+        """Get HTML name.
+
+        Returns:
+            The HTML name
+        """
         if "html-name" in self.data:
             return self.data["html-name"]
         else:
             return self.data["name"]
 
     @property
-    def html_filename(self):
+    def html_filename(self) -> str:
+        """Get HTML filename.
+
+        Returns:
+            The filename
+        """
         return f"{self.filename}.html"
 
     @property
-    def is_mixed(self):
+    def is_mixed(self) -> bool:
+        """Check if element is mixed.
+
+        Returns:
+            True if mixed, otherwise False
+        """
         return "mixed" in self.data
 
     @property
-    def html_link(self):
+    def html_link(self) -> str:
+        """Get link to element.
+
+        Returns:
+            Link to this element
+        """
         return f"<a href='/elements/{self.html_filename}'>{self.html_name}</a>"
 
-    def implemented(self, lib):
+    def implemented(self, lib: str) -> bool:
+        """Check if element in implemented in a library.
+
+        Args:
+            lib: The library
+
+        Returns:
+            True if implemented, otherwise False
+        """
         return "implementations" in self.data and lib in self.data["implementations"]
 
-    def get_implementation_string(self, lib, reference, variant=None):
+    def get_implementation_string(
+        self, lib: str, reference: typing.Optional[str], variant: typing.Optional[str] = None
+    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, str]]:
+        """Get implementation string.
+
+        Args:
+            lib: Library
+            reference: Reference cell
+            variant: Variant name
+
+        Raturns:
+            Implementation string
+        """
         assert self.implemented(lib)
         if variant is None:
             data = self.data["implementations"][lib]
@@ -497,11 +607,18 @@ class Element:
 
         return out, params
 
-        if " variant=" in out:
-            return out.split(" variant=")
-        return out, None
+    def list_of_implementation_strings(
+        self, lib: str, joiner: typing.Union[None, str] = "<br />"
+    ) -> typing.Union[str, typing.List[str]]:
+        """Get a list of implementation strings.
 
-    def list_of_implementation_strings(self, lib, joiner="<br />"):
+        Args:
+            lib: The library
+            joiner: HTML to put between strings, or None if a list is desired
+
+        Returns:
+            List of implemtation strings
+        """
         assert self.implemented(lib)
 
         if "display" in self.data["implementations"][lib]:
@@ -512,7 +629,7 @@ class Element:
         else:
             variants = {None: {}}
 
-        i_dict = {}
+        i_dict: typing.Dict[str, typing.List[str]] = {}
         for v, vinfo in variants.items():
             if v is None:
                 data = self.data["implementations"][lib]
@@ -546,13 +663,40 @@ class Element:
         else:
             return joiner.join(imp_list)
 
-    def make_implementation_examples(self, lib):
+    def make_implementation_examples(self, lib: str) -> str:
+        """Make implementation examples for a library.
+
+        Args:
+            lib: The library
+
+        Returns:
+            Examples
+        """
         return implementations.examples[lib](self)
 
-    def has_implementation_examples(self, lib):
+    def has_implementation_examples(self, lib: str) -> bool:
+        """Check if element has implementation examples for a library.
+
+        Args:
+            lib: The library
+
+        Returns:
+            True if library has examples, otherwise False
+        """
         return lib in implementations.examples
 
-    def categories(self, link=True, map_name=True):
+    def categories(self, link: bool = True, map_name: bool = True) -> typing.List[str]:
+        """Get categories.
+
+        Args:
+            link: Should links be included?
+            map_name: Should names be mapped?
+
+        Returns:
+            Categories
+        """
+        assert self._c is not None
+
         if "categories" not in self.data:
             return []
         if map_name:
@@ -565,7 +709,14 @@ class Element:
         else:
             return [f"{cnames[c]}" for c in self.data["categories"]]
 
-    def references(self):
+    def references(self) -> typing.List[str]:
+        """Get reference cells.
+
+        Returns:
+            reference cells
+        """
+        assert self._c is not None
+
         references = self.data["references"] if "references" in self.data else []
 
         if "complexes" in self.data:
@@ -591,15 +742,277 @@ class Element:
         return references
 
     @property
-    def test(self):
+    def test(self) -> bool:
+        """Check if element should be tested by default.
+
+        Returns:
+            True if it should be tested, otherwise False
+        """
         return "test" in self.data
 
     @property
-    def has_examples(self):
+    def has_examples(self) -> bool:
+        """Check if element has examples.
+
+        Returns:
+            True if it has examples, otherwise False
+        """
         return "examples" in self.data
 
     @property
-    def examples(self):
+    def examples(self) -> typing.List[str]:
+        """Get exmaples.
+
+        Returns:
+            List of examples
+        """
         if "examples" not in self.data:
             return []
         return self.data["examples"]
+
+
+class Categoriser:
+    """Categoriser."""
+
+    def __init__(self):
+        """Initialise."""
+        self.elements = []
+        self.families = {}
+        self.references = {}
+        self.categories = {}
+        self.implementations = {}
+
+    def recently_added(self, n: int) -> typing.List[Element]:
+        """Get recently added elements.
+
+        Args:
+            n: Number of elements
+
+        Returns:
+            List of recently added elements
+        """
+        if self.elements[0].created is None:
+            return self.elements[:n]
+        return sorted(self.elements, key=lambda e: e.created)[:-n-1:-1]
+
+    def recently_updated(self, n: int) -> typing.List[Element]:
+        """Get recently updated elements.
+
+        Args:
+            n: Number of elements
+
+        Returns:
+            List of recently updated elements
+        """
+        if self.elements[0].modified is None:
+            return self.elements[:n]
+        return sorted(self.elements, key=lambda e: e.modified)[:-n-1:-1]
+
+    def load_categories(self, file: str):
+        """Load categories from a file.
+
+        Args:
+            file: Filename
+        """
+        with open(file) as f:
+            for line in f:
+                if line.strip() != "":
+                    a, b = line.split(":", 1)
+                    self.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
+
+    def load_implementations(self, file: str):
+        """Load implementations from a file.
+
+        Args:
+            file: Filename
+        """
+        with open(file) as f:
+            self.implementations = yaml.load(f, Loader=yaml.FullLoader)
+
+    def load_families(self, file: str):
+        """Load families from a file.
+
+        Args:
+            file: Filename
+        """
+        with open(file) as f:
+            self.families = yaml.load(f, Loader=yaml.FullLoader)
+        for t in self.families:
+            for i in self.families[t]:
+                self.families[t][i]["elements"] = {}
+
+    def load_references(self, file: str):
+        """Load references from a file.
+
+        Args:
+            file: Filename
+        """
+        with open(file) as f:
+            for line in f:
+                if line.strip() != "":
+                    self.add_reference(line.strip(), f"{line.strip()}.html")
+
+    def load_folder(self, folder: str):
+        """Load elements from a folder.
+
+        Args:
+            folder: Folder name
+        """
+        for file in os.listdir(folder):
+            if file.endswith(".def") and not file.startswith("."):
+                with open(os.path.join(folder, file)) as f:
+                    data = yaml.load(f, Loader=yaml.FullLoader)
+
+                fname = file[:-4]
+
+                self.add_element(Element(data, fname))
+
+        if settings.github_token is None:
+            warnings.warn("Building without GitHub token. Timestamps will not be obtained.")
+        else:
+            g = Github(settings.github_token)
+            repo = g.get_repo("mscroggs/defelement.com")
+            for e in self.elements:
+                commits = repo.get_commits(path=f"elements/{e.filename}.def")
+                try:
+                    e.created = commits.get_page(-1)[-1].commit.committer.date
+                    e.modified = commits.get_page(0)[0].commit.committer.date
+                except IndexError:
+                    e.created = datetime.now()
+                    e.modified = datetime.now()
+
+        self.elements.sort(key=lambda x: x.name.lower())
+
+    def add_family(self, t: str, e: str, name: str, fname: str):
+        """Add a family.
+
+        Args:
+            t: Family name
+            e: Element information
+            name: Element name
+            fname: Filename
+        """
+        if len(e.split(",")) == 3:
+            i, j, k = e.split(",")
+        else:
+            i, j, k, _ = e.split(",")
+        if t not in self.families:
+            self.families[t] = {}
+            warnings.warn(f"Complex type included in familes data: {t}")
+        if i not in self.families[t]:
+            warnings.warn(f"Family not included in familes data: {i}")
+            self.families[t][i] = {"elements": {}}
+        if k not in self.families[t][i]["elements"]:
+            self.families[t][i]["elements"][k] = {}
+        self.families[t][i]["elements"][k][j] = (name, fname)
+
+    def add_reference(self, e: str, fname: str):
+        """Add reference cell.
+
+        Args:
+            e: Reference name
+            fname: filename
+        """
+        self.references[e] = fname
+
+    def add_category(self, fname: str, cname: str, html_filename: str):
+        """Add a category.
+
+        Args:
+            fname: Filename
+            cname: Category name
+            html_filename: HTML filename to link to
+        """
+        self.categories[fname] = (cname, html_filename)
+
+    def get_category_name(self, c: str) -> str:
+        """Get category name.
+
+        Args:
+            c: Category
+
+        Returns:
+            Category name
+        """
+        return self.categories[c][0]
+
+    def get_space_name(self, element: str, link: bool = True) -> str:
+        """Get element space name.
+
+        Args:
+            element: Element id
+            link: Should a link be included?
+
+        Returns:
+            Space name, with or without a link to the element page
+        """
+        for e in self.elements:
+            if e.filename == element:
+                if link:
+                    return e.html_link
+                else:
+                    return e.html_name
+                break
+        raise ValueError(f"Could not find space: {element}")
+
+    def get_element(self, ename: str) -> Element:
+        """Get an element.
+
+        Args:
+            ename: Element id
+
+        Returns:
+            The element
+        """
+        for e in self.elements:
+            if e.name == ename:
+                return e
+        raise ValueError(f"Could not find element: {ename}")
+
+    def add_element(self, e: Element):
+        """Add an element.
+
+        Args:
+            e: The element
+        """
+        self.elements.append(e)
+        e._c = self
+        for r in e.reference_elements(False):
+            assert r in self.references
+
+        for j, k in e.complexes(False, False).items():
+            for i in k:
+                self.add_family(j, i, e.html_name, e.html_filename)
+
+    def elements_in_category(self, c: str) -> typing.List[Element]:
+        """Get elements in a category.
+
+        Args:
+            c: Category id
+
+        Returns:
+            List of elements
+        """
+        return [e for e in self.elements if c in e.categories(False, False)]
+
+    def elements_in_implementation(self, i: str) -> typing.List[Element]:
+        """Get elements in an implementation.
+
+        Args:
+            i: Implementation
+
+        Returns:
+            List of elements
+        """
+        return [e for e in self.elements if e.implemented(i)]
+
+    def elements_by_reference(self, r: str) -> typing.List[Element]:
+        """Get elements on a reference.
+
+        Args:
+            r: Reference
+
+        Returns:
+            List of elements
+        """
+        return [e for e in self.elements if r in e.reference_elements(False)]

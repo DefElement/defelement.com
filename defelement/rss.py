@@ -1,7 +1,23 @@
+"""RSS."""
+
 import html
+import typing
+
+from defelement.element import Element
 
 
-def make_rss(elements, title, desc, date):
+def make_rss(elements: typing.List[Element], title: str, desc: str, date: str) -> str:
+    """Make RSS XML.
+
+    Args:
+        elements: Elements to include in feed
+        title: Title of feed
+        desc: Description of feed
+        date: Identifier for date
+
+    Returns:
+        RSS XML
+    """
     out = ("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
            "<rss version=\"2.0\">\n"
            "<channel>\n"

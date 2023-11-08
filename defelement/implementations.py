@@ -1,12 +1,37 @@
+"""Implementations."""
+
 import re
-from .utils import to_array
+import typing
+
+from symfem.finite_element import FiniteElement
+
+from defelement.tools import to_array
+
+if typing.TYPE_CHECKING:
+    from numpy import float64
+    from numpy.typing import NDArray
+
+    from defelement.element import Element
+    Array = NDArray[float64]
+else:
+    Array = typing.Any
+    Element = typing.Any
 
 
 class VariantNotImplemented(BaseException):
-    pass
+    """Error for variants that are not implemented."""
 
 
-def symfem_format(string, params):
+def symfem_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
+    """Format Symfem implementation string.
+
+    Args:
+        string: Symfem string
+        params: Parameters
+
+    Returns:
+        Formatted implementation string
+    """
     out = f"\"{string}\""
     for p, v in params.items():
         if p == "variant":
@@ -14,7 +39,16 @@ def symfem_format(string, params):
     return out
 
 
-def basix_format(string, params):
+def basix_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
+    """Format Basix implementation string.
+
+    Args:
+        string: Basix string
+        params: Parameters
+
+    Returns:
+        Formatted implementation string
+    """
     out = f"basix.ElementFamily.{string}"
     for p, v in params.items():
         out += f", {p}="
@@ -27,18 +61,45 @@ def basix_format(string, params):
     return out
 
 
-def basix_ufl_format(string, params):
+def basix_ufl_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
+    """Format basix.ufl implementation string.
+
+    Args:
+        string: basix.ufl string
+        params: Parameters
+
+    Returns:
+        Formatted implementation string
+    """
     out = basix_format(string, {i: j for i, j in params.items() if i != "shape"})
     if "shape" in params:
         out += f", shape={params['shape']}"
     return out
 
 
-def string_format(string, params):
+def string_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
+    """Format implementation string.
+
+    Args:
+        string: String
+        params: Parameters
+
+    Returns:
+        Formatted implementation string
+    """
     return f"\"{string}\""
 
 
-def fiat_format(string, params):
+def fiat_format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
+    """Format FIAT implementation string.
+
+    Args:
+        string: FIAT string
+        params: Parameters
+
+    Returns:
+        Formatted implementation string
+    """
     out = f"FIAT.{string}"
     started = False
     for p, v in params.items():
@@ -52,7 +113,18 @@ def fiat_format(string, params):
     return out
 
 
-def _parse_value(v):
+ValueType = typing.Union[int, str, typing.List["ValueType"]]
+
+
+def _parse_value(v: str) -> ValueType:
+    """Parse a string.
+
+    Args:
+        v: String
+
+    Returns:
+        Parsed string
+    """
     v = v.strip()
     if v[0] == "[" and v[-1] == "]":
         return [_parse_value(i) for i in v[1:-1].split(";")]
@@ -61,7 +133,20 @@ def _parse_value(v):
     return v
 
 
-def parse_example(e):
+def parse_example(
+    e: str
+) -> typing.Tuple[
+    str, int, typing.Optional[str],
+    typing.Dict[str, typing.Union[int, str, typing.List[ValueType]]]
+]:
+    """Parse an example.
+
+    Args:
+        e: The example
+
+    Returns:
+        Parsed example information
+    """
     if " {" in e:
         e, rest = e.split(" {")
         rest = rest.split("}")[0]
@@ -82,7 +167,15 @@ def parse_example(e):
     return ref, int(order), variant, kwargs
 
 
-def symfem_example(element):
+def symfem_example(element: Element) -> str:
+    """Generate Symfem examples.
+
+    Args:
+        element: The element
+
+    Returns:
+        Example code
+    """
     out = "import symfem"
     for e in element.examples:
         ref, ord, variant, kwargs = parse_example(e)
@@ -110,7 +203,15 @@ def symfem_example(element):
     return out
 
 
-def basix_example(element):
+def basix_example(element: Element) -> str:
+    """Generate Basix examples.
+
+    Args:
+        element: The element
+
+    Returns:
+        Example code
+    """
     out = "import basix"
     for e in element.examples:
         ref, ord, variant, kwargs = parse_example(e)
@@ -138,7 +239,15 @@ def basix_example(element):
     return out
 
 
-def basix_ufl_example(element):
+def basix_ufl_example(element: Element) -> str:
+    """Generate basix.ufl examples.
+
+    Args:
+        element: The element
+
+    Returns:
+        Example code
+    """
     out = "import basix\nimport basix.ufl"
     for e in element.examples:
         ref, ord, variant, kwargs = parse_example(e)
@@ -174,7 +283,15 @@ def basix_ufl_example(element):
     return out
 
 
-def ufl_legacy_example(element):
+def ufl_legacy_example(element: Element) -> str:
+    """Generate UFL legacy examples.
+
+    Args:
+        element: The element
+
+    Returns:
+        Example code
+    """
     out = "import ufl_legacy"
     for e in element.examples:
         ref, ord, variant, kwargs = parse_example(e)
@@ -197,7 +314,15 @@ def ufl_legacy_example(element):
     return out
 
 
-def bempp_example(element):
+def bempp_example(element: Element) -> str:
+    """Generate Bempp-cl examples.
+
+    Args:
+        element: The element
+
+    Returns:
+        Example code
+    """
     out = "import bempp.api"
     out += "\n"
     out += "grid = bempp.api.shapes.regular_sphere(1)"
@@ -223,7 +348,15 @@ def bempp_example(element):
     return out
 
 
-def fiat_example(element):
+def fiat_example(element: Element) -> str:
+    """Generate FIAT examples.
+
+    Args:
+        element: The element
+
+    Returns:
+        Example code
+    """
     out = "import FIAT"
     for e in element.examples:
         ref, ord, variant, kwargs = parse_example(e)
@@ -261,7 +394,16 @@ def fiat_example(element):
     return out
 
 
-def symfem_create_element(element, example):
+def symfem_create_element(element: Element, example: str) -> FiniteElement:
+    """Create a Symfem element.
+
+    Args:
+        element: Element info
+        example: The example
+
+    Returns:
+        Symfem element
+    """
     import symfem
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -274,23 +416,51 @@ def symfem_create_element(element, example):
 
 
 class CachedSymfemTabulator:
-    def __init__(self, element):
-        self.element = element
-        self.tables = []
+    """Symfem tabulator with caching."""
 
-    def tabulate(self, points):
+    def __init__(self, element: FiniteElement):
+        """Initialise.
+
+        Args:
+            element: Symfem element
+        """
+        self.element = element
+        self.tables: typing.List[typing.Tuple[Array, Array]] = []
+
+    def tabulate(self, points: Array) -> Array:
+        """Tabulate this element.
+
+        Args:
+            points: Points to tabulate at
+
+        Returns:
+            Values of basis functions
+        """
         import numpy as np
 
         for i, j in self.tables:
             if i.shape == points.shape and np.allclose(i, points):
                 return j
         shape = (points.shape[0], self.element.range_dim, self.element.space_dim)
-        table = to_array(self.element.tabulate_basis(points, "xx,yy,zz")).reshape(shape)
+        table = to_array(self.element.tabulate_basis(points, "xx,yy,zz"))
+        assert not isinstance(table, float)
+        table = table.reshape(shape)
         self.tables.append((points, table))
         return table
 
 
-def symfem_verify(element, example):
+def symfem_verify(
+    element: Element, example: str
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
+    """Get verification data for Symfem.
+
+    Args:
+        element: Element data
+        example: Example data
+
+    Returns:
+        List of entity dofs, and tabulation function
+    """
     import symfem
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -306,7 +476,18 @@ def symfem_verify(element, example):
     return edofs, lambda points: t.tabulate(points)
 
 
-def basix_verify(element, example):
+def basix_verify(
+    element: Element, example: str
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
+    """Get verification data for Basix.
+
+    Args:
+        element: Element data
+        example: Example data
+
+    Returns:
+        List of entity dofs, and tabulation function
+    """
     import basix
 
     ref, ord, variant, kwargs = parse_example(example)
@@ -332,9 +513,22 @@ def basix_verify(element, example):
     return e.entity_dofs, lambda points: e.tabulate(0, points)[0].transpose((0, 2, 1))
 
 
-def basix_ufl_verify(element, example):
+def basix_ufl_verify(
+    element: Element, example: str
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
+    """Get verification data for basix.ufl.
+
+    Args:
+        element: Element data
+        example: Example data
+
+    Returns:
+        List of entity dofs, and tabulation function
+    """
     import basix
     import basix.ufl
+
+    kwargs: typing.Dict[str, typing.Any]
 
     ref, ord, variant, kwargs = parse_example(example)
     assert len(kwargs) == 0
@@ -368,7 +562,18 @@ def basix_ufl_verify(element, example):
         points.shape[0], e.value_size, -1)
 
 
-def fiat_verify(element, example):
+def fiat_verify(
+    element: Element, example: str
+) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
+    """Get verification data for FIAT.
+
+    Args:
+        element: Element data
+        example: Example data
+
+    Returns:
+        List of entity dofs, and tabulation function
+    """
     import FIAT
 
     ref, ord, variant, kwargs = parse_example(example)

@@ -1,8 +1,28 @@
+"""Verification."""
+
+import typing
+
 import symfem
-from .utils import to_array
+
+from defelement.tools import to_array
+
+if typing.TYPE_CHECKING:
+    from numpy import float64
+    from numpy.typing import NDArray
+    Array = NDArray[float64]
+else:
+    Array = typing.Any
 
 
-def points(ref):
+def points(ref: str) -> Array:
+    """Get tabulation points for a reference cell.
+
+    Args:
+        ref: Reference cell
+
+    Returns:
+        Set of points
+    """
     import numpy as np
 
     if ref == "point":
@@ -32,7 +52,15 @@ def points(ref):
     raise ValueError(f"Unsupported cell type: {ref}")
 
 
-def entity_points(ref):
+def entity_points(ref: str) -> typing.List[typing.List[Array]]:
+    """Get tabulation points for sub-entities of a reference cell.
+
+    Args:
+        ref: Reference cell
+
+    Returns:
+        Set of points
+    """
     import numpy as np
 
     r = symfem.create_reference(ref)
@@ -48,19 +76,18 @@ def entity_points(ref):
         out.append(row)
     return out
 
-    if ref == "interval":
-        return [
-            [np.array([[0.0]]), np.array([[1.0]])]
-        ]
-    if ref == "triangle":
-        return [
-            [np.array([[0.0, 0.0]]), np.array([[1.0, 0.0]]), np.array()]
-        ]
 
-    raise ValueError(f"Unsupported cell type: {ref}")
+def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
+    """Check if two tables span the same space.
 
+    Args:
+        table0: First table
+        table1: Second table
+        complete: Should the tables have full rank?
 
-def same_span(table0, table1, complete=True):
+    Returns:
+        True if span is the same, otherwise False
+    """
     import numpy as np
 
     if table0.shape != table1.shape:
@@ -79,7 +106,23 @@ def same_span(table0, table1, complete=True):
     return rank == srank
 
 
-def verify(ref, info0, info1):
+def verify(
+    ref: str,
+    info0: typing.Tuple[typing.List[typing.List[typing.List[int]]],
+                        typing.Callable[[Array], Array]],
+    info1: typing.Tuple[typing.List[typing.List[typing.List[int]]],
+                        typing.Callable[[Array], Array]],
+) -> bool:
+    """Run verification.
+
+    Args:
+        ref: Reference cell
+        info0: Verification info for first implementation
+        info1: Verification info for second implementation
+
+    Returns:
+        True if verification successful, otherwise False
+    """
     edofs0, tab0 = info0
     edofs1, tab1 = info1
 

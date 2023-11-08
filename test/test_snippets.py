@@ -1,5 +1,7 @@
-import pytest
 import os
+
+import pytest
+
 from defelement.element import Categoriser
 from defelement.implementations import examples
 

@@ -1,6 +1,10 @@
+"""Install all supported implementations."""
+
 import argparse
 import os
+
 import yaml
+
 from defelement import implementations
 
 parser = argparse.ArgumentParser(description="Install implementations")
