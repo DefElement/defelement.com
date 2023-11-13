@@ -9,7 +9,7 @@ basix:
 ufl:
   name: (legacy) UFL
   url: https://github.com/FEniCS/ufl/tree/ufl_legacy
-  install: pip3 install git+https://github.com/FEniCS/ufl.git@ufl_legacy
+  install: pip3 install fenics-ufl-legacy
 bempp:
   name: Bempp
   url: https://github.com/bempp/bempp-cl
