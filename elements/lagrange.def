@@ -12,7 +12,7 @@ short-names:
   - DG
 notes:
   - DGT and Hdiv trace are names given to this element when it is defined on the facets of a mesh.
-  - For the Lobatto variant, he derivatives of most of the basis functions are orthogonal.
+  - For the Lobatto variant, the derivatives of most of the basis functions are orthogonal.
 variants:
   equispaced:
     description: The variant has its point evaluations at equally spaced points.
