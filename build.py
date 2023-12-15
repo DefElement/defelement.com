@@ -138,7 +138,7 @@ cdescs = {
     "H(div div)": "Inner products with normals to facets are continuous",
     "H(curl curl)": "Inner products with tangents to facets are continuous"}
 
-verification = {}
+verification: typing.Dict[str, typing.Dict[str, typing.Dict[str, typing.List[str]]]] = {}
 v_date = None
 if os.path.isfile(settings.verification_json):
     with open(settings.verification_json) as f:
@@ -476,14 +476,14 @@ for e in categoriser.elements:
 # Verification badges
 img = "data:image/png;base64,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"  # noqa: E501
 badges = os.path.join(settings.html_path, "badges")
-for i, v in verifications.items():
+for i in verifications:
     if i != "symfem":
         good = 0
         total = 0
-        for v in verification.values():
-            if i in v:
-                good += len(v[i]["pass"])
-                total += len(v[i]["pass"]) + len(v[i]["fail"])
+        for ver in verification.values():
+            if i in ver:
+                good += len(ver[i]["pass"])
+                total += len(ver[i]["pass"]) + len(ver[i]["fail"])
         proportion = f"{good} / {total}"
         p = 0 if total == 0 else good / total
         if p < 0.4:
@@ -565,7 +565,6 @@ for i in verifications:
 content += "</tr></thead>"
 long_content += "</tr></thead>"
 rows = []
-rows = []
 for e in categoriser.elements:
     n = 0
     row = "<tr>"
@@ -586,11 +585,11 @@ for e in categoriser.elements:
 
     examples = []
     if e.filename in verification:
-        for i in verification[e.filename].values():
-            for j in i.values():
-                for k in j:
-                    if k not in examples:
-                        examples.append(k)
+        for vv in verification[e.filename].values():
+            for egs in vv.values():
+                for eg in egs:
+                    if eg not in examples:
+                        examples.append(eg)
     sorted_examples = []
     for cell in [
         "interval", "triangle", "quadrilateral", "tetrahedron", "hexahedron",
