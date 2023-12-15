@@ -49,7 +49,8 @@ implementations:
     legendre: BDM
   ufl:
     lagrange: BDM
-  fiat: BrezziDouglasMarini
+  fiat:
+    legendre: BrezziDouglasMarini variant=integral
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange
