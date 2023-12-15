@@ -123,6 +123,8 @@ def verify(
     Returns:
         True if verification successful, otherwise False
     """
+    import numpy as np
+
     edofs0, tab0 = info0
     edofs1, tab1 = info1
 
@@ -158,7 +160,7 @@ def verify(
                 ed1 = edofs1[d][e]
                 t0 = tab0(pts)[:, :, ed0]
                 t1 = tab1(pts)[:, :, ed1]
-                if not same_span(t0, t1, False):
+                if not np.allclose(t0, t1) and not same_span(t0, t1, False):
                     return False
 
     return True
