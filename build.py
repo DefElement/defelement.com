@@ -138,7 +138,7 @@ cdescs = {
     "H(div div)": "Inner products with normals to facets are continuous",
     "H(curl curl)": "Inner products with tangents to facets are continuous"}
 
-verification = {}
+verification: typing.Dict[str, typing.Dict[str, typing.Dict[str, typing.List[str]]]] = {}
 v_date = None
 if os.path.isfile(settings.verification_json):
     with open(settings.verification_json) as f:
@@ -476,14 +476,14 @@ for e in categoriser.elements:
 # Verification badges
 img = "data:image/png;base64,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"  # noqa: E501
 badges = os.path.join(settings.html_path, "badges")
-for i, v in verifications.items():
+for i in verifications:
     if i != "symfem":
         good = 0
         total = 0
-        for v in verification.values():
-            if i in v:
-                good += len(v[i]["pass"])
-                total += len(v[i]["pass"]) + len(v[i]["fail"])
+        for ver in verification.values():
+            if i in ver:
+                good += len(ver[i]["pass"])
+                total += len(ver[i]["pass"]) + len(ver[i]["fail"])
         proportion = f"{good} / {total}"
         p = 0 if total == 0 else good / total
         if p < 0.4:
@@ -542,8 +542,9 @@ with open(os.path.join(badges, "symfem.svg"), "w") as f:
         f"\n<image x=\"40\" y=\"35\" width=\"100\" height=\"130\" xlink:href=\"{img}\"/>\n"
         "</svg>")
 
-# Make verification page
+# Make verification pages
 content = heading_with_self_ref("h1", "Verification")
+long_content = heading_with_self_ref("h1", "Verification: full detail")
 if v_date is not None:
     year, month, day = [int(i) for i in v_date.split("-")]
     monthname = ["Zeromber", "January", "February", "March", "April", "May", "June",
@@ -552,12 +553,17 @@ if v_date is not None:
 content += "<table style='margin:auto' class='bordered align-left'>"
 content += "<thead>"
 content += "<tr><td>Element</td>"
+long_content += "<table style='margin:auto' class='bordered align-left'>"
+long_content += "<thead>"
+long_content += "<tr><td>Element</td><td>Example</td>"
 vs = []
 for i in verifications:
     if i != "symfem":
         vs.append(i)
         content += f"<td>{categoriser.implementations[i]['name']}</td>"
+        long_content += f"<td>{categoriser.implementations[i]['name']}</td>"
 content += "</tr></thead>"
+long_content += "</tr></thead>"
 rows = []
 for e in categoriser.elements:
     n = 0
@@ -576,38 +582,91 @@ for e in categoriser.elements:
                 row += red_check
         row += "</td>"
     row += "</tr>"
-    rows.append((row, n))
-rows.sort(key=lambda i: -i[1])
+
+    examples = []
+    if e.filename in verification:
+        for vv in verification[e.filename].values():
+            for egs in vv.values():
+                for eg in egs:
+                    if eg not in examples:
+                        examples.append(eg)
+    sorted_examples = []
+    for cell in [
+        "interval", "triangle", "quadrilateral", "tetrahedron", "hexahedron",
+        "prism", "pyramid", "dual"
+    ]:
+        sorted_examples += sorted([i for i in examples if i.startswith(cell)],
+                                  key=lambda i: ",".join(i.split(",")[:0:-1]))
+    assert len(examples) == len(sorted_examples)
+    long_row = ""
+    for n, eg in enumerate(sorted_examples):
+        long_row += "<tr>"
+        if n == 0:
+            long_row += (f"<td rowspan='{len(sorted_examples)}'>"
+                         f"<a href='/elements/{e.filename}.html'>{e.html_name}</a></td>")
+        long_row += f"<td style='font-size:80%'>{eg}</td>"
+        for i in vs:
+            long_row += "<td>"
+            if e.filename in verification and i in verification[e.filename]:
+                result = verification[e.filename][i]
+                if eg in result["pass"]:
+                    long_row += green_check
+                elif eg in result["fail"]:
+                    long_row += red_check
+                else:
+                    long_row += blue_minus
+            else:
+                long_row += blue_minus
+            long_row += "</td>"
+        long_row += "</tr>"
+
+    rows.append((row, long_row, n))
+rows.sort(key=lambda i: -i[2])
 for r in rows:
-    if r[1] > 0:
+    if r[2] > 0:
         content += r[0]
-content += "</thead>"
-content += "</table>"
-content += "<br /><br />"
-content += (
+        long_content += r[1]
+c = (
+    "</table>"
+    "<br /><br />"
     "For each element in the table above, the verification test passes for an example if:"
     "<ul>"
     "<li>The element's basis functions span the same space as Symfem.</li>"
     "<li>The number of DOFs associated with each sub-entity of the cell is the same as Symfem.</li>"
     "<li>The element has the same continuity between cells as Symfem.</li>"
     "</ul>"
-    "The symbols in the table have the following meaning:"
+    "The symbols in the table have the following meaning:")
+content += c
+long_content += c
+content += (
     "<table style='margin:auto' class='bordered align-left'>"
     f"<tr><td>{green_check}</td><td>Verification passes from all the examples on the element's page"
     "</td></tr>"
     f"<tr><td>{orange_check}</td><td>Verification passes for some examples, but not all</td></tr>"
     f"<tr><td>{red_check}</td><td>Verification fails for all examples</td></tr>"
     "</table>")
+long_content += (
+    "<table style='margin:auto' class='bordered align-left'>"
+    f"<tr><td>{green_check}</td><td>Verification passes</td></tr>"
+    f"<tr><td>{red_check}</td><td>Verification fails</td></tr>"
+    f"<tr><td>{blue_minus}</td><td>Example not implemented</td></tr>"
+    "</table>")
+content += ("<br /><br />You can view more details of which examples pass and fail on the "
+            "<a href='/detailed-verification.html'>verification with full detail page</a>.")
+long_content += ("<br /><br />You can view a summarised version of this information on the "
+                 "<a href='/verification.html'>verification page</a>.")
 if os.path.isfile(settings.verification_json):
     os.system(f"cp {settings.verification_json} {settings.html_path}/verification.json")
-    content += ("<br /><br />The verification data is also available "
-                "<a href='/verification.json' target='new'>in JSON format</a>.")
+    c = ("<br /><br />The verification data is also available "
+         "<a href='/verification.json' target='new'>in JSON format</a>.")
+    content += c
+    long_content += c
 
-content += heading_with_self_ref("h2", "Verification GitHub badges")
-content += "<table class='bordered align-left'>"
-content += "<thead><tr><td>Implementation</td><td>Badge</td><td>Markdown</td></tr></thead>"
+c = heading_with_self_ref("h2", "Verification GitHub badges")
+c += "<table class='bordered align-left'>"
+c += "<thead><tr><td>Implementation</td><td>Badge</td><td>Markdown</td></tr></thead>"
 for i in verifications:
-    content += (
+    c += (
         "<tr>"
         f"<td>{categoriser.implementations[i]['name']}</td>"
         f"<td><img src='/badges/{i}.svg'></td>"
@@ -615,9 +674,13 @@ for i in verifications:
         f"[![DefElement verification](https://defelement.com/badges/{i}.svg)]"
         "(https://defelement.com/verification.html)</td>"
         "</tr>")
-content += "</table>"
+c += "</table>"
+content += c
+long_content += c
 write_html_page(os.path.join(settings.html_path, "verification.html"),
                 "Verification", content)
+write_html_page(os.path.join(settings.html_path, "detailed-verification.html"),
+                "Verification: full detail", long_content)
 
 
 def build_examples(egs: typing.List[typing.Dict[str, str]], process: str = ""):
