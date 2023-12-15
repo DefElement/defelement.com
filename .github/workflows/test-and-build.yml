@@ -154,7 +154,7 @@ jobs:
 
       - run: python3 -m pip install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.bot_github_token }} --processes 4
+      - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.GITHUB_TOKEN }} --processes 4
         name: Build website HTML
         if: ${{ !github.event.pull_request.head.repo.fork }}
       - run: python3 build.py _html --verification-json verification/verification.json --processes 4
@@ -261,7 +261,7 @@ jobs:
 
       - run: python3 -m pip install -r requirements.txt
         name: Install requirements
-      - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.bot_github_token }} --processes 4
+      - run: python3 build.py _html --verification-json verification/verification.json --github-token ${{ secrets.GITHUB_TOKEN }} --processes 4
         name: Build website HTML
 
       # Push to GitHub Pages
