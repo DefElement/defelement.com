@@ -542,8 +542,9 @@ with open(os.path.join(badges, "symfem.svg"), "w") as f:
         f"\n<image x=\"40\" y=\"35\" width=\"100\" height=\"130\" xlink:href=\"{img}\"/>\n"
         "</svg>")
 
-# Make verification page
+# Make verification pages
 content = heading_with_self_ref("h1", "Verification")
+long_content = heading_with_self_ref("h1", "Verification: full detail")
 if v_date is not None:
     year, month, day = [int(i) for i in v_date.split("-")]
     monthname = ["Zeromber", "January", "February", "March", "April", "May", "June",
@@ -552,12 +553,18 @@ if v_date is not None:
 content += "<table style='margin:auto' class='bordered align-left'>"
 content += "<thead>"
 content += "<tr><td>Element</td>"
+long_content += "<table style='margin:auto' class='bordered align-left'>"
+long_content += "<thead>"
+long_content += "<tr><td>Element</td><td>Example</td>"
 vs = []
 for i in verifications:
     if i != "symfem":
         vs.append(i)
         content += f"<td>{categoriser.implementations[i]['name']}</td>"
+        long_content += f"<td>{categoriser.implementations[i]['name']}</td>"
 content += "</tr></thead>"
+long_content += "</tr></thead>"
+rows = []
 rows = []
 for e in categoriser.elements:
     n = 0
@@ -576,38 +583,91 @@ for e in categoriser.elements:
                 row += red_check
         row += "</td>"
     row += "</tr>"
-    rows.append((row, n))
-rows.sort(key=lambda i: -i[1])
+
+    examples = []
+    if e.filename in verification:
+        for i in verification[e.filename].values():
+            for j in i.values():
+                for k in j:
+                    if k not in examples:
+                        examples.append(k)
+    sorted_examples = []
+    for cell in [
+        "interval", "triangle", "quadrilateral", "tetrahedron", "hexahedron",
+        "prism", "pyramid", "dual"
+    ]:
+        sorted_examples += sorted([i for i in examples if i.startswith(cell)],
+                                  key=lambda i: ",".join(i.split(",")[:0:-1]))
+    assert len(examples) == len(sorted_examples)
+    long_row = ""
+    for n, eg in enumerate(sorted_examples):
+        long_row += "<tr>"
+        if n == 0:
+            long_row += (f"<td rowspan='{len(sorted_examples)}'>"
+                         f"<a href='/elements/{e.filename}.html'>{e.html_name}</a></td>")
+        long_row += f"<td style='font-size:80%'>{eg}</td>"
+        for i in vs:
+            long_row += "<td>"
+            if e.filename in verification and i in verification[e.filename]:
+                result = verification[e.filename][i]
+                if eg in result["pass"]:
+                    long_row += green_check
+                elif eg in result["fail"]:
+                    long_row += red_check
+                else:
+                    long_row += blue_minus
+            else:
+                long_row += blue_minus
+            long_row += "</td>"
+        long_row += "</tr>"
+
+    rows.append((row, long_row, n))
+rows.sort(key=lambda i: -i[2])
 for r in rows:
-    if r[1] > 0:
+    if r[2] > 0:
         content += r[0]
-content += "</thead>"
-content += "</table>"
-content += "<br /><br />"
-content += (
+        long_content += r[1]
+c = (
+    "</table>"
+    "<br /><br />"
     "For each element in the table above, the verification test passes for an example if:"
     "<ul>"
     "<li>The element's basis functions span the same space as Symfem.</li>"
     "<li>The number of DOFs associated with each sub-entity of the cell is the same as Symfem.</li>"
     "<li>The element has the same continuity between cells as Symfem.</li>"
     "</ul>"
-    "The symbols in the table have the following meaning:"
+    "The symbols in the table have the following meaning:")
+content += c
+long_content += c
+content += (
     "<table style='margin:auto' class='bordered align-left'>"
     f"<tr><td>{green_check}</td><td>Verification passes from all the examples on the element's page"
     "</td></tr>"
     f"<tr><td>{orange_check}</td><td>Verification passes for some examples, but not all</td></tr>"
     f"<tr><td>{red_check}</td><td>Verification fails for all examples</td></tr>"
     "</table>")
+long_content += (
+    "<table style='margin:auto' class='bordered align-left'>"
+    f"<tr><td>{green_check}</td><td>Verification passes</td></tr>"
+    f"<tr><td>{red_check}</td><td>Verification fails</td></tr>"
+    f"<tr><td>{blue_minus}</td><td>Example not implemented</td></tr>"
+    "</table>")
+content += ("<br /><br />You can view more details of which examples pass and fail on the "
+            "<a href='/detailed-verification.html'>verification with full detail page</a>.")
+long_content += ("<br /><br />You can view a summarised version of this information on the "
+                 "<a href='/verification.html'>verification page</a>.")
 if os.path.isfile(settings.verification_json):
     os.system(f"cp {settings.verification_json} {settings.html_path}/verification.json")
-    content += ("<br /><br />The verification data is also available "
-                "<a href='/verification.json' target='new'>in JSON format</a>.")
+    c = ("<br /><br />The verification data is also available "
+         "<a href='/verification.json' target='new'>in JSON format</a>.")
+    content += c
+    long_content += c
 
-content += heading_with_self_ref("h2", "Verification GitHub badges")
-content += "<table class='bordered align-left'>"
-content += "<thead><tr><td>Implementation</td><td>Badge</td><td>Markdown</td></tr></thead>"
+c = heading_with_self_ref("h2", "Verification GitHub badges")
+c += "<table class='bordered align-left'>"
+c += "<thead><tr><td>Implementation</td><td>Badge</td><td>Markdown</td></tr></thead>"
 for i in verifications:
-    content += (
+    c += (
         "<tr>"
         f"<td>{categoriser.implementations[i]['name']}</td>"
         f"<td><img src='/badges/{i}.svg'></td>"
@@ -615,9 +675,13 @@ for i in verifications:
         f"[![DefElement verification](https://defelement.com/badges/{i}.svg)]"
         "(https://defelement.com/verification.html)</td>"
         "</tr>")
-content += "</table>"
+c += "</table>"
+content += c
+long_content += c
 write_html_page(os.path.join(settings.html_path, "verification.html"),
                 "Verification", content)
+write_html_page(os.path.join(settings.html_path, "detailed-verification.html"),
+                "Verification: full detail", long_content)
 
 
 def build_examples(egs: typing.List[typing.Dict[str, str]], process: str = ""):
