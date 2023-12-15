@@ -599,9 +599,9 @@ for e in categoriser.elements:
                                   key=lambda i: ",".join(i.split(",")[:0:-1]))
     assert len(examples) == len(sorted_examples)
     long_row = ""
-    for n, eg in enumerate(sorted_examples):
+    for eg in sorted_examples:
         long_row += "<tr>"
-        if n == 0:
+        if long_row == "<tr>":
             long_row += (f"<td rowspan='{len(sorted_examples)}'>"
                          f"<a href='/elements/{e.filename}.html'>{e.html_name}</a></td>")
         long_row += f"<td style='font-size:80%'>{eg}</td>"
