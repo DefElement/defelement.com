@@ -572,12 +572,13 @@ for e in categoriser.elements:
     for i in vs:
         row += "<td>"
         if e.filename in verification and i in verification[e.filename]:
-            n += 1
             result = verification[e.filename][i]
-            if len(result["fail"]) == 0:
-                row += green_check
-            elif len(result["pass"]) > 0:
-                row += orange_check
+            if len(result["pass"]) > 0:
+                n += 1
+                if len(result["fail"]) == 0:
+                    row += green_check
+                else:
+                    row += orange_check
             else:
                 row += red_check
         row += "</td>"
