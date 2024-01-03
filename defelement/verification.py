@@ -91,18 +91,29 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     import numpy as np
 
     if table0.shape != table1.shape:
+        print("AA")
         return False
 
     ndofs = table0.shape[-1]
     table0 = table0.reshape(-1, ndofs).T
     table1 = table1.reshape(-1, ndofs).T
 
+    for i in range(table0.shape[0]):
+        for j in range(table0.shape[1]):
+            if np.isclose(table0[i, j], 0):
+                table0[i, j] = 0
+            if np.isclose(table1[i, j], 0):
+                table1[i, j] = 0
+
     rank = np.linalg.matrix_rank(table0)
     if complete and rank != ndofs:
+        print("BB")
         return False
 
     stack = np.vstack([table0, table1])
     srank = np.linalg.matrix_rank(stack)
+    if rank != srank:
+        from IPython import embed; embed()
     return rank == srank
 
 
@@ -130,14 +141,17 @@ def verify(
 
     # Check the same number of entity DOFs
     if len(edofs0) != len(edofs1):
+        print("A")
         return False
     entity_counts = []
     for i0, i1 in zip(edofs0, edofs1):
         if len(i0) != len(i1):
+            print("B")
             return False
         entity_counts.append(len(i0))
         for j0, j1 in zip(i0, i1):
             if len(j0) != len(j1):
+                print("C")
                 return False
 
     # Check that polysets span the same space
@@ -146,9 +160,11 @@ def verify(
     table1 = tab1(pts)
 
     if table0.shape != table1.shape:
+        print("D")
         return False
 
     if not same_span(table0, table1):
+        print("E")
         return False
 
     # Check that continuity will be the same
@@ -161,6 +177,7 @@ def verify(
                 t0 = tab0(pts)[:, :, ed0]
                 t1 = tab1(pts)[:, :, ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
+                    print("F")
                     return False
 
     return True

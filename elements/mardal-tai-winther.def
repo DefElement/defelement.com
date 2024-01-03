@@ -39,7 +39,7 @@ examples:
   - triangle,3
   - tetrahedron,3
 references:
-  - title: A Robust Finite Element Method for Darcy&ndash;Stokes Flow
+  - title: A robust finite element method for Darcy&ndash;Stokes flow
     author:
       - Mardal, Kent-Andre
       - Tai, Xue-Cheng

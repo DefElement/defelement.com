@@ -72,7 +72,15 @@ def wrap_caps(txt: str) -> str:
     Returns:
         String with capitals wrapped in curly braces
     """
-    return re.sub(r"([A-Z])", r"{\1}", txt)
+    out = ""
+    for word in txt.split():
+        if out != "":
+            out += " "
+        if re.match(r".[A-Z]", word) or (out != "" and re.match(r"[A-Z]", word)):
+            out += f"{{{word}}}"
+        else:
+            out += word
+    return out
 
 
 def html_to_tex(txt: str) -> str:
@@ -111,9 +119,9 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{"
             if isinstance(r[j], str):
-                out += wrap_caps(html_to_tex(r[j]))
+                out += html_to_tex(r[j])
             else:
-                out += " and ".join([wrap_caps(html_to_tex(k)) for k in r[j]])
+                out += " and ".join([html_to_tex(k) for k in r[j]])
             out += "},\n"
 
     # Fields with caps that need wrapping
