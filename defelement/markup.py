@@ -59,13 +59,16 @@ def format_names(names: typing.List[str], format: str) -> str:
     else:
         formatted_names = []
         for n in names:
-            nsp = n.split(", ")
-            name = ""
-            for i in nsp[:0:-1]:
-                for j in i.split(" "):
-                    name += f"{j[0]}. "
-            name += n[0]
-            formatted_names.append(name)
+            if n == "et al":
+                formatted_names.append("et al")
+            else:
+                nsp = n.split(", ")
+                name = ""
+                for i in nsp[:0:-1]:
+                    for j in i.split(" "):
+                        name += f"{j[0]}. "
+                name += nsp[0]
+                formatted_names.append(name)
         if names[-1] == "et al":
             if len(formatted_names) <= 2:
                 return " ".join(formatted_names)
