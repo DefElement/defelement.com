@@ -25,7 +25,7 @@ examples:
   - quadrilateral,1
   - quadrilateral,2
 references:
-  - title: Quadrilateral H(div) Finite Elements
+  - title: Quadrilateral H(div) finite elements
     author:
       - Arnold, Douglas N.
       - Boffi, Daniele

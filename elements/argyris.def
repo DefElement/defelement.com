@@ -26,7 +26,7 @@ implementations:
 examples:
   - triangle,5
 references:
-  - title: The TUBA Family of Plate Elements for the Matrix Displacement Method
+  - title: The TUBA family of plate elements for the matrix displacement method
     author:
       - Argyris, John H.
       - Fried, Isaac

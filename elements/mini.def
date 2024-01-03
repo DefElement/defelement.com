@@ -18,7 +18,7 @@ references:
     - Brezzi, Franco
     - Fortin, Michel
     year: 1984
-    title: A stable finite element for the stokes equations
+    title: A stable finite element for the Stokes equations
     journal: CALCOLO
     pagestart: 337
     pageend: 344
