@@ -624,16 +624,8 @@ def fiat_verify(
             [edofs[2][4], edofs[2][2], edofs[2][0], edofs[2][1], edofs[2][3], edofs[2][5]],
             [edofs[3][0]],
         ]
-
-    reshape = lambda i: i
-    # FIAT's Arnold-Winther element includes the stress and displacement elements,
-    # we only include the stress element
-    if element.name == "Arnold-Winther" and example == "triangle,3":
-        edofs[2][0] = edofs[2][0][:-6]
-        reshape = lambda i: i[:, :, :-6]
-
-    return edofs, lambda points: reshape(list(e.tabulate(0, points).values())[0].T.reshape(
-        points.shape[0], value_size, -1))
+    return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+        points.shape[0], value_size, -1)
 
 
 formats = {
