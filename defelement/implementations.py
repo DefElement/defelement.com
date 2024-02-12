@@ -559,7 +559,7 @@ def basix_ufl_verify(
     e = basix.ufl.element(
         getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord, **kwargs)
     return e.entity_dofs, lambda points: e.tabulate(0, points)[0].reshape(
-        points.shape[0], e.value_size, -1)
+        points.shape[0], e.reference_value_size, -1)
 
 
 def fiat_verify(
