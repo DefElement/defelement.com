@@ -14,8 +14,8 @@ polynomial-set:
 dofs:
   vertices:
     - point evaluations
-    - point evaluations of derivatives in coordinate directions
-    - point evaluations of components of Jacobian
+    - point evaluations of first derivatives
+    - point evaluations of second derivatives
   edges: point evaluations of normal derivatives at midpoints
 mapping: identity
 sobolev: H3
