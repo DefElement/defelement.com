@@ -60,7 +60,7 @@ An order 1 [Lagrange space](element::lagrange) on a triangle is defined by:
 <li>\({{symbols.dual_basis}}=\{{{symbols.functional}}_0,{{symbols.functional}}_1,{{symbols.functional}}_2\}\).
 </ul>
 
-The functionals \({{symbols.functional}}_1\) to \({{symbols.functional}}_3\) are defined as
+The functionals \({{symbols.functional}}_0\) to \({{symbols.functional}}_2\) are defined as
 point evaluations at the three vertices of the triangle:
 
 \[{{symbols.functional}}_0:v\mapsto v(0,0)\]
