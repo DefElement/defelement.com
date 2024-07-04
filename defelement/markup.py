@@ -133,7 +133,7 @@ def list_contributors(format: str = "html") -> str:
             warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
         else:
             g = Github(settings.github_token)
-            repo = g.get_repo("mscroggs/defelement.com")
+            repo = g.get_repo("DefElement/defelement.com")
             pages = repo.get_contributors()
             i = 0
             extras = []
@@ -177,7 +177,7 @@ def list_contributors(format: str = "html") -> str:
         else:
             included = [info["github"] for info in people if "github" in info]
             g = Github(settings.github_token)
-            repo = g.get_repo("mscroggs/defelement.com")
+            repo = g.get_repo("DefElement/defelement.com")
             pages = repo.get_contributors()
             i = 0
             while True:
