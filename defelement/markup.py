@@ -81,6 +81,18 @@ def format_names(names: typing.List[str], format: str) -> str:
                 return ", and ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
 
 
+def person_sort_key(p):
+    """Key used to sort people for the contributors and citation lists."""
+    with open(os.path.join(settings.data_path, "editors")) as f:
+        editors = yaml.load(f, Loader=yaml.FullLoader)
+    if "github" in p:
+        if p["github"] == "mscroggs":
+            return "AAA"
+        if p in editors:
+            return "AAB" + p["name"]
+    return p["name"]
+
+
 def list_contributors(format: str = "html") -> str:
     """Get list of contributors.
 
@@ -95,39 +107,59 @@ def list_contributors(format: str = "html") -> str:
 
     with open(os.path.join(settings.data_path, "contributors")) as f:
         people = yaml.load(f, Loader=yaml.FullLoader)
+    people.sort(key=person_sort_key)
+    with open(os.path.join(settings.data_path, "editors")) as f:
+        editors = yaml.load(f, Loader=yaml.FullLoader)
+
     if format == "html":
         included = []
         out = ""
+
+        editors_out = ""
+        contributors_out = ""
         for info in people:
+            person_out = ""
             if "img" in info:
-                out += f"<img src='/img/people/{info['img']}' class='person'>"
-            out += heading_with_self_ref("h2", " ".join(info["name"].split(", ")[::-1]))
+                person_out += f"<img src='/img/people/{info['img']}' class='person'>"
+            person_out += heading_with_self_ref("h2", " ".join(info["name"].split(", ")[::-1]))
             if "desc" in info:
-                out += f"<p>{markup(info['desc'])}</p>"
+                person_out += f"<p>{markup(info['desc'])}</p>"
             if "website" in info:
                 website_name = info["website"].split("//")[1].strip("/")
-                out += (f"<div class='social'><a href='{info['website']}'>"
+                person_out += (f"<div class='social'><a href='{info['website']}'>"
                         "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
                         f"&nbsp;{website_name}</a></div>")
             if "email" in info:
-                out += (f"<div class='social'><a href='mailto:{info['email']}'>"
+                person_out += (f"<div class='social'><a href='mailto:{info['email']}'>"
                         "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
                         f"&nbsp;{info['email']}</a></div>")
             if "github" in info:
-                out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
+                person_out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
                         "<i class='fa-brands fa-github' aria-hidden='true'></i>"
                         f"&nbsp;{info['github']}</a></div>")
                 included.append(info["github"])
             if "twitter" in info:
-                out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
+                person_out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
                         "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
                         f"&nbsp;@{info['twitter']}</a></div>")
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
-                out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
+                person_out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
                         "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
                         f"&nbsp;@{handle}@{url}</a></div>")
-            out += "<br style='clear:both' />"
+            person_out += "<br style='clear:both' />"
+            print(info["github"], editors, info["github"] in editors)
+            if "github" in info and info["github"] in editors:
+                editors_out += person_out
+            else:
+                contributors_out += person_out
+
+        if editors != "":
+            out += "<h1>Editors</h1>"
+            out += "<p>The contributors listed in this section are responsible for reviewing contributions to DefElement."
+            out += editors_out
+            out += "<h1>Contributors</h1>"
+        out += contributors_out
 
         if settings.github_token is None:
             warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
@@ -169,7 +201,6 @@ def list_contributors(format: str = "html") -> str:
         names = []
         for info in people:
             names.append(info["name"])
-        names.sort(key=lambda i: "AAA" if i.startswith("Scroggs") else i)
 
         if settings.github_token is None:
             warnings.warn(
