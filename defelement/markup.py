@@ -127,26 +127,28 @@ def list_contributors(format: str = "html") -> str:
             if "website" in info:
                 website_name = info["website"].split("//")[1].strip("/")
                 person_out += (f"<div class='social'><a href='{info['website']}'>"
-                        "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
-                        f"&nbsp;{website_name}</a></div>")
+                               "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
+                               f"&nbsp;{website_name}</a></div>")
             if "email" in info:
                 person_out += (f"<div class='social'><a href='mailto:{info['email']}'>"
-                        "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
-                        f"&nbsp;{info['email']}</a></div>")
+                               "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
+                               f"&nbsp;{info['email']}</a></div>")
             if "github" in info:
                 person_out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
-                        "<i class='fa-brands fa-github' aria-hidden='true'></i>"
-                        f"&nbsp;{info['github']}</a></div>")
+                               "<i class='fa-brands fa-github' aria-hidden='true'></i>"
+                               f"&nbsp;{info['github']}</a></div>")
                 included.append(info["github"])
             if "twitter" in info:
-                person_out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
-                        "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
-                        f"&nbsp;@{info['twitter']}</a></div>")
+                person_out += (
+                    f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
+                    "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
+                    f"&nbsp;@{info['twitter']}</a></div>"
+                )
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
                 person_out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
-                        "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
-                        f"&nbsp;@{handle}@{url}</a></div>")
+                               "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
+                               f"&nbsp;@{handle}@{url}</a></div>")
             person_out += "<br style='clear:both' />"
             print(info["github"], editors, info["github"] in editors)
             if "github" in info and info["github"] in editors:
@@ -155,10 +157,12 @@ def list_contributors(format: str = "html") -> str:
                 contributors_out += person_out
 
         if editors != "":
-            out += "<h1>Editors</h1>"
-            out += "<p>The contributors listed in this section are responsible for reviewing contributions to DefElement."
-            out += editors_out
-            out += "<h1>Contributors</h1>"
+            out += (
+                "<h1>Editors</h1>\n"
+                "<p>The contributors listed in this section are responsible for reviewing "
+                "contributions to DefElement.</p>\n"
+                f"{editors_out}\n<h1>Contributors</h1>"
+            )
         out += contributors_out
 
         if settings.github_token is None:
