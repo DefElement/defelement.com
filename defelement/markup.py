@@ -154,7 +154,6 @@ def list_contributors(format: str = "html") -> str:
                                "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
                                f"&nbsp;@{handle}@{url}</a></div>")
             person_out += "<br style='clear:both' />"
-            print(info["github"], editors, info["github"] in editors)
             if "github" in info and info["github"] in editors:
                 editors_out += person_out
             else:
