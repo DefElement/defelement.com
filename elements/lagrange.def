@@ -112,7 +112,7 @@ polynomial-set:
   quadrilateral: qoly[k]
   hexahedron: qoly[k]
   prism: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|\max(p_1+p_2,p_3)\leqslant k\right\}]
-  pyramid: <k>[\operatorname{span}\left\{x_1^{p_1}x_2^{p_2}x_3^{p_3}\middle|p_3\leqslant k-1,p_1+p_3\leqslant k,p_2+p_3\leqslant k\right\}] && <k>[\operatorname{span}\left\{x_3^k\right\}]
+  pyramid: poly[k] && <k>[\operatorname{span}\left\{\frac{x_1^{p_1}x_2^{p_2}}{(1-x_3)^{\min(p_1,p_2)}}\middle|(p_1,p_2)=(1,k)\text{ or }(p_1,p_2)=(k,1)\text{ or }p_1\leqslant k-1,p_2\leqslant k-1,k+1\leqslant p_1+p_2\right\}]
 implementations:
   symfem:
     equispaced:
