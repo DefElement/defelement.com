@@ -30,7 +30,7 @@ def cap_first(txt: str) -> str:
     return txt[:1].upper() + txt[1:]
 
 
-def heading_with_self_ref(hx: str, content: str) -> str:
+def heading_with_self_ref(hx: str, content: str, style: typing.Optional[str] = None) -> str:
     """Create heading with self reference.
 
     Args:
@@ -41,7 +41,11 @@ def heading_with_self_ref(hx: str, content: str) -> str:
         Heading with self reference
     """
     id = quote_plus(content)
-    return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
+    out = f"<{hx} id=\"{id}\""
+    if style is not None:
+        out += f" style=\"{style}\""
+    out += "><a href=\"#{id}\">{content}</a></{hx}>\n"
+    return out
 
 
 def format_names(names: typing.List[str], format: str) -> str:
@@ -81,7 +85,7 @@ def format_names(names: typing.List[str], format: str) -> str:
                 return ", and ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
 
 
-def person_sort_key(p):
+def person_sort_key(p: typing.Dict):
     """Key used to sort people for the contributors and citation lists."""
     with open(os.path.join(settings.data_path, "editors")) as f:
         editors = yaml.load(f, Loader=yaml.FullLoader)
@@ -157,12 +161,12 @@ def list_contributors(format: str = "html") -> str:
                 contributors_out += person_out
 
         if editors != "":
+            out += heading_with_self_ref("h1", "Editors", "margin-top:50px")
             out += (
-                "<h1>Editors</h1>\n"
                 "<p>The contributors listed in this section are responsible for reviewing "
-                "contributions to DefElement.</p>\n"
-                f"{editors_out}\n<h1>Contributors</h1>"
+                f"contributions to DefElement.</p>\n{editors_out}"
             )
+            out += heading_with_self_ref("h1", "Contributors", "margin-top:50px")
         out += contributors_out
 
         if settings.github_token is None:
