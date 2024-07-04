@@ -56,6 +56,6 @@ jobs:
           git checkout -b verification
           git add .
           git commit -m "verification.json"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/mscroggs/defelement.com.git
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/DefElement/defelement.com.git
           git push -u origin verification --force
         name: Push to GitHub
