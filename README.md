@@ -1,10 +1,12 @@
 # DefElement
+
 This repo contains code to generate the website
 [DefElement: an encylopedia of finite element definitions](https://defelement.com).
 
 The examples included in DefElement are generated using [Symfem](https://github.com/mscroggs/symfem).
 
 ## Building the website
+
 Before building the website, you must install the required Python dependencies:
 
 ```bash
@@ -36,4 +38,3 @@ The content of the DefElement website itself (including `data/`, `elements/`, `f
 is released under a [Creative Commons Attribution 4.0 International (CC BY 4.0) license](LICENSE-CC.txt).
 
 Font Awesome (`files/fontawesome`) is released under a [Font Awesome Free License](files/fontawesome/LICENSE.txt).
-
