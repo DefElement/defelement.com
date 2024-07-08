@@ -30,7 +30,7 @@ def cap_first(txt: str) -> str:
     return txt[:1].upper() + txt[1:]
 
 
-def heading_with_self_ref(hx: str, content: str) -> str:
+def heading_with_self_ref(hx: str, content: str, style: typing.Optional[str] = None) -> str:
     """Create heading with self reference.
 
     Args:
@@ -41,7 +41,11 @@ def heading_with_self_ref(hx: str, content: str) -> str:
         Heading with self reference
     """
     id = quote_plus(content)
-    return f"<{hx} id=\"{id}\"><a href=\"#{id}\">{content}</a></{hx}>\n"
+    out = f"<{hx} id=\"{id}\""
+    if style is not None:
+        out += f" style=\"{style}\""
+    out += "><a href=\"#{id}\">{content}</a></{hx}>\n"
+    return out
 
 
 def format_names(names: typing.List[str], format: str) -> str:
@@ -81,6 +85,18 @@ def format_names(names: typing.List[str], format: str) -> str:
                 return ", and ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
 
 
+def person_sort_key(p: typing.Dict):
+    """Key used to sort people for the contributors and citation lists."""
+    with open(os.path.join(settings.data_path, "editors")) as f:
+        editors = yaml.load(f, Loader=yaml.FullLoader)
+    if "github" in p:
+        if p["github"] == "mscroggs":
+            return "AAA"
+        if p in editors:
+            return "AAB" + p["name"]
+    return p["name"]
+
+
 def list_contributors(format: str = "html") -> str:
     """Get list of contributors.
 
@@ -95,39 +111,62 @@ def list_contributors(format: str = "html") -> str:
 
     with open(os.path.join(settings.data_path, "contributors")) as f:
         people = yaml.load(f, Loader=yaml.FullLoader)
+    people.sort(key=person_sort_key)
+    with open(os.path.join(settings.data_path, "editors")) as f:
+        editors = yaml.load(f, Loader=yaml.FullLoader)
+
     if format == "html":
         included = []
         out = ""
+
+        editors_out = ""
+        contributors_out = ""
         for info in people:
+            person_out = ""
             if "img" in info:
-                out += f"<img src='/img/people/{info['img']}' class='person'>"
-            out += heading_with_self_ref("h2", " ".join(info["name"].split(", ")[::-1]))
+                person_out += f"<img src='/img/people/{info['img']}' class='person'>"
+            person_out += heading_with_self_ref("h2", " ".join(info["name"].split(", ")[::-1]))
             if "desc" in info:
-                out += f"<p>{markup(info['desc'])}</p>"
+                person_out += f"<p>{markup(info['desc'])}</p>"
             if "website" in info:
                 website_name = info["website"].split("//")[1].strip("/")
-                out += (f"<div class='social'><a href='{info['website']}'>"
-                        "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
-                        f"&nbsp;{website_name}</a></div>")
+                person_out += (f"<div class='social'><a href='{info['website']}'>"
+                               "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
+                               f"&nbsp;{website_name}</a></div>")
             if "email" in info:
-                out += (f"<div class='social'><a href='mailto:{info['email']}'>"
-                        "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
-                        f"&nbsp;{info['email']}</a></div>")
+                person_out += (f"<div class='social'><a href='mailto:{info['email']}'>"
+                               "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
+                               f"&nbsp;{info['email']}</a></div>")
             if "github" in info:
-                out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
-                        "<i class='fa-brands fa-github' aria-hidden='true'></i>"
-                        f"&nbsp;{info['github']}</a></div>")
+                person_out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
+                               "<i class='fa-brands fa-github' aria-hidden='true'></i>"
+                               f"&nbsp;{info['github']}</a></div>")
                 included.append(info["github"])
             if "twitter" in info:
-                out += (f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
-                        "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
-                        f"&nbsp;@{info['twitter']}</a></div>")
+                person_out += (
+                    f"<div class='social'><a href='https://twitter.com/{info['twitter']}'>"
+                    "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
+                    f"&nbsp;@{info['twitter']}</a></div>"
+                )
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
-                out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
-                        "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
-                        f"&nbsp;@{handle}@{url}</a></div>")
-            out += "<br style='clear:both' />"
+                person_out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
+                               "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
+                               f"&nbsp;@{handle}@{url}</a></div>")
+            person_out += "<br style='clear:both' />"
+            if "github" in info and info["github"] in editors:
+                editors_out += person_out
+            else:
+                contributors_out += person_out
+
+        if editors != "":
+            out += heading_with_self_ref("h1", "Editors", "margin-top:50px")
+            out += (
+                "<p>The contributors listed in this section are responsible for reviewing "
+                f"contributions to DefElement.</p>\n{editors_out}"
+            )
+            out += heading_with_self_ref("h1", "Contributors", "margin-top:50px")
+        out += contributors_out
 
         if settings.github_token is None:
             warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
@@ -169,7 +208,6 @@ def list_contributors(format: str = "html") -> str:
         names = []
         for info in people:
             names.append(info["name"])
-        names.sort(key=lambda i: "AAA" if i.startswith("Scroggs") else i)
 
         if settings.github_token is None:
             warnings.warn(
