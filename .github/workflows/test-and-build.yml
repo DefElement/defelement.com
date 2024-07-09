@@ -164,9 +164,6 @@ jobs:
   verification:
     name: Test verification
     runs-on: ubuntu-22.04
-    env:
-      CC: gcc-10
-      CXX: g++-10
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -286,9 +283,6 @@ jobs:
   run-tests:
     name: Run tests
     runs-on: ubuntu-22.04
-    env:
-      CC: gcc-10
-      CXX: g++-10
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
