@@ -17,9 +17,9 @@ with open("data/implementations") as f:
 
 if args.install_type == "all":
     for i in data.values():
-        os.system(i["install"])
+        assert os.system(i["install"]) == 0
 elif args.install_type == "verification":
     for i in implementations.verifications:
-        os.system(data[i]["install"])
+        assert os.system(data[i]["install"]) == 0
 else:
     raise RuntimeError(f"Unknown install type: {args.install_type}")
