@@ -268,7 +268,7 @@ for e in categoriser.elements:
                 if pip is None:
                     info += ". "
                 else:
-                    info += ":<p class='pcode'>" + pip.replace("\n","<br />") + "</p>"
+                    info += ":<p class='pcode'>" + pip.replace("\n", "<br />") + "</p>"
                 info += "This element can then be created with the following lines of Python:"
 
                 info += "<p class='pcode'>" + python_highlight(
