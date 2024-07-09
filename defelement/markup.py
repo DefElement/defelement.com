@@ -44,7 +44,7 @@ def heading_with_self_ref(hx: str, content: str, style: typing.Optional[str] = N
     out = f"<{hx} id=\"{id}\""
     if style is not None:
         out += f" style=\"{style}\""
-    out += "><a href=\"#{id}\">{content}</a></{hx}>\n"
+    out += f"><a href=\"#{id}\">{content}</a></{hx}>\n"
     return out
 
 
