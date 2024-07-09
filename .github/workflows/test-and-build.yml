@@ -294,9 +294,6 @@ jobs:
       - run: python3 -m pip install pytest-xdist
         name: Install dependencies
 
-      - name: Install requirements
-        run: python3 -m pip install "numpy>=1.21,<1.23" scipy numba>=0.55.2 meshio>=4.0.16
-
       - name: Load Symfem cache
         id: cache-restore
         uses: actions/cache/restore@v3
