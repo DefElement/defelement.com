@@ -11,12 +11,12 @@ on:
 jobs:
   style-checks:
     name: Run style checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - run: |
@@ -41,12 +41,12 @@ jobs:
 
   test-build-website:
     name: Test building of defelement.com
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - name: Load Symfem cache
@@ -98,16 +98,16 @@ jobs:
 
   build-website:
     name: Build defelement.com
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.ref != 'refs/heads/main'
     needs:
       - test-build-website
       - run-tests
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - name: Load Symfem cache
@@ -163,15 +163,15 @@ jobs:
 
   verification:
     name: Test verification
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       CC: gcc-10
       CXX: g++-10
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - uses: actions/checkout@v3
 
@@ -204,7 +204,7 @@ jobs:
 
   build-and-push-website:
     name: Build and deploy defelement.com
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
 
     permissions:
@@ -213,9 +213,9 @@ jobs:
       id-token: write
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - uses: actions/checkout@v3
 
       - name: Load Symfem cache
@@ -285,15 +285,15 @@ jobs:
 
   run-tests:
     name: Run tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       CC: gcc-10
       CXX: g++-10
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - uses: actions/checkout@v3
 
