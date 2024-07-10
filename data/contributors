@@ -6,3 +6,10 @@
   website: https://mscroggs.co.uk
   email: defelement@mscroggs.co.uk
   desc: "Matthew is a Postdoctoral Research Fellow at the University College London who works on finite and boundary element methods. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the open-source boundary element software [Bempp](https://github.com/bempp)."
+
+- name: Dokken, Jørgen S.
+  img: dokken.jpg
+  github: jorgensd
+  website: https://jsdokken.com
+  email: dokken@simula.no
+  desc: "Jørgen is a Senior Research Engineer at Simula Research Laboratory working of development and applications with the finite element method. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the author of the [DOLFINx tutorial](https://jsdokken.com/dolfinx-tutorial)."
