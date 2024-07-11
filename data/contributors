@@ -13,3 +13,9 @@
   website: https://jsdokken.com
   email: dokken@simula.no
   desc: "Jørgen is a Senior Research Engineer at Simula Research Laboratory working on development and applications of the finite element method. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the author of the [DOLFINx tutorial](https://jsdokken.com/dolfinx-tutorial)."
+
+- name: Dean, Joseph P.
+  img: dean.png
+  github: jpdean
+  email: jpd62@cam.ac.uk
+  desc: "Joe is a postdoctoral research associate at the University of Cambridge. He works on finite element discretisations of multiphysics problems and is a developer of the [FEniCSx](https://github.com/FEniCS) finite element library."
