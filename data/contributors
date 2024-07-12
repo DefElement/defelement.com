@@ -19,3 +19,9 @@
   github: jpdean
   email: jpd62@cam.ac.uk
   desc: "Joe is a postdoctoral research associate at the University of Cambridge. He works on finite element discretisations of multiphysics problems and is a developer of the [FEniCSx](https://github.com/FEniCS) finite element library."
+
+- name: Marsden, India
+  img: marsden.png
+  github: indiamai
+  email: marsden@maths.ox.ac.uk
+  desc: "India is a DPhil Student at the University of Oxford. She works on the fundamentals of the finite element method and is a developer of [Firedrake](https://firedrakeproject.org), a finite element package."
