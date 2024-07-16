@@ -7,6 +7,9 @@ on:
 
 jobs:
   verification:
+    permissions:
+      id-token: write
+      contents: write
     name: Run verification
     runs-on: ubuntu-22.04
     steps:
@@ -47,12 +50,12 @@ jobs:
         name: Run verification
       - run: |
           cd ../verification
-          git config --global user.email "symfem@mscroggs.co.uk"
-          git config --global user.name "Finite Element Bot"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git init
           git checkout -b verification
           git add .
           git commit -m "verification.json"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/DefElement/defelement.com.git
+          git remote add origin https://oauth2:${{ secrets.GITHUB_TOKEN }}@github.com/DefElement/defelement.com.git
           git push -u origin verification --force
         name: Push to GitHub
