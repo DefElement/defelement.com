@@ -50,10 +50,10 @@ jobs:
         name: Run verification
       - run: |
           cd ../verification
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
           git init
           git checkout -b verification
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add .
           git commit -m "verification.json"
           git remote add origin https://oauth2:${{ secrets.GITHUB_TOKEN }}@github.com/DefElement/defelement.com.git
