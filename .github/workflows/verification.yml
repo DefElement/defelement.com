@@ -42,7 +42,9 @@ jobs:
         name: Install requirements
 
       - name: Install implementations
-        run: python3 install_implementations.py --install-type verification
+        run: |
+          python3 -m pip install setuptools
+          python3 install_implementations.py --install-type verification
 
       - run: mkdir ../verification
         name: Make dir
