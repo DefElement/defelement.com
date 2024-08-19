@@ -119,11 +119,11 @@ def verify_examples(
                 else:
                     results[e.filename][i]["fail"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {red}\u2715{default}")
-            except ImportError as e:
+            except ImportError as err:
                 if skip_missing:
                     print(f"{process}{i} not installed")
                 else:
-                    raise e
+                    raise err
             except NotImplementedError:
                 results[e.filename][i]["not implemented"].append(eg)
                 print(f"{process}{e.filename} {i} {eg} {blue}\u2013{default}")
