@@ -24,6 +24,8 @@ parser.add_argument('--test', metavar="test", default=None,
                     help="Verify fewer elements.")
 parser.add_argument('--processes', metavar="processes", default=None,
                     help="The number of processes to run the verification on.")
+parser.add_argument('--skip-missing-libraries', default="true",
+                    help="Skip verification if library is not installed.")
 
 args = parser.parse_args()
 if args.destination is not None:
@@ -39,6 +41,7 @@ elif args.test == "auto":
         "serendipity", "taylor-hood", "vector-bubble-enriched-Lagrange", "enriched-galerkin"]
 else:
     test_elements = args.test.split(",")
+skip_missing = args.skip_missing_libraries == "true"
 
 categoriser = Categoriser()
 categoriser.load_references(os.path.join(settings.data_path, "references"))
@@ -116,8 +119,11 @@ def verify_examples(
                 else:
                     results[e.filename][i]["fail"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {red}\u2715{default}")
-            except ImportError:
-                print(f"{process}{i} not installed")
+            except ImportError as err:
+                if skip_missing:
+                    print(f"{process}{i} not installed")
+                else:
+                    raise err
             except NotImplementedError:
                 results[e.filename][i]["not implemented"].append(eg)
                 print(f"{process}{e.filename} {i} {eg} {blue}\u2013{default}")

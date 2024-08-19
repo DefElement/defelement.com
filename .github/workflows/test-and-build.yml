@@ -194,9 +194,11 @@ jobs:
         name: Install requirements
 
       - name: Install implementations
-        run: python3 install_implementations.py --install-type verification
+        run: |
+          python3 -m pip install setuptools
+          python3 install_implementations.py --install-type verification
 
-      - run: python3 verify.py verification.json --test auto --processes 4
+      - run: python3 verify.py verification.json --test auto --processes 4 --skip-missing-libraries false
         name: Run verification test
 
   build-and-push-website:
