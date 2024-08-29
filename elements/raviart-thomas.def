@@ -4,11 +4,17 @@ min-order: 1
 alt-names:
   - Rao&ndash;Wilton&ndash;Glisson
   - N&eacute;d&eacute;lec (first kind) H(div)
+  - Raviart&ndash;Thomas cubical H(div) (quadrilateral)
+  - N&eacute;d&eacute;lec cubical H(div) (hexahedron)
+  - Q H(div) (quadrilateral, hexahedron)
 short-names:
   - RT
   - RWG
+  - RTcf (quadrilateral)
+  - Ncf (hexahedron)
 complexes:
   de-rham: P-,d-1,simplex
+  de-rham: Q-,d-1,tp
 ndofs:
   triangle:
     formula: k(k+2)
@@ -16,6 +22,12 @@ ndofs:
   tetrahedron:
     formula: k(k+1)(k+3)/2
     oeis: A077414
+  quadrilateral:
+    formula: 2k(k+1)
+    oeis: A046092
+  hexahedron:
+    formula: 3k^2(k+1)
+    oeis: A270205
 variants:
   legendre:
     variant-name: Legendre
@@ -31,16 +43,32 @@ mapping: contravariant Piola
 reference-elements:
   - triangle
   - tetrahedron
+  - quadrilateral
+  - hexahedron
 polynomial-set:
   triangle: poly[k-1]^d && <k>[\left\{\left(\begin{array}{c}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
   tetrahedron: poly[k-1]^d && <k>[\left\{\left(\begin{array}{c}px_1\\\vdots\\px_d\end{array}\right)\middle|p\in{{tpoly[k-1]}}\right\}]
+  quadrilateral: qoly[k-1]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_j\in\begin{cases}{{tqoly[k+1]}}&i=j\\{{tqoly[k]}}&i\not=j\end{cases}\text{ for }i,j=1,\dots,d\right\}]
+  hexahedron: qoly[k]^d && <k>[\left\{\boldsymbol{q}\in{{tqoly[k]}}\middle|\boldsymbol{q}(\boldsymbol{x})\cdot x_i\boldsymbol{e}_j\in\begin{cases}{{tqoly[k+1]}}&i=j\\{{tqoly[k]}}&i\not=j\end{cases}\text{ for }i,j=1,\dots,d\right\}]
 dofs:
   facets: normal integral moments with (lagrange,k-1)
-  cell: integral moments with (vector-lagrange,k-2)
+  cell:
+    triangle: integral moments with (vector-lagrange,k-2)
+    tetrahedron: integral moments with (vector-lagrange,k-2)
+    quadrilateral: integral moments with (nedelec1,k-1)
+    hexahedron: integral moments with (nedelec1,k-1)
 implementations:
   symfem:
-    lagrange: N1div
-    legendre: N1div variant=legendre
+    lagrange:
+      triangle: N1div
+      tetrahedron: N1div
+      quadrilateral: Qdiv
+      hexahedron: Qdiv
+    legendre:
+      triangle: N1div variant=legendre
+      tetrahedron: N1div variant=legendre
+      quadrilateral: Qdiv variant=legendre
+      hexahedron: Qdiv variant=legendre
   basix:
     display: RT
     lagrange: RT
@@ -50,7 +78,11 @@ implementations:
     lagrange: RT lagrange_variant=equispaced
     legendre: RT
   ufl:
-    lagrange: RT
+    lagrange:
+      triangle: RT
+      tetrahedron: RT
+      quadrilateral: RTCF
+      hexahedron: NCF
   bempp:
     triangle: RWG orders=0
   fiat:
@@ -60,12 +92,20 @@ implementations:
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange
+  - quadrilateral,1,lagrange
+  - quadrilateral,2,lagrange
   - tetrahedron,1,lagrange
   - tetrahedron,2,lagrange
+  - hexahedron,1,lagrange
+  - hexahedron,2,lagrange
   - triangle,1,legendre
   - triangle,2,legendre
+  - quadrilateral,1,legendre
+  - quadrilateral,2,legendre
   - tetrahedron,1,legendre
   - tetrahedron,2,legendre
+  - hexahedron,1,legendre
+  - hexahedron,2,legendre
 references:
   - type: incollection
     title: A mixed finite element method for 2nd order elliptic problems
