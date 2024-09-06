@@ -25,3 +25,9 @@
   github: indiamai
   email: marsden@maths.ox.ac.uk
   desc: "India is a DPhil Student at the University of Oxford. She works on the fundamentals of the finite element method and is a developer of [Firedrake](https://firedrakeproject.org), a finite element package."
+
+- name: Brubeck, Pablo D.
+  img: brubeck.jpeg
+  github: pbrubeck
+  email: brubeck@protonmail.com
+  desc: "Pablo is a postdoctoral research associate at the University of Oxford. He works on fast solvers for high-order finite element discretisations of PDEs and is a developer of [Firedrake](https://firedrakeproject.org), a finite element package."
