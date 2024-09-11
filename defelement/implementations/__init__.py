@@ -18,6 +18,6 @@ for file in os.listdir(this_dir):
                 if isclass(c) and c != Implementation and issubclass(c, Implementation):
                     implementations.append(c)
 
-formats = {i.name: i.format for i in implementations}
-examples = {i.name: i.example for i in implementations}
-verifications = {i.name: i.verify for i in implementations if i.verification}
+formats = {i.name: i.format for i in implementations if i.name is not None}
+examples = {i.name: i.example for i in implementations if i.name is not None}
+verifications = {i.name: i.verify for i in implementations if i.verification and i.name is not None}

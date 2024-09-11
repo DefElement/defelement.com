@@ -18,6 +18,7 @@ else:
 class Implementation(ABC):
     """An implementation."""
 
+    @staticmethod
     @abstractmethod
     def format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
         """Format implementation string.
@@ -30,6 +31,7 @@ class Implementation(ABC):
             Formatted implementation string
         """
 
+    @staticmethod
     @abstractmethod
     def example(element: Element) -> str:
         """Generate Symfem examples.
@@ -41,6 +43,7 @@ class Implementation(ABC):
             Example code
         """
 
+    @staticmethod
     def verify(
         element: Element, example: str
     ) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
@@ -55,7 +58,7 @@ class Implementation(ABC):
         """
         raise NotImplementedError()
 
-    name = None
+    name: typing.Optional[str] = None
     verification = False
 
 

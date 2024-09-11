@@ -9,6 +9,7 @@ from defelement.implementations.template import (Array, Element, Implementation,
 class BasixImplementation(Implementation):
     """Basix implementation."""
 
+    @staticmethod
     def format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
         """Format implementation string.
 
@@ -30,6 +31,7 @@ class BasixImplementation(Implementation):
                 out += v
         return out
 
+    @staticmethod
     def example(element: Element) -> str:
         """Generate Symfem examples.
 
@@ -65,6 +67,7 @@ class BasixImplementation(Implementation):
                 out += ")"
         return out
 
+    @staticmethod
     def verify(
         element: Element, example: str
     ) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:

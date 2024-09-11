@@ -9,6 +9,7 @@ from defelement.implementations.template import (Array, Element, Implementation,
 class FIATImplementation(Implementation):
     """FIAT implementation."""
 
+    @staticmethod
     def format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
         """Format implementation string.
 
@@ -31,6 +32,7 @@ class FIATImplementation(Implementation):
             out += ")"
         return out
 
+    @staticmethod
     def example(element: Element) -> str:
         """Generate Symfem examples.
 
@@ -76,6 +78,7 @@ class FIATImplementation(Implementation):
             out += ")"
         return out
 
+    @staticmethod
     def verify(
         element: Element, example: str
     ) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:

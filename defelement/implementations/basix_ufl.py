@@ -10,6 +10,7 @@ from defelement.implementations.template import (Array, Element, Implementation,
 class BasixUFLImplementation(Implementation):
     """Basix.UFL implementation."""
 
+    @staticmethod
     def format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
         """Format implementation string.
 
@@ -25,6 +26,7 @@ class BasixUFLImplementation(Implementation):
             out += f", shape={params['shape']}"
         return out
 
+    @staticmethod
     def example(element: Element) -> str:
         """Generate Symfem examples.
 
@@ -68,6 +70,7 @@ class BasixUFLImplementation(Implementation):
                 out += ")"
         return out
 
+    @staticmethod
     def verify(
         element: Element, example: str
     ) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:

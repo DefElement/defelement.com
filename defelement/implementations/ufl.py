@@ -9,6 +9,7 @@ from defelement.implementations.template import (Element, Implementation, Varian
 class UFLImplementation(Implementation):
     """UFL implementation."""
 
+    @staticmethod
     def format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
         """Format implementation string.
 
@@ -21,6 +22,7 @@ class UFLImplementation(Implementation):
         """
         return f"\"{string}\""
 
+    @staticmethod
     def example(element: Element) -> str:
         """Generate Symfem examples.
 

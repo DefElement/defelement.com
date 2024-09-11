@@ -66,6 +66,7 @@ class CachedSymfemTabulator:
 class SymfemImplementation(Implementation):
     """Symfem implementation."""
 
+    @staticmethod
     def format(string: typing.Optional[str], params: typing.Dict[str, typing.Any]) -> str:
         """Format implementation string.
 
@@ -82,6 +83,7 @@ class SymfemImplementation(Implementation):
                 out += f", {p}=\"{v}\""
         return out
 
+    @staticmethod
     def example(element: Element) -> str:
         """Generate Symfem examples.
 
@@ -117,6 +119,7 @@ class SymfemImplementation(Implementation):
                 out += ")"
         return out
 
+    @staticmethod
     def verify(
         element: Element, example: str
     ) -> typing.Tuple[typing.List[typing.List[typing.List[int]]], typing.Callable[[Array], Array]]:
