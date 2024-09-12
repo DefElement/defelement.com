@@ -185,7 +185,7 @@ for e in categoriser.elements:
     # Variants
     variants = e.variants()
     if len(variants) > 0:
-        element_data.append(("Variants", "<br />".join(variants)))
+        element_data.append(("Variants", "<br />".join([insert_links(v) for v in variants])))
 
     # Orders
     element_data.append(("Orders", e.order_range()))
