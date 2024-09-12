@@ -84,7 +84,11 @@ implementations:
       quadrilateral: RTCF
       hexahedron: NCF
   bempp:
-    triangle: RWG orders=0
+    lagrange:
+      triangle: RWG orders=0
+  ndelement:
+    lagrange:
+      triangle: RaviartThomas orders=1
   fiat:
     legendre:
       triangle: RaviartThomas variant=integral

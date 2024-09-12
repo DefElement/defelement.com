@@ -175,7 +175,12 @@ implementations:
       triangle: Lagrange
       tetrahedron: Lagrange
   ndelement:
-    equispaced: Lagrange
+    equispaced:
+      interval: Lagrange
+      triangle: Lagrange
+      quadrilateral: Lagrange
+      tetrahedron: Lagrange
+      hexahedron: Lagrange
 examples:
   - interval,1,equispaced
   - interval,2,equispaced

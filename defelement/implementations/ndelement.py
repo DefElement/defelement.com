@@ -59,7 +59,7 @@ class NDElementImplementation(Implementation):
                     assert params["continuity"] in ["Standard", "Discontinuous"]
                     out += f", continuity=Continuity.{params['continuty']}"
                 out += ")\n"
-                out += f"element = family.element(ReferenceCellType.{ref})"
+                out += f"element = family.element(ReferenceCellType.{ref[0].upper() + ref[1:]})"
         if cont:
             out = "from ndelement.ciarlet import Continuity, Family, create_family" + out
         else:
@@ -80,7 +80,7 @@ class NDElementImplementation(Implementation):
             List of entity dofs, and tabulation function
         """
         from ndelement.ciarlet import Continuity, Family, create_family
-        from ndelement.reference_cell import ReferenceCellType
+        from ndelement.reference_cell import ReferenceCellType, entity_counts
 
         ref, ord, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
@@ -94,10 +94,15 @@ class NDElementImplementation(Implementation):
         kwargs = {}
         if "continuity" in params:
             kwargs["continuity"] = getattr(Continuity, params["continuity"])
+        if "orders" in params:
+            if ord not in [int(i) for i in params["orders"].split(",")]:
+                raise NotImplementedError()
 
-        f = create_family(getattr(Family, name), ord, **kwargs)
-        e = f.element(getattr(ReferenceCellType, ref))
-        return e.entity_dofs, lambda points: e.tabulate(0, points)[0].transpose((0, 2, 1))
+        cell = getattr(ReferenceCellType, ref[0].upper() + ref[1:])
+        e = create_family(getattr(Family, name), ord, **kwargs).element(cell)
+        entity_dofs = [[e.entity_dofs(dim, entity) for entity in range(n)] for dim, n in enumerate(entity_counts(cell)) if n > 0]
+
+        return entity_dofs, lambda points: e.tabulate(points, 0)[:, :, :, 0].transpose((2, 0, 1))
 
     id = "ndelement"
     name = "NDElement"
