@@ -15,7 +15,7 @@ from defelement.element import Categoriser
 from defelement.examples import markup_example
 from defelement.families import keys_and_names
 from defelement.html import make_html_page
-from defelement.implementations import parse_example, verifications, implementations
+from defelement.implementations import implementations, parse_example, verifications
 from defelement.markup import (cap_first, heading_with_self_ref, insert_links, markup,
                                python_highlight)
 from defelement.rss import make_rss
