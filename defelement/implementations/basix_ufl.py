@@ -28,7 +28,7 @@ class BasixUFLImplementation(Implementation):
 
     @staticmethod
     def example(element: Element) -> str:
-        """Generate Symfem examples.
+        """Generate examples.
 
         Args:
             element: The element

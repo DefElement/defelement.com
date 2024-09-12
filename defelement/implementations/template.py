@@ -34,7 +34,7 @@ class Implementation(ABC):
     @staticmethod
     @abstractmethod
     def example(element: Element) -> str:
-        """Generate Symfem examples.
+        """Generate examples.
 
         Args:
             element: The element
