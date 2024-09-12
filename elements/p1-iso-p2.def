@@ -39,6 +39,10 @@ implementations:
   symfem: P1-iso-P2
   basix: iso
   basix.ufl: iso
+  fiat:
+    interval: Lagrange variant=iso
+    triangle: Lagrange variant=iso
+    tetrahedron: Lagrange variant=iso
 examples:
   - interval,1
   - triangle,1
