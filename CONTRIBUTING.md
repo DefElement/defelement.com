@@ -108,25 +108,21 @@ python3 build.py _test_html --test lagrange,vector-lagrange --processes 4
 ```
 
 ### Adding an implementation
-To add a library to the implementations section of DefElement, you must first add details of the
-library to the file [`/data/implementations`](https://github.com/DefElement/defelement.com/blob/main/data/implementations).
-You must include three key pieces of information about the library: its `name`, `url`, and a bash command to `install` it.
-These three pieces of information are filed under an `id` for your library.
+To add a library to the implementations section of DefElement, you must add a file containing to the folder
+[`/defelement/implementations`](https://github.com/DefElement/defelement.com/blob/main/defelement/implementations).
+This file should define a class that is a subclass of [`Implementation`](https://github.com/DefElement/defelement.com/blob/main/defelement/implementations/template.py).
+This class should include:
 
-Once this has been done, you should next add the library to [`defelement/implementations.py`](https://github.com/DefElement/defelement.com/blob/main/defelement/implementations.py).
-At the end of this file, there are three dictionaries, mapping the `id` of a library to a function.
-You should add functions to these that do the following:
-
-* The functions in `formats` take an implementation string and a set of parameters as inputs
-  and return the implementation information for the library, as it will be displayed on each
-  element's page.
-* The functions in `examples` take a DefElement `Element` object as an input and return a block
-  of Python (as a string) that creates all the examples of that element using the library.
-* [optional] The functions in `verifications` take a DefElement `Element` object, an example, and
-  a set of points as inputs and returns the element for that example tabulated at the set of points and
-  the number of DOFs associated with each sub-entity as a tuple of tuples.
-  The shape of the first output is `(number of points, value size, number of basis functions)`.
-  These functions are used to [verify](https://defelement.com/verification.html) that the implementation spans the same space as Symfem.
+| Item           | Type                | Use |
+| -------------- | ------------------- | --- |
+| `format`       | method              | This method should take an implementation string and a set of parameters as inputs and return the implementation information for the library, as it will be displayed on each element's page. |
+| `example`      | method              | This method should take a DefElement `Element` object as an input and return a block of Python (as a string) that creates all the examples of that element using the library. |
+| `verify`       | method (optional)   | This method should take a DefElement `Element` object, an example, and a set of points as inputs and returns the element for that example tabulated at the set of points and the number of DOFs associated with each sub-entity as a tuple of tuples. The shape of the first output is `(number of points, value size, number of basis functions)`. These functions are used to [verify](https://defelement.com/verification.html) that the implementation spans the same space as Symfem. |
+| `id`           | variable            | The unique identifier for your library. This will be used in .def files. |
+| `name`         | variable            | The name of your library. |
+| `install`      | variable            | Code snippet to install you library (preferably using `pip3`) |
+| `url`          | variable            | URL where the source code of your library is avaliable (eg a GitHub link). |
+| `verification` | variable (optional) | Should be set to `True` if the `verification` function is implemented. |
 
 Once these steps are done, you can start adding implementation details for your library to
 the `implementation` field of elements in the [`elements`](https://github.com/DefElement/defelement.com/blob/main/elements)
