@@ -100,7 +100,8 @@ class NDElementImplementation(Implementation):
 
         cell = getattr(ReferenceCellType, ref[0].upper() + ref[1:])
         e = create_family(getattr(Family, name), ord, **kwargs).element(cell)
-        entity_dofs = [[e.entity_dofs(dim, entity) for entity in range(n)] for dim, n in enumerate(entity_counts(cell)) if n > 0]
+        entity_dofs = [[e.entity_dofs(dim, entity) for entity in range(n)]
+                       for dim, n in enumerate(entity_counts(cell)) if n > 0]
 
         return entity_dofs, lambda points: e.tabulate(points, 0)[:, :, :, 0].transpose((2, 0, 1))
 
