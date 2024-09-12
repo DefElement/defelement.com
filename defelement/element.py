@@ -10,7 +10,7 @@ from github import Github
 
 from defelement import implementations, settings
 from defelement.families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
-from defelement.implementations import VariantNotImplemented
+from defelement.implementations import VariantNotImplemented, implementations, examples
 from defelement.markup import insert_links
 from defelement.polyset import make_extra_info, make_poly_set
 
@@ -622,7 +622,7 @@ class Element:
         assert self.implemented(lib)
 
         if "display" in self.data["implementations"][lib]:
-            d = implementations.formats[lib](self.data["implementations"][lib]["display"], {})
+            d = implementations[lib].format(self.data["implementations"][lib]["display"], {})
             return f"<code>{d}</code>"
         if "variants" in self.data:
             variants = self.data["variants"]
@@ -638,7 +638,7 @@ class Element:
                     continue
                 data = self.data["implementations"][lib][v]
             if isinstance(data, str):
-                s = implementations.formats[lib](*self.get_implementation_string(lib, None, v))
+                s = implementations[lib].format(*self.get_implementation_string(lib, None, v))
                 if s not in i_dict:
                     i_dict[s] = []
                 if v is None:
@@ -647,7 +647,7 @@ class Element:
                     i_dict[s].append(vinfo["variant-name"])
             else:
                 for i, j in data.items():
-                    s = implementations.formats[lib](*self.get_implementation_string(lib, i, v))
+                    s = implementations[lib].format(*self.get_implementation_string(lib, i, v))
                     if s not in i_dict:
                         i_dict[s] = []
                     if v is None:
@@ -672,7 +672,7 @@ class Element:
         Returns:
             Examples
         """
-        return implementations.examples[lib](self)
+        return implementations[lib].example(self)
 
     def has_implementation_examples(self, lib: str) -> bool:
         """Check if element has implementation examples for a library.
@@ -683,7 +683,7 @@ class Element:
         Returns:
             True if library has examples, otherwise False
         """
-        return lib in implementations.examples
+        return lib in examples
 
     def categories(self, link: bool = True, map_name: bool = True) -> typing.List[str]:
         """Get categories.
@@ -780,7 +780,6 @@ class Categoriser:
         self.families = {}
         self.references = {}
         self.categories = {}
-        self.implementations = {}
 
     def recently_added(self, n: int) -> typing.List[Element]:
         """Get recently added elements.
@@ -819,15 +818,6 @@ class Categoriser:
                 if line.strip() != "":
                     a, b = line.split(":", 1)
                     self.add_category(a.strip(), b.strip(), f"{a.strip()}.html")
-
-    def load_implementations(self, file: str):
-        """Load implementations from a file.
-
-        Args:
-            file: Filename
-        """
-        with open(file) as f:
-            self.implementations = yaml.load(f, Loader=yaml.FullLoader)
 
     def load_families(self, file: str):
         """Load families from a file.

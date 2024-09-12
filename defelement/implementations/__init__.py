@@ -6,7 +6,7 @@ from inspect import isclass
 
 from defelement.implementations.template import Implementation, VariantNotImplemented, parse_example
 
-implementations = []
+implementations = {}
 this_dir = os.path.dirname(os.path.realpath(__file__))
 for file in os.listdir(this_dir):
     if file.endswith(".py") and not file.startswith("_") and file != "template.py":
@@ -15,8 +15,9 @@ for file in os.listdir(this_dir):
             if not name.startswith("_"):
                 c = getattr(mod, name)
                 if isclass(c) and c != Implementation and issubclass(c, Implementation):
-                    implementations.append(c)
+                    assert c.id is not None
+                    implementations[c.id] = c
 
-formats = {i.name: i.format for i in implementations if i.name is not None}
-examples = {i.name: i.example for i in implementations if i.name is not None}
-verifications = {i.name: i.verify for i in implementations if i.verification and i.name is not None}
+formats = {id: i.format for id, i in implementations.items()}
+examples = {id: i.example for id, i in implementations.items()}
+verifications = {id: i.verify for id, i in implementations.items() if i.verification}

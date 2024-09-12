@@ -15,7 +15,7 @@ from defelement.element import Categoriser
 from defelement.examples import markup_example
 from defelement.families import keys_and_names
 from defelement.html import make_html_page
-from defelement.implementations import parse_example, verifications
+from defelement.implementations import parse_example, verifications, implementations
 from defelement.markup import (cap_first, heading_with_self_ref, insert_links, markup,
                                python_highlight)
 from defelement.rss import make_rss
@@ -123,7 +123,6 @@ categoriser = Categoriser()
 categoriser.load_categories(os.path.join(settings.data_path, "categories"))
 categoriser.load_references(os.path.join(settings.data_path, "references"))
 categoriser.load_families(os.path.join(settings.data_path, "families"))
-categoriser.load_implementations(os.path.join(settings.data_path, "implementations"))
 
 # Load elements from .def files
 categoriser.load_folder(settings.element_path)
@@ -163,7 +162,7 @@ for e in categoriser.elements:
     print(e.name)
     content = heading_with_self_ref("h1", cap_first(e.html_name))
     element_data = []
-    implementations = []
+    impl = []
 
     # Link to ciarlet.html
     content += "<p><small><a href='/ciarlet.html'>"
@@ -245,8 +244,8 @@ for e in categoriser.elements:
 
     # Implementations
     libraries = [
-        (i, j["name"], j["url"], j["install"])
-        for i, j in categoriser.implementations.items()
+        (i, j.name, j.url, j.install)
+        for i, j in implementations.items()
     ]
     libraries.sort(key=lambda i: i[0])
     for codename, libname, url, pip in libraries:
@@ -380,7 +379,7 @@ for e in categoriser.elements:
                     "}\n"
                     "</script>")
 
-            implementations.append(
+            impl.append(
                 (f"<a href='/lists/implementations/{libname}.html'>{libname}</a>", info))
 
     # Categories
@@ -396,10 +395,10 @@ for e in categoriser.elements:
     content += "</table>"
 
     # Write implementations
-    if len(implementations) > 0:
+    if len(impl) > 0:
         content += heading_with_self_ref("h2", "Implementations")
         content += "<table class='element-info'>"
-        for i, j in implementations:
+        for i, j in impl:
             content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
         content += "</table>"
 
@@ -560,8 +559,8 @@ vs = []
 for i in verifications:
     if i != "symfem":
         vs.append(i)
-        content += f"<td>{categoriser.implementations[i]['name']}</td>"
-        long_content += f"<td>{categoriser.implementations[i]['name']}</td>"
+        content += f"<td>{implementations[i].name}</td>"
+        long_content += f"<td>{implementations[i].name}</td>"
 content += "</tr></thead>"
 long_content += "</tr></thead>"
 rows = []
@@ -669,7 +668,7 @@ c += "<thead><tr><td>Implementation</td><td>Badge</td><td>Markdown</td></tr></th
 for i in verifications:
     c += (
         "<tr>"
-        f"<td>{categoriser.implementations[i]['name']}</td>"
+        f"<td>{implementations[i].name}</td>"
         f"<td><img src='/badges/{i}.svg'></td>"
         "<td style='font-size:80%;font-family:monospace'>"
         f"[![DefElement verification](https://defelement.com/badges/{i}.svg)]"
@@ -911,7 +910,7 @@ write_html_page(os.path.join(settings.htmlindices_path, "categories/index.html")
 # Implementations index
 os.mkdir(os.path.join(settings.htmlindices_path, "implementations"))
 content = heading_with_self_ref("h1", "Implemented elements")
-for c, info in categoriser.implementations.items():
+for c, info in implementations.items():
     category_pages = []
     for e in categoriser.elements_in_implementation(c):
         names = {e.html_name}
@@ -930,17 +929,17 @@ for c, info in categoriser.implementations.items():
 
     category_pages.sort(key=lambda x: x[0])
 
-    content += (f"<h2><a href='/lists/implementations/{c}.html'>Implemented in {info['name']}"
+    content += (f"<h2><a href='/lists/implementations/{c}.html'>Implemented in {info.name}"
                 "</a></h2>\n<ul>")
     content += "".join([i[1] for i in category_pages])
     content += "</ul>"
 
-    sub_content = f"<h1>Implemented in <a href='{info['url']}'>{info['name']}</a></h1>\n<ul>"
+    sub_content = f"<h1>Implemented in <a href='{info.url}'>{info.name}</a></h1>\n<ul>"
     sub_content += "".join([i[1] for i in category_pages])
     sub_content += "</ul>"
 
     write_html_page(os.path.join(settings.htmlindices_path, f"implementations/{c}.html"),
-                    f"Implemented in {info['name']}", sub_content)
+                    f"Implemented in {info.name}", sub_content)
 
 write_html_page(os.path.join(settings.htmlindices_path, "implementations/index.html"),
                 "Implemented elements", content)

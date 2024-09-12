@@ -12,14 +12,11 @@ parser.add_argument('--install-type', default="all",
                     help="Type of installation.")
 args = parser.parse_args()
 
-with open("data/implementations") as f:
-    data = yaml.load(f, Loader=yaml.FullLoader)
-
 if args.install_type == "all":
-    for i in data.values():
-        assert os.system(i["install"]) == 0
+    for i in implementations.implementations.values():
+        assert os.system(i.install) == 0
 elif args.install_type == "verification":
-    for i in implementations.verifications:
-        assert os.system(data[i]["install"]) == 0
+    for i in implementations.verifications.values():
+        assert os.system(i.install) == 0
 else:
     raise RuntimeError(f"Unknown install type: {args.install_type}")

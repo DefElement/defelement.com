@@ -104,5 +104,8 @@ class BasixImplementation(Implementation):
             **kwargs)
         return e.entity_dofs, lambda points: e.tabulate(0, points)[0].transpose((0, 2, 1))
 
-    name = "basix"
+    id = "basix"
+    name = "Basix"
+    url = "https://github.com/FEniCS/basix"
     verification = True
+    install = "pip3 install fenics-basix"

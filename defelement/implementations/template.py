@@ -58,7 +58,15 @@ class Implementation(ABC):
         """
         raise NotImplementedError()
 
+    # Unique identifier used in implementation section of .def files
+    id: typing.Optional[str] = None
+    # The name of the implementation
     name: typing.Optional[str] = None
+    # Snippet to install the implementation
+    install: typing.Optional[str] = None
+    # URL of source of implementation (eg GitHub link)
+    url: typing.Optional[str] = None
+    # Set to true if this implementation should be verified
     verification = False
 
 

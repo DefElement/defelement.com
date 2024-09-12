@@ -146,5 +146,8 @@ class SymfemImplementation(Implementation):
         t = CachedSymfemTabulator(e)
         return edofs, lambda points: t.tabulate(points)
 
-    name = "symfem"
+    id = "symfem"
+    name = "Symfem"
+    url = "https://github.com/mscroggs/symfem"
+    install = "pip3 install symfem"
     verification = True
