@@ -49,6 +49,9 @@ class NDElementImplementation(Implementation):
             except VariantNotImplemented:
                 continue
 
+            if name == "RaviartThomas" and ord > 1:
+                continue
+
             if name is not None:
                 out += "\n\n"
                 out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
