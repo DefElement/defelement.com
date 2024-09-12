@@ -24,7 +24,7 @@ class BemppImplementation(Implementation):
 
     @staticmethod
     def example(element: Element) -> str:
-        """Generate Symfem examples.
+        """Generate examples.
 
         Args:
             element: The element
@@ -56,4 +56,7 @@ class BemppImplementation(Implementation):
                 out += f"\"{bempp_name}\", {ord})"
         return out
 
-    name = "bempp"
+    id = "bempp"
+    name = "Bempp"
+    url = "https://github.com/bempp/bempp-cl"
+    install = "pip3 install numba scipy meshio\npip3 install bempp-cl"

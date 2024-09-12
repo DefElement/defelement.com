@@ -28,7 +28,7 @@ class BasixUFLImplementation(Implementation):
 
     @staticmethod
     def example(element: Element) -> str:
-        """Generate Symfem examples.
+        """Generate examples.
 
         Args:
             element: The element
@@ -119,5 +119,8 @@ class BasixUFLImplementation(Implementation):
         return e.entity_dofs, lambda points: e.tabulate(0, points)[0].reshape(
             points.shape[0], e.reference_value_size, -1)
 
-    name = "basix.ufl"
+    id = "basix.ufl"
+    name = "Basix.UFL"
+    url = "https://github.com/FEniCS/basix"
     verification = True
+    install = "pip3 install fenics-basix fenics-ufl"

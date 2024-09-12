@@ -24,7 +24,7 @@ class UFLImplementation(Implementation):
 
     @staticmethod
     def example(element: Element) -> str:
-        """Generate Symfem examples.
+        """Generate examples.
 
         Args:
             element: The element
@@ -53,4 +53,7 @@ class UFLImplementation(Implementation):
                 out += f"\"{ufl_name}\", \"{ref}\", {ord})"
         return out
 
-    name = "ufl"
+    id = "ufl"
+    name = "(legacy) UFL"
+    url = "https://github.com/FEniCS/ufl/tree/ufl_legacy"
+    install = "pip3 install setuptools\npip3 install fenics-ufl-legacy"

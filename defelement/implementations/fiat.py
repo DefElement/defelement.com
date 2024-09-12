@@ -34,7 +34,7 @@ class FIATImplementation(Implementation):
 
     @staticmethod
     def example(element: Element) -> str:
-        """Generate Symfem examples.
+        """Generate examples.
 
         Args:
             element: The element
@@ -145,5 +145,8 @@ class FIATImplementation(Implementation):
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
 
-    name = "fiat"
+    id = "fiat"
+    name = "FIAT"
+    url = "https://github.com/firedrakeproject/fiat"
     verification = True
+    install = "pip3 install git+https://github.com/firedrakeproject/fiat.git"
