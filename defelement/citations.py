@@ -93,8 +93,13 @@ def html_to_tex(txt: str) -> str:
         TeX
     """
     txt = re.sub(r"&([A-Za-z])acute;", r"\\'\1", txt)
+    txt = re.sub(r"&([A-Za-z])grave;", r"\\`\1", txt)
+    txt = re.sub(r"&([A-Za-z])caron;", r"\\v{\1}", txt)
     txt = re.sub(r"&([A-Za-z])uml;", r"\\\"\1", txt)
     txt = re.sub(r"&([A-Za-z])cedil;", r"\\c{\1}", txt)
+    txt = re.sub(r"&([A-Za-z])circ;", r"\\^\1", txt)
+    txt = re.sub(r"&([A-Za-z])tilde;", r"\\~\1", txt)
+    txt = txt.replace("&oslash;", "{\o}")
     txt = txt.replace("&ndash;", "--")
     txt = txt.replace("&mdash;", "---")
     return txt
