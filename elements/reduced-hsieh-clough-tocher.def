@@ -27,8 +27,8 @@ examples:
 references:
   - title: Finite element stiffness matrices for analysis of plate bending
     author:
-      -Clough, Ray W.
-      -Tocher, James L.
+      - Clough, Ray W.
+      - Tocher, James L.
     journal: Proceedings of the First Conference on Matrix Methods in Structural Mechanics
     year: 1965
     pagestart: 515
