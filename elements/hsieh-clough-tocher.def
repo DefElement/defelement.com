@@ -49,7 +49,7 @@ references:
     pagestart: 335
     pageend: 344
     doi: 10.1090/S0025-5718-1978-0482249-1
-  - title: Generalized C1 Clough&ndash;Tocher splines for CAGD and FEM,
+  - title: Generalized C1 Clough&ndash;Tocher splines for CAGD and FEM
     author:
       - Gro&scaron;elj, Jan
       - Knez, Marjeta
