@@ -22,9 +22,6 @@ mapping: double contravariant Piola
 sobolev: H(div div)
 implementations:
   fiat: JohnsonMercier
-examples:
-  - triangle,1
-  - tetrahedron,1
 references:
   - title: Some equilibrium finite element methods for two-dimensional elasticity problems
     author:
