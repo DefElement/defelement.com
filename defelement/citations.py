@@ -99,7 +99,7 @@ def html_to_tex(txt: str) -> str:
     txt = re.sub(r"&([A-Za-z])cedil;", r"\\c{\1}", txt)
     txt = re.sub(r"&([A-Za-z])circ;", r"\\^\1", txt)
     txt = re.sub(r"&([A-Za-z])tilde;", r"\\~\1", txt)
-    txt = txt.replace("&oslash;", "{\o}")
+    txt = txt.replace("&oslash;", "{\\o}")
     txt = txt.replace("&ndash;", "--")
     txt = txt.replace("&mdash;", "---")
     return txt
