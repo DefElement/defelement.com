@@ -9,9 +9,17 @@ complexes:
   de-rham: CH,0,simplex
 min-order: 3
 max-order: 3
+dofs:
+  vertices:
+    - point evaluations
+    - point evaluations of first derivatives
+  edges: 
+    - normal integral moments with (lagrange,k-3)
 ndofs:
   triangle:
     formula: 12
+sobolev: H2
+mapping: identity
 categories:
   - scalar
   - macro
@@ -19,9 +27,18 @@ reference-elements:
   - triangle
 implementations:
   symfem: HCT
+  fiat: HsiehCloughTocher
 examples:
   - triangle,3
 references:
+  - title: Finite element stiffness matrices for analysis of plate bending
+    author:
+      -Clough, Ray W.
+      -Tocher, James L.
+    journal: Proceedings of the First Conference on Matrix Methods in Structural Mechanics
+    year: 1965
+    pagestart: 515
+    pageend: 546
   - title: Interpolation error estimates for the reduced Hsieh&ndash;Clough&ndash;Tocher triangle
     author: Ciarlet, Philippe G.
     journal: Mathematics of Computation

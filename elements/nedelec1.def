@@ -17,7 +17,7 @@ variants:
     description: Integral moments are taken against orthonormal polynomials
   lagrange:
     variant-name: Lagrange
-    description: Integral moments are taken against (Lagrange)[element:lagrange] basis functions
+    description: Integral moments are taken against [Lagrange](element:lagrange) basis functions
 min-order: 1
 categories:
   - vector

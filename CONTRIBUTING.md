@@ -113,16 +113,19 @@ To add a library to the implementations section of DefElement, you must add a fi
 This file should define a class that is a subclass of [`Implementation`](https://github.com/DefElement/defelement.com/blob/main/defelement/implementations/template.py).
 This class should include:
 
-| Item           | Type                | Use |
-| -------------- | ------------------- | --- |
-| `format`       | method              | This method should take an implementation string and a set of parameters as inputs and return the implementation information for the library, as it will be displayed on each element's page. |
-| `example`      | method              | This method should take a DefElement `Element` object as an input and return a block of Python (as a string) that creates all the examples of that element using the library. |
-| `verify`       | method (optional)   | This method should take a DefElement `Element` object, an example, and a set of points as inputs and returns the element for that example tabulated at the set of points and the number of DOFs associated with each sub-entity as a tuple of tuples. The shape of the first output is `(number of points, value size, number of basis functions)`. These functions are used to [verify](https://defelement.com/verification.html) that the implementation spans the same space as Symfem. |
-| `id`           | variable            | The unique identifier for your library. This will be used in .def files. |
-| `name`         | variable            | The name of your library. |
-| `install`      | variable            | Code snippet to install you library (preferably using `pip3`) |
-| `url`          | variable            | URL where the source code of your library is avaliable (eg a GitHub link). |
-| `verification` | variable (optional) | Should be set to `True` if the `verification` function is implemented. |
+<table class='bordered align-left'>
+<thead>
+<tr><td>Item</td><td>Type</td><td>Use</td></tr>
+</thead>
+<tr><td>`format`</td><td>method</td><td>This method should take an implementation string and a set of parameters as inputs and return the implementation information for the library, as it will be displayed on each element's page.</td></tr>
+<tr><td>`example`</td><td>method</td><td>This method should take a DefElement `Element` object as an input and return a block of Python (as a string) that creates all the examples of that element using the library.</td></tr>
+<tr><td>`verify`</td><td>method (optional)</td><td>This method should take a DefElement `Element` object, an example, and a set of points as inputs and returns the element for that example tabulated at the set of points and the number of DOFs associated with each sub-entity as a tuple of tuples. The shape of the first output is `(number of points, value size, number of basis functions)`. These functions are used to [verify](https://defelement.com/verification.html) that the implementation spans the same space as Symfem.</td></tr>
+<tr><td>`id`</td><td>variable</td><td>The unique identifier for your library. This will be used in .def files.</td></tr>
+<tr><td>`name`</td><td>variable</td><td>The name of your library.</td></tr>
+<tr><td>`install`</td><td>variable</td><td>Code snippet to install you library (preferably using `pip3`)</td></tr>
+<tr><td>`url`</td><td>variable</td><td>URL where the source code of your library is avaliable (eg a GitHub link).</td></tr>
+<tr><td>`verification`</td><td>variable (optional)</td><td>Should be set to `True` if the `verification` function is implemented.</td></tr>
+<table>
 
 Once these steps are done, you can start adding implementation details for your library to
 the `implementation` field of elements in the [`elements`](https://github.com/DefElement/defelement.com/blob/main/elements)
