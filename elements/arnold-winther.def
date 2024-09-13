@@ -18,6 +18,8 @@ dofs:
   faces:
     - integral moments of three components with (lagrange,k-3)
     - integral moments of tensor dot product with "\(\frac{\partial}{\partial(x, y)}x^2y^2(1-x-y)^2f\) for each order \(k-4\) polynomial \(f\) in an order \(k-4\) [Lagrange](element::lagrange) space"
+mapping: double contravariant Piola
+sobolev: H(div div)
 implementations:
   symfem: AW
   ufl: AWc
