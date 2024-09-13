@@ -1,12 +1,8 @@
 name: Argyris
 html-name: Argyris
 min-order: 5
-max-order: 5
 categories:
   - scalar
-ndofs:
-  triangle:
-    formula: 21
 reference-elements:
   - triangle
 polynomial-set:
@@ -16,9 +12,16 @@ dofs:
     - point evaluations
     - point evaluations of first derivatives
     - point evaluations of second derivatives
-  edges: point evaluations of normal derivatives at midpoints
+  edges:
+    - normal derivative integral moments with (lagrange,k-5)
+    - integral moments with (lagrange,k-6)
+  faces:
+    - integral moments with (lagrange,k-6)
+ndofs:
+  triangle:
+    formula: 21+6(k-5)+(k-5)(k-4)/2
 mapping: identity
-sobolev: H3
+sobolev: H2
 implementations:
   symfem: Argyris
   ufl: Argyris
