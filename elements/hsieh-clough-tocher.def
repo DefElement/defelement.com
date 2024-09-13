@@ -8,16 +8,18 @@ short-names:
 complexes:
   de-rham: CH,0,simplex
 min-order: 3
-max-order: 3
 dofs:
   vertices:
     - point evaluations
     - point evaluations of first derivatives
   edges: 
-    - normal integral moments with (lagrange,k-3)
+    - normal derivative integral moments with (lagrange,k-3)
+    - integral moments with (lagrange,k-4)
+  faces:
+    - integral moments with (lagrange,k-4)
 ndofs:
   triangle:
-    formula: 12
+    formula: 12+6(k-3)+(k-3)(k-2)/2
 sobolev: H2
 mapping: identity
 categories:
@@ -47,3 +49,12 @@ references:
     pagestart: 335
     pageend: 344
     doi: 10.1090/S0025-5718-1978-0482249-1
+  - title: Generalized C1 Clough&ndash;Tocher splines for CAGD and FEM
+    author:
+      - Gro&scaron;elj, Jan
+      - Knez, Marjeta
+    journal: Computer Methods in Applied Mechanics and Engineering
+    volume: 395
+    year: 2022
+    pagestart: 114983
+    doi: 10.1016/j.cma.2022.114983
