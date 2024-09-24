@@ -1,6 +1,7 @@
 """DefElement elements."""
 
 import os
+import pytz
 import typing
 import warnings
 from datetime import datetime
@@ -868,8 +869,8 @@ class Categoriser:
                     e.created = commits.get_page(-1)[-1].commit.committer.date
                     e.modified = commits.get_page(0)[0].commit.committer.date
                 except IndexError:
-                    e.created = datetime.now()
-                    e.modified = datetime.now()
+                    e.created = datetime.utcnow().replace(tzinfo=pytz.utc)
+                    e.modified = datetime.utcnow().replace(tzinfo=pytz.utc)
 
         self.elements.sort(key=lambda x: x.name.lower())
 
