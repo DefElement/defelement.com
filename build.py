@@ -19,7 +19,7 @@ from defelement.implementations import implementations, parse_example, verificat
 from defelement.markup import (cap_first, heading_with_self_ref, insert_links, markup,
                                python_highlight)
 from defelement.rss import make_rss
-from defelement.tools import html_local, insert_author_info, parse_metadata
+from defelement.tools import html_local, insert_author_info, parse_metadata, comma_and_join
 
 start_all = datetime.now()
 
@@ -146,6 +146,7 @@ if os.path.isfile(settings.verification_json):
         v_date = v_json["metadata"]["date"]
 
 icon_style = "font-size:150%;vertical-align:middle"
+icon_style_small = "font-size:80%;vertical-align:middle"
 text_style = "font-size:80%;vertical-align:middle"
 green_check = ("<i class='fa-solid fa-square-check' style='color:"
                f"{symfem.plotting.Colors.GREEN};{icon_style}'></i>")
@@ -155,6 +156,10 @@ red_check = ("<i class='fa-solid fa-square-xmark' style='color:"
              f"#FF0000;{icon_style}'></i>")
 blue_minus = ("<i class='fa-solid fa-square-minus' style='color:"
               f"{symfem.plotting.Colors.BLUE};{icon_style}'></i>")
+green_check_small = green_check.replace(icon_style, icon_style_small)
+orange_check_small = orange_check.replace(icon_style, icon_style_small)
+red_check_small = red_check.replace(icon_style, icon_style_small)
+blue_minus_small = blue_minus.replace(icon_style, icon_style_small)
 
 # Generate element pages
 all_examples = []
@@ -253,6 +258,8 @@ for e in categoriser.elements:
     for codename, libname, url, pip in libraries:
         if e.implemented(codename):
             info = e.list_of_implementation_strings(codename)
+            assert libname is not None
+            short_info = libname
 
             if e.has_implementation_examples(codename):
                 jscodename = codename.replace('.', '_').replace('-', '_')
@@ -265,7 +272,7 @@ for e in categoriser.elements:
                     f"href='javascript:hide_{jscodename}_eg()' style='display:none'>"
                     f"&uarr; Hide {libname} examples &uarr;</a>"
                     f"<div id='{jscodename}_eg' style='display:none'>"
-                    f"Before trying this example, you must install <a href='{url}'>{libname}</a>")
+                    f"Before running this example, you must install <a href='{url}'>{libname}</a>")
                 if pip is None:
                     info += ". "
                 else:
@@ -276,6 +283,7 @@ for e in categoriser.elements:
                     e.make_implementation_examples(codename)) + "</p>"
                 info += "</div>"
                 if codename == "symfem":
+                    short_info += f" {green_check_small}"
                     info += (
                         f"{green_check} <span style='{text_style}'>"
                         "This implementation is used to compute the examples below and "
@@ -284,11 +292,13 @@ for e in categoriser.elements:
                     v = verification[e.filename][codename]
                     if len(v["fail"]) == 0:
                         if len(v["not implemented"]) == 0:
+                            short_info += f" {green_check_small}"
                             info += (
                                 f"{green_check} <span style='{text_style}'>"
                                 "This implementation is correct for all the examples below."
                                 "</span>")
                         else:
+                            short_info += f" {green_check_small}"
                             info += (
                                 f"{green_check} <span style='{text_style}'>"
                                 "This implementation is correct for all the examples below "
@@ -324,6 +334,7 @@ for e in categoriser.elements:
                                 f"document.getElementById('{jscodename}-hiddenverification')"
                                 ".style.display = 'none'\n}\n</script>")
                     elif len(v["pass"]) > 0:
+                        short_info += f" {orange_check_small}"
                         info += (
                             f"{orange_check} <span style='{text_style}'>"
                             "This implementation is correct for some of "
@@ -343,6 +354,7 @@ for e in categoriser.elements:
                             f"{red_check} "
                             f"<b>Incorrect</b>: {'; '.join(v['fail'])}</div>")
                         if len(v["not implemented"]) > 0:
+                            short_info += f" {blue_minus_small}"
                             info += (
                                 f"<div style='margin-left:70px;text-indent:-40px;{text_style}'>"
                                 f"{blue_minus} "
@@ -364,6 +376,7 @@ for e in categoriser.elements:
                             f"document.getElementById('{jscodename}-hiddenverification')"
                             ".style.display = 'none'\n}\n</script>")
                     else:
+                        short_info += f" {red_check_small}"
                         info += (
                             f"{red_check} <span style='{text_style}'>"
                             "This implementation is incorrect for this element.</span>")
@@ -382,7 +395,8 @@ for e in categoriser.elements:
                     "</script>")
 
             impl.append(
-                (f"<a href='/lists/implementations/{libname}.html'>{libname}</a>", info))
+                (f"<a href='/lists/implementations/{libname}.html'>{libname}</a>", info, short_info)
+            )
 
     # Categories
     cats = e.categories()
@@ -399,10 +413,31 @@ for e in categoriser.elements:
     # Write implementations
     if len(impl) > 0:
         content += heading_with_self_ref("h2", "Implementations")
+        content += "This element is implemented in "
+        content += comma_and_join([f"<span style='white-space:nowrap'>{i[2]}</span>" for i in impl])
+        content += "."
+        content += ("<a class='show_eg_link' id='implementation-more-link' "
+                    "href='javascript:show_more_impl()' style='display:block'>"
+                    "&darr; Show implementation detail &darr;</a>")
+        content += (
+            "<script type='text/javascript'>\n"
+            "function show_more_impl(){\n"
+            " document.getElementById('implementation-more-link').style.display='none'\n"
+            " document.getElementById('implementation-more').style.display='block'\n"
+            "}\n"
+            "function hide_more_impl(){\n"
+            " document.getElementById('implementation-more-link').style.display='block'\n"
+            " document.getElementById('implementation-more').style.display='none'\n"
+            "}\n"
+            "</script>")
+        content += "<div id='implementation-more' style='display:none'>"
+        content += ("<a class='show_eg_link' "
+                    "href='javascript:hide_more_impl()' style='display:block'>"
+                    "&uarr; Hide implementation detail &uarr;</a>")
         content += "<table class='element-info'>"
-        for i, j in impl:
+        for i, j, _ in impl:
             content += f"<tr><td>{i.replace(' ', '&nbsp;')}</td><td>{j}</td></tr>"
-        content += "</table>"
+        content += "</table></div>"
 
     # Write examples using symfem
     if e.has_examples:

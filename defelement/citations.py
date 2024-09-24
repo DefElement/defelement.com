@@ -2,6 +2,7 @@
 
 import re
 import typing
+from defelement.tools import comma_and_join
 
 
 def markup_authors(a: typing.Union[str, typing.List[str]]) -> str:
@@ -16,10 +17,7 @@ def markup_authors(a: typing.Union[str, typing.List[str]]) -> str:
     if isinstance(a, str):
         return a
     else:
-        if len(a) == 2:
-            return a[0] + " and " + a[1]
-        else:
-            return ", ".join(a[:-1]) + ", and " + a[-1]
+        return comma_and_join(a)
 
 
 def markup_citation(r: typing.Dict[str, typing.Any]) -> str:
