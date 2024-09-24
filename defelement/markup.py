@@ -13,7 +13,7 @@ import yaml
 from github import Github
 
 from defelement import plotting, settings, symbols
-from defelement.citations import markup_citation
+from defelement.tools import comma_and_join
 
 page_references: typing.List[str] = []
 
@@ -79,10 +79,7 @@ def format_names(names: typing.List[str], format: str) -> str:
             else:
                 return ", ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
         else:
-            if len(formatted_names) <= 2:
-                return " and ".join(formatted_names)
-            else:
-                return ", and ".join([", ".join(formatted_names[:-1]), formatted_names[-1]])
+            return comma_and_join(formatted_names)
 
 
 def person_sort_key(p: typing.Dict):
@@ -535,6 +532,8 @@ def add_citation(matches: typing.Match[str]) -> str:
         HTML
     """
     global page_references
+    from defelement.citations import markup_citation
+
     ref = {}
     for i in shlex.split(matches[1]):
         a, b = i.split("=")

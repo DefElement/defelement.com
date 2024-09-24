@@ -287,7 +287,7 @@ class Element:
                     entry = ""
                     if link:
                         entry = f"<a class='nou' href='/families/{fam}.html'>"
-                    entry += " / ".join(namelist)
+                    entry += " or ".join(namelist)
                     if link:
                         entry += "</a>"
                     out[key].append(entry)
@@ -321,6 +321,11 @@ class Element:
                         orders.append(i + ": " + make_order_data(min_i, max_o[i]))
                     else:
                         orders.append(i + ": " + make_order_data(min_i, max_o))
+                return "<br />\n".join(orders)
+            if isinstance(max_o, dict):
+                orders = []
+                for i, max_i in max_o.items():
+                    orders.append(i + ": " + make_order_data(min_o, max_i))
                 return "<br />\n".join(orders)
             if max_o is None:
                 return f"\\({min_o}\\leqslant k\\)"
