@@ -238,6 +238,8 @@ for e in categoriser.elements:
 
     # Notes
     notes = e.notes
+    if isinstance(notes, str):
+        notes = [notes]
     if len(notes) > 0:
         element_data.append(
             ("Notes", "<br />\n".join([insert_links(i) for i in notes])))
