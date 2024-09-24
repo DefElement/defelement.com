@@ -19,7 +19,7 @@ from defelement.implementations import implementations, parse_example, verificat
 from defelement.markup import (cap_first, heading_with_self_ref, insert_links, markup,
                                python_highlight)
 from defelement.rss import make_rss
-from defelement.tools import html_local, insert_author_info, parse_metadata, comma_and_join
+from defelement.tools import comma_and_join, html_local, insert_author_info, parse_metadata
 
 start_all = datetime.now()
 
