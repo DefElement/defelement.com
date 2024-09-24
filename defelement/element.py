@@ -287,7 +287,7 @@ class Element:
                     entry = ""
                     if link:
                         entry = f"<a class='nou' href='/families/{fam}.html'>"
-                    entry += " / ".join(namelist)
+                    entry += " or ".join(namelist)
                     if link:
                         entry += "</a>"
                     out[key].append(entry)

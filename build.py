@@ -1021,7 +1021,7 @@ for fname, data in categoriser.families["de-rham"].items():
             cnames.append("\\(" + cname(data[key], dim=3) + "\\)")
     if len(cnames) == 0:
         raise ValueError(f"No name found for family: {fname}")
-    sub_content = heading_with_self_ref("h1", "The " + " / ".join(cnames) + " family")
+    sub_content = heading_with_self_ref("h1", "The " + " or ".join(cnames) + " family")
 
     assert len([i for i in ["simplex", "tp"] if i in family]) == 1
 
@@ -1037,7 +1037,7 @@ for fname, data in categoriser.families["de-rham"].items():
                     for key, cname in keys_and_names:
                         if key in data:
                             sub_names.append("\\(" + cname(data[key], o, cell) + "\\)")
-                    sub_content += " / ".join(sub_names)
+                    sub_content += " or ".join(sub_names)
                     sub_content += f" ({family[cell][o][0]})</a></li>"
 
             if all(o in family[cell] for o in ["0", "1", "d-1", "d"]):
@@ -1065,7 +1065,7 @@ for fname, data in categoriser.families["de-rham"].items():
         sub_content += "</ul>"
 
     write_html_page(os.path.join(settings.htmlfamilies_path, f"{fname}.html"),
-                    "The " + " / ".join(names) + " family", sub_content)
+                    "The " + " or ".join(names) + " family", sub_content)
 
 content = heading_with_self_ref("h1", "Complex families")
 content += "<p>You can find some information about how these familes are defined "
