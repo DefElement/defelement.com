@@ -322,6 +322,11 @@ class Element:
                     else:
                         orders.append(i + ": " + make_order_data(min_i, max_o))
                 return "<br />\n".join(orders)
+            if isinstance(max_o, dict):
+                orders = []
+                for i, max_i in max_o.items():
+                    orders.append(i + ": " + make_order_data(min_o, max_i))
+                return "<br />\n".join(orders)
             if max_o is None:
                 return f"\\({min_o}\\leqslant k\\)"
             if max_o == min_o:
