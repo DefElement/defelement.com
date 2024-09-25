@@ -147,6 +147,11 @@ class FIATImplementation(Implementation):
             edofs[2][0] = edofs[2][0][:3]
             return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
                 points.shape[0], value_size, -1)[:, :, :24]
+        if element.name == "Bell" and example.startswith("triangle"):
+            for i in range(3):
+                edofs[1][i] = []
+            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                points.shape[0], value_size, -1)[:, :, :18]
 
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
@@ -163,7 +168,7 @@ class FIATImplementation(Implementation):
         Returns:
             List of notes
         """
-        if element.name == "Arnold-Winther":
+        if element.name in ["Arnold-Winther", "Bell"]:
             return ["This implementation includes additional DOFs that are used then filtered "
                     "out when mapping the element, as described in Kirby (2018)."]
         return []
@@ -180,7 +185,7 @@ class FIATImplementation(Implementation):
         Returns:
             List of references
         """
-        if element.name == "Arnold-Winther":
+        if element.name in ["Arnold-Winther", "Bell"]:
             return [{
                 'title': 'A general approach to transforming finite elements',
                 'author': ['Kirby, Robert C.'],

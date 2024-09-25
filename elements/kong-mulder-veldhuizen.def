@@ -13,7 +13,7 @@ implementations:
   fiat: KongMulderVeldhuizen
 examples:
   - triangle,1
-  - triangle,3
+  - triangle,2
   - tetrahedron,1
 references:
   - title: Higher-order triangular and tetrahedral finite elements with mass lumping for solving the wave equation
