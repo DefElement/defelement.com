@@ -6,10 +6,6 @@ import os
 import typing
 from datetime import datetime
 
-import numpy as np
-from numpy import float64
-from numpy.typing import NDArray
-
 from defelement import settings
 from defelement.element import Categoriser, Element
 from defelement.implementations import verifications
