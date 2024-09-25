@@ -5,7 +5,6 @@ import typing
 import yaml
 
 from defelement import settings
-from defelement.markup import preprocess
 
 if typing.TYPE_CHECKING:
     from numpy import float64
@@ -24,6 +23,8 @@ def parse_metadata(content: str) -> typing.Tuple[typing.Dict[str, typing.Any], s
     Returns:
         Parsed metadata and content without metadata
     """
+    from defelement.markup import preprocess
+
     metadata: typing.Dict[str, typing.Any] = {"title": None}
     if content.startswith("--\n"):
         metadata_in, content = content[3:].split("\n--\n", 1)
@@ -72,3 +73,12 @@ def to_array(
     if isinstance(data, (list, tuple)):
         return np.array([to_array(i) for i in data])
     return float(data)
+
+
+def comma_and_join(ls: typing.List[str], oxford_comma: bool = True) -> str:
+    """Join a list with commas and an and between the last two items."""
+    if len(ls) == 1:
+        return ls[0]
+    if len(ls) == 2:
+        return f"{ls[0]} and {ls[1]}"
+    return ", ".join(ls[:-1]) + ("," if oxford_comma else "") + " and " + ls[-1]
