@@ -142,6 +142,12 @@ class FIATImplementation(Implementation):
                 [edofs[2][4], edofs[2][2], edofs[2][0], edofs[2][1], edofs[2][3], edofs[2][5]],
                 [edofs[3][0]],
             ]
+
+        if element.name == "Arnold-Winther" and example.startswith("triangle"):
+            edofs[2][0] = edofs[2][0][:3]
+            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                points.shape[0], value_size, -1)[:, :, :24]
+
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
 
