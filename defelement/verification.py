@@ -133,19 +133,19 @@ def verify(
     # Check the same number of entity DOFs
     if len(edofs0) != len(edofs1):
         if printing:
-            print("Wrong number of entities")
+            print("  Wrong number of entities")
         return False
     entity_counts = []
     for i0, i1 in zip(edofs0, edofs1):
         if len(i0) != len(i1):
             if printing:
-                print("Wrong number of entities")
+                print("  Wrong number of entities")
             return False
         entity_counts.append(len(i0))
         for j0, j1 in zip(i0, i1):
             if len(j0) != len(j1):
                 if printing:
-                    print("Wrong number of DOFs associated with an entity:")
+                    print("  Wrong number of DOFs associated with an entity")
                 return False
 
     # Check that polysets span the same space
@@ -155,12 +155,12 @@ def verify(
 
     if table0.shape != table1.shape:
         if printing:
-            print("Non-matching table shapes")
+            print("  Non-matching table shapes")
         return False
 
     if not same_span(table0, table1):
         if printing:
-            print("Polysets do not span the same space")
+            print("  Polysets do not span the same space")
         return False
 
     # Check that continuity will be the same
@@ -174,7 +174,7 @@ def verify(
                 t1 = tab1(pts)[:, :, ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
                     if printing:
-                        print("Continuity does not match")
+                        print("  Continuity does not match")
                     return False
 
     return True
