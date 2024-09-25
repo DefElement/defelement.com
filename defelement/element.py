@@ -577,7 +577,7 @@ class Element:
 
     def get_implementation_string(
         self, lib: str, reference: typing.Optional[str], variant: typing.Optional[str] = None
-    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, str]]:
+    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, typing.Any]]:
         """Get implementation string.
 
         Args:

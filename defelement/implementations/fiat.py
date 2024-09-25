@@ -171,7 +171,7 @@ class FIATImplementation(Implementation):
     @staticmethod
     def references(
         element: Element
-    ) -> typing.List[typing.Dict[str, str]]:
+    ) -> typing.List[typing.Dict[str, typing.Any]]:
         """Return a list of additional references to include for the implementation of this element.
 
         Args:
