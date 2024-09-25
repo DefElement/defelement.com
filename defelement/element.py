@@ -577,7 +577,7 @@ class Element:
 
     def get_implementation_string(
         self, lib: str, reference: typing.Optional[str], variant: typing.Optional[str] = None
-    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, str]]:
+    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, typing.Any]]:
         """Get implementation string.
 
         Args:
@@ -691,6 +691,28 @@ class Element:
         """
         return lib in examples
 
+    def implementation_notes(self, lib: str) -> typing.List[str]:
+        """Get implementation notes for a library.
+
+        Args:
+            lib: The library
+
+        Returns:
+            Implementation notes
+        """
+        return implementations[lib].notes(self)
+
+    def implementation_references(self, lib: str) -> typing.List[typing.Dict[str, str]]:
+        """Get implementation notes for a library.
+
+        Args:
+            lib: The library
+
+        Returns:
+            Implementation notes
+        """
+        return implementations[lib].references(self)
+
     def categories(self, link: bool = True, map_name: bool = True) -> typing.List[str]:
         """Get categories.
 
@@ -745,6 +767,11 @@ class Element:
                         for r in references:
                             if r not in references:
                                 references.append(r)
+        for i in implementations:
+            if self.implemented(i):
+                for ref in self.implementation_references(i):
+                    if ref not in references:
+                        references.append(ref)
         return references
 
     @property

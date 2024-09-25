@@ -380,6 +380,10 @@ for e in categoriser.elements:
                         info += (
                             f"{red_check} <span style='{text_style}'>"
                             "This implementation is incorrect for this element.</span>")
+                    notes = e.implementation_notes(codename)
+                    if notes is not None:
+                        for note in notes:
+                            info += f"<div style='{text_style};margin-top:5px'>Note: {note}</div>"
                 info += (
                     "<script type='text/javascript'>\n"
                     f"function show_{jscodename}_eg(){{\n"

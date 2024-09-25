@@ -58,6 +58,34 @@ class Implementation(ABC):
         """
         raise NotImplementedError()
 
+    @staticmethod
+    def notes(
+        element: Element
+    ) -> typing.List[str]:
+        """Return a list of notes to include for the implementation of this element.
+
+        Args:
+            element: Element data
+
+        Returns:
+            List of notes
+        """
+        return []
+
+    @staticmethod
+    def references(
+        element: Element
+    ) -> typing.List[typing.Dict[str, str]]:
+        """Return a list of additional references to include for the implementation of this element.
+
+        Args:
+            element: Element data
+
+        Returns:
+            List of references
+        """
+        return []
+
     # Unique identifier used in implementation section of .def files
     id: typing.Optional[str] = None
     # The name of the implementation
