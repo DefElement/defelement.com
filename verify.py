@@ -6,10 +6,6 @@ import os
 import typing
 from datetime import datetime
 
-import numpy as np
-from numpy import float64
-from numpy.typing import NDArray
-
 from defelement import settings
 from defelement.element import Categoriser, Element
 from defelement.implementations import verifications
@@ -26,6 +22,8 @@ parser.add_argument('--processes', metavar="processes", default=None,
                     help="The number of processes to run the verification on.")
 parser.add_argument('--skip-missing-libraries', default="true",
                     help="Skip verification if library is not installed.")
+parser.add_argument('--print-reasons', default="false",
+                    help="Show reasons for failed verification")
 
 args = parser.parse_args()
 if args.destination is not None:
@@ -42,6 +40,7 @@ elif args.test == "auto":
 else:
     test_elements = args.test.split(",")
 skip_missing = args.skip_missing_libraries == "true"
+print_reasons = args.print_reasons == "true"
 
 categoriser = Categoriser()
 categoriser.load_references(os.path.join(settings.data_path, "references"))
@@ -57,27 +56,6 @@ for e in categoriser.elements:
             implementations = [i for i in verifications if i != "symfem" and e.implemented(i)]
             if len(implementations) > 0:
                 elements_to_verify.append((e, eg, implementations))
-
-
-def allclose_maybe_permuted(table0: NDArray[float64], table1: NDArray[float64]) -> bool:
-    """Check if two tables are permutations of the same table.
-
-    Args:
-        table0: The first table
-        table1: The second table
-
-    Returns:
-        True if tables are allclose, otherwise False
-    """
-    remaining = [i for i, _ in enumerate(table1.T)]
-    for t0 in table0.T:
-        for i in remaining:
-            if np.allclose(t0, table1.T[i]):
-                remaining.remove(i)
-                break
-        else:
-            return False
-    return True
 
 
 def verify_examples(
@@ -113,7 +91,7 @@ def verify_examples(
         for i in implementations:
             try:
                 vinfo = verifications[i](e, eg)
-                if verify(cell, vinfo, sym_info):
+                if verify(cell, vinfo, sym_info, print_reasons):
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
                 else:
