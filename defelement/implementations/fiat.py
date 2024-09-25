@@ -151,6 +151,48 @@ class FIATImplementation(Implementation):
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
 
+    @staticmethod
+    def notes(
+        element: Element
+    ) -> typing.List[str]:
+        """Return a list of notes to include for the implementation of this element.
+
+        Args:
+            element: Element data
+
+        Returns:
+            List of notes
+        """
+        if element.name == "Arnold-Winther":
+            return ["This implementation includes additional DOFs that are used then filtered "
+                    "out when mapping the element, as described in Kirby (2018)."]
+        return []
+
+    @staticmethod
+    def references(
+        element: Element
+    ) -> typing.List[typing.Dict[str, str]]:
+        """Return a list of additional references to include for the implementation of this element.
+
+        Args:
+            element: Element data
+
+        Returns:
+            List of references
+        """
+        if element.name == "Arnold-Winther":
+            return [{
+                'title': 'A general approach to transforming finite elements',
+                'author': ['Kirby, Robert C.'],
+                'year': 2018,
+                'journal': 'SMAI Journal of Computational Mathematics',
+                'volume': 4,
+                'pagestart': 197,
+                'pageend': 224,
+                'doi': '10.5802/smai-jcm.33',
+            }]
+        return []
+
     id = "fiat"
     name = "FIAT"
     url = "https://github.com/firedrakeproject/fiat"
