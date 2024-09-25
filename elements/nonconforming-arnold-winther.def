@@ -14,6 +14,8 @@ polynomial-set:
 dofs:
   edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,1)
   faces: integral moments of three components with (lagrange,0)
+mapping: double contravariant Piola
+sobolev: H(div div)
 implementations:
   symfem: nonconforming AW
   ufl: AWnc
