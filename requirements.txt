@@ -1,5 +1,6 @@
+cairosvg
 symfem
 sympy
-cairosvg
 PyGithub
+pytz
 pyyaml

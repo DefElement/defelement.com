@@ -1,0 +1,44 @@
+name: Johnson-Mercier
+html-name: Johnson&ndash;Mercier
+alt-names:
+  - Johnson&ndash;Mercier&ndash;K&rcaron;&iacute;&zcaron;ek
+min-order: 1
+max-order: 1
+categories:
+  - matrix
+  - macro
+reference-elements:
+  - triangle
+  - tetrahedron
+ndofs:
+  triangle:
+    formula: 15
+  tetrahedron:
+    formula: 42
+dofs:
+  facets: integral moments of normal-normal and normal-tangent inner products with (lagrange,1)
+  cell: integral moments of d(d+1)/2 components with (lagrange,0)
+mapping: double contravariant Piola
+sobolev: H(div div)
+implementations:
+  fiat: JohnsonMercier
+references:
+  - title: Some equilibrium finite element methods for two-dimensional elasticity problems
+    author:
+      - Johnson, Claes
+      - Mercier, Bertrand
+    year: 1978
+    journal: Numerische Mathematik
+    pagestart: 103
+    pageend: 116
+    volume: 30
+    issue: 1
+    doi: 10.1007/BF01403910
+  - title: An equilibrium finite element method in three-dimensional elasticity
+    author: K&rcaron;&iacute;&zcaron;ek, Michal
+    year: 1982
+    journal: Aplikace Matematiky
+    pagestart: 46
+    pageend: 75
+    volume: 27
+    issue: 1
