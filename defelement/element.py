@@ -157,7 +157,7 @@ class Element:
     def degree_convention(self) -> typing.Optional[str]:
         """Get the degree convention.
 
-        returns:
+        Returns:
             The degree convention
         """
         if "degree" not in self.data:
@@ -167,7 +167,7 @@ class Element:
     def _edegree(self, dtype: str) -> typing.Optional[str]:
         """Get an embedded degree.
 
-        returns:
+        Returns:
             Information about the embedded degree
         """
         if dtype not in self.data:
@@ -198,7 +198,7 @@ class Element:
     def polynomial_subdegree(self) -> typing.Optional[str]:
         """Get the polynomial subdegree.
 
-        returns:
+        Returns:
             The degree convention
         """
         return self._edegree("polynomial-subdegree")
@@ -206,7 +206,7 @@ class Element:
     def polynomial_superdegree(self) -> typing.Optional[str]:
         """Get the polynomial superdegree.
 
-        returns:
+        Returns:
             The degree convention
         """
         return self._edegree("polynomial-superdegree")
@@ -214,7 +214,7 @@ class Element:
     def lagrange_subdegree(self) -> typing.Optional[str]:
         """Get the Lagrange subdegree.
 
-        returns:
+        Returns:
             The degree convention
         """
         return self._edegree("lagrange-subdegree")
@@ -222,7 +222,7 @@ class Element:
     def lagrange_superdegree(self) -> typing.Optional[str]:
         """Get the polynomial superdegree.
 
-        returns:
+        Returns:
             The degree convention
         """
         return self._edegree("lagrange-superdegree")
