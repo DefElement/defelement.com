@@ -202,7 +202,9 @@ for e in categoriser.elements:
     if e.degree_convention() is None:
         element_data.append(("Degrees", e.degree_range()))
     else:
-        element_data.append(("Degrees", e.degree_range() + "<br />where \\(k\\) is the " + degree_names[e.degree_convention()]))
+        element_data.append((
+            "Degrees",
+            f"{e.degree_range()}<br />where \\(k\\) is the {degree_names[e.degree_convention()]}"))
     if e.polynomial_subdegree() is not None:
         element_data.append(("Polynomial subdegree", e.polynomial_subdegree()))
     if e.polynomial_superdegree() is not None:
