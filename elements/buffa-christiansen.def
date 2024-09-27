@@ -5,8 +5,8 @@ short-names:
 ndofs:
   dual polygon(n):
     formula: n
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
 categories:
   - vector
   - Hdiv
@@ -14,7 +14,7 @@ reference-elements:
   - dual polygon
 implementations:
   symfem: BC
-  bempp: BC orders=0
+  bempp: BC degrees=0
 mapping: contravariant Piola
 sobolev: H(div)
 examples:

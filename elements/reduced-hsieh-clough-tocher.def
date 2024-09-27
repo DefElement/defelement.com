@@ -3,8 +3,8 @@ html-name: reduced Hsieh&ndash;Clough&ndash;Tocher
 short-names:
   - rHCT
   - HCT-red
-min-order: 3
-max-order: 3
+min-degree: 3
+max-degree: 3
 dofs:
   vertices:
     - point evaluations

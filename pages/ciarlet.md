@@ -174,8 +174,17 @@ We refer to a pair of elements as variants of each other if:
 * The functionals in \({{symbols.dual_basis}}\) associated with each facet, ridge, and peak of the
   cell, and the push forward/pull back map used lead to the same type of continuity between cells.
 
-
 Commonly used variants of elements are shown on each element's page.
+
+## The degree of a finite element
+There are a few different ways to describe the (polynomial) degree of a finite element:
+
+* The polynomial subdegree is the degree of the highest degree complete polynomial space that is a subspace of this element's polynomial space.
+* The polynomial superdegree is the degree of the lowest degree complete polynomial space that is a superspace of this element's polynomial space.
+* The Lagrange subdegree is the degree of the highest degree Lagrange space that is a subspace of this element's polynomial space.
+* The Lagrange superdegree is the degree of the lowest degree Lagrange space that is a superspace of this element's polynomial space.
+
+On each element's page, the value of these is shown, as well as information about which one is used as the canonical degree of that element.
 
 ## Notation
 Throughout this website, the notation given here in this section is used.
@@ -195,6 +204,7 @@ Throughout this website, the notation given here in this section is used.
 <tr><td style='padding-right:10px'>\({{symbols.entity(1)}}_i\)</td><td>The \(i\)th edge</td></tr>
 <tr><td style='padding-right:10px'>\({{symbols.entity(2)}}_i\)</td><td>The \(i\)th face</td></tr>
 <tr><td style='padding-right:10px'>\({{symbols.entity(3)}}_i\)</td><td>The \(i\)th volume</td></tr>
+<tr><td style='padding-right:10px'>\(k\)</td><td>Degree of a finite element</td></tr>
 <tr><td style='padding-right:10px'>\(d\)</td><td>Geometric dimension</td></tr>
 <tr><td style='padding-right:10px'>\(r\)</td><td>Exterior derivative order</td></tr>
 </table>

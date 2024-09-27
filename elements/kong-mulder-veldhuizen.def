@@ -7,6 +7,9 @@ categories:
 reference-elements:
   - triangle
   - tetrahedron
+polynomial-subdegree: k
+lagrange-subdegree: k
+degree: polynomial-subdegree
 implementations:
   symfem: KMV
   ufl: KMV

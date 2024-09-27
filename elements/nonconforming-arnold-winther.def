@@ -1,7 +1,12 @@
 name: nonconforming Arnold-Winther
 html-name: nonconforming Arnold&ndash;Winther
-min-order: 2
-max-order: 2
+min-degree: 2
+max-degree: 2
+polynomial-subdegree: k - 1
+polynomial-superdegree: k
+lagrange-subdegree: k - 1
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - matrix
 reference-elements:

@@ -43,9 +43,9 @@ class BasixImplementation(Implementation):
         """
         out = "import basix"
         for e in element.examples:
-            ref, ord, variant, kwargs = parse_example(e)
+            ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            ord = int(ord)
+            deg = int(deg)
 
             try:
                 basix_name, params = element.get_implementation_string("basix", ref, variant)
@@ -54,9 +54,9 @@ class BasixImplementation(Implementation):
 
             if basix_name is not None:
                 out += "\n\n"
-                out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
+                out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
                 out += "element = basix.create_element("
-                out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {ord}"
+                out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {deg}"
                 if "lagrange_variant" in params:
                     out += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
                 if "dpc_variant" in params:
@@ -82,9 +82,9 @@ class BasixImplementation(Implementation):
         """
         import basix
 
-        ref, ord, variant, kwargs = parse_example(example)
+        ref, deg, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
-        ord = int(ord)
+        deg = int(deg)
         try:
             basix_name, params = element.get_implementation_string("basix", ref, variant)
         except VariantNotImplemented:
@@ -100,7 +100,7 @@ class BasixImplementation(Implementation):
             kwargs["discontinuous"] = params["discontinuous"] == "True"
 
         e = basix.create_element(
-            getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), ord,
+            getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), deg,
             **kwargs)
         return e.entity_dofs, lambda points: e.tabulate(0, points)[0].transpose((0, 2, 1))
 

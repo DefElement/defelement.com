@@ -2,7 +2,12 @@ name: Arnold-Winther
 html-name: Arnold&ndash;Winther
 alt-names:
   - conforming Arnold&ndash;Winther
-min-order: 3
+min-degree: 3
+polynomial-subdegree: k-1
+polynomial-superdegree: k
+lagrange-subdegree: k-1
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - matrix
 reference-elements:
@@ -17,13 +22,13 @@ dofs:
   edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,k-2)
   faces:
     - integral moments of three components with (lagrange,k-3)
-    - integral moments of tensor dot product with "\(\frac{\partial}{\partial(x, y)}x^2y^2(1-x-y)^2f\) for each order \(k-4\) polynomial \(f\) in an order \(k-4\) [Lagrange](element::lagrange) space"
+    - integral moments of tensor dot product with "\(\frac{\partial}{\partial(x, y)}x^2y^2(1-x-y)^2f\) for each degree \(k-4\) polynomial \(f\) in an degree \(k-4\) [Lagrange](element::lagrange) space"
 mapping: double contravariant Piola
 sobolev: H(div div)
 implementations:
   symfem: AW
   ufl: AWc
-  fiat: ArnoldWinther order=3
+  fiat: ArnoldWinther degree=3
 examples:
   - triangle,3
   - triangle,4

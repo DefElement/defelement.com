@@ -22,7 +22,17 @@ ndofs:
     formula: (k+1)^2(k+2)/2 + 1
   pyramid:
     formula: (k+1)(k+2)(2k+3)/6 + 1
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree:
+  interval: k
+  triangle: k
+  tetrahedron: k
+  quadrilateral: dk
+  hexahedron: dk
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 reference-elements:

@@ -2,8 +2,8 @@ name: Johnson-Mercier
 html-name: Johnson&ndash;Mercier
 alt-names:
   - Johnson&ndash;Mercier&ndash;K&rcaron;&iacute;&zcaron;ek
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
 categories:
   - matrix
   - macro

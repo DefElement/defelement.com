@@ -15,7 +15,7 @@ mixed:
   - lagrange(k-1)
 notes:
   - This is the same as the [Taylor&ndash;Hood](element::taylor-hood) element, but the second subelement in this case is discontinuous between cells.
-min-order: 1
+min-degree: 1
 references:
   - author:
       - Scott, L. Ridgway

@@ -2,7 +2,12 @@ name: Radau
 html-name: Radau
 categories:
   - scalar
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 reference-elements:
   - interval
   - quadrilateral

@@ -24,6 +24,11 @@ reference-elements:
   - interval
   - quadrilateral
   - hexahedron
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: floor(k/d)
+lagrange-superdegree: k
+degree: 
 dofs:
   cell: point evaluations
 polynomial-set:

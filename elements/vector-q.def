@@ -24,6 +24,11 @@ dofs:
   edges: point evaluations in coordinate directions
   faces: point evaluations in coordinate directions
   volumes: point evaluations in coordinate directions
+polynomial-subdegree: k
+polynomial-superdegree: dk
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 polynomial-set:
   quadrilateral: qoly[k]^d
   hexahedron: qoly[k]^d

@@ -1,7 +1,12 @@
 name: Bernardi-Raugel
 html-name: Bernardi&ndash;Raugel
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k+d-1
+lagrange-subdegree: k
+lagrange-superdegree: k+d-1
+degree: polynomial-subdegree
 short-names:
   - BR
 ndofs:

@@ -6,7 +6,12 @@ complexes:
   de-rham:
   - S,0,tp
   - S-,0,tp,k-d
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k + d - 1
+lagrange-subdegree: max(1,floor(k/d))
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 reference-elements:

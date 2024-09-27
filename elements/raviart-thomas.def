@@ -1,6 +1,15 @@
 name: Raviart-Thomas
 html-name: Raviart&ndash;Thomas
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k-1
+polynomial-superdegree:
+  triangle: k
+  tetrahedron: k
+  quadrilateral: dk - d + 1
+  hexahedron: dk - d + 1
+lagrange-subdegree: k-1
+lagrange-superdegree: k
+degree: lagrange-superdegree
 alt-names:
   - Rao&ndash;Wilton&ndash;Glisson
   - N&eacute;d&eacute;lec (first kind) H(div)
@@ -85,10 +94,10 @@ implementations:
       hexahedron: NCF
   bempp:
     lagrange:
-      triangle: RWG orders=0
+      triangle: RWG degrees=0
   ndelement:
     lagrange:
-      triangle: RaviartThomas orders=1
+      triangle: RaviartThomas degrees=1
   fiat:
     legendre:
       triangle: RaviartThomas variant=integral

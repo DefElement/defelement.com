@@ -1,6 +1,11 @@
 name: Brezzi-Douglas-Duran-Fortin
 html-name: Brezzi&ndash;Douglas&ndash;Dur&aacute;n&ndash;Fortin
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k+1
+lagrange-subdegree: floor(k/3)
+lagrange-superdegree: k
+degree: lagrange-superdegree
 short-names:
   - BDDF
 categories:
@@ -20,7 +25,7 @@ mapping: contravariant Piola
 sobolev: H(div)
 implementations:
   symfem: BDDF
-min-order: 1
+min-degree: 1
 examples:
   - hexahedron,1
   - hexahedron,2

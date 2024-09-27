@@ -1,8 +1,8 @@
 name: transition
 html-name: transition
 notes:
-  - This element is used to bridge the gap between [Lagrange](element::lagrange) elements of different orders
-min-order: 1
+  - This element is used to bridge the gap between [Lagrange](element::lagrange) elements of different degrees
+min-degree: 1
 categories:
   - scalar
 reference-elements:

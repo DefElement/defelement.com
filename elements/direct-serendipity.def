@@ -1,6 +1,6 @@
 name: direct serendipity
 html-name: direct serendipity
-min-order: 1
+min-degree: 1
 categories:
   - scalar
 reference-elements:

@@ -1,6 +1,11 @@
 name: Regge
 html-name: Regge
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - matrix
 reference-elements:

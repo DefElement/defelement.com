@@ -10,7 +10,12 @@ ndofs:
     formula: 2(k+1)^2 + 3
   hexahedron:
     formula: 3(k+1)^3 + 7
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: dk+1
+lagrange-subdegree: k
+lagrange-superdegree: k+1
+degree: polynomial-subdegree
 categories:
   - vector
   - Hdiv
@@ -22,8 +27,8 @@ mapping: contravariant Piola
 dofs:
   facets: normal integral moments with (lagrange,k)
   cell:
-    - integral moments with "\(\nabla f\) for each \(f\) in an order \(k\) [Lagrange](element::lagrange) space"
-    - integral moments with "\(\nabla\times\boldsymbol{f}\) for each \(\boldsymbol{f}\) in an order \(k\) [vector Lagrange](element::vector-lagrange) space such that the tangential trace of \(\boldsymbol{f}\) on the facets of the cell is 0"
+    - integral moments with "\(\nabla f\) for each \(f\) in a degree \(k\) [Lagrange](element::lagrange) space"
+    - integral moments with "\(\nabla\times\boldsymbol{f}\) for each \(\boldsymbol{f}\) in a degree \(k\) [vector Lagrange](element::vector-lagrange) space such that the tangential trace of \(\boldsymbol{f}\) on the facets of the cell is 0"
 polynomial-set:
   quadrilateral: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\end{array}\right)\right\} @defmath@\tilde{B}_k@(\tilde{P}_k-\tilde{P}_{k-2})/(4k-2)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]
   hexahedron: qoly[k]^d && <k>[\left\{\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\tilde{P}_{k}(z)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\tilde{P}_{k}(z)\\\tilde{P}_{k}(x)\tilde{P}_{k}(y)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(y)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(y)\tilde{P}_{k}(0)\\\tilde{P}_{k}(x)\tilde{P}_{k}(y)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\tilde{P}_{k}(z)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\tilde{P}_{k}(z)\\\tilde{P}_{k}(x)\tilde{P}_{k}(0)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(x)\tilde{P}_{k}(0)\tilde{P}_{k}(0)\\\tilde{P}_k(x)\tilde{B}_{k+1}(0)\tilde{P}_{k}(0)\\\tilde{P}_{k}(x)\tilde{P}_{k}(0)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\tilde{P}_{k}(z)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\tilde{P}_{k}(z)\\\tilde{P}_{k}(0)\tilde{P}_{k}(y)\tilde{B}_{k+1}(z)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(y)\tilde{P}_{k}(0)\\\tilde{P}_k(0)\tilde{B}_{k+1}(y)\tilde{P}_{k}(0)\\\tilde{P}_{k}(0)\tilde{P}_{k}(y)\tilde{B}_{k+1}(0)\end{array}\right),\left(\begin{array}{c}\tilde{B}_{k+1}(0)\tilde{P}_{k}(0)\tilde{P}_{k}(z)\\\tilde{P}_k(0)\tilde{B}_{k+1}(0)\tilde{P}_{k}(z)\\\tilde{P}_{k}(0)\tilde{P}_{k}(0)\tilde{B}_{k+1}(z)\end{array}\right)\right\} @defmath@\tilde{B}_k@(\tilde{P}_k-\tilde{P}_{k-2})/(4k-2)@ @def@\tilde{P}_k@the degree \(k\) Legendre polynomial on \([0,1]\)@]

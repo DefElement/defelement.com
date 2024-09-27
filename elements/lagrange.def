@@ -89,7 +89,19 @@ entity-ndofs:
     pyramid:
       formula: (k-1)(k-2)(2k-3)/6
       oeis: A000330
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree:
+  interval: k
+  triangle: k
+  tetrahedron: k
+  quadrilateral: dk
+  hexahedron: dk
+  prism: 2k
+  pyramid: none
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 reference-elements:
@@ -168,7 +180,7 @@ implementations:
       interval: Lobatto
   bempp:
     equispaced:
-      triangle: P orders=1
+      triangle: P degrees=1
   fiat:
     equispaced:
       interval: Lagrange

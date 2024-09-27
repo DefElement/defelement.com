@@ -1,6 +1,11 @@
 name: conforming Crouzeix-Raviart
 html-name: conforming Crouzeix&ndash;Raviart
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k+1
+lagrange-subdegree: k
+lagrange-superdegree: k+1
+degree: polynomial-subdegree
 short-names:
   - conforming CR
 categories:

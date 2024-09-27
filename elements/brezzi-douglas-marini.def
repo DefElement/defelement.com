@@ -1,6 +1,11 @@
 name: Brezzi-Douglas-Marini
 html-name: Brezzi&ndash;Douglas&ndash;Marini
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 short-names:
   - BDM
 complexes:

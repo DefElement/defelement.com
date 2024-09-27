@@ -7,7 +7,7 @@ short-names:
   - CT
 complexes:
   de-rham: CH,0,simplex
-min-order: 3
+min-degree: 3
 dofs:
   vertices:
     - point evaluations

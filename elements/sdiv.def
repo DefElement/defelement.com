@@ -8,7 +8,12 @@ short-names:
   - AAf (hexahedron)
 complexes:
   de-rham: S,d-1,tp
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k+1
+lagrange-subdegree: floor(k/d)
+lagrange-superdegree: k+1
+degree: polynomial-subdegree
 categories:
   - vector
   - Hdiv

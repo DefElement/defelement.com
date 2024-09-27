@@ -1,5 +1,10 @@
 name: Bernstein
 html-name: Bernstein
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 alt-names:
   - Bernstein&ndash;B&eacute;zier
 ndofs:

@@ -1,7 +1,12 @@
 name: Bell
 html-name: Bell
-min-order: 5
-max-order: 5
+min-degree: 5
+max-degree: 5
+polynomial-subdegree: 4
+polynomial-superdegree: 5
+lagrange-subdegree: 4
+lagrange-superdegree: 5
+degree: lagrange-superdegree
 categories:
   - scalar
 ndofs:
@@ -21,7 +26,7 @@ sobolev: H3
 implementations:
   symfem: Bell
   ufl: Bell
-  fiat: Bell order=None
+  fiat: Bell degree=None
 examples:
   - triangle,5
 references:

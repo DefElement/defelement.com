@@ -8,7 +8,16 @@ short-names:
   - AAe (hexahedron)
 complexes:
   de-rham: S,1,tp
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k + d - 1
+lagrange-subdegree:
+  quadrilateral: floor(k/d)
+  hexahedron:
+    2: 1
+    _: floor(k/d)
+lagrange-superdegree: k+1
+degree: polynomial-subdegree
 categories:
   - vector
   - Hcurl

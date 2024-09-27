@@ -22,8 +22,8 @@ entity-ndofs:
       formula: 1
 sobolev: H1
 mapping: identity
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
 categories:
   - scalar
   - macro

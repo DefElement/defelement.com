@@ -1,7 +1,12 @@
 name: Morley
 html-name: Morley
-min-order: 2
-max-order: 2
+min-degree: 2
+max-degree: 2
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 ndofs:
@@ -19,7 +24,7 @@ sobolev: H1
 implementations:
   symfem: Morley
   ufl: Morley
-  fiat: Morley order=None
+  fiat: Morley degree=None
 examples:
   - triangle,2
 references:

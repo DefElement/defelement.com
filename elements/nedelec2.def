@@ -1,6 +1,11 @@
 name: Nedelec (second kind)
 html-name: N&eacute;d&eacute;lec (second kind)
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k 
+degree: lagrange-superdegree
 categories:
   - vector
   - Hcurl

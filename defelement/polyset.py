@@ -85,37 +85,37 @@ def make_poly_set(p: str) -> str:
         return " \\oplus ".join([make_poly_set(i.strip()) for i in p.split("&&")])
     p = p.strip()
     if re.match(r"^\<([^\]]+)\>\[(.+)\]$", p):
-        order = _get_match(r"^\<([^\]]+)\>\[(.+)\]$", p, 1)
+        degree = _get_match(r"^\<([^\]]+)\>\[(.+)\]$", p, 1)
         the_set = _get_match(r"^\<([^\]]+)\>\[(.+)\]$", p, 2)
         defs = {}
         the_set_out = re.sub(r"\@def\@([^\@]+)\@([^\@]+)\@", replace_def, the_set)
         the_set_out = re.sub(r"\@defmath\@([^\@]+)\@([^\@]+)\@", replace_defmath, the_set_out)
         if the_set not in named:
             named[the_set] = (make_name(len(named)), the_set_out, defs)
-        return f"{named[the_set][0]}_{{{order}}}"
+        return f"{named[the_set][0]}_{{{degree}}}"
     if re.match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p):
-        order = _get_match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p, 1)
+        degree = _get_match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p, 1)
         the_set = _get_match(r"^\<([^\]]+)\>\[(.+)\]\^d$", p, 2)
         defs = {}
         the_set_out = re.sub(r"\@def\@([^\@]+)\@([^\@]+)\@", replace_def, the_set)
         the_set_out = re.sub(r"\@defmath\@([^\@]+)\@([^\@]+)\@", replace_defmath, the_set_out)
         if the_set not in named:
             named[the_set] = (make_name(len(named)), the_set_out, defs)
-        return f"\\left({named[the_set][0]}_{{{order}}}\\right)^d"
+        return f"\\left({named[the_set][0]}_{{{degree}}}\\right)^d"
     for i, (j, k) in poly_sets.items():
         if re.match(rf"^{i}\[([^\]]+)\]$", p):
-            order = _get_match(rf"^{i}\[([^\]]+)\]$", p, 1)
-            return f"{j}_{{{order}}}"
+            degree = _get_match(rf"^{i}\[([^\]]+)\]$", p, 1)
+            return f"{j}_{{{degree}}}"
         if re.match(rf"^{i}\[([^\]]+)\]\^dd$", p):
-            order = _get_match(rf"^{i}\[([^\]]+)\]\^dd$", p, 1)
-            return f"{j}_{{{order}}}^{{d\\times d}}"
+            degree = _get_match(rf"^{i}\[([^\]]+)\]\^dd$", p, 1)
+            return f"{j}_{{{degree}}}^{{d\\times d}}"
         if re.match(rf"^{i}\[([^\]]+)\]\^d$", p):
-            order = _get_match(rf"^{i}\[([^\]]+)\]\^d$", p, 1)
-            return f"{j}_{{{order}}}^d"
+            degree = _get_match(rf"^{i}\[([^\]]+)\]\^d$", p, 1)
+            return f"{j}_{{{degree}}}^d"
         if re.match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p):
-            order = _get_match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p, 1)
+            degree = _get_match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p, 1)
             dim = _get_match(rf"^{i}\[([^\]]+)\]\(([^\)]+)\)$", p, 2)
-            return f"{j}_{{{order}}}^d(\\mathbb{{R}}^{{{dim}}})"
+            return f"{j}_{{{degree}}}^d(\\mathbb{{R}}^{{{dim}}})"
     raise ValueError(f"Unknown polynomial set: {p}")
 
 
