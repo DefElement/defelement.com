@@ -2,10 +2,10 @@ name: Bell
 html-name: Bell
 min-degree: 5
 max-degree: 5
-polynomial-subdegree: 4
-polynomial-superdegree: 5
-lagrange-subdegree: 4
-lagrange-superdegree: 5
+polynomial-subdegree: k-1
+polynomial-superdegree: k
+lagrange-subdegree: k-1
+lagrange-superdegree: k
 degree: lagrange-superdegree
 categories:
   - scalar

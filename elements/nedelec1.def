@@ -19,14 +19,14 @@ variants:
     variant-name: Lagrange
     description: Integral moments are taken against [Lagrange](element:lagrange) basis functions
 min-degree: 1
-polynomial-subdegree: k - 1
+polynomial-subdegree: k-1
 polynomial-superdegree:
   triangle: k
   tetrahedron: k
   prism: 2k
-  quadrilateral: dk - 1
-  hexahedron: dk - 1
-lagrange-subdegree: k - 1
+  quadrilateral: dk-1
+  hexahedron: dk-1
+lagrange-subdegree: k-1
 lagrange-superdegree: k
 degree: lagrange-superdegree
 categories:

@@ -174,6 +174,11 @@ class Element:
             return None
 
         def to_tex(txt):
+            if isinstance(txt, dict):
+                return ", ".join([
+                    to_tex(j) + " (" + ("otherwise" if i == "_" else f"degree={i}") + ")"
+                    for i, j in txt.items()
+                ])
             txt = str(txt)
             if txt == "none":
                 return "undefined"

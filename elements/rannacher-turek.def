@@ -2,10 +2,10 @@ name: Rannacher-Turek
 html-name: Rannacher&ndash;Turek
 min-degree: 1
 max-degree: 1
-polynomial-subdegree: 1
-polynomial-superdegree: 2
-lagrange-subdegree: 0
-lagrange-superdegree: 2
+polynomial-subdegree: k
+polynomial-superdegree: k+1
+lagrange-subdegree: k-1
+lagrange-superdegree: k+1
 degree: polynomial-subdegree
 categories:
   - scalar

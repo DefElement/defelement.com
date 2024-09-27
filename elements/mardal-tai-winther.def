@@ -3,9 +3,9 @@ html-name: Mardal&ndash;Tai&ndash;Winther
 min-degree: 3
 max-degree: 3
 polynomial-subdegree: 1
-polynomial-superdegree: k + d - 2
+polynomial-superdegree: k+d-2
 lagrange-subdegree: 1
-lagrange-superdegree: k + d - 2
+lagrange-superdegree: k+d-2
 short-names:
   - MTW
 ndofs:

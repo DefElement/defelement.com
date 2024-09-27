@@ -6,7 +6,7 @@ polynomial-subdegree: k
 polynomial-superdegree: 2k
 lagrange-subdegree: k
 lagrange-superdegree: k
-degree: 
+degree: lagrange-superdegree
 categories:
   - scalar
 ndofs:
