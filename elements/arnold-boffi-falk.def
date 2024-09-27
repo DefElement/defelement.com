@@ -2,7 +2,12 @@ name: Arnold-Boffi-Falk
 html-name: Arnold&ndash;Boffi&ndash;Falk
 short-names:
   - ABF
-min-order: 0
+min-degree: 0
+polynomial-subdegree: k
+polynomial-superdegree: 2k+2
+lagrange-subdegree: k
+lagrange-superdegree: k+2
+degree: polynomial-subdegree
 categories:
   - vector
   - Hdiv

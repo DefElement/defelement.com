@@ -1,9 +1,9 @@
 name: Guzman-Neilan
 html-name: Guzm&aacute;n&ndash;Neilan
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
 short-names:
-  - BR
+  - GN
 ndofs:
   triangle:
     formula: 11

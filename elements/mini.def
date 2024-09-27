@@ -10,8 +10,8 @@ reference-elements:
 mixed:
   - vector-bubble-enriched-lagrange(1)
   - lagrange(1)
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
 references:
   - author:
     - Arnold, Douglas N.

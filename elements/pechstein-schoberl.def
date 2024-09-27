@@ -13,7 +13,7 @@ mixed:
   - nedelec2(k)
   - lagrange(k+1)
   - hellan-hermann-johnson(k)
-min-order: 1
+min-degree: 1
 references:
   - author:
       - Pechstein, Astrid S.

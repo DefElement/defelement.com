@@ -40,23 +40,23 @@ class NDElementImplementation(Implementation):
         out = "\nfrom ndelement.reference_cell import ReferenceCellType"
         cont = False
         for e in element.examples:
-            ref, ord, variant, kwargs = parse_example(e)
+            ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            ord = int(ord)
+            deg = int(deg)
 
             try:
                 name, params = element.get_implementation_string("ndelement", ref, variant)
             except VariantNotImplemented:
                 continue
 
-            if name == "RaviartThomas" and ord > 1:
+            if name == "RaviartThomas" and deg > 1:
                 continue
 
             if name is not None:
                 out += "\n\n"
-                out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
+                out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
                 out += "family = create_family("
-                out += f"Family.{name}, {ord}"
+                out += f"Family.{name}, {deg}"
                 if "continuity" in params:
                     cont = True
                     assert params["continuity"] in ["Standard", "Discontinuous"]
@@ -85,9 +85,9 @@ class NDElementImplementation(Implementation):
         from ndelement.ciarlet import Continuity, Family, create_family
         from ndelement.reference_cell import ReferenceCellType, entity_counts
 
-        ref, ord, variant, kwargs = parse_example(example)
+        ref, deg, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
-        ord = int(ord)
+        deg = int(deg)
         try:
             name, params = element.get_implementation_string("ndelement", ref, variant)
         except VariantNotImplemented:
@@ -97,12 +97,12 @@ class NDElementImplementation(Implementation):
         kwargs = {}
         if "continuity" in params:
             kwargs["continuity"] = getattr(Continuity, params["continuity"])
-        if "orders" in params:
-            if ord not in [int(i) for i in params["orders"].split(",")]:
+        if "degrees" in params:
+            if deg not in [int(i) for i in params["degrees"].split(",")]:
                 raise NotImplementedError()
 
         cell = getattr(ReferenceCellType, ref[0].upper() + ref[1:])
-        e = create_family(getattr(Family, name), ord, **kwargs).element(cell)
+        e = create_family(getattr(Family, name), deg, **kwargs).element(cell)
         entity_dofs = [[e.entity_dofs(dim, entity) for entity in range(n)]
                        for dim, n in enumerate(entity_counts(cell)) if n > 0]
 

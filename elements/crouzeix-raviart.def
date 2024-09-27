@@ -1,7 +1,12 @@
 name: Crouzeix-Raviart
 html-name: Crouzeix&ndash;Raviart
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 alt-names:
   - non-conforming Crouzeix&ndash;Raviart
 short-names:

@@ -22,6 +22,11 @@ dofs:
 polynomial-set:
   triangle: poly[k]^d
   tetrahedron: poly[k]^d
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 implementations:
   symfem: vector Lagrange
   ufl: Lagrange type=VectorElement

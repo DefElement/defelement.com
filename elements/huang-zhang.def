@@ -1,6 +1,11 @@
 name: Huang-Zhang
 html-name: Huang&ndash;Zhang
-min-order: 2
+min-degree: 2
+polynomial-subdegree: k-1
+polynomial-superdegree: 2k-1
+lagrange-subdegree: k-1
+lagrange-superdegree: k
+degree: lagrange-superdegree
 alt-names:
   - \(Q_{k+1,k}\times Q_{k,k+1}\)
 short-names:

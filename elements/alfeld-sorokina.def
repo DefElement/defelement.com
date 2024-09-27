@@ -14,8 +14,8 @@ entity-ndofs:
     formula: 0
 sobolev: H1
 mapping: identity
-min-order: 2
-max-order: 2
+min-degree: 2
+max-degree: 2
 categories:
   - vector
   - Hdiv

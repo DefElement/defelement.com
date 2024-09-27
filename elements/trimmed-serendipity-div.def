@@ -3,7 +3,12 @@ html-name: trimmed serendipity H(div)
 complexes:
   de-rham:
   - S-,d-1,tp
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k-1
+polynomial-superdegree: k
+lagrange-subdegree: floor((k+1)/(d+1))
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - vector
   - Hdiv
@@ -14,7 +19,7 @@ dofs:
   facets: normal integral moments with (dpc,k-1)
   cell:
     - integral moments with (vector-dpc,k-3)
-    - integral moments with {\nabla(p)\middle|p\text{ is an order \(k-1\) monomial}}
+    - integral moments with {\nabla(p)\middle|p\text{ is an degree \(k-1\) monomial}}
 polynomial-set:
   quadrilateral: poly[k-1]^d && <k>[\operatorname{span}\left\{\boldsymbol{x}p\middle|p\in{{tpoly[k-1]}}\right\}] && <k>[\operatorname{span}\left\{\left(\begin{array}{c}kxy^{k-1}\\-y^k\end{array}\right),\left(\begin{array}{c}-x^k\\kx^{k-1}y\end{array}\right)\right\}]
   hexahedron: poly[k-1]^d && <k>[\operatorname{span}\left\{\boldsymbol{x}p\middle|p\in{{tpoly[k-1]}}\right\}] && <k>[\operatorname{span}\left\{\operatorname{curl}\left(\left(\begin{array}{c}0\\-z\\y\end{array}\right)xy^az^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}] && <k>[\operatorname{span}\left\{\operatorname{curl}\left(\left(\begin{array}{c}-z\\0\\x\end{array}\right)yx^az^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}] && <k>[\operatorname{span}\left\{\operatorname{curl}\left(\left(\begin{array}{c}-y\\x\\0\end{array}\right)zx^ay^{k-1-a}\right)\middle|a=0,1,...,a-1\right\}]

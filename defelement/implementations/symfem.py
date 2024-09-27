@@ -20,13 +20,13 @@ def symfem_create_element(element: Element, example: str) -> FiniteElement:
     """
     import symfem
 
-    ref, ord, variant, kwargs = parse_example(example)
-    ord = int(ord)
+    ref, deg, variant, kwargs = parse_example(example)
+    deg = int(deg)
     symfem_name, params = element.get_implementation_string("symfem", ref, variant)
     assert symfem_name is not None
     if ref == "dual polygon":
         ref += "(4)"
-    return symfem.create_element(ref, symfem_name, ord, **params)
+    return symfem.create_element(ref, symfem_name, deg, **params)
 
 
 class CachedSymfemTabulator:
@@ -95,22 +95,22 @@ class SymfemImplementation(Implementation):
         """
         out = "import symfem"
         for e in element.examples:
-            ref, ord, variant, kwargs = parse_example(e)
-            ord = int(ord)
+            ref, deg, variant, kwargs = parse_example(e)
+            deg = int(deg)
 
             symfem_name, params = element.get_implementation_string("symfem", ref, variant)
 
             if symfem_name is not None:
                 out += "\n\n"
-                out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
+                out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
                 if ref == "dual polygon":
                     out += f"element = symfem.create_element(\"{ref}(4)\","
                 else:
                     out += f"element = symfem.create_element(\"{ref}\","
                 if "variant" in params:
-                    out += f" \"{symfem_name}\", {ord}, variant=\"{params['variant']}\""
+                    out += f" \"{symfem_name}\", {deg}, variant=\"{params['variant']}\""
                 else:
-                    out += f" \"{symfem_name}\", {ord}"
+                    out += f" \"{symfem_name}\", {deg}"
                 for i, j in kwargs.items():
                     if isinstance(j, str):
                         out += f", {i}=\"{j}\""
@@ -134,13 +134,13 @@ class SymfemImplementation(Implementation):
         """
         import symfem
 
-        ref, ord, variant, kwargs = parse_example(example)
-        ord = int(ord)
+        ref, deg, variant, kwargs = parse_example(example)
+        deg = int(deg)
         symfem_name, params = element.get_implementation_string("symfem", ref, variant)
         assert symfem_name is not None
         if ref == "dual polygon":
             ref += "(4)"
-        e = symfem.create_element(ref, symfem_name, ord, **params)
+        e = symfem.create_element(ref, symfem_name, deg, **params)
         edofs = [[e.entity_dofs(i, j) for j in range(e.reference.sub_entity_count(i))]
                  for i in range(e.reference.tdim + 1)]
         t = CachedSymfemTabulator(e)

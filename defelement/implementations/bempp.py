@@ -36,9 +36,9 @@ class BemppImplementation(Implementation):
         out += "\n"
         out += "grid = bempp.api.shapes.regular_sphere(1)"
         for e in element.examples:
-            ref, ord, variant, kwargs = parse_example(e)
+            ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            ord = int(ord)
+            deg = int(deg)
 
             try:
                 bempp_name, params = element.get_implementation_string("bempp", ref, variant)
@@ -47,13 +47,13 @@ class BemppImplementation(Implementation):
 
             if bempp_name is None:
                 continue
-            orders = [int(i) for i in params["orders"].split(",")]
+            degrees = [int(i) for i in params["degrees"].split(",")]
 
-            if ord in orders:
+            if deg in degrees:
                 out += "\n\n"
-                out += f"# Create {element.name} order {ord}\n"
+                out += f"# Create {element.name} degree {deg}\n"
                 out += "element = bempp.api.function_space(grid, "
-                out += f"\"{bempp_name}\", {ord})"
+                out += f"\"{bempp_name}\", {deg})"
         return out
 
     id = "bempp"

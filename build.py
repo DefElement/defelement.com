@@ -192,8 +192,27 @@ for e in categoriser.elements:
     if len(variants) > 0:
         element_data.append(("Variants", "<br />".join([insert_links(v) for v in variants])))
 
-    # Orders
-    element_data.append(("Orders", e.order_range()))
+    degree_names = {
+        "polynomial-subdegree": "Polynomial subdegree",
+        "polynomial-superdegree": "Polynomial superdegree",
+        "lagrange-subdegree": "Lagrange subdegree",
+        "lagrange-superdegree": "Lagrange superdegree",
+    }
+    # Degrees
+    if e.degree_convention() is None:
+        element_data.append(("Degrees", e.degree_range()))
+    else:
+        element_data.append((
+            "Degrees",
+            f"{e.degree_range()}<br />where \\(k\\) is the {degree_names[e.degree_convention()]}"))
+    if e.polynomial_subdegree() is not None:
+        element_data.append(("Polynomial subdegree", e.polynomial_subdegree()))
+    if e.polynomial_superdegree() is not None:
+        element_data.append(("Polynomial superdegree", e.polynomial_superdegree()))
+    if e.lagrange_subdegree() is not None:
+        element_data.append(("Lagrange subdegree", e.lagrange_subdegree()))
+    if e.lagrange_superdegree() is not None:
+        element_data.append(("Lagrange superdegree", e.lagrange_superdegree()))
 
     # Reference elements
     refs = e.reference_elements()
@@ -451,24 +470,24 @@ for e in categoriser.elements:
             assert e.implemented("symfem")
 
             for eg in e.examples:
-                cell, order, variant, kwargs = parse_example(eg)
+                cell, degree, variant, kwargs = parse_example(eg)
                 symfem_name, params = e.get_implementation_string("symfem", cell, variant)
 
                 fname = f"{cell}-{e.filename}"
                 if variant is not None:
                     fname += f"-{variant}"
-                fname += f"-{order}.html"
+                fname += f"-{degree}.html"
                 for s in " ()":
                     fname = fname.replace(s, "-")
 
-                name = f"{cell}<br />order {order}"
+                name = f"{cell}<br />degree {degree}"
                 if variant is not None:
                     name += f"<br />{e.variant_name(variant)} variant"
                 for key, value in kwargs.items():
                     name += f"<br />{key}={str(value).replace(' ', '&nbsp;')}"
 
                 eginfo = {
-                    "name": name, "args": [cell, symfem_name, order], "kwargs": kwargs,
+                    "name": name, "args": [cell, symfem_name, degree], "kwargs": kwargs,
                     "html_name": e.html_name, "element_filename": e.html_filename,
                     "filename": fname, "url": f"/elements/examples/{fname}"}
                 if "variant" in params:

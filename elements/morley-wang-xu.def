@@ -1,12 +1,17 @@
 name: Morley-Wang-Xu
 html-name: Morley&ndash;Wang&ndash;Xu
 notes:
-  - A Morley-Wang-Xu element of order \(k\) and reference element dimension \(m\) only includes degrees of freedom on subentities of dimensions \((k - i), 1 \leqslant k \leqslant m \).
-min-order: 1
-max-order:
+  - A Morley-Wang-Xu element of degree \(k\) and reference element dimension \(d\) only includes degrees of freedom on subentities of dimensions \((k - i), 1 \leqslant i \leqslant d \).
+min-degree: 1
+max-degree:
   interval: 1
   triangle: 2
   tetrahedron: 3
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 ndofs:

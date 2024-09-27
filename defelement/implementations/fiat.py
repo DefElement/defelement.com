@@ -44,9 +44,9 @@ class FIATImplementation(Implementation):
         """
         out = "import FIAT"
         for e in element.examples:
-            ref, ord, variant, kwargs = parse_example(e)
+            ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            ord = int(ord)
+            deg = int(deg)
 
             try:
                 fiat_name, params = element.get_implementation_string("fiat", ref, variant)
@@ -56,11 +56,11 @@ class FIATImplementation(Implementation):
             if fiat_name is None:
                 continue
 
-            if "order" in params and params["order"] != "None" and ord != int(params["order"]):
+            if "degree" in params and params["degree"] != "None" and deg != int(params["degree"]):
                 continue
 
             out += "\n\n"
-            out += f"# Create {element.name_with_variant(variant)} order {ord}\n"
+            out += f"# Create {element.name_with_variant(variant)} degree {deg}\n"
             if ref in ["interval", "triangle", "tetrahedron"]:
                 cell = f"FIAT.ufc_cell(\"{ref}\")"
             elif ref == "quadrilateral":
@@ -70,10 +70,10 @@ class FIATImplementation(Implementation):
             else:
                 raise ValueError(f"Unsupported cell: {ref}")
             out += f"element = FIAT.{fiat_name}({cell}"
-            if "order" not in params or params["order"] != "None":
-                out += f", {ord}"
+            if "degree" not in params or params["degree"] != "None":
+                out += f", {deg}"
             for i, j in params.items():
-                if i != "order":
+                if i != "degree":
                     out += f", {i}=\"{j}\""
             out += ")"
         return out
@@ -93,9 +93,9 @@ class FIATImplementation(Implementation):
         """
         import FIAT
 
-        ref, ord, variant, kwargs = parse_example(example)
+        ref, deg, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
-        ord = int(ord)
+        deg = int(deg)
         try:
             fiat_name, params = element.get_implementation_string("fiat", ref, variant)
         except VariantNotImplemented:
@@ -112,16 +112,16 @@ class FIATImplementation(Implementation):
             raise ValueError(f"Unsupported cell: {ref}")
 
         args = []
-        if "order" in params:
-            if params["order"] != "None":
-                if ord != int(params['order']):
+        if "degree" in params:
+            if params["degree"] != "None":
+                if deg != int(params['degree']):
                     raise NotImplementedError
-                args.append(ord)
+                args.append(deg)
         else:
-            args.append(ord)
+            args.append(deg)
 
         e = getattr(FIAT, fiat_name)(
-            cell, *args, **{i: j for i, j in params.items() if i != "order"})
+            cell, *args, **{i: j for i, j in params.items() if i != "degree"})
 
         value_size = 1
         for i in e.value_shape():

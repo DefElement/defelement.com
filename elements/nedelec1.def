@@ -18,7 +18,17 @@ variants:
   lagrange:
     variant-name: Lagrange
     description: Integral moments are taken against [Lagrange](element:lagrange) basis functions
-min-order: 1
+min-degree: 1
+polynomial-subdegree: k-1
+polynomial-superdegree:
+  triangle: k
+  tetrahedron: k
+  prism: 2k
+  quadrilateral: dk-1
+  hexahedron: dk-1
+lagrange-subdegree: k-1
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - vector
   - Hcurl
@@ -108,7 +118,7 @@ implementations:
       hexahedron: NCE
   bempp:
     lagrange:
-      triangle: SNC orders=0
+      triangle: SNC degrees=0
   fiat:
     legendre:
       triangle: Nedelec variant=integral

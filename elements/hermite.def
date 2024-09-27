@@ -1,7 +1,12 @@
 name: Hermite
 html-name: Hermite
-min-order: 3
-max-order: 3
+min-degree: 3
+max-degree: 3
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 ndofs:

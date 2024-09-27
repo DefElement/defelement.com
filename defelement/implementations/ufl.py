@@ -34,9 +34,9 @@ class UFLImplementation(Implementation):
         """
         out = "import ufl_legacy"
         for e in element.examples:
-            ref, ord, variant, kwargs = parse_example(e)
+            ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            ord = int(ord)
+            deg = int(deg)
 
             try:
                 ufl_name, params = element.get_implementation_string("ufl", ref, variant)
@@ -45,12 +45,12 @@ class UFLImplementation(Implementation):
 
             if ufl_name is not None:
                 out += "\n\n"
-                out += f"# Create {element.name_with_variant(variant)} order {ord} on a {ref}\n"
+                out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
                 if "type" in params:
                     out += f"element = ufl_legacy.{params['type']}("
                 else:
                     out += "element = ufl_legacy.FiniteElement("
-                out += f"\"{ufl_name}\", \"{ref}\", {ord})"
+                out += f"\"{ufl_name}\", \"{ref}\", {deg})"
         return out
 
     id = "ufl"

@@ -21,5 +21,10 @@ implementations:
 examples:
   - triangle,1
   - triangle,2
-min-order: 1
-max-order: 2
+min-degree: 1
+max-degree: 2
+polynomial-subdegree: k
+polynomial-superdegree: k+2
+lagrange-subdegree: k
+lagrange-superdegree: k+2
+degree: polynomial-subdegree

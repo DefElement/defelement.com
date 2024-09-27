@@ -1,7 +1,12 @@
 name: Bogner-Fox-Schmitt
 html-name: Bogner&ndash;Fox&ndash;Schmitt
-min-order: 3
-max-order: 3
+min-degree: 3
+max-degree: 3
+polynomial-subdegree: k
+polynomial-superdegree: 2k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - scalar
 ndofs:

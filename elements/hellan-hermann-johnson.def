@@ -1,6 +1,11 @@
 name: Hellan-Herrmann-Johnson
 html-name: Hellan&ndash;Herrmann&ndash;Johnson
-min-order: 0
+min-degree: 0
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 categories:
   - matrix
 reference-elements:

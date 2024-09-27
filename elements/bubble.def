@@ -1,9 +1,19 @@
 name: bubble
 html-name: bubble
-min-order:
+min-degree:
   interval: 2
   triangle: 3
   tetrahedron: 4
+polynomial-subdegree: -1
+polynomial-superdegree: 
+  interval: k
+  triangle: k
+  tetrahedron: k
+  quadrilateral: dk
+  hexahedron: dk
+lagrange-subdegree: -1
+lagrange-superdegree: k
+degree: lagrange-superdegree
 ndofs:
   interval:
     formula: k-1

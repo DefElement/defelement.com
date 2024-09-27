@@ -1,7 +1,12 @@
 name: Fortin-Soulie
 html-name: Fortin&ndash;Soulie
-min-order: 2
-max-order: 2
+min-degree: 2
+max-degree: 2
+polynomial-subdegree: k
+polynomial-superdegree: k
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 short-names:
   - FS
 categories:

@@ -1,7 +1,12 @@
 name: Rannacher-Turek
 html-name: Rannacher&ndash;Turek
-min-order: 1
-max-order: 1
+min-degree: 1
+max-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: k+1
+lagrange-subdegree: k-1
+lagrange-superdegree: k+1
+degree: polynomial-subdegree
 categories:
   - scalar
 ndofs:

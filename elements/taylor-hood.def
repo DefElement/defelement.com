@@ -17,4 +17,4 @@ mixed:
   - lagrange(k-1)
 notes:
   - This is the same as the [Scott&ndash;Vogelius](element::scott-vogelius) element, but the second subelement in this case is continuous between cells.
-min-order: 2
+min-degree: 2

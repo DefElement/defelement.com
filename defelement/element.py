@@ -124,35 +124,108 @@ class Element:
             for v in self.data["variants"].values()
         ]
 
-    def min_order(self, ref: str) -> int:
-        """Get the minimum order.
+    def min_degree(self, ref: str) -> int:
+        """Get the minimum degree.
 
         Args:
             ref: Reference cell
 
         Returns:
-            The minimum order
+            The minimum degree
         """
-        if "min-order" not in self.data:
+        if "min-degree" not in self.data:
             return 0
-        if isinstance(self.data["min-order"], dict):
-            return self.data["min-order"][ref]
-        return self.data["min-order"]
+        if isinstance(self.data["min-degree"], dict):
+            return self.data["min-degree"][ref]
+        return self.data["min-degree"]
 
-    def max_order(self, ref: str) -> typing.Optional[int]:
-        """Get the maximum order.
+    def max_degree(self, ref: str) -> typing.Optional[int]:
+        """Get the maximum degree.
 
         Args:
             ref: Reference cell
 
         Returns:
-            The maximum order
+            The maximum degree
         """
-        if "max-order" not in self.data:
+        if "max-degree" not in self.data:
             return None
-        if isinstance(self.data["max-order"], dict):
-            return self.data["max-order"][ref]
-        return self.data["max-order"]
+        if isinstance(self.data["max-degree"], dict):
+            return self.data["max-degree"][ref]
+        return self.data["max-degree"]
+
+    def degree_convention(self) -> typing.Optional[str]:
+        """Get the degree convention.
+
+        Returns:
+            The degree convention
+        """
+        if "degree" not in self.data:
+            return None
+        return self.data["degree"]
+
+    def _edegree(self, dtype: str) -> typing.Optional[str]:
+        """Get an embedded degree.
+
+        Returns:
+            Information about the embedded degree
+        """
+        if dtype not in self.data:
+            return None
+
+        def to_tex(txt):
+            if isinstance(txt, dict):
+                return ", ".join([
+                    to_tex(j) + " (" + ("otherwise" if i == "_" else f"degree={i}") + ")"
+                    for i, j in txt.items()
+                ])
+            txt = str(txt)
+            if txt == "none":
+                return "undefined"
+            txt = txt.replace("floor", "\\operatorname{floor}")
+            txt = txt.replace("min", "\\min")
+            txt = txt.replace("max", "\\max")
+            return f"\\({txt}\\)"
+
+        d = self.data[dtype]
+        if isinstance(d, dict):
+            return "<br />".join([
+                f"{cell}: {to_tex(deg)}"
+                for cell, deg in d.items()
+            ])
+        return to_tex(d)
+
+    def polynomial_subdegree(self) -> typing.Optional[str]:
+        """Get the polynomial subdegree.
+
+        Returns:
+            The degree convention
+        """
+        return self._edegree("polynomial-subdegree")
+
+    def polynomial_superdegree(self) -> typing.Optional[str]:
+        """Get the polynomial superdegree.
+
+        Returns:
+            The degree convention
+        """
+        return self._edegree("polynomial-superdegree")
+
+    def lagrange_subdegree(self) -> typing.Optional[str]:
+        """Get the Lagrange subdegree.
+
+        Returns:
+            The degree convention
+        """
+        return self._edegree("lagrange-subdegree")
+
+    def lagrange_superdegree(self) -> typing.Optional[str]:
+        """Get the polynomial superdegree.
+
+        Returns:
+            The degree convention
+        """
+        return self._edegree("lagrange-superdegree")
 
     def reference_elements(self, link: bool = True) -> typing.List[str]:
         """Get reference cells.
@@ -296,47 +369,47 @@ class Element:
                     out[key].append(e)
         return out
 
-    def order_range(self) -> str:
-        """Format the range of allowed orders.
+    def degree_range(self) -> str:
+        """Format the range of allowed degrees.
 
         Returns:
             The formatted range
         """
-        def make_order_data(
+        def make_degree_data(
             min_o: typing.Union[typing.Dict[str, int], int, None],
             max_o: typing.Union[typing.Dict[str, int], int, None]
         ) -> str:
-            """Make order data.
+            """Make degree data.
 
             Args:
-                min_o: The minimum order
-                max_o: The maximum order
+                min_o: The minimum degree
+                max_o: The maximum degree
 
             Returns:
-                The formatted order
+                The formatted degree
             """
             if isinstance(min_o, dict):
-                orders = []
+                degrees = []
                 for i, min_i in min_o.items():
                     if isinstance(max_o, dict) and i in max_o:
-                        orders.append(i + ": " + make_order_data(min_i, max_o[i]))
+                        degrees.append(i + ": " + make_degree_data(min_i, max_o[i]))
                     else:
-                        orders.append(i + ": " + make_order_data(min_i, max_o))
-                return "<br />\n".join(orders)
+                        degrees.append(i + ": " + make_degree_data(min_i, max_o))
+                return "<br />\n".join(degrees)
             if isinstance(max_o, dict):
-                orders = []
+                degrees = []
                 for i, max_i in max_o.items():
-                    orders.append(i + ": " + make_order_data(min_o, max_i))
-                return "<br />\n".join(orders)
+                    degrees.append(i + ": " + make_degree_data(min_o, max_i))
+                return "<br />\n".join(degrees)
             if max_o is None:
                 return f"\\({min_o}\\leqslant k\\)"
             if max_o == min_o:
                 return f"\\(k={min_o}\\)"
             return f"\\({min_o}\\leqslant k\\leqslant {max_o}\\)"
 
-        return make_order_data(
-            self.data["min-order"] if "min-order" in self.data else 0,
-            self.data["max-order"] if "max-order" in self.data else None)
+        return make_degree_data(
+            self.data["min-degree"] if "min-degree" in self.data else 0,
+            self.data["max-degree"] if "max-degree" in self.data else None)
 
     def sub_elements(self, link: bool = True) -> typing.List[str]:
         """Get sub elements of a mixed element.
@@ -352,10 +425,10 @@ class Element:
 
         out = []
         for e in self.data["mixed"]:
-            element, order = e.split("(")
-            order = order.split(")")[0]
+            element, degree = e.split("(")
+            degree = degree.split(")")[0]
             space_link = self._c.get_space_name(element, link=link)
-            out.append(f"<li>order \\({order}\\) {space_link} space</li>")
+            out.append(f"<li>degree \\({degree}\\) {space_link} space</li>")
         return out
 
     def make_dof_descriptions(self) -> str:
@@ -393,11 +466,11 @@ class Element:
 
                 assert space_info.startswith("(") and space_info.endswith(")")
                 space_info = space_info[1:-1]
-                space, order = space_info.split(",")
+                space, degree = space_info.split(",")
                 space = space.strip()
-                order = order.strip()
+                degree = degree.strip()
                 space_link = self._c.get_space_name(space)
-                return f"{mom_type} with an order \\({order}\\) {space_link} space"
+                return f"{mom_type} with an degree \\({degree}\\) {space_link} space"
             return dofs
 
         def make_dof_d(data: typing.Dict[str, typing.Any], post: str = "") -> str:

@@ -149,8 +149,8 @@ def parse_example(
         kwargs = {}
     s = e.split(",")
     if len(s) == 3:
-        ref, order, variant = s
+        ref, degree, variant = s
     else:
-        ref, order = e.split(",")
+        ref, degree = e.split(",")
         variant = None
-    return ref, int(order), variant, kwargs
+    return ref, int(degree), variant, kwargs

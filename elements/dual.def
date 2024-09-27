@@ -7,15 +7,15 @@ ndofs:
     formula:
     - k=0: 1
     - k=1: n
-min-order: 0
-max-order: 1
+min-degree: 0
+max-degree: 1
 categories:
   - scalar
 reference-elements:
   - dual polygon
 implementations:
   symfem: dual
-  bempp: DUAL orders=0,1
+  bempp: DUAL degrees=0,1
 mapping: identity
 sobolev:
   n=0: L2

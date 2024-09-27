@@ -2,7 +2,12 @@ name: Gauss-Legendre
 html-name: Gauss&ndash;Legendre
 categories:
   - scalar
-min-order: 0
+min-degree: 0
+polynomial-subdegree: k
+polynomial-superdegree: dk
+lagrange-subdegree: k
+lagrange-superdegree: k
+degree: lagrange-superdegree
 reference-elements:
   - interval
   - quadrilateral
