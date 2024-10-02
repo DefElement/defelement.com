@@ -1151,7 +1151,7 @@ for fname, data in categoriser.families["de-rham"].items():
         sub_content += "</ul>"
 
     write_html_page(os.path.join(settings.htmlfamilies_path, f"{fname}.html"),
-                    "The " + " or ".join(names) + " family", sub_content)
+                    "The " + " or ".join(cnames) + " family", sub_content)
 
 content = heading_with_self_ref("h1", "Complex families")
 content += "<p>You can find some information about how these familes are defined "
