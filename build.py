@@ -544,11 +544,10 @@ for i in verifications:
                 good += len(ver[i]["pass"])
                 total += len(ver[i]["pass"]) + len(ver[i]["fail"])
         proportion = f"{good} / {total}"
-        p = 0 if total == 0 else good / total
-        if p < 0.4:
-            col = "#FF0000"
-        elif p > 0.9:
+        if good == total:
             col = symfem.plotting.Colors.GREEN
+        elif good < total / 2:
+            col = "#FF0000"
         else:
             col = symfem.plotting.Colors.ORANGE
         twidth = 50 + 70 * (len(proportion) - 2)
