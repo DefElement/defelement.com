@@ -813,7 +813,7 @@ content += "    if(document.getElementById('check-cat-all').checked){\n"
 content += "        if("
 content += " || ".join([f"document.getElementById('check-cat-{c}').checked"
                         for c in categoriser.categories])
-content += "){"
+content += "){\n"
 content += "            document.getElementById('check-cat-all').checked = false\n"
 content += "        }\n"
 content += "    }\n"
@@ -824,7 +824,7 @@ content += "    if(document.getElementById('check-ref-all').checked){\n"
 content += "        if("
 content += " || ".join([f"document.getElementById('check-ref-{r}').checked"
                         for r in categoriser.references])
-content += "){"
+content += "){\n"
 content += "            document.getElementById('check-ref-all').checked = false\n"
 content += "        }\n"
 content += "    }\n"
@@ -851,7 +851,20 @@ for c in categoriser.categories:
     content += f"            if(document.getElementById('check-cat-{c}').checked"
     content += f" && els[i].id.indexOf('cat-{c}') != -1){{cat_show = true}}\n"
 content += "        }\n"
-content += "        if(cat_show && ref_show){\n"
+content += "        var name_show = true\n"
+content += "        if(!document.getElementById('show-main-names').checked"
+content += " && els[i].id.indexOf('name-main') != -1){\n"
+content += "            name_show = false\n"
+content += "        }\n"
+content += "        if(!document.getElementById('show-alt-names').checked"
+content += " && els[i].id.indexOf('name-alt') != -1){\n"
+content += "            name_show = false\n"
+content += "        }\n"
+content += "        if(!document.getElementById('show-abrv-names').checked"
+content += " && els[i].id.indexOf('name-abrv') != -1){\n"
+content += "            name_show = false\n"
+content += "        }\n"
+content += "        if(cat_show && ref_show && name_show){\n"
 content += "            els[i].style.display='block'\n"
 content += "        } else {\n"
 content += "            els[i].style.display='none'\n"
@@ -874,6 +887,15 @@ content += ">&darr; Show filters &darr;</a>\n"
 content += "<a href='javascript:hide_filtering()' id='hide-flink' style='display:none'"
 content += ">&uarr; Hide filters &uarr;</a>\n"
 content += "<table id='the-filters' class='filters' style='display:none'>"
+content += (
+    "<tr><td>Alternative&nbsp;names</td><td>"
+    "<label><input type='checkbox' id='show-main-names' checked onchange='do_filter()'>"
+    "&nbsp;Show main names</label> "
+    "<label><input type='checkbox' id='show-alt-names' onchange='do_filter()'>"
+    "&nbsp;Show alternative names</label> "
+    "<label><input type='checkbox' id='show-abrv-names' onchange='do_filter()'>"
+    "&nbsp;Show abbreviated names</label> "
+    "</td></tr>")
 content += "<tr><td>Reference&nbsp;elements</td><td>"
 content += "<label><input type='checkbox' checked id='check-ref-all' onchange='do_filter_refall()'"
 content += ">&nbsp;show all</label> "
@@ -894,12 +916,20 @@ elementlist = []
 for e in categoriser.elements:
     id = " ".join([f"ref-{r}" for r in e.reference_elements(False)]
                   + [f"cat-{c}" for c in e.categories(False, False)])
-    for name in [e.html_name] + e.alternative_names(False, False, False, True):
+    elementlist.append((e.html_name.lower(),
+                        f"<li class='element-on-list' id='{id} name-main'>"
+                        f"<a href='/elements/{e.html_filename}'>{e.html_name}</a></li>"))
+    for name in e.alternative_names(False, False, False, True):
         elementlist.append((name.lower(),
-                            f"<li class='element-on-list' id='{id}'>"
+                            f"<li class='element-on-list' id='{id} name-alt'>"
+                            f"<a href='/elements/{e.html_filename}'>{name}</a></li>"))
+    for name in e.short_names(False):
+        elementlist.append((name.lower(),
+                            f"<li class='element-on-list' id='{id} name-abrv'>"
                             f"<a href='/elements/{e.html_filename}'>{name}</a></li>"))
 elementlist.sort(key=lambda x: x[0])
 content += "<ul>" + "\n".join([i[1] for i in elementlist]) + "</ul>"
+content += "<script type='text/javascript'>do_filter()</script>"
 
 write_html_page(os.path.join(settings.htmlelement_path, "index.html"),
                 "Index of elements", content)
@@ -944,7 +974,7 @@ content = heading_with_self_ref("h1", "Categories")
 for c in categoriser.categories:
     category_pages = []
     for e in categoriser.elements_in_category(c):
-        for name in [e.html_name] + e.alternative_names(False, False, False, True):
+        for name in [e.html_name]:
             category_pages.append((name.lower(),
                                    f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
 
@@ -979,9 +1009,6 @@ for c, info in implementations.items():
                 if "(" not in i_str or f"({cname})" in i_str:
                     refs.add(cname)
                     break
-        for r in refs:
-            for name in e.alternative_names(False, False, False, True, r):
-                names.add(name)
         for name in names:
             category_pages.append((name.lower(),
                                    f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
@@ -1009,7 +1036,7 @@ content = heading_with_self_ref("h1", "Reference elements")
 for c in categoriser.references:
     refels = []
     for e in categoriser.elements_by_reference(c):
-        for name in [e.html_name] + e.alternative_names(False, False, False, True, c):
+        for name in [e.html_name]:
             refels.append((name.lower(),
                            f"<li><a href='/elements/{e.html_filename}'>{name}</a></li>"))
 
@@ -1124,7 +1151,7 @@ for fname, data in categoriser.families["de-rham"].items():
         sub_content += "</ul>"
 
     write_html_page(os.path.join(settings.htmlfamilies_path, f"{fname}.html"),
-                    "The " + " or ".join(names) + " family", sub_content)
+                    "The " + " or ".join(cnames) + " family", sub_content)
 
 content = heading_with_self_ref("h1", "Complex families")
 content += "<p>You can find some information about how these familes are defined "
