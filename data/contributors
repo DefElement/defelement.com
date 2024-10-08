@@ -5,7 +5,7 @@
   github: mscroggs
   website: https://mscroggs.co.uk
   email: defelement@mscroggs.co.uk
-  desc: "Matthew is a Postdoctoral Research Fellow at the University College London who works on finite and boundary element methods. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the open-source boundary element software [Bempp](https://github.com/bempp)."
+  desc: "Matthew is a Research Software Engineer at the University College London who works on finite and boundary element methods. He is a developer of the open-source finite element software [FEniCSx](https://github.com/FEniCS) and the open-source boundary element software [Bempp](https://github.com/bempp)."
 
 - name: Dokken, Jørgen S.
   img: dokken.jpg
