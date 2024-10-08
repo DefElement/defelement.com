@@ -98,7 +98,7 @@ arnold_logg_reference = {
     "year": "2014",
     "volume": "47",
     "number": "9",
-    "url": "https://sinews.siam.org/Details-Page/periodic-table-of-the-finite-elements"
+    "url": "https://www.siam.org/publications/siam-news/issues/volume-47-number-09-november-2014/"
 }
 
 cockburn_fu_reference = {

@@ -152,6 +152,22 @@ class FIATImplementation(Implementation):
                 edofs[1][i] = []
             return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
                 points.shape[0], value_size, -1)[:, :, :18]
+        if element.name == "Mardal-Tai-Winther" and example.startswith("triangle"):
+            for i in range(3):
+                edofs[1][i] = edofs[1][i][:3]
+            edofs[2][0] = []
+            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                points.shape[0], value_size, -1)[:, :, :9]
+        if element.name == "reduced Hsieh-Clough-Tocher" and example.startswith("triangle"):
+            for i in range(3):
+                edofs[1][i] = []
+            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                points.shape[0], value_size, -1)[:, :, :9]
+        if element.name == "nonconforming Arnold-Winther" and example.startswith("triangle"):
+            for i in range(3):
+                edofs[1][i] = edofs[1][i][:4]
+            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                points.shape[0], value_size, -1)[:, :, :15]
 
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
