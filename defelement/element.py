@@ -520,10 +520,14 @@ class Element:
         if "polynomial-set" not in self.data:
             return ""
         psets: typing.Dict[str, typing.List[str]] = {}
-        for i, j in self.data["polynomial-set"].items():
-            if j not in psets:
-                psets[j] = []
-            psets[j].append(i)
+        if isinstance(self.data["polynomial-set"], dict):
+            for i, j in self.data["polynomial-set"].items():
+                if j not in psets:
+                    psets[j] = []
+                psets[j].append(i)
+        else:
+            assert isinstance(self.data["polynomial-set"], str)
+            psets[self.data["polynomial-set"]] = self.data["reference-elements"]
         if (
             "reference-elements" in self.data and len(psets) == 1
             and len(list(psets.values())[0]) == len(self.data["reference-elements"])

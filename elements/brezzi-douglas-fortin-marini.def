@@ -22,23 +22,27 @@ reference-elements:
   - hexahedron
 ndofs:
   triangle:
-    formula: k(k+2)
+    formula: k^2+3k-1
   quadrilateral:
     formula: k(k+3)
     oeis: A028552
   tetrahedron:
-    formula: k(k+1)(k+3)/2
+    formula: (k+1)(k^2+5k-2)/2
   hexahedron:
     formula: k(k+1)(k+5)/2
 min-degree: 1
-polynomial-set:
-  triangle: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
-  quadrilateral: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
-  tetrahedron: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
-  hexahedron: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
+polynomial-set: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}^3\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
 dofs:
-  facets: normal integral moments with (lagrange,k-1)
-  cell: integral moments with (vector-lagrange,k-2)
+  facets:
+    triangle: normal integral moments with (lagrange,k-1)
+    tetrahedron: normal integral moments with (lagrange,k-1)
+    quadrilateral: normal integral moments with (dpc,k-1)
+    hexahedron: normal integral moments with (dpc,k-1)
+  cell:
+    triangle: integral moments with (nedelec1,k-1)
+    tetrahedron: integral moments with (nedelec1,k-1)
+    quadrilateral: integral moments with (vector-dpc,k-2)
+    hexahedron: integral moments with (vector-dpc,k-2)
 mapping: contravariant Piola
 sobolev: H(div)
 implementations:
