@@ -73,3 +73,18 @@ references:
     number: 4
     pagestart: 581
     pageend: 604
+  - type: incollection
+    author:
+      - Brezzi, Franco
+      - Fortin, Michel
+    title: Function spaces and finite element approximations
+    booktitle: Mixed and hybrid finite element methods
+    editor:
+      - Brezzi, Franco
+      - Fortin, Michel
+    year: 1991
+    pagestart: 89
+    pageend: 132
+    series: Springer Series in Computational Mathematics
+    volume: 15
+    doi: 10.1007/978-1-4612-3172-1_3
