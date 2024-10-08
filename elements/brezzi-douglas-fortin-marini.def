@@ -31,7 +31,7 @@ ndofs:
   hexahedron:
     formula: k(k+1)(k+5)/2
 min-degree: 1
-polynomial-set: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}^3\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
+polynomial-set: <k>[\left\{\boldsymbol{p}\in{{poly[k]}}^d\middle|\boldsymbol{p}\cdot\boldsymbol{n}\in{{poly[k-1]}}\text{ on each facet}\right\}]
 dofs:
   facets:
     triangle: normal integral moments with (lagrange,k-1)
