@@ -77,6 +77,39 @@ def entity_points(ref: str) -> typing.List[typing.List[Array]]:
     return out
 
 
+def entity_quadrature_rules(ref: str, degree: int) -> typing.List[typing.List[typing.Tuple[Array, Array]]]:
+    """Get quadrature rules for sub-entities of a reference cell.
+
+    Args:
+        ref: Reference cell
+
+    Returns:
+        Set of points
+    """
+    import numpy as np
+    import basix
+
+    r = symfem.create_reference(ref)
+    out = []
+    for d in range(r.tdim):
+        row = []
+        for n in range(r.sub_entity_count(d)):
+            e = r.sub_entity(d, n)
+            if e.name == "point":
+                pts = np.array([[]])
+                wts = np.array([1.0])
+            else:
+                cell_type = getattr(basix.CellType, e.name)
+                pts, wts = basix.make_quadrature(cell_type, degree)
+                wts *= float(e.volume() / e.default_reference().volume())
+            row.append((np.array([
+                to_array(e.origin) + sum(i * to_array(a) for i, a in zip(p, e.axes))
+                for p in pts
+            ]), wts))
+        out.append(row)
+    return out
+
+
 def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     """Check if two tables span the same space.
 
@@ -103,6 +136,7 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
 
     stack = np.vstack([table0, table1])
     srank = np.linalg.matrix_rank(stack)
+    print(rank, srank)
     return rank == srank
 
 
@@ -112,6 +146,7 @@ def verify(
                         typing.Callable[[Array], Array]],
     info1: typing.Tuple[typing.List[typing.List[typing.List[int]]],
                         typing.Callable[[Array], Array]],
+    lagrange_superdegree: int,
     printing: bool = False
 ) -> bool:
     """Run verification.
@@ -120,6 +155,7 @@ def verify(
         ref: Reference cell
         info0: Verification info for first implementation
         info1: Verification info for second implementation
+        lagrange_superdegree: The Lagrange superdegree of the element
         printing: Toggle printing
 
     Returns:
@@ -164,15 +200,33 @@ def verify(
         return False
 
     # Check that continuity will be the same
-    epoints = entity_points(ref)
-    for d, epoints_d in enumerate(epoints):
-        for e, pts in enumerate(epoints_d):
+    erules = entity_quadrature_rules(ref, 2 * lagrange_superdegree)
+    for d, erules_d in enumerate(erules):
+        for e, (pts, wts) in enumerate(erules_d):
             ed0 = edofs0[d][e]
             if len(ed0) > 0:
                 ed1 = edofs1[d][e]
-                t0 = tab0(pts)[:, :, ed0]
-                t1 = tab1(pts)[:, :, ed1]
-                if not np.allclose(t0, t1) and not same_span(t0, t1, False):
+
+                t0 = tab0(pts)
+                t0e = t0[:, :, ed0]
+                not_ed0 = [k for i in edofs0 for j in i for k in j if k not in ed0]
+                t0perp = t0[:, :, not_ed0]
+                for i in range(t0e.shape[2]):
+                    for j in range(t0perp.shape[2]):
+                        t0e[:, :, i] -= ((t0e[:, :, i] * t0perp[:, :, j]).sum(axis=1) * wts).sum() / ((t0perp[:, :, j] * t0perp[:, :, j]).sum(axis=1) * wts).sum() * t0perp[:, :, j]
+
+                t1 = tab1(pts)
+                t1e = t1[:, :, ed1]
+                not_ed1 = [k for i in edofs1 for j in i for k in j if k not in ed1]
+                t1perp = t1[:, :, not_ed1]
+                for i in range(t1e.shape[2]):
+                    for j in range(t1perp.shape[2]):
+                        t1e[:, :, i] -= ((t1e[:, :, i] * t1perp[:, :, j]).sum(axis=1) * wts).sum() / ((t1perp[:, :, j] * t1perp[:, :, j]).sum(axis=1) * wts).sum() * t1perp[:, :, j]
+
+                print(t0)
+                print(t1)
+
+                if not np.allclose(t0e, t1e) and not same_span(t0e, t1e, False):
                     if printing:
                         print("  Continuity does not match")
                     return False

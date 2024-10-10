@@ -9,6 +9,7 @@ from datetime import datetime
 from defelement import settings
 from defelement.element import Categoriser, Element
 from defelement.implementations import verifications
+from defelement.implementations.symfem import symfem_create_element
 from defelement.verification import verify
 
 start_all = datetime.now()
@@ -88,10 +89,11 @@ def verify_examples(
         cell = eg.split(",")[0]
 
         sym_info = verifications["symfem"](e, eg)
+        degree = symfem_create_element(e, eg).lagrange_superdegree
         for i in implementations:
             try:
                 vinfo = verifications[i](e, eg)
-                if verify(cell, vinfo, sym_info, print_reasons):
+                if verify(cell, vinfo, sym_info, degree, print_reasons):
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
                 else:
