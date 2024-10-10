@@ -18,7 +18,7 @@ ndofs:
     - k=2: 37
 categories:
   - vector
-  - Hdiv
+  - H1
 reference-elements:
   - triangle
   - tetrahedron
@@ -27,16 +27,19 @@ polynomial-set:
   tetrahedron, \(k=1\): poly[k]^d && <k>[\left\{\left(\begin{array}{c}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{c}yz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xy(1-x-y-z)\end{array}\right)\right\}]
   tetrahedron, \(k=2\): poly[k]^d && <k>[\left\{\left(\begin{array}{c}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{c}yz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xy(1-x-y-z)\end{array}\right),\left(\begin{array}{c}xyz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xyz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xyz(1-x-y-z)\end{array}\right)\right\}]
 dofs:
-  edges: (if \(k>1\)) point evaluations in tangential directions at midpoints
+  vertices:
+    - point evaluations in coordinate directions at vertices 
+  edges: (if \(k>1\)) point evaluations in coordinate directions at midpoints
   facets:
-    - point evaluations in normal directions at vertices 
-    - normal integral moments with (lagrange,k-1)
-    - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
-  cell: integral moments of the divergence with (vector-lagrange,0)
+    - normal integral moments with (lagrange,0)
 mapping: contravariant Piola
-sobolev: H(div)
+sobolev: H1
 implementations:
   symfem: Bernardi-Raugel
+  fiat: 
+    triangle,1: BernardiRaugel
+    tetrahedron,1: BernardiRaugel
+    tetrahedron,2: BernardiRaugel subdegree=2
 examples:
   - triangle,1
   - tetrahedron,1

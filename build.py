@@ -135,7 +135,9 @@ cdescs = {
     "H(div)": "Components normal to facets are continuous",
     "H(curl)": "Components tangential to facets are continuous",
     "H(div div)": "Inner products with normals to facets are continuous",
-    "H(curl curl)": "Inner products with tangents to facets are continuous"}
+    "H(curl curl)": "Inner products with tangents to facets are continuous",
+    "H1(div)": "Function values and divergence are continuous.",
+    }
 
 verification: typing.Dict[str, typing.Dict[str, typing.Dict[str, typing.List[str]]]] = {}
 v_date = None
