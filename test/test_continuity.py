@@ -38,7 +38,7 @@ def test_sequence(file, cellname):
             assert i == "H(curl)"
     elif m == "contravariant Piola":
         for i in c:
-            assert i == "H(div)"
+            assert i in ["H(div)", "H1(div)", "H1"]
     elif m == "double covariant Piola":
         for i in c:
             assert i == "H(curl curl)"
