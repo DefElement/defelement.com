@@ -18,7 +18,6 @@ ndofs:
     - k=2: 37
 categories:
   - vector
-  - H1
 reference-elements:
   - triangle
   - tetrahedron
@@ -36,7 +35,7 @@ mapping: contravariant Piola
 sobolev: H1
 implementations:
   symfem: Bernardi-Raugel
-  fiat: 
+  fiat:
     triangle,1: BernardiRaugel
     tetrahedron,1: BernardiRaugel
     tetrahedron,2: BernardiRaugel subdegree=2

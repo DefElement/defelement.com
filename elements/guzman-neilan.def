@@ -13,7 +13,6 @@ ndofs:
     - k=2: 34
 categories:
   - vector
-  - H1
   - macro
 reference-elements:
   - triangle

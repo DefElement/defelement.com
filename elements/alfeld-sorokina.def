@@ -18,7 +18,6 @@ min-degree: 2
 max-degree: 2
 categories:
   - vector
-  - H1div
   - macro
 reference-elements:
   - triangle
