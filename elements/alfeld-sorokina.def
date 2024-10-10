@@ -12,13 +12,12 @@ entity-ndofs:
     formula: 2
   faces:
     formula: 0
-sobolev: H1
-mapping: identity
+sobolev: H1(div)
+mapping: contravariant Piola
 min-degree: 2
 max-degree: 2
 categories:
   - vector
-  - Hdiv
   - macro
 reference-elements:
   - triangle
@@ -29,6 +28,7 @@ dofs:
   edges: points evaluations in coordinate directions    
 implementations:
   symfem: Alfeld-Sorokina
+  fiat: AlfeldSorokina
 examples:
   - triangle,2
 references:
