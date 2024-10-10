@@ -15,7 +15,7 @@ ndofs:
   triangle:
     formula: 15
 polynomial-set:
-  triangle: <k-1>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and for every edge }\hat{\mathbf{n}}_i^t\mathbf{M}\hat{\mathbf{n}}_i\text{ is linear }\right\}]
+  triangle: <k>[\left\{\mathbf{M}\in{{poly[k]^dd}}\middle|\mathbf{M}^t=\mathbf{M}\text{ and for every edge }\hat{\mathbf{n}}_i^t\mathbf{M}\hat{\mathbf{n}}_i\text{ is linear }\right\}]
 dofs:
   edges: integral moments of normal-normal and normal-tangent inner products with (lagrange,1)
   faces: integral moments of three components with (lagrange,0)
