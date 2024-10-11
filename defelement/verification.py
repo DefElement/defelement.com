@@ -100,6 +100,7 @@ def closure_dofs(
                         out[dim][e_n] += entity_dofs[subdim][se_n]
     return out
 
+
 def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     """Check if two tables span the same space.
 
@@ -203,7 +204,6 @@ def verify(
                 t1 = tab1(pts)[:, :, not_ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
                     if printing:
-                        from IPython import embed; embed()
                         print("  Continuity does not match")
                     return False
 
