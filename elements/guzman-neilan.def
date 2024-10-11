@@ -1,5 +1,7 @@
-name: Guzman-Neilan
-html-name: Guzm&aacute;n&ndash;Neilan
+name: Guzman-Neilan (first kind)
+html-name: Guzm&aacute;n&ndash;Neilan (first kind)
+alt-names:
+  - Guzm&aacute;n&ndash;Neilan
 min-degree: 1
 max-degree: 1
 short-names:
@@ -25,6 +27,8 @@ dofs:
     - normal integral moments with (lagrange,0)
 mapping: contravariant Piola
 sobolev: H1
+notes:
+  - This element is a modification of the [Bernardi&ndash;Raugel](element::bernardi-raugel) element with the facet bubbles modified to be divergence free.
 implementations:
   fiat:
     triangle,1: GuzmanNeilan
