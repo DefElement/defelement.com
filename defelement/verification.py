@@ -91,7 +91,7 @@ def closure_dofs(
         Entity closure DOFs
     """
     r = symfem.create_reference(ref)
-    out = [[[] for j in i] for i in entity_dofs]
+    out: typing.List[typing.List[typing.List[int]]] = [[[] for j in i] for i in entity_dofs]
     for dim in range(r.tdim + 1):
         for e_n, e in enumerate(r.sub_entities(dim)):
             for subdim in range(dim + 1):
