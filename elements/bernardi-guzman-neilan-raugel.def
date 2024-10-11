@@ -13,7 +13,7 @@ ndofs:
     - k=2: 49
 categories:
   - vector
-  - H(div)
+  - Hdiv
   - macro
 reference-elements:
   - triangle
