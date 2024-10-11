@@ -133,19 +133,19 @@ def verify(
     # Check the same number of entity DOFs
     if len(edofs0) != len(edofs1):
         if printing:
-            print("  Wrong number of entities")
+            print(f"  Wrong number of entities ({len(edofs0)} vs {len(edofs1)})")
         return False
     entity_counts = []
-    for i0, i1 in zip(edofs0, edofs1):
+    for dim, (i0, i1) in enumerate(zip(edofs0, edofs1)):
         if len(i0) != len(i1):
             if printing:
-                print("  Wrong number of entities")
+                print(f"  Wrong number of entities of dim {dim} ({len(i0)} vs {len(i1)})")
             return False
         entity_counts.append(len(i0))
-        for j0, j1 in zip(i0, i1):
+        for e_n, (j0, j1) in enumerate(zip(i0, i1)):
             if len(j0) != len(j1):
                 if printing:
-                    print("  Wrong number of DOFs associated with an entity")
+                    print(f"  Wrong number of DOFs associated with an entity {dim},{e_n} ({len(j0)} vs {len(j1)})")
                 return False
 
     # Check that polysets span the same space
@@ -155,7 +155,7 @@ def verify(
 
     if table0.shape != table1.shape:
         if printing:
-            print("  Non-matching table shapes")
+            print(f"  Non-matching table shapes ({table0.shape} vs {table1.shape})")
         return False
 
     if not same_span(table0, table1):
@@ -177,7 +177,7 @@ def verify(
                 t1 = tab1(pts)[:, :, not_ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
                     if printing:
-                        print("  Continuity does not match")
+                        print(f"  Continuity does not match for ({d},{e})")
                     return False
 
     return True
