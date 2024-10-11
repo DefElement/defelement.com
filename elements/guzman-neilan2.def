@@ -1,7 +1,9 @@
 name: Guzman-Neilan (second kind)
 html-name: Guzm&aacute;n&ndash;Neilan (second kind)
 min-degree: 1
-max-degree: 1
+max-degree:
+  triangle: 1
+  tetrahedron: 2
 ndofs:
   triangle:
     formula: 11
@@ -11,21 +13,20 @@ ndofs:
     - k=2: 49
 categories:
   - vector
-  - Hdiv
   - macro
 reference-elements:
   - triangle
   - tetrahedron
 dofs:
-  vertices: point evaluations in normal directions at vertices
-  edges: (if \(k>1\)) point evaluations in tangential directions at midpoints
+  vertices: point evaluations in coordinate directions
+  edges: (if \(k>1\)) point evaluations in coordinate directions at midpoints
   facets:
     - normal integral moments with (lagrange,0)
   cell:
-    - point evaluations at the midpoint
+    - point evaluations in coordinate directions at the midpoint
     - (if \(k>1\)) point evaluations in coordinate directions at midpoints of internal edges
 mapping: contravariant Piola
-sobolev: H(div)
+sobolev: H1
 implementations:
   symfem: Guzman-Neilan second kind
 examples:
