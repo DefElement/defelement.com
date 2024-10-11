@@ -172,7 +172,8 @@ def verify(
         for e_n, (j0, j1) in enumerate(zip(i0, i1)):
             if len(j0) != len(j1):
                 if printing:
-                    print(f"  Wrong number of DOFs associated with an entity {dim},{e_n} ({len(j0)} vs {len(j1)})")
+                    print("  Wrong number of DOFs associated with an entity"
+                          f" {dim},{e_n} ({len(j0)} vs {len(j1)})")
                 return False
 
     # Check that polysets span the same space
