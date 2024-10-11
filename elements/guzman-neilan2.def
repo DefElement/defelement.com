@@ -18,7 +18,7 @@ reference-elements:
   - tetrahedron
 dofs:
   vertices: point evaluations in coordinate directions
-  edges: (if \(k>1\)) point evaluations in tangential directions at midpoints
+  edges: (if \(k>1\)) point evaluations in coordinate directions at midpoints
   facets:
     - normal integral moments with (lagrange,0)
     - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
