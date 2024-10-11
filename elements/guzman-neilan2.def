@@ -24,7 +24,7 @@ dofs:
   cell:
     - point evaluations in coordinate directions at the midpoint
 mapping: contravariant Piola
-sobolev: H(div)
+sobolev: H1
 implementations:
   symfem: Guzman-Neilan
 examples:
