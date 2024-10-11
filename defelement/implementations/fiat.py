@@ -1,7 +1,8 @@
 """FIAT implementation."""
 
-import sympy
 import typing
+
+import sympy
 
 from defelement.implementations.template import (Array, Element, Implementation,
                                                  VariantNotImplemented, parse_example)
