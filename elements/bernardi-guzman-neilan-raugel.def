@@ -1,35 +1,37 @@
-name: Guzman-Neilan
-html-name: Guzm&aacute;n&ndash;Neilan
+name: Bernardi-Guzman-Neilan-Raugel
+html-name: Bernardi&ndash;Guzm&aacute;n&ndash;Neilan&ndash;Raugel
 min-degree: 1
 max-degree: 1
 short-names:
-  - GN
+  - BGNR
 ndofs:
   triangle:
-    formula: 9
+    formula: 11
   tetrahedron:
     formula:
-    - k=1: 16
-    - k=2: 34
+    - k=1: 19
+    - k=2: 49
 categories:
   - vector
+  - H(div)
   - macro
 reference-elements:
   - triangle
   - tetrahedron
 dofs:
-  vertices:
-    - point evaluations in coordinate direcions
-  edges: (if \(k>1\)) point evaluations in coordinate directions at midpoints
+  edges: (if \(k>1\)) point evaluations in tangential directions at midpoints
   facets:
+    - point evaluations in normal directions at vertices
     - normal integral moments with (lagrange,0)
+    - (if \(k>1\)) point evaluations in normal directions at midpoints of edges
+  cell:
+    - point evaluations at the midpoint
 mapping: contravariant Piola
-sobolev: H1
+sobolev: H(div)
+notes:
+  - This element is a modification of the [Bernardi&ndash;Raugel](element::bernardi-raugel) element with the facet bubbles modified to be divergence free.
 implementations:
-  fiat:
-    triangle,1: GuzmanNeilan
-    tetrahedron,1: GuzmanNeilan
-    tetrahedron,2: GuzmanNeilan subdegree=2
+  symfem: Guzman-Neilan
 examples:
   - triangle,1
   - tetrahedron,1
