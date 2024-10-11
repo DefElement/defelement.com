@@ -22,7 +22,7 @@ dofs:
   facets:
     - normal integral moments with (lagrange,0)
   cell:
-    - point evaluations at the midpoint
+    - point evaluations in coordinate directions at the midpoint
 mapping: contravariant Piola
 sobolev: H(div)
 implementations:
