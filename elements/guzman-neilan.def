@@ -30,10 +30,15 @@ sobolev: H1
 notes:
   - This element is a modification of the [Bernardi&ndash;Raugel](element::bernardi-raugel) element with the facet bubbles modified to be divergence free.
 implementations:
+  symfem: Guzman-Neilan first kind
   fiat:
     triangle,1: GuzmanNeilan
     tetrahedron,1: GuzmanNeilan
     tetrahedron,2: GuzmanNeilan subdegree=2
+examples:
+  - triangle,1
+  - tetrahedron,1
+  - tetrahedron,2
 references:
   - title: Inf-sup stable finite elements on barycentric refinements producing divergence-free approximations in arbitrary dimensions
     author:

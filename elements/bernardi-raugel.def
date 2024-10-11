@@ -27,7 +27,7 @@ polynomial-set:
   tetrahedron, \(k=2\): poly[k]^d && <k>[\left\{\left(\begin{array}{c}xyz\\xyz\\xyz\end{array}\right),\left(\begin{array}{c}yz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xy(1-x-y-z)\end{array}\right),\left(\begin{array}{c}xyz(1-x-y-z)\\0\\0\end{array}\right),\left(\begin{array}{c}0\\xyz(1-x-y-z)\\0\end{array}\right),\left(\begin{array}{c}0\\0\\xyz(1-x-y-z)\end{array}\right)\right\}]
 dofs:
   vertices:
-    - point evaluations in coordinate directions at vertices 
+    - point evaluations in coordinate directions
   edges: (if \(k>1\)) point evaluations in coordinate directions at midpoints
   facets:
     - normal integral moments with (lagrange,0)
