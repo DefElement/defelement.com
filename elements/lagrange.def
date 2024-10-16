@@ -180,7 +180,7 @@ implementations:
       interval: Lobatto
   bempp:
     equispaced:
-      triangle: P degrees=1
+      triangle: P DEGREES=1
   fiat:
     equispaced:
       interval: Lagrange

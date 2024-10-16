@@ -1,4 +1,4 @@
-"""Implementation class."""
+"""Implementation template class and other functions."""
 
 import re
 import typing
@@ -98,8 +98,16 @@ class Implementation(ABC):
     verification = False
 
 
-class VariantNotImplemented(BaseException):
+class VariantNotImplemented(NotImplementedError):
     """Error for variants that are not implemented."""
+
+
+class DegreeNotImplemented(NotImplementedError):
+    """Error for degrees that are not implemented."""
+
+
+class NotImplementedOnReference(NotImplementedError):
+    """Error for element not implemented on a reference cell."""
 
 
 ValueType = typing.Union[int, str, typing.List["ValueType"]]

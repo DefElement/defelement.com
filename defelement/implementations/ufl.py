@@ -2,8 +2,7 @@
 
 import typing
 
-from defelement.implementations.template import (Element, Implementation, VariantNotImplemented,
-                                                 parse_example)
+from defelement.implementations.core import Element, Implementation, parse_example
 
 
 class UFLImplementation(Implementation):
@@ -36,11 +35,11 @@ class UFLImplementation(Implementation):
         for e in element.examples:
             ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            deg = int(deg)
 
             try:
-                ufl_name, params = element.get_implementation_string("ufl", ref, variant)
-            except VariantNotImplemented:
+                ufl_name, input_deg, params = element.get_implementation_string(
+                    "ufl", ref, deg, variant)
+            except NotImplementedError:
                 continue
 
             if ufl_name is not None:

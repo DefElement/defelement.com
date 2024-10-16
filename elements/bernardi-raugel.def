@@ -3,9 +3,9 @@ html-name: Bernardi&ndash;Raugel
 min-degree: 1
 max-degree: 1
 polynomial-subdegree: k
-polynomial-superdegree: k+d-1
+polynomial-superdegree: d
 lagrange-subdegree: k
-lagrange-superdegree: k+d-1
+lagrange-superdegree: d
 degree: polynomial-subdegree
 short-names:
   - BR
@@ -36,9 +36,8 @@ sobolev: H1
 implementations:
   symfem: Bernardi-Raugel
   fiat:
-    triangle,1: BernardiRaugel
-    tetrahedron,1: BernardiRaugel
-    tetrahedron,2: BernardiRaugel subdegree=2
+    triangle: BernardiRaugel DEGREEMAP=2
+    tetrahedron: BernardiRaugel DEGREEMAP=3
 examples:
   - triangle,1
   - tetrahedron,1

@@ -14,7 +14,7 @@ reference-elements:
   - dual polygon
 implementations:
   symfem: RBC
-  bempp: RBC degrees=0
+  bempp: RBC DEGREES=1 DEGREEMAP=k-1
 sobolev: H(curl)
 mapping: covariant Piola
 examples:
