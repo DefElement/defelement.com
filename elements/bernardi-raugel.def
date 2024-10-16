@@ -1,7 +1,7 @@
 name: Bernardi-Raugel
 html-name: Bernardi&ndash;Raugel
 min-degree: 1
-max-degree: 1
+max-degree: d-1
 polynomial-subdegree: k
 polynomial-superdegree: d
 lagrange-subdegree: k
