@@ -4,7 +4,7 @@ import typing
 
 from symfem.finite_element import FiniteElement
 
-from defelement.implementations.template import Array, Element, Implementation, parse_example
+from defelement.implementations.core import Array, Element, Implementation, parse_example
 from defelement.tools import to_array
 
 

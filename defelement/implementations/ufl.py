@@ -2,8 +2,8 @@
 
 import typing
 
-from defelement.implementations.template import (Element, Implementation, VariantNotImplemented,
-                                                 parse_example)
+from defelement.implementations.core import (Element, Implementation, VariantNotImplemented,
+                                             parse_example)
 
 
 class UFLImplementation(Implementation):

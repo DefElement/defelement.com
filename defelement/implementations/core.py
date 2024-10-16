@@ -1,4 +1,4 @@
-"""Implementation class."""
+"""Implementation template class and other functions."""
 
 import re
 import typing

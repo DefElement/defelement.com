@@ -4,8 +4,8 @@ import typing
 
 import sympy
 
-from defelement.implementations.template import (Array, Element, Implementation,
-                                                 VariantNotImplemented, parse_example)
+from defelement.implementations.core import (Array, Element, Implementation,
+                                             VariantNotImplemented, parse_example)
 
 
 class FIATImplementation(Implementation):
