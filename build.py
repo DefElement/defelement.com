@@ -194,12 +194,25 @@ for e in categoriser.elements:
     if len(variants) > 0:
         element_data.append(("Variants", "<br />".join([insert_links(v) for v in variants])))
 
-    degree_names = {
-        "polynomial-subdegree": "Polynomial subdegree",
-        "polynomial-superdegree": "Polynomial superdegree",
-        "lagrange-subdegree": "Lagrange subdegree",
-        "lagrange-superdegree": "Lagrange superdegree",
-    }
+    simplex_only = len([
+        i for i in e.reference_elements(False)
+        if i not in ["point", "interval", "triangle", "tetrahedron"]
+    ]) == 0
+
+    if simplex_only:
+        degree_names = {
+            "polynomial-subdegree": "Polynomial subdegree",
+            "polynomial-superdegree": "Polynomial superdegree",
+            "lagrange-subdegree": "Polynomial subdegree",
+            "lagrange-superdegree": "Polynomial superdegree",
+        }
+    else:
+        degree_names = {
+            "polynomial-subdegree": "Polynomial subdegree",
+            "polynomial-superdegree": "Polynomial superdegree",
+            "lagrange-subdegree": "Lagrange subdegree",
+            "lagrange-superdegree": "Lagrange superdegree",
+        }
     # Degrees
     if e.degree_convention() is None:
         element_data.append(("Degrees", e.degree_range()))
@@ -211,10 +224,11 @@ for e in categoriser.elements:
         element_data.append(("Polynomial subdegree", e.polynomial_subdegree()))
     if e.polynomial_superdegree() is not None:
         element_data.append(("Polynomial superdegree", e.polynomial_superdegree()))
-    if e.lagrange_subdegree() is not None:
-        element_data.append(("Lagrange subdegree", e.lagrange_subdegree()))
-    if e.lagrange_superdegree() is not None:
-        element_data.append(("Lagrange superdegree", e.lagrange_superdegree()))
+    if not simplex_only:
+        if e.lagrange_subdegree() is not None:
+            element_data.append(("Lagrange subdegree", e.lagrange_subdegree()))
+        if e.lagrange_superdegree() is not None:
+            element_data.append(("Lagrange superdegree", e.lagrange_superdegree()))
 
     # Reference elements
     refs = e.reference_elements()
