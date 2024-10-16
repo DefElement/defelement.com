@@ -2,6 +2,8 @@
 
 import typing
 
+import sympy
+
 from defelement.implementations.template import (Array, Element, Implementation,
                                                  VariantNotImplemented, parse_example)
 
@@ -28,6 +30,11 @@ class FIATImplementation(Implementation):
                     out += "(..."
                     started = True
                 out += f", {p}=\"{v}\""
+            if p == "subdegree":
+                if not started:
+                    out += "(..."
+                    started = True
+                out += f", {p}={v}"
         if started:
             out += ")"
         return out
@@ -56,6 +63,22 @@ class FIATImplementation(Implementation):
             if fiat_name is None:
                 continue
 
+            if "DEGREES" in params:
+                for d in params["DEGREES"].split(","):
+                    if ":" in d:
+                        start, end = [int(i) for i in d.split(":")]
+                        if start <= d < end:
+                            break
+                    elif deg == int(d):
+                        break
+                else:
+                    continue
+            input_deg: typing.Optional[int] = deg
+            if "DEGREEMAP" in params:
+                input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
+            if "degree" in params and params["degree"] == "None":
+                input_deg = None
+
             if "degree" in params and params["degree"] != "None" and deg != int(params["degree"]):
                 continue
 
@@ -70,11 +93,13 @@ class FIATImplementation(Implementation):
             else:
                 raise ValueError(f"Unsupported cell: {ref}")
             out += f"element = FIAT.{fiat_name}({cell}"
-            if "degree" not in params or params["degree"] != "None":
-                out += f", {deg}"
+            if input_deg is not None:
+                out += f", {input_deg}"
             for i, j in params.items():
-                if i != "degree":
+                if i == "variant":
                     out += f", {i}=\"{j}\""
+                if i == "subdegree":
+                    out += f", {i}={sympy.S(j).subs(sympy.Symbol('k'), deg)}"
             out += ")"
         return out
 
@@ -111,17 +136,38 @@ class FIATImplementation(Implementation):
         else:
             raise ValueError(f"Unsupported cell: {ref}")
 
-        args = []
-        if "degree" in params:
-            if params["degree"] != "None":
-                if deg != int(params['degree']):
-                    raise NotImplementedError
-                args.append(deg)
+        if "DEGREES" in params:
+            for d in params["DEGREES"].split(","):
+                if ":" in d:
+                    start, end = [int(i) for i in d.split(":")]
+                    if start <= d < end:
+                        break
+                elif deg == int(d):
+                    break
+            else:
+                raise NotImplementedError
+        if "DEGREEMAP" in params:
+            input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
         else:
-            args.append(deg)
+            input_deg = deg
 
-        e = getattr(FIAT, fiat_name)(
-            cell, *args, **{i: j for i, j in params.items() if i != "degree"})
+        args = []
+        kwargs = {}
+        if "degree" in params and params["degree"] != "None" and deg != int(params['degree']):
+            raise NotImplementedError
+
+        args.append(input_deg)
+        if "subdegree" in params:
+            kwargs["subdegree"] = int(sympy.S(params["subdegree"]).subs(sympy.Symbol('k'), deg))
+
+        if "variant" in params:
+            kwargs["variant"] = params["variant"]
+
+        # TODO: remove this once https://github.com/firedrakeproject/fiat/issues/87 is resolved
+        if element.name == "Guzman-Neilan (first kind)" and example == "tetrahedron,2":
+            raise NotImplementedError()
+
+        e = getattr(FIAT, fiat_name)(cell, *args, **kwargs)
 
         value_size = 1
         for i in e.value_shape():
@@ -173,6 +219,21 @@ class FIATImplementation(Implementation):
                 edofs[1][i] = edofs[1][i][:4]
             return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
                 points.shape[0], value_size, -1)[:, :, :15]
+        if element.name == "Guzman-Neilan (first kind)":
+            raise NotImplementedError()
+
+            if example == "triangle,1":
+                for i in range(3):
+                    edofs[1][i] = edofs[1][i][:1]
+                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                    points.shape[0], value_size, -1)[:, :, :9]
+            if example == "tetrahedron,1":
+                for i in range(4):
+                    edofs[2][i] = edofs[2][i][:1]
+                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                    points.shape[0], value_size, -1)[:, :, :15]
+
+            print(edofs)
 
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
