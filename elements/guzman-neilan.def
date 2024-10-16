@@ -4,6 +4,11 @@ alt-names:
   - Guzm&aacute;n&ndash;Neilan
 min-degree: 1
 max-degree: 1
+polynomial-subdegree: k
+polynomial-superdegree: d
+lagrange-subdegree: k
+lagrange-superdegree: d
+degree: polynomial-subdegree
 short-names:
   - GN
 ndofs:

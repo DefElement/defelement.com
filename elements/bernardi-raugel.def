@@ -3,9 +3,9 @@ html-name: Bernardi&ndash;Raugel
 min-degree: 1
 max-degree: 1
 polynomial-subdegree: k
-polynomial-superdegree: k+d-1
+polynomial-superdegree: d
 lagrange-subdegree: k
-lagrange-superdegree: k+d-1
+lagrange-superdegree: d
 degree: polynomial-subdegree
 short-names:
   - BR
