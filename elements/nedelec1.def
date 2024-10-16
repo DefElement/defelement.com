@@ -118,7 +118,7 @@ implementations:
       hexahedron: NCE
   bempp:
     lagrange:
-      triangle: SNC degrees=0
+      triangle: SNC DEGREES=1 DEGREEMAP=k-1
   fiat:
     legendre:
       triangle: Nedelec variant=integral
