@@ -40,7 +40,7 @@ class BemppImplementation(Implementation):
 
             try:
                 bempp_name, input_deg, params = element.get_implementation_string(
-                    "bempp", ref, variant)
+                    "bempp", ref, deg, variant)
             except NotImplementedError:
                 continue
 

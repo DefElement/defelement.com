@@ -92,6 +92,8 @@ class BasixImplementation(Implementation):
         if "discontinuous" in params:
             kwargs["discontinuous"] = params["discontinuous"] == "True"
 
+        assert input_deg is not None
+
         e = basix.create_element(
             getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), input_deg,
             **kwargs)

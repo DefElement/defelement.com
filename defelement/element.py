@@ -657,7 +657,7 @@ class Element:
         return "implementations" in self.data and lib in self.data["implementations"]
 
     def get_implementation_string(
-        self, lib: str, reference: typing.Optional[str], degree: int,
+        self, lib: str, reference: typing.Optional[str], degree: typing.Optional[int],
         variant: typing.Optional[str] = None
     ) -> typing.Tuple[str, typing.Optional[int], typing.Dict[str, typing.Any]]:
         """Get implementation string.
@@ -693,6 +693,9 @@ class Element:
                 i = i.split(" ")[-1]
                 j = " ".join(j.split(" ")[:-1])
                 params[i] = j
+
+        if degree is None:
+            return out, None, params
 
         if "DEGREES" in params:
             for d in params["DEGREES"].split(","):
@@ -745,7 +748,8 @@ class Element:
                     continue
                 data = self.data["implementations"][lib][v]
             if isinstance(data, str):
-                s = implementations[lib].format(*self.get_implementation_string(lib, None, v))
+                istring, _, params = self.get_implementation_string(lib, None, None, v)
+                s = implementations[lib].format(istring, params)
                 if s not in i_dict:
                     i_dict[s] = []
                 if v is None:
@@ -754,7 +758,8 @@ class Element:
                     i_dict[s].append(vinfo["variant-name"])
             else:
                 for i, j in data.items():
-                    s = implementations[lib].format(*self.get_implementation_string(lib, i, v))
+                    istring, _, params = self.get_implementation_string(lib, i, None, v)
+                    s = implementations[lib].format(istring, params)
                     if s not in i_dict:
                         i_dict[s] = []
                     if v is None:
