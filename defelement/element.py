@@ -455,6 +455,8 @@ class Element:
             assert self._c is not None
             if not isinstance(dofs, str):
                 doflist = [dofs_on_entity(entity, d) for d in dofs]
+                if len(doflist) == 1:
+                    return doflist[0]
                 return ",<br />".join(doflist[:-1]) + ", and " + doflist[-1]
             if "integral moment" in dofs:
                 mom_type, space_info = dofs.split(" with ")
