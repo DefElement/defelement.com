@@ -120,10 +120,6 @@ class FIATImplementation(Implementation):
         if "variant" in params:
             kwargs["variant"] = params["variant"]
 
-        # TODO: remove this once https://github.com/firedrakeproject/fiat/issues/87 is resolved
-        if element.name == "Guzman-Neilan (first kind)" and example == "tetrahedron,2":
-            raise NotImplementedError()
-
         e = getattr(FIAT, fiat_name)(cell, *args, **kwargs)
 
         value_size = 1
@@ -177,8 +173,6 @@ class FIATImplementation(Implementation):
             return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
                 points.shape[0], value_size, -1)[:, :, :15]
         if element.name == "Guzman-Neilan (first kind)":
-            raise NotImplementedError()
-
             if example == "triangle,1":
                 for i in range(3):
                     edofs[1][i] = edofs[1][i][:1]
