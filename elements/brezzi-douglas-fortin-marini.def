@@ -51,7 +51,7 @@ implementations:
     triangle: BDFM
     tetrahedron: BDFM
   fiat:
-    triangle: BrezziDouglasFortinMarini degree=2
+    triangle: BrezziDouglasFortinMarini DEGREES=2
 examples:
   - triangle,1
   - triangle,2

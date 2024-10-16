@@ -4,7 +4,9 @@ import importlib
 import os
 from inspect import isclass
 
-from defelement.implementations.core import Implementation, VariantNotImplemented, parse_example
+from defelement.implementations.core import (
+    DegreeNotImplemented, Implementation, NotImplementedOnReference,
+    VariantNotImplemented, parse_example)
 
 implementations = {}
 this_dir = os.path.dirname(os.path.realpath(__file__))

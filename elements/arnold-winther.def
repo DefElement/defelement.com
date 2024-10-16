@@ -28,7 +28,7 @@ sobolev: H(div div)
 implementations:
   symfem: AW
   ufl: AWc
-  fiat: ArnoldWinther degree=3
+  fiat: ArnoldWinther DEGREES=3
 examples:
   - triangle,3
   - triangle,4

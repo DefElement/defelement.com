@@ -24,7 +24,7 @@ sobolev: H1
 implementations:
   symfem: Morley
   ufl: Morley
-  fiat: Morley degree=None
+  fiat: Morley DEGREEMAP=None
 examples:
   - triangle,2
 references:

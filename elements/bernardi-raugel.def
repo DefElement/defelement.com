@@ -36,9 +36,8 @@ sobolev: H1
 implementations:
   symfem: Bernardi-Raugel
   fiat:
-    triangle,1: BernardiRaugel
-    tetrahedron,1: BernardiRaugel
-    tetrahedron,2: BernardiRaugel subdegree=2
+    triangle: BernardiRaugel DEGREEMAP=2
+    tetrahedron: BernardiRaugel DEGREEMAP=3
 examples:
   - triangle,1
   - tetrahedron,1

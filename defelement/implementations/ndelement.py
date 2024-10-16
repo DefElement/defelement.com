@@ -42,27 +42,23 @@ class NDElementImplementation(Implementation):
         for e in element.examples:
             ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            deg = int(deg)
 
             try:
-                name, params = element.get_implementation_string("ndelement", ref, variant)
-            except VariantNotImplemented:
+                name, input_deg, params = element.get_implementation_string(
+                    "ndelement", ref, deg, variant)
+            except NotImplementedError:
                 continue
 
-            if name == "RaviartThomas" and deg > 1:
-                continue
-
-            if name is not None:
-                out += "\n\n"
-                out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
-                out += "family = create_family("
-                out += f"Family.{name}, {deg}"
-                if "continuity" in params:
-                    cont = True
-                    assert params["continuity"] in ["Standard", "Discontinuous"]
-                    out += f", continuity=Continuity.{params['continuty']}"
-                out += ")\n"
-                out += f"element = family.element(ReferenceCellType.{ref[0].upper() + ref[1:]})"
+            out += "\n\n"
+            out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
+            out += "family = create_family("
+            out += f"Family.{name}, {input_deg}"
+            if "continuity" in params:
+                cont = True
+                assert params["continuity"] in ["Standard", "Discontinuous"]
+                out += f", continuity=Continuity.{params['continuty']}"
+            out += ")\n"
+            out += f"element = family.element(ReferenceCellType.{ref[0].upper() + ref[1:]})"
         if cont:
             out = "from ndelement.ciarlet import Continuity, Family, create_family" + out
         else:
@@ -87,22 +83,13 @@ class NDElementImplementation(Implementation):
 
         ref, deg, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
-        deg = int(deg)
-        try:
-            name, params = element.get_implementation_string("ndelement", ref, variant)
-        except VariantNotImplemented:
-            raise NotImplementedError()
-        if name is None:
-            raise NotImplementedError()
+        name, input_deg, params = element.get_implementation_string("ndelement", ref, deg, variant)
         kwargs = {}
         if "continuity" in params:
             kwargs["continuity"] = getattr(Continuity, params["continuity"])
-        if "degrees" in params:
-            if deg not in [int(i) for i in params["degrees"].split(",")]:
-                raise NotImplementedError()
 
         cell = getattr(ReferenceCellType, ref[0].upper() + ref[1:])
-        e = create_family(getattr(Family, name), deg, **kwargs).element(cell)
+        e = create_family(getattr(Family, name), input_deg, **kwargs).element(cell)
         entity_dofs = [[e.entity_dofs(dim, entity) for entity in range(n)]
                        for dim, n in enumerate(entity_counts(cell)) if n > 0]
 

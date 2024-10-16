@@ -47,39 +47,17 @@ class FIATImplementation(Implementation):
             element: The element
 
         Returns:
-            Example code
+                Example code
         """
         out = "import FIAT"
         for e in element.examples:
             ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            deg = int(deg)
 
             try:
-                fiat_name, params = element.get_implementation_string("fiat", ref, variant)
-            except VariantNotImplemented:
-                continue
-
-            if fiat_name is None:
-                continue
-
-            if "DEGREES" in params:
-                for d in params["DEGREES"].split(","):
-                    if ":" in d:
-                        start, end = [int(i) for i in d.split(":")]
-                        if start <= d < end:
-                            break
-                    elif deg == int(d):
-                        break
-                else:
-                    continue
-            input_deg: typing.Optional[int] = deg
-            if "DEGREEMAP" in params:
-                input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
-            if "degree" in params and params["degree"] == "None":
-                input_deg = None
-
-            if "degree" in params and params["degree"] != "None" and deg != int(params["degree"]):
+                fiat_name, input_deg, params = element.get_implementation_string(
+                    "fiat", ref, deg, variant)
+            except NotImplementedError:
                 continue
 
             out += "\n\n"
@@ -120,13 +98,9 @@ class FIATImplementation(Implementation):
 
         ref, deg, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
-        deg = int(deg)
-        try:
-            fiat_name, params = element.get_implementation_string("fiat", ref, variant)
-        except VariantNotImplemented:
-            raise NotImplementedError()
-        if fiat_name is None:
-            raise NotImplementedError()
+
+        fiat_name, input_deg, params = element.get_implementation_string("fiat", ref, deg, variant)
+
         if ref in ["interval", "triangle", "tetrahedron"]:
             cell = FIAT.ufc_cell(ref)
         elif ref == "quadrilateral":
@@ -135,21 +109,6 @@ class FIATImplementation(Implementation):
             cell = FIAT.reference_element.UFCHexahedron()
         else:
             raise ValueError(f"Unsupported cell: {ref}")
-
-        if "DEGREES" in params:
-            for d in params["DEGREES"].split(","):
-                if ":" in d:
-                    start, end = [int(i) for i in d.split(":")]
-                    if start <= d < end:
-                        break
-                elif deg == int(d):
-                    break
-            else:
-                raise NotImplementedError
-        if "DEGREEMAP" in params:
-            input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
-        else:
-            input_deg = deg
 
         args = []
         kwargs = {}

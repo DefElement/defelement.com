@@ -1,6 +1,7 @@
 """DefElement elements."""
 
 import os
+import sympy
 import typing
 import warnings
 from datetime import datetime
@@ -11,7 +12,8 @@ from github import Github
 
 from defelement import settings
 from defelement.families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
-from defelement.implementations import VariantNotImplemented, examples, implementations
+from defelement.implementations import (
+    DegreeNotImplemented, VariantNotImplemented, NotImplementedOnReference, examples, implementations)
 from defelement.markup import insert_links
 from defelement.polyset import make_extra_info, make_poly_set
 
@@ -655,17 +657,19 @@ class Element:
         return "implementations" in self.data and lib in self.data["implementations"]
 
     def get_implementation_string(
-        self, lib: str, reference: typing.Optional[str], variant: typing.Optional[str] = None
-    ) -> typing.Tuple[typing.Optional[str], typing.Dict[str, typing.Any]]:
+        self, lib: str, reference: typing.Optional[str], degree: int,
+        variant: typing.Optional[str] = None
+    ) -> typing.Tuple[str, typing.Optional[int], typing.Dict[str, typing.Any]]:
         """Get implementation string.
 
         Args:
             lib: Library
             reference: Reference cell
+            degree: Degree
             variant: Variant name
 
         Raturns:
-            Implementation string
+            Implementation string, degree and parameters to pass to implementation
         """
         assert self.implemented(lib)
         if variant is None:
@@ -676,7 +680,7 @@ class Element:
             data = self.data["implementations"][lib][variant]
         if isinstance(data, dict):
             if reference not in data:
-                return None, {}
+                raise NotImplementedOnReference()
             out = data[reference]
         else:
             out = data
@@ -690,7 +694,25 @@ class Element:
                 j = " ".join(j.split(" ")[:-1])
                 params[i] = j
 
-        return out, params
+        if "DEGREES" in params:
+            for d in params["DEGREES"].split(","):
+                if ":" in d:
+                    start, end = [int(i) for i in d.split(":")]
+                    if start <= degree < end:
+                        break
+                elif degree == int(d):
+                    break
+            else:
+                raise DegreeNotImplemented()
+
+        input_deg: typing.Optional[int] = degree
+        if "DEGREEMAP" in params:
+            if params["DEGREEMAP"] == "None":
+                input_deg = None
+            else:
+                input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), degree))
+
+        return out, input_deg, params
 
     def list_of_implementation_strings(
         self, lib: str, joiner: typing.Union[None, str] = "<br />"
