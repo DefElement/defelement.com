@@ -111,10 +111,9 @@ class FIATImplementation(Implementation):
 
         args = []
         kwargs = {}
-        if "degree" in params and params["degree"] != "None" and deg != int(params['degree']):
-            raise NotImplementedError
 
-        args.append(input_deg)
+        if input_deg is not None:
+            args.append(input_deg)
         if "subdegree" in params:
             kwargs["subdegree"] = int(sympy.S(params["subdegree"]).subs(sympy.Symbol('k'), deg))
 
