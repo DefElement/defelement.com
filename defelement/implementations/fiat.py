@@ -66,17 +66,16 @@ class FIATImplementation(Implementation):
             if "DEGREES" in params:
                 for d in params["DEGREES"].split(","):
                     if ":" in d:
-                        s, e = [int(i) for i in d.split(":")]
-                        if s <= d < e:
+                        start, end = [int(i) for i in d.split(":")]
+                        if start <= d < end:
                             break
                     elif deg == int(d):
                         break
                 else:
                     continue
+            input_deg: typing.Optional[int] = deg
             if "DEGREEMAP" in params:
                 input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
-            else:
-                input_deg = deg
             if "degree" in params and params["degree"] == "None":
                 input_deg = None
 
@@ -140,8 +139,8 @@ class FIATImplementation(Implementation):
         if "DEGREES" in params:
             for d in params["DEGREES"].split(","):
                 if ":" in d:
-                    s, e = [int(i) for i in d.split(":")]
-                    if s <= d < e:
+                    start, end = [int(i) for i in d.split(":")]
+                    if start <= d < end:
                         break
                 elif deg == int(d):
                     break
