@@ -473,7 +473,7 @@ for e in categoriser.elements:
 
             for eg in e.examples:
                 cell, degree, variant, kwargs = parse_example(eg)
-                symfem_name, params = e.get_implementation_string("symfem", cell, variant)
+                symfem_name, _, params = e.get_implementation_string("symfem", cell, None, variant)
 
                 fname = f"{cell}-{e.filename}"
                 if variant is not None:

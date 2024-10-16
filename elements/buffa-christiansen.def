@@ -14,7 +14,7 @@ reference-elements:
   - dual polygon
 implementations:
   symfem: BC
-  bempp: BC degrees=0
+  bempp: BC DEGREES=1 DEGREEMAP=k-1
 mapping: contravariant Piola
 sobolev: H(div)
 examples:

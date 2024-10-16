@@ -94,10 +94,10 @@ implementations:
       hexahedron: NCF
   bempp:
     lagrange:
-      triangle: RWG degrees=0
+      triangle: RWG DEGREES=1 DEGREEMAP=k-1
   ndelement:
     lagrange:
-      triangle: RaviartThomas degrees=1
+      triangle: RaviartThomas DEGREES=1
   fiat:
     legendre:
       triangle: RaviartThomas variant=integral

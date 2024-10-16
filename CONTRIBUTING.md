@@ -71,6 +71,25 @@ The entries in this yaml file are:
 <tr><td>`implementations`</td><td></td><td>Strings/enum entries/etc to create this element in supported implementations.</td></tr>
 </table>
 
+#### Implementations
+In the `implementations` fields, parameters can be passed to the implementation using syntax like
+this:
+
+```yaml
+implementations:
+  libraryname: String param_name1=param_value1 param_name2=param_value2
+```
+
+There are a few special parameters (written in ALL CAPS) that can be used here:
+
+<table>
+<thead>
+<tr><td>Parameter</td><td>Purpose</td></tr>
+</thead>
+<tr><td>`DEGREES`</td><td>A list of degrees for which this element is defined in this implementation, eg `1,2,4:8` denotes that degrees 1 and 2 and 4 to 8 (including 4 but not including 8) are supported. Note that if `DEGREEMAP` is set, the degrees used here should correspond to the DefElement convention, not the degree after the degree map is applied.</td></tr>
+<tr><td>`DEGREEMAP`</td><td>A map to apply to the degree used on DefElement to obtain the degree used by this library. The value here will be parsed using Sympy, with the variable `k` equal to the degree (using DefElement's convention).</td></tr>
+</table>
+
 ### Testing your contribution
 When you open a pull request, a series of tests and style checks will run via GitHub Actions.
 (You may have to wait for manual approval for these to run.)

@@ -2,8 +2,7 @@
 
 import typing
 
-from defelement.implementations.template import (Element, Implementation, VariantNotImplemented,
-                                                 parse_example)
+from defelement.implementations.core import Element, Implementation, parse_example
 
 
 class BemppImplementation(Implementation):
@@ -38,22 +37,17 @@ class BemppImplementation(Implementation):
         for e in element.examples:
             ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            deg = int(deg)
 
             try:
-                bempp_name, params = element.get_implementation_string("bempp", ref, variant)
-            except VariantNotImplemented:
+                bempp_name, input_deg, params = element.get_implementation_string(
+                    "bempp", ref, deg, variant)
+            except NotImplementedError:
                 continue
 
-            if bempp_name is None:
-                continue
-            degrees = [int(i) for i in params["degrees"].split(",")]
-
-            if deg in degrees:
-                out += "\n\n"
-                out += f"# Create {element.name} degree {deg}\n"
-                out += "element = bempp.api.function_space(grid, "
-                out += f"\"{bempp_name}\", {deg})"
+            out += "\n\n"
+            out += f"# Create {element.name} degree {deg}\n"
+            out += "element = bempp.api.function_space(grid, "
+            out += f"\"{bempp_name}\", {input_deg})"
         return out
 
     id = "bempp"

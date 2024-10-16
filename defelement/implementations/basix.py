@@ -2,8 +2,7 @@
 
 import typing
 
-from defelement.implementations.template import (Array, Element, Implementation,
-                                                 VariantNotImplemented, parse_example)
+from defelement.implementations.core import Array, Element, Implementation, parse_example
 
 
 class BasixImplementation(Implementation):
@@ -45,26 +44,25 @@ class BasixImplementation(Implementation):
         for e in element.examples:
             ref, deg, variant, kwargs = parse_example(e)
             assert len(kwargs) == 0
-            deg = int(deg)
 
             try:
-                basix_name, params = element.get_implementation_string("basix", ref, variant)
-            except VariantNotImplemented:
+                basix_name, input_deg, params = element.get_implementation_string(
+                    "basix", ref, deg, variant)
+            except NotImplementedError:
                 continue
 
-            if basix_name is not None:
-                out += "\n\n"
-                out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
-                out += "element = basix.create_element("
-                out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {deg}"
-                if "lagrange_variant" in params:
-                    out += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
-                if "dpc_variant" in params:
-                    out += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
-                if "discontinuous" in params:
-                    assert params["discontinuous"] in ["True", "False"]
-                    out += f", discontinuous={params['discontinuous']}"
-                out += ")"
+            out += "\n\n"
+            out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
+            out += "element = basix.create_element("
+            out += f"basix.ElementFamily.{basix_name}, basix.CellType.{ref}, {input_deg}"
+            if "lagrange_variant" in params:
+                out += f", lagrange_variant=basix.LagrangeVariant.{params['lagrange_variant']}"
+            if "dpc_variant" in params:
+                out += f", dpc_variant=basix.DPCVariant.{params['dpc_variant']}"
+            if "discontinuous" in params:
+                assert params["discontinuous"] in ["True", "False"]
+                out += f", discontinuous={params['discontinuous']}"
+            out += ")"
         return out
 
     @staticmethod
@@ -84,13 +82,8 @@ class BasixImplementation(Implementation):
 
         ref, deg, variant, kwargs = parse_example(example)
         assert len(kwargs) == 0
-        deg = int(deg)
-        try:
-            basix_name, params = element.get_implementation_string("basix", ref, variant)
-        except VariantNotImplemented:
-            raise NotImplementedError()
-        if basix_name is None:
-            raise NotImplementedError()
+        basix_name, input_deg, params = element.get_implementation_string(
+            "basix", ref, deg, variant)
         kwargs = {}
         if "lagrange_variant" in params:
             kwargs["lagrange_variant"] = getattr(basix.LagrangeVariant, params['lagrange_variant'])
@@ -99,8 +92,10 @@ class BasixImplementation(Implementation):
         if "discontinuous" in params:
             kwargs["discontinuous"] = params["discontinuous"] == "True"
 
+        assert input_deg is not None
+
         e = basix.create_element(
-            getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), deg,
+            getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), input_deg,
             **kwargs)
         return e.entity_dofs, lambda points: e.tabulate(0, points)[0].transpose((0, 2, 1))
 

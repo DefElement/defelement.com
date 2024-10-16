@@ -15,7 +15,7 @@ reference-elements:
   - dual polygon
 implementations:
   symfem: dual
-  bempp: DUAL degrees=0,1
+  bempp: DUAL DEGREES=0,1
 mapping: identity
 sobolev:
   n=0: L2
