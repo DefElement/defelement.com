@@ -63,8 +63,22 @@ class FIATImplementation(Implementation):
             if fiat_name is None:
                 continue
 
+            if "DEGREES" in params:
+                for d in params["DEGREES"].split(","):
+                    if ":" in d:
+                        s, e = [int(i) for i in d.split(":")]
+                        if s <= d < e:
+                            break
+                    elif deg == int(d):
+                        break
+                else:
+                    continue
             if "DEGREEMAP" in params:
-                deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
+                input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
+            else:
+                input_deg = deg
+            if "degree" in params and params["degree"] == "None":
+                input_deg = None
 
             if "degree" in params and params["degree"] != "None" and deg != int(params["degree"]):
                 continue
@@ -80,8 +94,8 @@ class FIATImplementation(Implementation):
             else:
                 raise ValueError(f"Unsupported cell: {ref}")
             out += f"element = FIAT.{fiat_name}({cell}"
-            if "degree" not in params or params["degree"] != "None":
-                out += f", {deg}"
+            if input_deg is not None:
+                out += f", {input_deg}"
             for i, j in params.items():
                 if i == "variant":
                     out += f", {i}=\"{j}\""
@@ -123,6 +137,16 @@ class FIATImplementation(Implementation):
         else:
             raise ValueError(f"Unsupported cell: {ref}")
 
+        if "DEGREES" in params:
+            for d in params["DEGREES"].split(","):
+                if ":" in d:
+                    s, e = [int(i) for i in d.split(":")]
+                    if s <= d < e:
+                        break
+                elif deg == int(d):
+                    break
+            else:
+                raise NotImplementedError
         if "DEGREEMAP" in params:
             input_deg = int(sympy.S(params["DEGREEMAP"]).subs(sympy.Symbol("k"), deg))
         else:

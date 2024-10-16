@@ -32,8 +32,8 @@ notes:
 implementations:
   symfem: Guzman-Neilan first kind
   fiat:
-    triangle: GuzmanNeilan DEGREEMAP=2
-    tetrahedron: GuzmanNeilan DEGREEMAP=3 subdegree=k
+    triangle: GuzmanNeilan DEGREEMAP=2 DEGREES=1
+    tetrahedron: GuzmanNeilan DEGREEMAP=3 DEGREES=1
 examples:
   - triangle,1
   - tetrahedron,1
