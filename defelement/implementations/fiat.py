@@ -4,8 +4,7 @@ import typing
 
 import sympy
 
-from defelement.implementations.core import (Array, Element, Implementation,
-                                             VariantNotImplemented, parse_example)
+from defelement.implementations.core import Array, Element, Implementation, parse_example
 
 
 class FIATImplementation(Implementation):
@@ -191,8 +190,6 @@ class FIATImplementation(Implementation):
                     edofs[2][i] = edofs[2][i][:1]
                 return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
                     points.shape[0], value_size, -1)[:, :, :15]
-
-            print(edofs)
 
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)

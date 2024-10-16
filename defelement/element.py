@@ -1,19 +1,19 @@
 """DefElement elements."""
 
 import os
-import sympy
 import typing
 import warnings
 from datetime import datetime
 
 import pytz
+import sympy
 import yaml
 from github import Github
 
 from defelement import settings
 from defelement.families import arnold_logg_reference, cockburn_fu_reference, keys_and_names
-from defelement.implementations import (
-    DegreeNotImplemented, VariantNotImplemented, NotImplementedOnReference, examples, implementations)
+from defelement.implementations import (DegreeNotImplemented, NotImplementedOnReference,
+                                        VariantNotImplemented, examples, implementations)
 from defelement.markup import insert_links
 from defelement.polyset import make_extra_info, make_poly_set
 

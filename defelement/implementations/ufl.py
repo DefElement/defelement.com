@@ -2,8 +2,7 @@
 
 import typing
 
-from defelement.implementations.core import (Element, Implementation, VariantNotImplemented,
-                                             parse_example)
+from defelement.implementations.core import Element, Implementation, parse_example
 
 
 class UFLImplementation(Implementation):
@@ -38,7 +37,8 @@ class UFLImplementation(Implementation):
             assert len(kwargs) == 0
 
             try:
-                ufl_name, input_deg, params = element.get_implementation_string("ufl", ref, deg, variant)
+                ufl_name, input_deg, params = element.get_implementation_string(
+                    "ufl", ref, deg, variant)
             except NotImplementedError:
                 continue
 

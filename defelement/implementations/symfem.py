@@ -95,7 +95,8 @@ class SymfemImplementation(Implementation):
         out = "import symfem"
         for e in element.examples:
             ref, deg, variant, kwargs = parse_example(e)
-            symfem_name, input_deg, params = element.get_implementation_string("symfem", ref, deg, variant)
+            symfem_name, input_deg, params = element.get_implementation_string(
+                "symfem", ref, deg, variant)
 
             out += "\n\n"
             out += f"# Create {element.name_with_variant(variant)} degree {deg} on a {ref}\n"
@@ -131,7 +132,8 @@ class SymfemImplementation(Implementation):
         import symfem
 
         ref, deg, variant, kwargs = parse_example(example)
-        symfem_name, input_deg, params = element.get_implementation_string("symfem", ref, deg, variant)
+        symfem_name, input_deg, params = element.get_implementation_string(
+            "symfem", ref, deg, variant)
         if ref == "dual polygon":
             ref += "(4)"
         e = symfem.create_element(ref, symfem_name, input_deg, **params)

@@ -2,8 +2,7 @@
 
 import typing
 
-from defelement.implementations.core import (Element, Implementation, VariantNotImplemented,
-                                             parse_example)
+from defelement.implementations.core import Element, Implementation, parse_example
 
 
 class BemppImplementation(Implementation):
@@ -40,7 +39,8 @@ class BemppImplementation(Implementation):
             assert len(kwargs) == 0
 
             try:
-                bempp_name, input_deg, params = element.get_implementation_string("bempp", ref, variant)
+                bempp_name, input_deg, params = element.get_implementation_string(
+                    "bempp", ref, variant)
             except NotImplementedError:
                 continue
 

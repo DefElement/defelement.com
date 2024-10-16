@@ -2,8 +2,7 @@
 
 import typing
 
-from defelement.implementations.core import (Array, Element, Implementation,
-                                             VariantNotImplemented, parse_example)
+from defelement.implementations.core import Array, Element, Implementation, parse_example
 
 
 class NDElementImplementation(Implementation):

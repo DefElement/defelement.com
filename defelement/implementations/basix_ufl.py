@@ -3,8 +3,7 @@
 import typing
 
 from defelement.implementations.basix import BasixImplementation
-from defelement.implementations.core import (Array, Element, Implementation,
-                                             VariantNotImplemented, parse_example)
+from defelement.implementations.core import Array, Element, Implementation, parse_example
 
 
 class BasixUFLImplementation(Implementation):
@@ -109,7 +108,8 @@ class BasixUFLImplementation(Implementation):
                 dim if i == "dim" else int(i) for i in params["shape"][1:-1].split(",") if i != "")
 
         e = basix.ufl.element(
-            getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref), input_deg, **kwargs)
+            getattr(basix.ElementFamily, basix_name), getattr(basix.CellType, ref),
+            input_deg, **kwargs)
         return e.entity_dofs, lambda points: e.tabulate(0, points)[0].reshape(
             points.shape[0], e.reference_value_size, -1)
 
