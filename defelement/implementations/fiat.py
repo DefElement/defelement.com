@@ -189,6 +189,17 @@ class FIATImplementation(Implementation):
                     edofs[2][i] = edofs[2][i][:1]
                 return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
                     points.shape[0], value_size, -1)[:, :, :15]
+        if element.name == "Bernardi-Raugel":
+            if example == "triangle,1":
+                for i in range(3):
+                    edofs[1][i] = edofs[1][i][:1]
+                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                    points.shape[0], value_size, -1)[:, :, :9]
+            if example == "tetrahedron,1":
+                for i in range(4):
+                    edofs[2][i] = edofs[2][i][:1]
+                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
+                    points.shape[0], value_size, -1)[:, :, :16]
 
         return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
             points.shape[0], value_size, -1)
