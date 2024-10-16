@@ -77,6 +77,30 @@ def entity_points(ref: str) -> typing.List[typing.List[Array]]:
     return out
 
 
+def closure_dofs(
+    entity_dofs: typing.List[typing.List[typing.List[int]]],
+    ref: str
+) -> typing.List[typing.List[typing.List[int]]]:
+    """Make lists of DOFs associated with the closure of an entity.
+
+    Args:
+        entity_dofs: Lists of DOFs associated with each entity
+        ref: Reference cell
+
+    Returns:
+        Entity closure DOFs
+    """
+    r = symfem.create_reference(ref)
+    out: typing.List[typing.List[typing.List[int]]] = [[[] for j in i] for i in entity_dofs]
+    for dim in range(r.tdim + 1):
+        for e_n, e in enumerate(r.sub_entities(dim)):
+            for subdim in range(dim + 1):
+                for se_n, se in enumerate(r.sub_entities(subdim)):
+                    if all(i in e for i in se):
+                        out[dim][e_n] += entity_dofs[subdim][se_n]
+    return out
+
+
 def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     """Check if two tables span the same space.
 
@@ -130,6 +154,9 @@ def verify(
     edofs0, tab0 = info0
     edofs1, tab1 = info1
 
+    ecdofs0 = closure_dofs(edofs0, ref)
+    ecdofs1 = closure_dofs(edofs1, ref)
+
     # Check the same number of entity DOFs
     if len(edofs0) != len(edofs1):
         if printing:
@@ -167,11 +194,14 @@ def verify(
     epoints = entity_points(ref)
     for d, epoints_d in enumerate(epoints):
         for e, pts in enumerate(epoints_d):
-            ed0 = edofs0[d][e]
+            ed0 = ecdofs0[d][e]
             if len(ed0) > 0:
-                ed1 = edofs1[d][e]
-                t0 = tab0(pts)[:, :, ed0]
-                t1 = tab1(pts)[:, :, ed1]
+                ed1 = ecdofs1[d][e]
+
+                not_ed0 = [k for i in ecdofs0 for j in i for k in j if k not in ed0]
+                not_ed1 = [k for i in ecdofs1 for j in i for k in j if k not in ed1]
+                t0 = tab0(pts)[:, :, not_ed0]
+                t1 = tab1(pts)[:, :, not_ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
                     if printing:
                         print("  Continuity does not match")
