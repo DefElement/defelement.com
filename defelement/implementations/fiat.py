@@ -6,6 +6,15 @@ import sympy
 
 from defelement.implementations.core import Array, Element, Implementation, parse_example
 
+# TODO make this a FIAT attribute
+true_space_dimension = {
+    "Bell": 18,
+    "Mardal-Tai-Winther": 9,
+    "reduced Hsieh-Clough-Tocher": 9,
+    "Arnold-Winther": 24,
+    "nonconforming Arnold-Winther": 15,
+}
+
 
 class FIATImplementation(Implementation):
     """FIAT implementation."""
@@ -114,15 +123,9 @@ class FIATImplementation(Implementation):
 
         if input_deg is not None:
             args.append(input_deg)
-        if "subdegree" in params:
-            kwargs["subdegree"] = int(sympy.S(params["subdegree"]).subs(sympy.Symbol('k'), deg))
 
         if "variant" in params:
             kwargs["variant"] = params["variant"]
-
-        # TODO: remove this once https://github.com/firedrakeproject/fiat/issues/87 is resolved
-        if element.name == "Guzman-Neilan (first kind)" and example == "tetrahedron,2":
-            raise NotImplementedError()
 
         e = getattr(FIAT, fiat_name)(cell, *args, **kwargs)
 
@@ -146,63 +149,22 @@ class FIATImplementation(Implementation):
                 [edofs[3][0]],
             ]
 
-        if element.name == "Arnold-Winther" and example.startswith("triangle"):
-            edofs[2][0] = edofs[2][0][:3]
-            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                points.shape[0], value_size, -1)[:, :, :24]
-        if element.name == "nonconforming Arnold-Winther" and example.startswith("triangle"):
-            for i in range(3):
-                edofs[1][i] = edofs[1][i][:4]
-            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                points.shape[0], value_size, -1)[:, :, :15]
-        if element.name == "Bell" and example.startswith("triangle"):
-            for i in range(3):
-                edofs[1][i] = []
-            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                points.shape[0], value_size, -1)[:, :, :18]
-        if element.name == "Mardal-Tai-Winther" and example.startswith("triangle"):
-            for i in range(3):
-                edofs[1][i] = edofs[1][i][:3]
-            edofs[2][0] = []
-            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                points.shape[0], value_size, -1)[:, :, :9]
-        if element.name == "reduced Hsieh-Clough-Tocher" and example.startswith("triangle"):
-            for i in range(3):
-                edofs[1][i] = []
-            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                points.shape[0], value_size, -1)[:, :, :9]
-        if element.name == "nonconforming Arnold-Winther" and example.startswith("triangle"):
-            for i in range(3):
-                edofs[1][i] = edofs[1][i][:4]
-            return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                points.shape[0], value_size, -1)[:, :, :15]
-        if element.name == "Guzman-Neilan (first kind)":
-            raise NotImplementedError()
+        sd = cell.get_spatial_dimension()
+        if element.name in {"Bernardi-Raugel",
+                            "Guzman-Neilan (first kind)",
+                            "Guzman-Neilan (second kind)"}:
+            reduced_dim = e.get_space_dimension() - (sd+1) * (sd-1)
+        else:
+            reduced_dim = true_space_dimension.get(element.name)
 
-            if example == "triangle,1":
-                for i in range(3):
-                    edofs[1][i] = edofs[1][i][:1]
-                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                    points.shape[0], value_size, -1)[:, :, :9]
-            if example == "tetrahedron,1":
-                for i in range(4):
-                    edofs[2][i] = edofs[2][i][:1]
-                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                    points.shape[0], value_size, -1)[:, :, :15]
-        if element.name == "Bernardi-Raugel":
-            if example == "triangle,1":
-                for i in range(3):
-                    edofs[1][i] = edofs[1][i][:1]
-                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                    points.shape[0], value_size, -1)[:, :, :9]
-            if example == "tetrahedron,1":
-                for i in range(4):
-                    edofs[2][i] = edofs[2][i][:1]
-                return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-                    points.shape[0], value_size, -1)[:, :, :16]
+        if reduced_dim is not None:
+            for dim in range(len(edofs)):
+                for i in range(len(edofs[dim])):
+                    edofs[dim][i] = [dof for dof in edofs[dim][i] if dof < reduced_dim]
 
-        return edofs, lambda points: list(e.tabulate(0, points).values())[0].T.reshape(
-            points.shape[0], value_size, -1)
+        z = (0,) * sd
+        return edofs, lambda points: e.tabulate(0, points)[z][slice(reduced_dim)].T.reshape(
+                points.shape[0], value_size, -1)
 
     @staticmethod
     def notes(

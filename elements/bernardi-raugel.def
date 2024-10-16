@@ -35,9 +35,7 @@ mapping: contravariant Piola
 sobolev: H1
 implementations:
   symfem: Bernardi-Raugel
-  fiat:
-    triangle: BernardiRaugel DEGREEMAP=2 DEGREES=1
-    tetrahedron: BernardiRaugel DEGREEMAP=3 DEGREES=1
+  fiat: BernardiRaugel
 examples:
   - triangle,1
   - tetrahedron,1
