@@ -3,7 +3,7 @@ html-name: Guzm&aacute;n&ndash;Neilan (first kind)
 alt-names:
   - Guzm&aacute;n&ndash;Neilan
 min-degree: 1
-max-degree: 1
+max-degree: d-1
 polynomial-subdegree: k
 polynomial-superdegree: d
 lagrange-subdegree: k
