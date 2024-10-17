@@ -178,7 +178,7 @@ class FIATImplementation(Implementation):
         Returns:
             List of notes
         """
-        if element.name in ["Arnold-Winther", "Bell"]:
+        if element.name in true_space_dimension:
             return ["This implementation includes additional DOFs that are used then filtered "
                     "out when mapping the element, as described in Kirby (2018)."]
         return []
@@ -195,7 +195,7 @@ class FIATImplementation(Implementation):
         Returns:
             List of references
         """
-        if element.name in ["Arnold-Winther", "Bell"]:
+        if element.name in true_space_dimension:
             return [{
                 'title': 'A general approach to transforming finite elements',
                 'author': ['Kirby, Robert C.'],

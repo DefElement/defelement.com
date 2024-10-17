@@ -118,8 +118,8 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
         return False
 
     ndofs = table0.shape[-1]
-    table0 = table0.reshape(-1, ndofs).T
-    table1 = table1.reshape(-1, ndofs).T
+    table0 = table0.reshape(-1, ndofs)
+    table1 = table1.reshape(-1, ndofs)
 
     rank = np.linalg.matrix_rank(table0)
     if complete and rank != ndofs:
