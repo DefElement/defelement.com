@@ -24,6 +24,8 @@ parser.add_argument('--skip-missing-libraries', default="true",
                     help="Skip verification if library is not installed.")
 parser.add_argument('--print-reasons', default="false",
                     help="Show reasons for failed verification")
+parser.add_argument('--impl', metavar="impl", default=None,
+                    help="libraries to run verification for")
 
 args = parser.parse_args()
 if args.destination is not None:
@@ -40,6 +42,10 @@ elif args.test == "auto":
         "bernardi-raugel"]
 else:
     test_elements = args.test.split(",")
+if args.impl is None:
+    test_implementations = None
+else:
+    test_implementations = args.impl.split(",")
 skip_missing = args.skip_missing_libraries == "true"
 print_reasons = args.print_reasons == "true"
 
@@ -54,7 +60,11 @@ elements_to_verify = []
 for e in categoriser.elements:
     if test_elements is None or e.filename in test_elements:
         for eg in e.examples:
-            implementations = [i for i in verifications if i != "symfem" and e.implemented(i)]
+            implementations = [
+                i for i in verifications
+                if i != "symfem" and e.implemented(i) and (
+                    test_implementations is None or i in test_implementations)
+            ]
             if len(implementations) > 0:
                 elements_to_verify.append((e, eg, implementations))
 

@@ -125,7 +125,7 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     if complete and rank != ndofs:
         return False
 
-    stack = np.vstack([table0, table1])
+    stack = np.hstack([table0, table1])
     srank = np.linalg.matrix_rank(stack)
     return rank == srank
 
@@ -199,8 +199,8 @@ def verify(
             if len(ed0) > 0:
                 ed1 = ecdofs1[d][e]
 
-                not_ed0 = [k for i in ecdofs0 for j in i for k in j if k not in ed0]
-                not_ed1 = [k for i in ecdofs1 for j in i for k in j if k not in ed1]
+                not_ed0 = [k for i in edofs0 for j in i for k in j if k not in ed0]
+                not_ed1 = [k for i in edofs1 for j in i for k in j if k not in ed1]
                 t0 = tab0(pts)[:, :, not_ed0]
                 t1 = tab1(pts)[:, :, not_ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
