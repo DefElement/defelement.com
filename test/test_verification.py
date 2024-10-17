@@ -18,7 +18,7 @@ def test_self():
     eg = [i for i in e.examples if "triangle" in i][0]
 
     info = verifications["symfem"](e, eg)
-    assert verify("triangle", info, info)
+    assert verify("triangle", info, info)[0]
 
 
 def test_variant():
@@ -30,7 +30,7 @@ def test_variant():
 
     info0 = verifications["symfem"](e, eg0)
     info1 = verifications["symfem"](e, eg1)
-    assert verify("quadrilateral", info0, info1)
+    assert verify("quadrilateral", info0, info1)[0]
 
 
 def test_hermite_vs_lagrange():
@@ -46,7 +46,7 @@ def test_hermite_vs_lagrange():
     eg = [i for i in e.examples if "triangle,3" in i][0]
     info1 = verifications["symfem"](e, eg)
 
-    assert not verify("triangle", info0, info1)
+    assert not verify("triangle", info0, info1)[0]
 
 
 def test_verify_bdm_vs_n2():
@@ -61,4 +61,4 @@ def test_verify_bdm_vs_n2():
 
     info0 = verifications["symfem"](e0, eg)
     info1 = verifications["symfem"](e1, eg)
-    assert not verify("triangle", info0, info1)
+    assert not verify("triangle", info0, info1)[0]
