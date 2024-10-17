@@ -136,18 +136,16 @@ def verify(
                         typing.Callable[[Array], Array]],
     info1: typing.Tuple[typing.List[typing.List[typing.List[int]]],
                         typing.Callable[[Array], Array]],
-    printing: bool = False
-) -> bool:
+) -> typing.Tuple[bool, typing.Optional[str]]:
     """Run verification.
 
     Args:
         ref: Reference cell
         info0: Verification info for first implementation
         info1: Verification info for second implementation
-        printing: Toggle printing
 
     Returns:
-        True if verification successful, otherwise False
+        (True, None) if verification successful, otherwise False plus a reason
     """
     import numpy as np
 
@@ -159,22 +157,16 @@ def verify(
 
     # Check the same number of entity DOFs
     if len(edofs0) != len(edofs1):
-        if printing:
-            print(f"  Wrong number of entities ({len(edofs0)} vs {len(edofs1)})")
-        return False
+        return False, f"Wrong number of entities ({len(edofs0)} vs {len(edofs1)})"
     entity_counts = []
     for dim, (i0, i1) in enumerate(zip(edofs0, edofs1)):
         if len(i0) != len(i1):
-            if printing:
-                print(f"  Wrong number of entities of dim {dim} ({len(i0)} vs {len(i1)})")
-            return False
+            return False, f"Wrong number of entities of dim {dim} ({len(i0)} vs {len(i1)})"
         entity_counts.append(len(i0))
         for e_n, (j0, j1) in enumerate(zip(i0, i1)):
             if len(j0) != len(j1):
-                if printing:
-                    print("  Wrong number of DOFs associated with an entity"
-                          f" {dim},{e_n} ({len(j0)} vs {len(j1)})")
-                return False
+                return False, ("Wrong number of DOFs associated with an entity"
+                               f" {dim},{e_n} ({len(j0)} vs {len(j1)})")
 
     # Check that polysets span the same space
     pts = points(ref)
@@ -182,14 +174,10 @@ def verify(
     table1 = tab1(pts)
 
     if table0.shape != table1.shape:
-        if printing:
-            print(f"  Non-matching table shapes ({table0.shape} vs {table1.shape})")
-        return False
+        return False, f"Non-matching table shapes ({table0.shape} vs {table1.shape})"
 
     if not same_span(table0, table1):
-        if printing:
-            print("  Polysets do not span the same space")
-        return False
+        return False, "Polysets do not span the same space"
 
     # Check that continuity will be the same
     epoints = entity_points(ref)
@@ -204,8 +192,6 @@ def verify(
                 t0 = tab0(pts)[:, :, not_ed0]
                 t1 = tab1(pts)[:, :, not_ed1]
                 if not np.allclose(t0, t1) and not same_span(t0, t1, False):
-                    if printing:
-                        print(f"  Continuity does not match for ({d},{e})")
-                    return False
+                    return False, f"Continuity does not match for ({d},{e})"
 
-    return True
+    return True, None

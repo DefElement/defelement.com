@@ -102,12 +102,15 @@ def verify_examples(
         for i in implementations:
             try:
                 vinfo = verifications[i](e, eg)
-                if verify(cell, vinfo, sym_info, print_reasons):
+                v, info = verify(cell, vinfo, sym_info)
+                if v:
                     results[e.filename][i]["pass"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {green}\u2713{default}")
                 else:
                     results[e.filename][i]["fail"].append(eg)
                     print(f"{process}{e.filename} {i} {eg} {red}\u2715{default}")
+                    if print_reasons:
+                        print(f"  {info}")
             except ImportError as err:
                 if skip_missing:
                     print(f"{process}{i} not installed")
