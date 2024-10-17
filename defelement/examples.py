@@ -7,6 +7,7 @@ import sympy
 from symfem.finite_element import CiarletElement, DirectElement, FiniteElement
 from symfem.functionals import BaseFunctional
 from symfem.functions import AnyFunction
+from symfem.piecewise_functions import PiecewiseFunction
 from symfem.symbols import t
 
 from defelement import plotting, settings, symbols
@@ -33,6 +34,17 @@ def to_tex(
     Returns:
         TeX
     """
+
+    if isinstance(f, PiecewiseFunction):
+        sub_f = None
+        for p in f.pieces.values():
+            if sub_f is None:
+                sub_f = p
+            if p != sub_f:
+                break
+        else:
+            return to_tex(sub_f)
+
     if isinstance(f, (list, tuple)):
         return "\\left(\\begin{array}{c}" + "\\\\".join(
             ["\\displaystyle " + to_tex(i) for i in f]) + "\\end{array}\\right)"
