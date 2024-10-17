@@ -153,7 +153,7 @@ class FIATImplementation(Implementation):
         if element.name in {"Bernardi-Raugel",
                             "Guzman-Neilan (first kind)",
                             "Guzman-Neilan (second kind)"}:
-            reduced_dim = e.get_space_dimension() - (sd+1) * (sd-1)
+            reduced_dim = e.space_dimension() - (sd+1) * (sd-1)
         else:
             reduced_dim = true_space_dimension.get(element.name)
 
