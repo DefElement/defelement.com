@@ -34,7 +34,6 @@ def to_tex(
     Returns:
         TeX
     """
-
     if isinstance(f, PiecewiseFunction):
         sub_f = None
         for p in f.pieces.values():
