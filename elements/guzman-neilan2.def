@@ -29,6 +29,7 @@ mapping: contravariant Piola
 sobolev: H1
 implementations:
   symfem: Guzman-Neilan second kind
+  fiat: GuzmanNeilanSecondKindH1
 examples:
   - triangle,1
   - tetrahedron,1
