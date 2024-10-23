@@ -129,6 +129,9 @@ class FIATImplementation(Implementation):
         if "variant" in params:
             kwargs["variant"] = params["variant"]
 
+        if "reduced" in params:
+            kwargs["reduced"] = bool(params["reduced"])
+
         e = getattr(FIAT, fiat_name)(cell, *args, **kwargs)
 
         value_size = 1
