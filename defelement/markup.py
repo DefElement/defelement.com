@@ -59,7 +59,7 @@ def format_names(names: typing.List[str], format: str) -> str:
         Formatted names
     """
     if format == "bibtex":
-        return " and ".join(names)
+        return ("\n" + " " * 17 + "and ").join(names)
     else:
         formatted_names = []
         for n in names:
