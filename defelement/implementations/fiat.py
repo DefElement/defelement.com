@@ -38,7 +38,7 @@ class FIATImplementation(Implementation):
                     out += "(..."
                     started = True
                 out += f", {p}=\"{v}\""
-            if p == "subdegree":
+            if p in ["subdegree", "reduced"]:
                 if not started:
                     out += "(..."
                     started = True
@@ -86,6 +86,8 @@ class FIATImplementation(Implementation):
                     out += f", {i}=\"{j}\""
                 if i == "subdegree":
                     out += f", {i}={sympy.S(j).subs(sympy.Symbol('k'), deg)}"
+                if i == "reduced":
+                    out += f", {i}={j}"
             out += ")"
         return out
 
