@@ -1,7 +1,7 @@
 name: Morley-Wang-Xu
 html-name: Morley&ndash;Wang&ndash;Xu
 notes:
-  - A Morley-Wang-Xu element of degree \(k\) and reference element dimension \(d\) only includes degrees of freedom on subentities of dimensions \((k - i), 1 \leqslant i \leqslant d \).
+  - A Morley-Wang-Xu element of degree \(k\) and reference element dimension \(d\) only includes degrees of freedom on subentities of dimensions \((d - i), 1 \leqslant i \leqslant k \).
 min-degree: 1
 max-degree:
   interval: 1
