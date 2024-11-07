@@ -101,6 +101,39 @@ def closure_dofs(
     return out
 
 
+def span_greater_equal(mat0: Array, mat1: Array) -> bool:
+    """Check if span(mat0) >= span(mat1).
+
+    Args:
+        mat0: The first matrix
+        mat1: The second matrix
+
+    Returns:
+        True if the first matrix's rows span a space that is a superspace of the space
+        spanned by the second matrix's rows
+    """
+    import numpy as np
+
+    residual = np.linalg.lstsq(
+        mat0.reshape(mat0.shape[0], -1).T,
+        mat1.reshape(mat1.shape[0], -1).T,
+    )[1]
+    return np.allclose(residual, 0)
+
+
+def span_equal(mat0: Array, mat1: Array) -> bool:
+    """Check if span(mat0) == span(mat1).
+
+    Args:
+        mat0: The first matrix
+        mat1: The second matrix
+
+    Returns:
+        True if the two matrices's rows span the same space
+    """
+    return span_greater_equal(mat0, mat1) and span_greater_equal(mat1, mat0)
+
+
 def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     """Check if two tables span the same space.
 
@@ -121,13 +154,12 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     table0 = table0.reshape(-1, ndofs)
     table1 = table1.reshape(-1, ndofs)
 
-    rank = np.linalg.matrix_rank(table0)
-    if complete and rank != ndofs:
-        return False
+    if complete:
+        rank = np.linalg.matrix_rank(table0)
+        if rank != ndofs:
+            return False
 
-    stack = np.hstack([table0, table1])
-    srank = np.linalg.matrix_rank(stack)
-    return rank == srank
+    return span_equal(table0, table1)
 
 
 def verify(
