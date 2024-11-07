@@ -109,15 +109,12 @@ def span_greater_equal(mat0: Array, mat1: Array) -> bool:
         mat1: The second matrix
 
     Returns:
-        True if the first matrix's rows span a space that is a superspace of the space
-        spanned by the second matrix's rows
+        True if the first matrix's columns span a space that is a superspace of the space
+        spanned by the second matrix's columns
     """
     import numpy as np
 
-    residual = np.linalg.lstsq(
-        mat0.reshape(mat0.shape[0], -1).T,
-        mat1.reshape(mat1.shape[0], -1).T,
-    )[1]
+    residual = np.linalg.lstsq(mat0, mat1)[1]
     return np.allclose(residual, 0)
 
 
@@ -129,7 +126,7 @@ def span_equal(mat0: Array, mat1: Array) -> bool:
         mat1: The second matrix
 
     Returns:
-        True if the two matrices's rows span the same space
+        True if the two matrices's columns span the same space
     """
     return span_greater_equal(mat0, mat1) and span_greater_equal(mat1, mat0)
 
