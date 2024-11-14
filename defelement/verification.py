@@ -121,13 +121,17 @@ def same_span(table0: Array, table1: Array, complete: bool = True) -> bool:
     table0 = table0.reshape(-1, ndofs)
     table1 = table1.reshape(-1, ndofs)
 
-    rank = np.linalg.matrix_rank(table0)
-    if complete and rank != ndofs:
+    rank0 = np.linalg.matrix_rank(table0)
+    rank1 = np.linalg.matrix_rank(table1)
+    if complete and rank0 != ndofs:
         return False
+
+    if rank0 != rank1:
+        return false
 
     stack = np.hstack([table0, table1])
     srank = np.linalg.matrix_rank(stack)
-    return rank == srank
+    return rank0 == srank
 
 
 def verify(
