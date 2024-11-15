@@ -169,7 +169,7 @@ def list_contributors(format: str = "html") -> str:
             warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
         else:
             g = Github(settings.github_token)
-            repo = g.get_repo("DefElement/defelement.com")
+            repo = g.get_repo("DefElement/defelement")
             pages = repo.get_contributors()
             i = 0
             extras = []
@@ -212,7 +212,7 @@ def list_contributors(format: str = "html") -> str:
         else:
             included = [info["github"] for info in people if "github" in info]
             g = Github(settings.github_token)
-            repo = g.get_repo("DefElement/defelement.com")
+            repo = g.get_repo("DefElement/defelement")
             pages = repo.get_contributors()
             i = 0
             while True:
@@ -249,7 +249,7 @@ def preprocess(content: str) -> str:
                 with open(os.path.join(settings.dir_path, file)) as f:
                     content = content.replace(
                         f"{{{{{file}}}}}",
-                        f.read().replace("](https://defelement.com", "]("))
+                        f.read().replace("](https://defelement.org", "]("))
 
     if "{{list contributors}}" in content:
         content = content.replace("{{list contributors}}", list_contributors())
@@ -447,14 +447,14 @@ def author_info(matches: typing.Match[str]) -> str:
         f"       AUTHOR = {{{format_names(authors, 'bibtex')}}},\n"
         f"        TITLE = {{{{D}}ef{{E}}lement: {title}}},\n"
         "         YEAR = {{{{date:Y}}}},\n"
-        f" HOWPUBLISHED = {{\\url{{https://defelement.com/{url}}}}},\n"
+        f" HOWPUBLISHED = {{\\url{{https://defelement.org/{url}}}}},\n"
         "         NOTE = {[Online; accessed {{date:D-M-Y}}]}\n"
         "}\n"
         "```\n\n"
         "This will create a reference along the lines of:\n\n"
         "<ul class='citations'>"
         f"<li>{format_names(authors, 'citation')}. <i>DefElement: {title}</i>, {{{{date:Y}}}}, "
-        f"<a href='https://defelement.com/{url}'>https://defelement.com/{url}</a> "
+        f"<a href='https://defelement.org/{url}'>https://defelement.org/{url}</a> "
         "[Online; accessed: {{date:D-M-Y}}]</li>\n"
         "</ul></div>")
     return out
