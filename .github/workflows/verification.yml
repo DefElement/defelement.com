@@ -58,6 +58,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add .
           git commit -m "verification.json"
-          git remote add origin https://oauth2:${{ secrets.GITHUB_TOKEN }}@github.com/DefElement/defelement.git
+          git remote add origin https://oauth2:${{ secrets.GITHUB_TOKEN }}@github.com/DefElement/DefElement.git
           git push -u origin verification --force
         name: Push to GitHub

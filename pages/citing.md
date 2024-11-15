@@ -1,7 +1,7 @@
 # Reusing & citing
 
 ## Reusing content from DefElement
-The text, images, and other content on this website (excluding Font Awesome, which is released under [its own license](https://github.com/DefElement/defelement/blob/main/files/fontawesome/LICENSE.txt))
+The text, images, and other content on this website (excluding Font Awesome, which is released under [its own license](https://github.com/DefElement/DefElement/blob/main/files/fontawesome/LICENSE.txt))
 may be reused under the terms of a
 [Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/): this means
 that you can reuse any of the content as long as you attribute DefElement.
@@ -13,8 +13,8 @@ The DefElement logo can be found on the [branding page](branding.md).
 
 ## Citing DefElement
 
-The code used to generate this website is available on [GitHub](https://github.com/DefElement/defelement)
-under an [MIT license](https://github.com/DefElement/defelement/blob/main/LICENSE.txt).
+The code used to generate this website is available on [GitHub](https://github.com/DefElement/DefElement)
+under an [MIT license](https://github.com/DefElement/DefElement/blob/main/LICENSE.txt).
 
 On each of the element definition pages, you can find citations for the paper(s) that introduced
 that element. These papers should be cited when using a given element. If you wish to cite this

@@ -1000,7 +1000,7 @@ class Categoriser:
             warnings.warn("Building without GitHub token. Timestamps will not be obtained.")
         else:
             g = Github(settings.github_token)
-            repo = g.get_repo("DefElement/defelement")
+            repo = g.get_repo("DefElement/DefElement")
             for e in self.elements:
                 commits = repo.get_commits(path=f"elements/{e.filename}.def")
                 try:

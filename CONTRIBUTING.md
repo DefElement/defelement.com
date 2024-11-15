@@ -4,21 +4,21 @@
 
 ### Reporting mistakes
 If you find a mistake in the DefElement database, please report it on the
-[issue tracker](https://github.com/DefElement/defelement/issues/new?assignees=&labels=bug&template=mistake-report.md&title=)
+[issue tracker](https://github.com/DefElement/DefElement/issues/new?assignees=&labels=bug&template=mistake-report.md&title=)
 using the *Mistake report* template.
 
 ### Suggesting new elements
 If you want to suggest a new element to be added to DefElement, suggest it on the
-[issue tracker](https://github.com/DefElement/defelement/issues/new?assignees=&labels=new+element&template=new-element.md&title=Add+%5BNAME%5D+element)
+[issue tracker](https://github.com/DefElement/DefElement/issues/new?assignees=&labels=new+element&template=new-element.md&title=Add+%5BNAME%5D+element)
 using the *New element* template.
 
 ### Suggesting improvements
 If you want to suggest a new featute or improvement to DefElement, suggest it on the
-[issue tracker](https://github.com/DefElement/defelement/issues/new?assignees=&labels=feature+request&template=suggest-an-improvement.md&title=)
+[issue tracker](https://github.com/DefElement/DefElement/issues/new?assignees=&labels=feature+request&template=suggest-an-improvement.md&title=)
 using the *Suggest an improvement* template.
 
 ### Discussion ideas for new features
-You can use [GitHub's Discussions](https://github.com/DefElement/defelement/discussions) to discuss
+You can use [GitHub's Discussions](https://github.com/DefElement/DefElement/discussions) to discuss
 ideas you have for features (that perhaps aren't fully formed enough yet to make an issue) or to
 discuss other people's ideas. You're welcome to also use the Discussions to just chat to other
 members of the community.
@@ -26,10 +26,10 @@ members of the community.
 ## Contributing directly
 
 ### Submitting a pull request
-If you want to directly submit changes to DefElement, you can do this by forking the [DefElement GitHub repository](https://github.com/DefElement/defelement),
+If you want to directly submit changes to DefElement, you can do this by forking the [DefElement GitHub repository](https://github.com/DefElement/DefElement),
 making changes, then submitting a pull request.
 If you want to contribute, but are unsure where to start, have a look at the
-[issue tracker](https://github.com/DefElement/defelement/labels/good%20first%20issue) for issues labelled "good first issue".
+[issue tracker](https://github.com/DefElement/DefElement/labels/good%20first%20issue) for issues labelled "good first issue".
 
 The functional information and examples on the element pages are generated using
 [Symfem](https://github.com/mscroggs/symfem), a symbolic finite element definition library.
@@ -53,7 +53,7 @@ The entries in this yaml file are:
 <tr><td>`dofs`</td><td></td><td>Description of the DOFs of this element.</td></tr>
 <tr><td>`ndofs`</td><td></td><td>The number of DOFs the element has and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
 <tr><td>`entity&#8209;ndofs`</td><td></td><td>The number of DOFs the element has per subentity type and the A-numbers of the [OEIS](http://oeis.org) sequence(s) giving the number of DOFs.</td></tr>
-<tr><td>`polynomial&#8209;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/DefElement/defelement/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
+<tr><td>`polynomial&#8209;set`</td><td></td><td>The polynomial set of this element. This can use sets defined in the file [`/data/polysets`](https://github.com/DefElement/DefElement/blob/main/data/polysets). Other sets can be given by writing `<k>[LaTeX definition of set]`. Unions of multiple sets can be given, separated by ` && `.</td></tr>
 <tr><td>`mixed`</td><td></td><td>If this element is a mixed element, the subelements that it contains.</td></tr>
 <tr><td>`mapping`</td><td></td><td>The mapping used to push/pull values foward/back from/to the reference element.</td></tr>
 <tr><td>`sobolev`</td><td></td><td>The Sobolev space the element lives in.</td></tr>
@@ -67,7 +67,7 @@ The entries in this yaml file are:
 <tr><td>`examples`</td><td></td><td>Reference elements and degrees to be included in the examples section of the entry.</td></tr>
 <tr><td>`notes`</td><td></td><td>Notes about the element.</td></tr>
 <tr><td>`references`</td><td></td><td>References to where the element is defined.</td></tr>
-<tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/DefElement/defelement/blob/main/data/categories).</td></tr>
+<tr><td>`categories`</td><td></td><td>Categories the element belongs to. Categories are defined in the file [`/data/categories`](https://github.com/DefElement/DefElement/blob/main/data/categories).</td></tr>
 <tr><td>`implementations`</td><td></td><td>Strings/enum entries/etc to create this element in supported implementations.</td></tr>
 </table>
 
@@ -133,8 +133,8 @@ python3 build.py _test_html --test lagrange,vector-lagrange --processes 4
 
 ### Adding an implementation
 To add a library to the implementations section of DefElement, you must add a file containing to the folder
-[`/defelement/implementations`](https://github.com/DefElement/defelement/blob/main/defelement/implementations).
-This file should define a class that is a subclass of [`Implementation`](https://github.com/DefElement/defelement/blob/main/defelement/implementations/template.py).
+[`/defelement/implementations`](https://github.com/DefElement/DefElement/blob/main/defelement/implementations).
+This file should define a class that is a subclass of [`Implementation`](https://github.com/DefElement/DefElement/blob/main/defelement/implementations/template.py).
 This class should include:
 
 <table class='bordered align-left'>
@@ -152,7 +152,7 @@ This class should include:
 <table>
 
 Once these steps are done, you can start adding implementation details for your library to
-the `implementation` field of elements in the [`elements`](https://github.com/DefElement/defelement/blob/main/elements)
+the `implementation` field of elements in the [`elements`](https://github.com/DefElement/DefElement/blob/main/elements)
 folder.
 
 ## Style guide
@@ -160,8 +160,8 @@ When contributing to DefElement, you should follow [the DefElement style guide](
 
 ## Adding yourself to the contributors list
 Once you have contributed to DefElement, you should add your name and some information about yourself to the [contributors page](https://defelement.org/contributors.html).
-To do this, you should add info about yourself to the file [data/contributors](https://github.com/DefElement/defelement/blob/main/data/contributors). If you wish to include a picture of yourself,
-add a square-shaped image to the [pictures/](https://github.com/DefElement/defelement/blob/main/pictures/) folder.
+To do this, you should add info about yourself to the file [data/contributors](https://github.com/DefElement/DefElement/blob/main/data/contributors). If you wish to include a picture of yourself,
+add a square-shaped image to the [pictures/](https://github.com/DefElement/DefElement/blob/main/pictures/) folder.
 
 ## Code of conduct
 We expect all our contributors to follow our [code of conduct](CODE_OF_CONDUCT.md). Any unacceptable
