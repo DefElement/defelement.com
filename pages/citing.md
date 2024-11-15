@@ -1,7 +1,7 @@
 # Reusing & citing
 
 ## Reusing content from DefElement
-The text, images, and other content on this website (excluding Font Awesome, which is released under [its own license](https://github.com/DefElement/defelement.com/blob/main/files/fontawesome/LICENSE.txt))
+The text, images, and other content on this website (excluding Font Awesome, which is released under [its own license](https://github.com/DefElement/defelement/blob/main/files/fontawesome/LICENSE.txt))
 may be reused under the terms of a
 [Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/): this means
 that you can reuse any of the content as long as you attribute DefElement.
@@ -13,8 +13,8 @@ The DefElement logo can be found on the [branding page](branding.md).
 
 ## Citing DefElement
 
-The code used to generate this website is available on [GitHub](https://github.com/DefElement/defelement.com)
-under an [MIT license](https://github.com/DefElement/defelement.com/blob/main/LICENSE.txt).
+The code used to generate this website is available on [GitHub](https://github.com/DefElement/defelement)
+under an [MIT license](https://github.com/DefElement/defelement/blob/main/LICENSE.txt).
 
 On each of the element definition pages, you can find citations for the paper(s) that introduced
 that element. These papers should be cited when using a given element. If you wish to cite this
@@ -25,7 +25,7 @@ website, you can use the following BibTeX:
        AUTHOR = {{{list contributors|bibtex}}},
         TITLE = {{DefElement}: an encyclopedia of finite element definitions},
          YEAR = {{{{date:Y}}}},
- HOWPUBLISHED = {\url{https://defelement.com}},
+ HOWPUBLISHED = {\url{https://defelement.org}},
          NOTE = {[Online; accessed {{date:D-M-Y}}]}
 }
 ```
@@ -33,7 +33,7 @@ website, you can use the following BibTeX:
 This will create a reference along the lines of:
 
 <ul class='citations'>
-<li>{{list contributors|citation}}. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.com'>https://defelement.com</a> [Online; accessed: {{date:D-M-Y}}].</li>
+<li>{{list contributors|citation}}. <i>DefElement: an encyclopedia of finite element definitions</i>, {{date:Y}}, <a href='https://defelement.org'>https://defelement.org</a> [Online; accessed: {{date:D-M-Y}}].</li>
 </ul>
 
 ### DefElement poster

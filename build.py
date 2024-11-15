@@ -23,7 +23,7 @@ from defelement.tools import comma_and_join, html_local, insert_author_info, par
 
 start_all = datetime.now()
 
-parser = argparse.ArgumentParser(description="Build defelement.com")
+parser = argparse.ArgumentParser(description="Build defelement.org")
 parser.add_argument('destination', metavar='destination', nargs="?",
                     default=None, help="Destination of HTML files.")
 parser.add_argument('--test', metavar="test", default=None,
@@ -97,7 +97,7 @@ os.mkdir(os.path.join(settings.htmlelement_path, "examples"))
 os.system(f"cp -r {settings.files_path}/* {settings.html_path}")
 
 with open(os.path.join(settings.html_path, "CNAME"), "w") as f:
-    f.write("defelement.com")
+    f.write("defelement.org")
 
 # Make pages
 for file in os.listdir(settings.pages_path):
@@ -746,8 +746,8 @@ for i in verifications:
         f"<td>{implementations[i].name}</td>"
         f"<td><img src='/badges/{i}.svg'></td>"
         "<td style='font-size:80%;font-family:monospace'>"
-        f"[![DefElement verification](https://defelement.com/badges/{i}.svg)]"
-        "(https://defelement.com/verification.html)</td>"
+        f"[![DefElement verification](https://defelement.org/badges/{i}.svg)]"
+        "(https://defelement.org/verification.html)</td>"
         "</tr>")
 c += "</table>"
 content += c

@@ -1,7 +1,7 @@
 # DefElement
 
 This repo contains code to generate the website
-[DefElement: an encylopedia of finite element definitions](https://defelement.com).
+[DefElement: an encylopedia of finite element definitions](https://defelement.org).
 
 The examples included in DefElement are generated using [Symfem](https://github.com/mscroggs/symfem).
 

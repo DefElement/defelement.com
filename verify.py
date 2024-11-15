@@ -13,7 +13,7 @@ from defelement.verification import verify
 
 start_all = datetime.now()
 
-parser = argparse.ArgumentParser(description="Build defelement.com")
+parser = argparse.ArgumentParser(description="Verify elements")
 parser.add_argument('destination', metavar='destination', nargs="?",
                     default=None, help="Name of output json file.")
 parser.add_argument('--test', metavar="test", default=None,

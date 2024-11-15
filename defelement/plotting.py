@@ -12,7 +12,7 @@ from defelement import settings
 
 now = datetime.now()
 svg_desc = (
-   "This plot is from DefElement (https://defelement.com) "
+   "This plot is from DefElement (https://defelement.org) "
    "and is available under a Creative Commons Attribution "
    "4.0 International (CC BY 4.0) license: "
    "https://creativecommons.org/licenses/by/4.0/")
@@ -44,7 +44,7 @@ svg_metadata = (
     "</metadata>\n")
 tex_comment = (
     "% -------------------------------------------------------\n"
-    "% This plot is from DefElement (https://defelement.com)\n"
+    "% This plot is from DefElement (https://defelement.org)\n"
     "% and is available under a Creative Commons Attribution\n"
     "% 4.0 International (CC BY 4.0) license:\n"
     "% https://creativecommons.org/licenses/by/4.0/\n"

@@ -40,7 +40,7 @@ jobs:
         name: isort checks
 
   test-build-website:
-    name: Test building of defelement.com
+    name: Test building of defelement
     runs-on: ubuntu-22.04
     steps:
       - name: Set up Python
@@ -71,7 +71,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: ./verification
-          repository: DefElement/defelement.com
+          repository: DefElement/defelement
           ref: verification
         continue-on-error: true
 
@@ -97,7 +97,7 @@ jobs:
         name: Build website HTML
 
   build-website:
-    name: Build defelement.com
+    name: Build defelement
     runs-on: ubuntu-22.04
     if: github.ref != 'refs/heads/main'
     needs:
@@ -132,7 +132,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: ./verification
-          repository: DefElement/defelement.com
+          repository: DefElement/defelement
           ref: verification
         continue-on-error: true
 
@@ -202,7 +202,7 @@ jobs:
         name: Run verification test
 
   build-and-push-website:
-    name: Build and deploy defelement.com
+    name: Build and deploy defelement
     runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
 
@@ -239,7 +239,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: ./verification
-          repository: DefElement/defelement.com
+          repository: DefElement/defelement
           ref: verification
 
       - run: mkdir -p ~/.local/share/fonts
