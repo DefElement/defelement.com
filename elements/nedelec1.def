@@ -123,6 +123,10 @@ implementations:
     legendre:
       triangle: Nedelec variant=integral
       tetrahedron: Nedelec variant=integral
+  ndelement:
+    legendre:
+      triangle: NedelecFirstKind
+      tetrahedron: NedelecFirstKind
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange

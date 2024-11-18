@@ -96,8 +96,9 @@ implementations:
     lagrange:
       triangle: RWG DEGREES=1 DEGREEMAP=k-1
   ndelement:
-    lagrange:
-      triangle: RaviartThomas DEGREES=1
+    legendre:
+      triangle: RaviartThomas
+      tetrahedron: RaviartThomas
   fiat:
     legendre:
       triangle: RaviartThomas variant=integral
