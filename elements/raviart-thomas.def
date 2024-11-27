@@ -99,6 +99,8 @@ implementations:
     legendre:
       triangle: RaviartThomas
       tetrahedron: RaviartThomas
+      quadrilateral: RaviartThomas
+      hexahedron: RaviartThomas
   fiat:
     legendre:
       triangle: RaviartThomas variant=integral

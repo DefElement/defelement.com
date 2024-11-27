@@ -127,6 +127,8 @@ implementations:
     legendre:
       triangle: NedelecFirstKind
       tetrahedron: NedelecFirstKind
+      quadrilateral: NedelecFirstKind
+      hexahedron: NedelecFirstKind
 examples:
   - triangle,1,lagrange
   - triangle,2,lagrange
